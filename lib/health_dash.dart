@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_model/health_dashboard.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
@@ -44,8 +45,8 @@ class HealthDash extends StatelessWidget {
                   // //   height: 50,
                   // // ),
                   sideBarTile("DashBoard", const Icon(Ionicons.diamond), () {
-                    provider.getStats();
-                    provider.getCompaniesChartData();
+                    provider.getStats(AppConsts.health);
+                    provider.getCompaniesChartData(AppConsts.health);
                     checkGraced();
                     // updateTemp();
 
@@ -60,8 +61,8 @@ class HealthDash extends StatelessWidget {
                       () {
                     dashProvider.changeHealthDash(2);
                   }, 2, dashProvider.dashHealthIndex),
-                  sideBarTile("Policies", const Icon(Ionicons.reader_outline),
-                      () {
+                  sideBarTile(getWord(dashProvider.dashName),
+                      const Icon(Ionicons.reader_outline), () {
                     dashProvider.resetPolicyList();
 
                     dashProvider.changeHealthDash(3);

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
 
@@ -45,12 +46,12 @@ class PolicyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    policyNumber.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   policyNumber.dispose();
+  // }
 
   void selectTerm(String term) {
     termSelected = term;
@@ -117,23 +118,29 @@ class PolicyProvider extends ChangeNotifier {
   //   return themeMode;
   // }
 
-  void performFunctions(
+  void performPolicyFunctions(
     String docId,
     HealthStatsProvider statsProvider,
+    String inceptionDate,
   ) {
+    addPolicy(
+        textToDateTime(issuedDate.text), textToDateTime(inceptionDate), docId);
+    clearFields();
+
+    clearPort();
+
     updateStats("sum_premium_amt",
         statsProvider.premiumAmtSum + int.parse(premiumAmt.text));
     updateCompanybussiness(int.parse(premiumAmt.text), companyID);
     updateCompanyPlans(companyID, "policy_count");
-    addPolicy(textToDateTime(issuedDate.text),
-        textToDateTime(inceptionDate.text), docId);
     addCommision(
         client_name,
         policyNumber.text,
         int.parse(premiumAmt.text),
         textToDateTime(issuedDate.text),
         getFirstWord(companyName),
-        statsProvider.healthPercent);
+        statsProvider.healthPercent.toDouble(),
+        AppConsts.health);
     makeATransaction(
         client_uid,
         docId,
@@ -144,11 +151,13 @@ class PolicyProvider extends ChangeNotifier {
         int.parse(premiumAmt.text),
         membersCount,
         textToDateTime(issuedDate.text));
-
-    clearPort();
   }
 
-  void addPolicy(DateTime issuedDate, DateTime inceptionDate, String docId) {
+  void addPolicy(
+    DateTime issuedDate,
+    DateTime inceptionDate,
+    String docId,
+  ) {
     FirebaseFirestore.instance.collection("Policies").doc(docId).set({
       "company_name": companyName,
       "company_logo": companyLogo,
@@ -183,7 +192,8 @@ class PolicyProvider extends ChangeNotifier {
       "payMode": payModeSelected,
       "status_date": Timestamp.now(),
       "cheque_details":
-          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}"
+          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
+      "type": AppConsts.health,
     });
   }
 
@@ -204,8 +214,8 @@ class PolicyProvider extends ChangeNotifier {
   final TextEditingController premiumAmt = TextEditingController();
   final TextEditingController issuedDate =
       TextEditingController(text: todayTextFormat());
-  final TextEditingController inceptionDate =
-      TextEditingController(text: todayTextFormat());
+  // final TextEditingController inceptionDate =
+  //     TextEditingController(text: todayTextFormat());
 
   final TextEditingController nomineeName = TextEditingController();
   final TextEditingController advisorName = TextEditingController();
@@ -216,18 +226,20 @@ class PolicyProvider extends ChangeNotifier {
 
   void clearFields() {
     print("Hello");
-    // policyNumber.clear();
-    // sumAssured.clear();
-    // premiumAmt.clear();
-    // issuedDate.clear();
-    // inceptionDate.clear();
-    // nomineeName.clear();
-    // advisorName.clear();
-    // chequeNo.clear();
-    // bankDate.clear();
-    // bankName.clear();
-    // portCompanyNameController.clear();
-    // portSumAssuredController.clear();
-    // portPolicyNoController.clear();
+    policyNumber.text = "";
+    sumAssured.text = "";
+    premiumAmt.text = "";
+    issuedDate.text = todayTextFormat();
+    nomineeName.text = "";
+    advisorName.text = "";
+    chequeNo.text = "";
+    bankDate.text = "";
+    bankName.text = "";
+    portCompanyNameController.text = "";
+    portSumAssuredController.text = "";
+    portPolicyNoController.text = "";
+    termSelected = "1 Year";
+    payModeSelected = "Credit/Debit";
+    ChangeNotifier();
   }
 }

@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/add_user.dart';
 import 'package:health_model/models/policy_model.dart';
+import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/user_model.dart';
 import 'package:health_model/providers/user_provider.dart';
 import 'package:health_model/shared/streams.dart';
 import 'package:health_model/shared/style.dart';
+import 'package:health_model/shared/tiles.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/sheets/confirm_sheet.dart';
-import 'package:health_model/shared/tiles.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -26,7 +27,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
   late TooltipBehavior tooltip = TooltipBehavior();
   // AsyncSnapshot<QuerySnapshot<Object?>>? snap;
   late Stream<DocumentSnapshot<Object?>> documentStream;
-  late DocumentSnapshot<Object?> initialSnapshot;
+  late List<DocumentSnapshot<Object?>> initialSnapshot = [];
   bool isTherePolicy = false;
 
   @override
@@ -41,19 +42,21 @@ class _UserDetailPageState extends State<UserDetailPage> {
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
-        // for (var i = 0; i < value.docs.length; i++) {
-        DocumentReference documentRef = FirebaseFirestore.instance
-            .collection('Policies') // Replace with your collection name
-            .doc(value.docs[0]["policy_id"]);
+        for (var i = 0; i < value.docs.length; i++) {
+          DocumentReference documentRef = FirebaseFirestore.instance
+              .collection('Policies') // Replace with your collection name
+              .doc(value.docs[i]["policy_id"]);
 
-        documentStream = documentRef.snapshots();
+          documentStream = documentRef.snapshots();
 
-        documentRef.get().then((snapshot) {
-          setState(() {
-            isTherePolicy = true;
-            initialSnapshot = snapshot;
+          documentRef.get().then((snapshot) {
+            setState(() {
+              isTherePolicy = true;
+              initialSnapshot.add(snapshot);
+              ;
+            });
           });
-        });
+        }
       }
       // print("Success");
     });
@@ -63,6 +66,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
   Widget build(BuildContext context) {
     //var uploadImage = Provider.of<UploadImage>(context);
     final userProvider = Provider.of<UserProvider>(context, listen: true);
+    final dashProvider = Provider.of<DashProvider>(context, listen: true);
+
     UserModel model = widget.model;
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
 
@@ -88,7 +93,10 @@ class _UserDetailPageState extends State<UserDetailPage> {
           });
         }, context),
       ]),
-      body: SingleChildScrollView(
+      body:
+          //  streamPoliciesByUser(model.userid, dashProvider)
+
+          SingleChildScrollView(
         child: Container(
           // margin: EdgeInsets.all(20),
           padding: const EdgeInsets.all(30),
@@ -165,11 +173,17 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    // ignore: unnecessary_null_comparison
-                    isTherePolicy == false
-                        ? Container()
-                        : policyTile(
-                            context, PolicyModel.fromFirestore(initialSnapshot))
+                    ListView.builder(
+                      itemCount: initialSnapshot.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return policyTile(
+                            context,
+                            PolicyModel.fromMap(
+                                initialSnapshot[index].data() as Map));
+                      },
+                    ),
                   ],
                 ),
               ),

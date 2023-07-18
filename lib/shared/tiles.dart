@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/choose_exist.dart';
 import 'package:health_model/shared/drafted_msgs.dart';
 import 'package:health_model/enter_fd.dart';
 import 'package:health_model/models/commission_model.dart';
@@ -25,7 +26,7 @@ import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/sheets/commission_sheet.dart';
 import 'package:health_model/sheets/confirm_sheet.dart';
 import 'package:health_model/sheets/member_sheet.dart';
-import 'package:health_model/policy_flow/enter_details.dart';
+import 'package:health_model/policy_flow/enter_policy.dart';
 import 'package:health_model/providers/policy_provider.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/user_detail.dart';
@@ -352,7 +353,11 @@ Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
               }
             : () {
                 provider.setPlan(model.name, model.planID);
-                navigate(EnterPolicyDetails(), context);
+                navigate(
+                    EnterPolicyDetails(
+                      inceptionDate: todayTextFormat(),
+                    ),
+                    context);
               }
         : null,
     child: Container(
@@ -440,7 +445,7 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
               fdprovider.setCompany(
                   model.name, model.companyID, model.companyImg);
 
-              navigate(EnterFdDetails(), context);
+              navigate(ChooseExisting(), context);
             }
           }
         : null,
@@ -459,19 +464,7 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                 width: 350,
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: cachedImage(model.companyImg),
-                        // Image.network(model.companyImg,
-                        //     fit: BoxFit.cover)
-                        //     ,
-                        // child: Icon(
-                        //     model.isMale ? Ionicons.male : Ionicons.female),
-                      ),
-                    ),
+                    companyLogo(model.companyImg),
                     const SizedBox(
                       width: 20,
                     ),
@@ -532,10 +525,95 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
   );
 }
 
-Widget policyTile(BuildContext context, PolicyModel model) {
-  // final provider = Provider.of<PolicyProvider>(context, listen: false);
+Widget fdTile(BuildContext context, FdModel model) {
+  return InkWell(
+    onTap: () {
+      // navigate(
+      //   PolicyDetailPage(model: model),
+      //   context,
+      // );
+      // addMemberSheet(context, widget.userid, docId);
+    },
+    child: Container(
+      // height: 120,
+      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
 
-  // Timestamp time = model["d;
+      decoration: dashBoxDex(context),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                // color: Colors.amber,
+                width: 300,
+                child: Row(
+                  children: [
+                    companyLogo(model.companyLogo),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heading(model.name, 16),
+                        productTileText(model.fdNo, 14),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  heading("Company", 16),
+                  productTileText(
+                      getFirstWord(model.companyName.toString()), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Sum Invested", 16),
+                  productTileText(model.investedAmt.toString(), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Invested Date", 16),
+                  productTileText(
+                      dateTimetoText(model.initialDate.toDate()), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Term", 16),
+                  productTileText(addWithGST(model.fDterm).toString(), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Status", 16),
+                  productTileText(model.fdStatus.toString(), 14),
+                ],
+              ),
+              customButton("View FD", () async {
+                // navigate(
+                //   PolicyDetailPage(model: model),
+                //   context,
+                // );
+                // addMemberSheet(context, widget.userid, docId);
+              }, context, isExpanded: false)
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget policyTile(BuildContext context, PolicyModel model) {
   return InkWell(
     onTap: () {
       navigate(
@@ -562,14 +640,7 @@ Widget policyTile(BuildContext context, PolicyModel model) {
                 width: 300,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor:
-                          model.isMale ? Colors.blueAccent : Colors.pinkAccent,
-                      child: Center(
-                        child: cachedImage(model.companyLogo) // child: Icon(
-                        , //     model.isMale ? Ionicons.male : Ionicons.female),
-                      ),
-                    ),
+                    companyLogo(model.companyLogo),
                     const SizedBox(
                       width: 20,
                     ),
@@ -748,10 +819,10 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyModel model) {
                   children: [
                     CircleAvatar(
                       backgroundColor:
-                          model.isMale ? Colors.blueAccent : Colors.pinkAccent,
+                          model.isMale! ? Colors.blueAccent : Colors.pinkAccent,
                       child: Center(
                         child: Icon(
-                            model.isMale ? Ionicons.male : Ionicons.female),
+                            model.isMale! ? Ionicons.male : Ionicons.female),
                       ),
                     ),
                     const SizedBox(

@@ -57,6 +57,7 @@ class DashProvider extends ChangeNotifier {
   }
 
   void getAllUsers() async {
+    userModelList = [];
     FirebaseFirestore.instance.collection("Users").snapshots().listen((event) {
       for (var i = 0; i < event.docs.length; i++) {
         userModelList.add(UserModel.fromFirestore(event.docs[i]));
@@ -66,16 +67,23 @@ class DashProvider extends ChangeNotifier {
     print("Got All Users");
   }
 
-  List<PolicyModel> policyModelList = [];
-  List<PolicyModel> policySearchList = [];
-  void getAllPolicies() async {
+  List<PolicyData> policyModelList = [];
+  List<PolicyData> policySearchList = [];
+  void getAllPolicies(String type) async {
+    policyModelList.clear();
+    policySearchList.clear();
     FirebaseFirestore.instance
         .collection("Policies")
-        .orderBy("renewal_date")
+        .where("type", isEqualTo: type)
+        // .orderBy("renewal_date")
         .snapshots()
         .listen((event) {
       for (var i = 0; i < event.docs.length; i++) {
-        policyModelList.add(PolicyModel.fromFirestore(event.docs[i]));
+        String type = event.docs[i].data()['type'];
+        if (type == 'FD') {
+          print('--------------------FD---------------');
+        }
+        policyModelList.add(PolicyData.fromFirestore(event.docs[i]));
       }
     });
 
@@ -93,7 +101,7 @@ class DashProvider extends ChangeNotifier {
     print(query);
     policySearchList = [];
     policyModelList.forEach((element) {
-      if (element.name.toLowerCase().contains(query.toLowerCase())) {
+      if (element.data.name.toLowerCase().contains(query.toLowerCase())) {
         policySearchList.add(element);
         // print("Selected");
       }
@@ -104,9 +112,12 @@ class DashProvider extends ChangeNotifier {
 
   List<CommissionModel> commissionModelList = [];
   List<CommissionModel> commissionSearchList = [];
-  void getAllCommissions() async {
+  void getAllCommissions(String type) async {
+    commissionModelList.clear();
+    commissionSearchList.clear();
     FirebaseFirestore.instance
         .collection("Commission")
+        .where("commission_type", isEqualTo: type)
         .orderBy("commission_date")
         .snapshots()
         .listen((event) {

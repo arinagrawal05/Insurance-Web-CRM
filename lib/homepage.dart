@@ -1,9 +1,10 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_model/fd_dash.dart';
+import 'package:health_model/fd_dashboard.dart';
 
 import 'package:health_model/health_dash.dart';
+import 'package:health_model/health_dashboard.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/lottie.dart';
 import 'package:health_model/providers/dash_provider.dart';
@@ -13,6 +14,7 @@ import 'package:health_model/providers/health_stats_provider.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/view_user.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -49,20 +51,29 @@ class _HomePageState extends State<HomePage> {
               margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 40),
               height: 500,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Let's Get Started",
-                          style: GoogleFonts.notoSerif(fontSize: 40),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [bar(), bar(), bar()],
+                      ),
+                      Container(
+                          padding: EdgeInsets.all(15),
+                          // height: 100,
+                          width: 250,
+                          child: Image.asset(
+                            "assets/images/logo.png",
+                            fit: BoxFit.cover,
+                          )),
+                      Column(
+                        children: [bar(), bar(), bar()],
+                      ),
+                    ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       dashWidget(
                           "Health",
@@ -70,16 +81,22 @@ class _HomePageState extends State<HomePage> {
                           Colors.redAccent.shade100,
                           Ionicons.heart, () {
                         dashProvider.changeDashName(AppConsts.health);
-                        provider.getStats();
-                        provider.getCompaniesChartData();
-                        filterProvider.getCompanies(AppConsts.health);
-                        dashProvider.getAllUsers();
-                        dashProvider.getAllPolicies();
-                        dashProvider.getAllCommissions();
+                        print("Entered");
+                        // print(dashProvider.userModelList.length);
+                        // provider.getCompaniesChartData(AppConsts.health);
+// print(statsp.c)
+                        if (true) {
+                          print("Entered Again");
+                          provider.getStats(AppConsts.health);
+                          provider.getCompaniesChartData(AppConsts.health);
+                          filterProvider.getCompanies(AppConsts.health);
+                          dashProvider.getAllPolicies(AppConsts.health);
+                          dashProvider.getAllCommissions(AppConsts.health);
+                          dashProvider.getAllUsers();
+                          filterProvider.setDefaultStatus("active");
 
-                        checkGraced();
-
-                        // dashProvider.changeHealthDash(0);
+                          checkGraced();
+                        }
                         navigate(HealthDash(), context);
                       }),
                       dashWidget(
@@ -101,31 +118,23 @@ class _HomePageState extends State<HomePage> {
                         Colors.blueAccent.shade100,
                         Ionicons.car,
                         () {
-                          updateTemp();
-
                           // updateTemp();
-                          final snackBar = SnackBar(
-                            /// need to set following properties for best effect of awesome_snackbar_content
-                            // elevation: 2,
+                          deleteTemp();
+                          // final snackBar = SnackBar(
+                          //   behavior: SnackBarBehavior.floating,
+                          //   backgroundColor: Colors.transparent,
+                          //   content: AwesomeSnackbarContent(
+                          //     inMaterialBanner: true,
+                          //     title: 'it is under Construction!',
+                          //     message:
+                          //         'This is an message that will be inform you that it is under Construction!',
+                          //     contentType: ContentType.warning,
+                          //   ),
+                          // );
 
-                            behavior: SnackBarBehavior.floating,
-                            // action: SnackBarAction(label: label, onPressed: onPressed),
-                            backgroundColor: Colors.transparent,
-                            content: AwesomeSnackbarContent(
-                              inMaterialBanner: true,
-
-                              title: 'it is under Construction!',
-                              message:
-                                  'This is an message that will be inform you that it is under Construction!',
-
-                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                              contentType: ContentType.warning,
-                            ),
-                          );
-
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
+                          // ScaffoldMessenger.of(context)
+                          //   ..hideCurrentSnackBar()
+                          //   ..showSnackBar(snackBar);
                         },
                       ),
                       dashWidget(
@@ -133,15 +142,45 @@ class _HomePageState extends State<HomePage> {
                           "https://static.theprint.in/wp-content/uploads/2021/07/moneyv-1.jpg",
                           Colors.greenAccent.shade100,
                           Ionicons.wallet, () {
-                        dashProvider.getAllUsers();
-                        filterProvider.getCompanies(AppConsts.fd);
-
-                        fdProvider.getList();
                         dashProvider.changeDashName(AppConsts.fd);
-                        navigate(FDDash(), context);
-                      }),
-                      Lotia(),
+                        if (true) {
+                          print("Entered Again");
+                          provider.getStats(AppConsts.fd);
+                          provider.getCompaniesChartData(AppConsts.fd);
+                          filterProvider.getCompanies(AppConsts.fd);
+                          dashProvider.getAllPolicies(AppConsts.fd);
+                          dashProvider.getAllCommissions(AppConsts.fd);
+                          dashProvider.getAllUsers();
+                          filterProvider.setDefaultStatus("applied");
+
+                          checkGraced();
+                        }
+                        navigate(HealthDash(), context);
+                      })
+
+                      // Lotia(),
                     ],
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        dashProvider.getAllUsers();
+                        // filterProvider.getCompanies(AppConsts.fd);
+
+                        // fdProvider.getList();
+                        // dashProvider.changeDashName(AppConsts.fd);
+                        navigate(UsersPage(), context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        // width: double.infinity,
+                        decoration: dashBoxDex(context)
+                            .copyWith(color: Colors.indigoAccent.shade100),
+                        child: Center(child: heading("View User CMS", 30)),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -165,6 +204,15 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget bar() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: dashBoxDex(context).copyWith(color: Colors.white),
+      height: 20,
+      width: 200,
     );
   }
 

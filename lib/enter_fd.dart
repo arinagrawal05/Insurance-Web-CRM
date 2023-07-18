@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/providers/fd_provider.dart';
 // ignore: unused_import
@@ -256,25 +257,28 @@ class EnterFdDetails extends StatelessWidget {
                                   //         provider.companyID, "policy_count");
                                   controller.addFd(docId);
                                   //     print("Take 2");
-                                  //     addCommision(
-                                  //         provider.client_name,
-                                  //         policyNumber.text,
-                                  //         int.parse(premiumAmt.text),
-                                  //         textToDateTime(issuedDate.text),
-                                  //         getFirstWord(provider.companyName),
-                                  //         statsProvider.healthPercent);
-                                  //     makeATransaction(
-                                  //         provider.client_uid,
-                                  //         docId,
-                                  //         policyNumber.text,
-                                  //         provider.companyName,
-                                  //         textToDateTime(issuedDate.text),
-                                  //         defaultTerm == ""
-                                  //             ? 1
-                                  //             : int.parse(defaultTerm),
-                                  //         int.parse(premiumAmt.text),
-                                  //         provider.membersCount,
-                                  //         textToDateTime(issuedDate.text));
+                                  // addCommision(
+                                  //     controller.client_member_name,
+                                  //     "Na",
+                                  //     int.parse(controller.investedAmt.text),
+                                  //     textToDateTime(
+                                  //         controller.initialDate.text),
+                                  //     getFirstWord(controller.companyName),
+                                  //     getFdCommission(int.parse(getFirstWord(
+                                  //         controller.termSelected))),
+                                  //     AppConsts.fd);
+                                  // makeATransaction(
+                                  //     controller.client_uid,
+                                  //     docId,
+                                  //     "NA",
+                                  //     controller.companyName,
+                                  //     textToDateTime(
+                                  //         controller.initialDate.text),
+                                  //     int.parse(getFirstWord(
+                                  //         controller.termSelected)),
+                                  //     int.parse(controller.investedAmt.text),
+                                  //     0,
+                                  //     DateTime.now());
                                   //     print("Take 3");
                                   //     sumAssured.text = "hello";
                                   //     Navigator.pop(context);

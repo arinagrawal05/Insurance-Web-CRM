@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -192,29 +193,76 @@ updatePolicyStatus(String policyID, String status, DateTime statusDate) {
 }
 
 void updateTemp() async {
-  // FirebaseFirestore.instance
-  //     .collection("Commission")
-  //      .get()
-  //     .then((value) {
-  //   if (value.docs.isNotEmpty) {
-  //     for (var i = 0; i < value.docs.length; i++) {
-  //       FirebaseFirestore.instance
-  //           .collection("Commission")
-  //           .doc(value.docs[i]["commission_id"])
-  //           .update({"commission_type": AppConsts.health});
-  //     }
-  //     print("Successfully Temp Updated");
-  //   }
-  // });
+  FirebaseFirestore.instance.collection("Commission").get().then((value) {
+    if (value.docs.isNotEmpty) {
+      for (var i = 0; i < value.docs.length; i++) {
+        FirebaseFirestore.instance
+            .collection("Commission")
+            .doc(value.docs[i]["commission_id"])
+            .update({"commission_type": AppConsts.health});
+      }
+      print("Successfully Temp Updated");
+    }
+  });
   FirebaseFirestore.instance.collection("Policies").get().then((value) {
     if (value.docs.isNotEmpty) {
       for (var i = 0; i < value.docs.length; i++) {
         FirebaseFirestore.instance
             .collection("Policies")
             .doc(value.docs[i]["policy_id"])
-            .update({"cheque_details": ""});
+            .update({"type": AppConsts.health});
       }
       print("Successfully Temp Updated");
+    }
+  });
+}
+
+bool selectedPolicy(PolicyModel policyModel, String companyFilter,
+    String statusFilter, DateTime fromDate, DateTime toDate) {
+  if (getFirstWord(policyModel.companyName) == companyFilter ||
+      companyFilter == "all companies") {
+    if (policyModel.policyStatus == statusFilter ||
+        statusFilter == "all status") {
+      if (policyModel.renewalDate.toDate().isAfter(fromDate) &&
+          policyModel.renewalDate.toDate().isBefore(toDate)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool selectedFd(FdModel fdModel, String companyFilter, String statusFilter,
+    DateTime fromDate, DateTime toDate) {
+  if (getFirstWord(fdModel.companyName) == companyFilter ||
+      companyFilter == "all companies") {
+    if (fdModel.fdStatus == statusFilter || statusFilter == "all status") {
+      if (fdModel.initialDate.toDate().isAfter(fromDate) &&
+          fdModel.initialDate.toDate().isBefore(toDate)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+void deleteTemp() {
+  print("called");
+  FirebaseFirestore.instance
+      .collection("Policies")
+      .where("name", isEqualTo: "Rama Namdeo")
+      .get()
+      .then((value) {
+    if (value.docs.isNotEmpty) {
+      for (var i = 0; i < value.docs.length; i++) {
+        print(value.docs[i]["policy_id"].toString());
+        print(value.docs.length);
+        // FirebaseFirestore.instance
+        //     .collection("Policies")
+        //     .doc(value.docs[i]["fd_id"])
+        //     .delete();
+      }
+      print("Successfully Temp Deleted");
     }
   });
 }
@@ -346,13 +394,14 @@ updateMembers(String userid, {bool toRemove = false}) {
 }
 
 void addCommision(String clientName, String policyNo, int premiumAmt,
-    DateTime issuedDate, String companyName, int percent) {
+    DateTime issuedDate, String companyName, double percent, String type) {
   var uuid = const Uuid();
   String docId = uuid.v4();
   FirebaseFirestore.instance.collection("Commission").doc(docId).set({
     "commission_id": docId,
     "policy_id": docId,
     "name": clientName,
+    "commission_type": type,
     "commission_date": issuedDate,
     "policy_no": policyNo,
     "issued_date": issuedDate,
@@ -426,4 +475,50 @@ DocumentSnapshot<Object?>? getPolicy(String uid) {
     // }
   });
   return null;
+}
+
+String getWord(String dashName) {
+  if (dashName == AppConsts.health) {
+    return "Policies";
+  } else {
+    return "Fds";
+  }
+}
+
+double getFdCommission(
+  int term,
+) {
+  double ans = 0.4;
+  switch (term) {
+    case 12:
+      ans = 0.4;
+
+      break;
+    case 24:
+      ans = 0.8;
+
+      break;
+    case 36:
+      ans = 1.2;
+
+      break;
+    case 48:
+      ans = 1.6;
+
+      break;
+    case 60:
+      ans = 2.0;
+
+      break;
+    case 50:
+      ans = 1.8;
+
+      break;
+
+    default:
+      {
+        return 0.4;
+      }
+  }
+  return ans;
 }

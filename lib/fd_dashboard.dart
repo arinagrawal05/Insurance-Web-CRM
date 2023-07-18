@@ -87,13 +87,16 @@ class FdDashboardPage extends StatelessWidget {
                                         Expanded(
                                           flex: 9,
                                           child: policyCountCircularChart(
-                                              context, tooltip),
+                                              dashProvider.dashName,
+                                              context,
+                                              tooltip),
                                         ),
                                       ],
                                     )),
-                                Expanded(
-                                    flex: 3,
-                                    child: companyChart(tooltip, context)),
+                                // Expanded(
+                                // flex: 3,
+                                // child: companyChart(tooltip, context)
+                                // ),
                               ],
                             ),
                           ),
@@ -106,7 +109,8 @@ class FdDashboardPage extends StatelessWidget {
                         children: [
                           Expanded(
                               flex: 4,
-                              child: policyCircularChart(context, tooltip)),
+                              child: policyCircularChart(
+                                  dashProvider.dashName, context, tooltip)),
                           Expanded(flex: 5, child: Container())
                         ],
                       ),
@@ -114,16 +118,16 @@ class FdDashboardPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: heading("Graced Renewal", 20),
-              ),
-              streamRenewals(true, oneMonthAgo, now),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: heading("Upcoming Renewal", 20),
-              ),
-              streamRenewals(false, now, oneMonthMore),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 8),
+              //   child: heading("Graced Renewal", 20),
+              // ),
+              // streamRenewals(true, oneMonthAgo, now),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 8),
+              //   child: heading("Upcoming Renewal", 20),
+              // ),
+              // streamRenewals(false, now, oneMonthMore),
             ],
           ),
         ),

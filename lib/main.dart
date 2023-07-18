@@ -15,9 +15,9 @@ import 'package:health_model/shared/loading.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  ErrorWidget.builder = (FlutterErrorDetails details) => SomethingWrong(
-        error: details,
-      );
+  // ErrorWidget.builder = (FlutterErrorDetails details) => SomethingWrong(
+  //       error: details,
+  //     );
   FlutterError.onError = (FlutterErrorDetails details) {
     if (kDebugMode) {
       print("error mil gaya $details");

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/keyboard_listener.dart';
 import 'package:health_model/shared/local_streams.dart';
@@ -36,7 +37,8 @@ class _PoliciesPageState extends State<PoliciesPage> {
 
     return Scaffold(
       // backgroundColor: scaffoldColor,
-      appBar: customAppbar("Clients Policies", context),
+      appBar:
+          customAppbar("Clients ${getWord(dashProvider.dashName)}", context),
       body: RawKeyboardListener(
         autofocus: true,
         focusNode: _focusNode,
@@ -68,7 +70,7 @@ class _PoliciesPageState extends State<PoliciesPage> {
                       context,
                     ),
                     genericPicker(
-                      filterProvider.statusList,
+                      filterProvider.getStatusList(dashProvider.dashName),
                       filterProvider.statusFilter,
                       "Status",
                       (value) {
@@ -76,7 +78,7 @@ class _PoliciesPageState extends State<PoliciesPage> {
                       },
                       context,
                     ),
-                    customButton("Add Policies", () async {
+                    customButton("Add ${dashProvider.dashName}", () async {
                       policyProvider.clearPort();
                       dashProvider.resetUserList();
 

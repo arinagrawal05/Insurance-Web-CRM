@@ -4,6 +4,7 @@ import 'package:el_tooltip/el_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_selector/widget/flutter_single_select.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/providers/filter_provider.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
@@ -169,8 +170,8 @@ AppBar customAppbar(String title, BuildContext context) {
     actions: [
       InkWell(
         onTap: () {
-          statsProvider.getStats();
-          statsProvider.getCompaniesChartData();
+          statsProvider.getStats(AppConsts.health);
+          statsProvider.getCompaniesChartData(AppConsts.health);
           checkGraced();
           // updateTemp();
         },
@@ -725,6 +726,17 @@ Widget totalWidget(
         customButton("Calculate Total", ontap, context, isExpanded: false),
         heading1("${provider.commissionSuma}Rs", 22),
       ],
+    ),
+  );
+}
+
+Widget companyLogo(String logo) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(5),
+    child: SizedBox(
+      height: 50,
+      width: 50,
+      child: cachedImage(logo),
     ),
   );
 }

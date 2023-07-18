@@ -139,7 +139,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                 ),
                 formTextField(
                     nomineeName, "Nominee Name", "Enter Nominee Name"),
-                streamNominees(widget.model.userid, context, nomineeName),
+                streamNominees(widget.model.userid!, context, nomineeName),
                 formTextField(
                     advisorName, "advisor Name", "Enter Nominee Name"),
                 renderAdvisor(statsProvider.advisorList, context, advisorName),

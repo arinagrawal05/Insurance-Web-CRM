@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
+import 'package:health_model/health_dash.dart';
+import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/keyboard_listener.dart';
 import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/providers/filter_provider.dart';
@@ -13,9 +16,10 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 // ignore: must_be_immutable
 class HealthDashboardPage extends StatelessWidget {
-  final ScrollController controller = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   final FocusNode _focusNode = FocusNode();
+  final FlipCardController cardFlipController = FlipCardController();
 
   late TooltipBehavior tooltip = TooltipBehavior();
 
@@ -30,16 +34,16 @@ class HealthDashboardPage extends StatelessWidget {
     final dashProvider = Provider.of<DashProvider>(context, listen: true);
 
     return Scaffold(
-      appBar: customAppbar("Health Dashboard", context),
+      appBar: customAppbar("${dashProvider.dashName} Dashboard", context),
       body: RawKeyboardListener(
         autofocus: true,
         focusNode: _focusNode,
         onKey: (rawKeyEvent) {
-          handleKeyEvent(rawKeyEvent, controller);
+          handleKeyEvent(rawKeyEvent, scrollController);
           // throw Exception('No return value');
         },
         child: SingleChildScrollView(
-          controller: controller,
+          controller: scrollController,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -60,6 +64,7 @@ class HealthDashboardPage extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     dashProvider.changeHealthDash(1);
+                                    // cardFlipController.flipcard();
                                   },
                                   child: statsBox(
                                       "${statsProvider.users_count} Clients",
@@ -73,7 +78,7 @@ class HealthDashboardPage extends StatelessWidget {
                                 statsBox("${statsProvider.plans_count} Plans",
                                     Ionicons.reader_outline, context),
                                 statsBox(
-                                    "${statsProvider.policies_count} Policies",
+                                    "${statsProvider.policies_count} ${getWord(dashProvider.dashName)}",
                                     Ionicons.receipt_outline,
                                     context),
                               ],
@@ -93,13 +98,16 @@ class HealthDashboardPage extends StatelessWidget {
                                         Expanded(
                                           flex: 9,
                                           child: policyCountCircularChart(
-                                              context, tooltip),
+                                              dashProvider.dashName,
+                                              context,
+                                              tooltip),
                                         ),
                                       ],
                                     )),
                                 Expanded(
                                     flex: 3,
-                                    child: companyChart(tooltip, context)),
+                                    child: companyChart(
+                                        tooltip, context, cardFlipController)),
                               ],
                             ),
                           ),
@@ -112,7 +120,8 @@ class HealthDashboardPage extends StatelessWidget {
                         children: [
                           Expanded(
                               flex: 4,
-                              child: policyCircularChart(context, tooltip)),
+                              child: policyCircularChart(
+                                  dashProvider.dashName, context, tooltip)),
                           Expanded(flex: 5, child: birthdayWidget(context))
                         ],
                       ),

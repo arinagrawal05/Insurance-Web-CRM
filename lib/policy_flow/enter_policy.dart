@@ -11,6 +11,8 @@ import 'package:uuid/uuid.dart';
 
 // ignore: must_be_immutable
 class EnterPolicyDetails extends StatefulWidget {
+  String inceptionDate;
+  EnterPolicyDetails({required this.inceptionDate});
   @override
   // ignore: library_private_types_in_public_api
   _EnterPolicyDetailsState createState() => _EnterPolicyDetailsState();
@@ -18,11 +20,11 @@ class EnterPolicyDetails extends StatefulWidget {
 
 class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
   int withGST = 0;
-
+  TextEditingController inceptionDate = TextEditingController();
   @override
   void initState() {
     super.initState();
-    // inceptionDate.text = dateTimetoText(widget.portIssueDate);
+    inceptionDate.text = widget.inceptionDate;
   }
 
   @override
@@ -67,7 +69,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: formTextField(
-                      controller.inceptionDate,
+                      inceptionDate,
                       "Inception Date:DD/MM/YYYY",
                       "Enter Inception Date",
                     ),
@@ -178,13 +180,13 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                       var uuid = const Uuid();
                       String docId = uuid.v4();
 
-                      controller.clearFields();
-                      // controller.performFunctions(docId, statsProvider);
+                      controller.performPolicyFunctions(
+                          docId, statsProvider, inceptionDate.text);
                       Navigator.pop(context);
-                      // Navigator.pop(context);
-                      // Navigator.pop(context);
-                      // Navigator.pop(context);
-                      // Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     }
                   }, context),
                 ],

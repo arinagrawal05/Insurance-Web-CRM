@@ -4,6 +4,8 @@ import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/shared/tiles.dart';
 import 'package:provider/provider.dart';
 
+import '../models/policy_model.dart';
+
 Widget commissionStream(DashProvider dashProvider, bool? isPending, String name,
     String companyFilter, DateTime fromDate, DateTime toDate) {
   return Consumer<DashProvider>(builder: (
@@ -59,26 +61,32 @@ Widget policyStream(
         physics: const NeverScrollableScrollPhysics(),
         itemCount: dashProvider.policySearchList.length,
         itemBuilder: (context, index) {
-          if (getFirstWord(dashProvider.policySearchList[index].companyName) ==
-                  companyFilter ||
-              companyFilter == "all companies") {
-            if (dashProvider.policySearchList[index].policyStatus ==
-                    statusFilter ||
-                statusFilter == "all status") {
-              if (dashProvider.policySearchList[index].renewalDate
-                      .toDate()
-                      .isAfter(fromDate) &&
-                  dashProvider.policySearchList[index].renewalDate
-                      .toDate()
-                      .isBefore(toDate)) {
-                return policyTile(
-                  context,
-                  dashProvider.policySearchList[index],
-                );
-              }
+          GenericInvestmentData currentModel =
+              dashProvider.policySearchList[index].data;
+
+          if (currentModel is PolicyModel) {
+            PolicyModel policyModel = currentModel as PolicyModel;
+
+            if (selectedPolicy(
+                policyModel, companyFilter, statusFilter, fromDate, toDate)) {
+              return policyTile(
+                context,
+                policyModel,
+              );
+            }
+          } else {
+            FdModel fdModel = currentModel as FdModel;
+            if (selectedFd(
+                fdModel, companyFilter, statusFilter, fromDate, toDate)) {
+              return fdTile(
+                context,
+                fdModel,
+              );
             }
           }
-          return Container();
+          return Container(
+            child: Text(currentModel.type),
+          );
         });
   });
 }

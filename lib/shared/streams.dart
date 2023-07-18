@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/commission_model.dart';
 import 'package:health_model/models/company_model.dart';
@@ -183,34 +184,89 @@ Widget streamPolicies(bool isChoosing, String companyFilter,
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
         } else {
-          return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                // return Text("erfdfv");
+          return Text("some data here");
+          // return ListView.builder(
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     itemCount: snapshot.data!.docs.length,
+          //     itemBuilder: (context, index) {
+          //       // return Text("erfdfv");
 
-                if (getFirstWord(PolicyModel.fromFirestore(
-                                snapshot.data!.docs[index])
-                            .companyName) ==
-                        companyFilter ||
-                    companyFilter == "all companies") {
-                  if (PolicyModel.fromFirestore(snapshot.data!.docs[index])
-                              .policyStatus ==
-                          statusFilter ||
-                      statusFilter == "all status") {
-                    return policyTile(
-                      context,
-                      PolicyModel.fromFirestore(snapshot.data!.docs[index]),
-                    );
-                  }
-                }
-                return Container();
-              });
+          //       if (getFirstWord(PolicyModel.fromFirestore(
+          //                       snapshot.data!.docs[index])
+          //                   .companyName) ==
+          //               companyFilter ||
+          //           companyFilter == "all companies") {
+          //         if (PolicyModel.fromFirestore(snapshot.data!.docs[index])
+          //                     .policyStatus ==
+          //                 statusFilter ||
+          //             statusFilter == "all status") {
+          //           return policyTile(
+          //             context,
+          //             PolicyModel.fromFirestore(snapshot.data!.docs[index]),
+          //           );
+          //         }
+          //       }
+          //       return Container();
+          //     });
         }
       }
     },
   );
+}
+
+Widget streamPoliciesByUser(String userid, DashProvider dashProvider) {
+  return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance
+          .collection("Policies")
+          .where("uid", isEqualTo: userid)
+          // .orderBy("renewal_date", descending: false)
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active ||
+            snapshot.connectionState == ConnectionState.done) {
+          // if (snapshot.data != null) {
+          //   return Container(
+          //       height: 100,
+          //       child: Text(
+          //           'Active status ' + snapshot.data!.docs.length.toString()));
+          // } else {
+          //   return Container(
+          //       height: 100, child: Text('Active status but null data'));
+          // }
+        }
+        return Container(
+            height: 100, child: Text(snapshot.connectionState.name));
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return customCircularLoader("Policies");
+        // } else {
+        //   if (snapshot.data!.docs.isEmpty) {
+        //     return noDataWidget();
+        //   } else {
+        //     // return Text("some data here");
+
+        //     return ListView.builder(
+        //         shrinkWrap: true,
+        //         physics: const NeverScrollableScrollPhysics(),
+        //         itemCount: snapshot.data!.docs.length,
+        //         itemBuilder: (context, index) {
+        //           // return Text("erfdfv");
+        //           GenericInvestmentData currentModel =
+        //               dashProvider.policySearchList[index].data;
+        //           if (currentModel is PolicyModel) {
+        //             PolicyModel policyModel = currentModel as PolicyModel;
+        //             return policyTile(
+        //               context,
+        //               policyModel,
+        //             );
+        //           } else {
+        //             return Text("fd data here");
+        //           }
+        //         });
+        // }
+      }
+      // },
+      );
 }
 
 Widget streamUserPolicies(bool isChoosing, String companyFilter,
@@ -224,30 +280,32 @@ Widget streamUserPolicies(bool isChoosing, String companyFilter,
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
         } else {
-          return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                // return Text("erfdfv");
+          return Text("Some Data Here");
 
-                if (getFirstWord(PolicyModel.fromFirestore(
-                                snapshot.data!.docs[index])
-                            .companyName) ==
-                        companyFilter ||
-                    companyFilter == "all companies") {
-                  if (PolicyModel.fromFirestore(snapshot.data!.docs[index])
-                              .policyStatus ==
-                          statusFilter ||
-                      statusFilter == "all status") {
-                    return policyTile(
-                      context,
-                      PolicyModel.fromFirestore(snapshot.data!.docs[index]),
-                    );
-                  }
-                }
-                return Container();
-              });
+          // return ListView.builder(
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     itemCount: snapshot.data!.docs.length,
+          //     itemBuilder: (context, index) {
+          //       // return Text("erfdfv");
+
+          //       if (getFirstWord(PolicyModel.fromFirestore(
+          //                       snapshot.data!.docs[index])
+          //                   .companyName) ==
+          //               companyFilter ||
+          //           companyFilter == "all companies") {
+          //         if (PolicyModel.fromFirestore(snapshot.data!.docs[index])
+          //                     .policyStatus ==
+          //                 statusFilter ||
+          //             statusFilter == "all status") {
+          //           return policyTile(
+          //             context,
+          //             PolicyModel.fromFirestore(snapshot.data!.docs[index]),
+          //           );
+          //         }
+          //       }
+          //       return Container();
+          //     });
         }
       }
     },
@@ -337,12 +395,13 @@ Widget streamRenewals(bool isPast, DateTime fromDate, DateTime toDate) {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 // return Text("erfdfv");
+                return Text("Some Data Here");
 
-                return renewalTile(
-                  isPast,
-                  context,
-                  PolicyModel.fromFirestore(snapshot.data!.docs[index]),
-                );
+                // return renewalTile(
+                //   isPast,
+                //   context,
+                //   PolicyModel.fromFirestore(snapshot.data!.docs[index]),
+                // );
               });
         }
       }

@@ -10,7 +10,8 @@ String renewalDraftMsg(PolicyModel model) {
 }
 
 String BDayWishDraftMsg(UserModel model) {
-  String draftedMessage = "Hello ${model.name}";
+  String draftedMessage =
+      "Hello ${model.name},  जन्मदिन की हार्दिक शुभकामनाएं!";
 
   return draftedMessage;
 }

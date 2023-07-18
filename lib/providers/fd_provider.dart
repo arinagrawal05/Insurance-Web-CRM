@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 
 class FDProvider extends ChangeNotifier {
@@ -119,42 +120,54 @@ class FDProvider extends ChangeNotifier {
   }
 
   void addFd(String docId) {
-    FirebaseFirestore.instance.collection("Fds").doc(docId).set({
+    var body = {
+      "company_logo": companyLogo,
       "company_name": companyName,
       "company_id": companyID,
       "fd_id": docId,
       "head_uid": client_uid,
+      "name": client_member_name,
       "uid": client_member_uid,
       "dob": client_dob,
-      // "members_count": provider.membersCount,
-      // "name": provider.client_name,
       "address": client_address,
       "isMale": client_isMale,
       "phone": client_phone,
       "email": client_email,
-
       "initial_date": textToDateTime(initialDate.text),
       "maturity_date": textToDateTime(initialDate.text)
           .add(Duration(days: 30 * int.parse(getFirstWord(termSelected)))),
-      // "policy_no": policyNumber.text,
-      // "issued_date": issuedDate,
-      // "inception_date": inceptionDate,
-      "policy_status": "active",
-      // "sum_assured": int.parse(sumAssured.text),
-      "premium_amt": int.parse(investedAmt.text),
-      // "premium_term": defaultTerm == "" ? 1 : int.parse(defaultTerm),
+      "fd_status": "applied",
+      "invested_amt": int.parse(investedAmt.text),
+      "type": AppConsts.fd,
+      "premium_term": int.parse(getFirstWord(termSelected)),
       "nominee_name": nomineeName.text,
-      // "advisor_name": advisorName.text,
-      // "isFress": widget.isFress,
-      // "port_company_name": widget.portCompanyName,
-      // "port_policy_no": widget.portPolicyNo,
-      // "port_issue_date": widget.portIssueDate,
-      // "port_sum_assured": widget.portSumAssured,
+      "fd_taken_date": Timestamp.now(),
+      "fd_given_date": Timestamp.now(),
+      "port_company_name": portCompanyNameController.text,
+      "port_fd_no": portFdNo.text,
+      "port_maturity_date": textToDateTime(portMaturityDate.text),
+      "port_maturity_amt": portMaturityAmt.text,
       "payMode": payModeSelected,
-      "status_date": Timestamp.now(),
-    });
+      "isCummulative": isCummulative,
+      "fd_no": "NA"
+    };
+
+    print('Sending ' + body.toString());
+
+    FirebaseFirestore.instance.collection("Policies").doc(docId).set(body);
   }
 
+  final TextEditingController portCompanyNameController =
+      TextEditingController();
+
+  final TextEditingController portFdNo = TextEditingController();
+
+  final TextEditingController portMaturityAmt = TextEditingController();
+
+  final TextEditingController portMaturityDate =
+      TextEditingController(text: todayTextFormat());
+
+  final freshFormKey = GlobalKey<FormState>();
   final TextEditingController investedAmt = TextEditingController();
   final TextEditingController nomineeName = TextEditingController();
   final TextEditingController chequeNo = TextEditingController();

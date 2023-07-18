@@ -20,16 +20,18 @@ class HealthStatsProvider extends ChangeNotifier {
   List<PolicyStatusChartData> policyStatusChartData = [];
   List<PolicyDistributionChartData> policyDistributionChartData = [];
 
-  void getCompaniesChartData() {
+  void getCompaniesChartData(companyType) {
+    chartData = [];
     FirebaseFirestore.instance
         .collection("Companies")
-        .where("company_type", isEqualTo: AppConsts.health)
+        .where("company_type", isEqualTo: companyType)
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
         for (var i = 0; i < value.docs.length; i++) {
           chartData.add(CompanyChartData(getFirstWord(value.docs[i]["name"]),
               value.docs[i]["total_bussiness"]));
+          // print(chartData[i].x.toString());
           policyDistributionChartData.add(PolicyDistributionChartData(
               value.docs[i]["name"], value.docs[i]["policy_count"]));
         }
@@ -38,7 +40,7 @@ class HealthStatsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getStats() async {
+  Future<void> getStats(String companyType) async {
     policyDistributionChartData = [];
     policyStatusChartData = [];
     FirebaseFirestore.instance
@@ -55,6 +57,7 @@ class HealthStatsProvider extends ChangeNotifier {
 
     await FirebaseFirestore.instance
         .collection("Policies")
+        .where("type", isEqualTo: companyType)
         .get()
         .then((value) => {
               policies_count = value.docs.length,
@@ -97,6 +100,7 @@ class HealthStatsProvider extends ChangeNotifier {
         });
     await FirebaseFirestore.instance
         .collection("Companies")
+        .where("company_type", isEqualTo: companyType)
         .get()
         .then((value) => {
               companies_count = value.docs.length,

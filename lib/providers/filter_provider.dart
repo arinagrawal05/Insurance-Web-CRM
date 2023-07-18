@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 
 final oneMonthMore = DateTime.now().add(const Duration(days: 30));
@@ -23,18 +24,37 @@ class FilterProvider extends ChangeNotifier {
   String filterName = "by Date";
 
   int tooltime = 0;
-  List<String> statusList = [
+  List<String> policyStatusList = [
     "all status",
     "active",
     "ported",
     "lapsed",
   ];
+  List<String> fDStatusList = [
+    "all status",
+    "applied",
+    "claimed",
+    "released",
+  ];
+
+  List<String> getStatusList(String dashName) {
+    if (dashName == AppConsts.health) {
+      return policyStatusList;
+    } else {
+      return fDStatusList;
+    }
+  }
+
   List<String> companyList = [
     "all companies",
     // "Niva",
     // "Star",
     // "none",
   ];
+  void setDefaultStatus(String status) {
+    statusFilter = status;
+    notifyListeners();
+  }
 
   void changeCompany(String newOne) {
     companyFilter = newOne;
@@ -111,6 +131,9 @@ class FilterProvider extends ChangeNotifier {
   }
 
   void getCompanies(String type) {
+    companyList = [
+      "all companies",
+    ];
     FirebaseFirestore.instance
         .collection("Companies")
         .where("company_type", isEqualTo: type)
@@ -119,6 +142,7 @@ class FilterProvider extends ChangeNotifier {
       if (value.docs.isNotEmpty) {
         for (var i = 0; i < value.docs.length; i++) {
           companyList.add(getFirstWord(value.docs[i]["name"]));
+          print("Added " + getFirstWord(value.docs[i]["name"]));
         }
       }
     });

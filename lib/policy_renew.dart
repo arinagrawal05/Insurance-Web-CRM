@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
@@ -171,7 +172,8 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                         int.parse(premiumAmt.text),
                         textToDateTime(issuedDate.text),
                         getFirstWord(model.companyName),
-                        statsProvider.healthPercent);
+                        statsProvider.healthPercent.toDouble(),
+                        AppConsts.health);
                     makeATransaction(
                       model.userid,
                       model.policyID,
