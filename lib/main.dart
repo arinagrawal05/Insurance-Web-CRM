@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
 import 'package:health_model/homepage.dart';
 import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/providers/fd_provider.dart';
@@ -12,6 +13,7 @@ import 'package:health_model/providers/health_stats_provider.dart';
 import 'package:health_model/providers/theme_provider.dart';
 import 'package:health_model/providers/user_provider.dart';
 import 'package:health_model/shared/loading.dart';
+import 'package:health_model/some2.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -26,6 +28,8 @@ void main() async {
     }
   };
   WidgetsFlutterBinding.ensureInitialized();
+  UserHiveHelper.init();
+
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyA9-12boKtCNRHz1nHEqgawSto9o-RK6-M",
@@ -68,9 +72,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => FDProvider(),
             ),
-            ChangeNotifierProvider(
-              create: (context) => PictureProvider(),
-            ),
+            // ChangeNotifierProvider(
+            //   create: (context) => PictureProvider(),
+            // ),
           ],
           builder: (context, _) {
             final themeProvider = Provider.of<ThemeProvider>(context);

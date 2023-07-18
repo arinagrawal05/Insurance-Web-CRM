@@ -66,9 +66,12 @@ dependencies:
   cached_network_image:
   awesome_snackbar_content:
   lottie: ^2.4.0
-  dartz:
+  # dartz:
   image_picker:
   flutter_flip_card: ^0.0.4
+  hive_flutter:
+  hive:
+  get:  
 
      
 dev_dependencies:
@@ -81,6 +84,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  hive_generator:
+  build_runner:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

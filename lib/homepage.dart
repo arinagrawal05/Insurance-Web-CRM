@@ -14,6 +14,7 @@ import 'package:health_model/providers/health_stats_provider.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/some2.dart';
 import 'package:health_model/view_user.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage> {
 
                         // fdProvider.getList();
                         // dashProvider.changeDashName(AppConsts.fd);
-                        navigate(UsersPage(), context);
+                        navigate(SamplePage(), context);
                       },
                       child: Container(
                         padding: EdgeInsets.all(20),
