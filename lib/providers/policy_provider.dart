@@ -9,7 +9,7 @@ class PolicyProvider extends ChangeNotifier {
   String client_uid = "";
   String client_phone = "";
   String client_email = "";
-  Timestamp client_dob = Timestamp.now();
+  DateTime client_dob = DateTime.now();
   String client_address = "";
   bool client_isMale = true;
   int membersCount = 0;
@@ -83,7 +83,7 @@ class PolicyProvider extends ChangeNotifier {
 
   // String companyName = "";
 
-  void setClient(String Uid, String Uname, String Uemail, Timestamp Udob,
+  void setClient(String Uid, String Uname, String Uemail, DateTime Udob,
       String Uaddress, String Uphone, bool UisMale, int UmembersCount) {
     client_uid = Uid;
     client_name = Uname;

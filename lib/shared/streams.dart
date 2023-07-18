@@ -12,52 +12,52 @@ import 'package:health_model/models/user_model.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/shared/tiles.dart';
 
-Widget streamUsers(bool isChoosing, {bool isBirthday = false}) {
-  return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseFirestore.instance
-        .collection("Users")
-        // .orderBy("timestamp", descending: true)
-        .snapshots(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Clients");
-      } else {
-        if (snapshot.data!.docs.isEmpty) {
-          return noDataWidget();
-        } else {
-          return ListView.builder(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                // return Text("erfdfv");
-                if (isBirthday) {
-                  DateTime birthday =
-                      UserModel.fromFirestore(snapshot.data!.docs[index])
-                          .dob
-                          .toDate();
-                  if (birthday.day == DateTime.now().day &&
-                      birthday.month == DateTime.now().month) {
-                    return bDayuserTile(
-                      context,
-                      UserModel.fromFirestore(snapshot.data!.docs[index]),
-                    );
-                  }
-                } else {
-                  return userTile(
-                    isChoosing,
-                    context,
-                    UserModel.fromFirestore(snapshot.data!.docs[index]),
-                  );
-                }
-                return null;
-              });
-        }
-      }
-    },
-  );
-}
+// Widget streamUsers(bool isChoosing, {bool isBirthday = false}) {
+//   return StreamBuilder<QuerySnapshot>(
+//     stream: FirebaseFirestore.instance
+//         .collection("Users")
+//         // .orderBy("timestamp", descending: true)
+//         .snapshots(),
+//     builder: (context, snapshot) {
+//       if (snapshot.connectionState == ConnectionState.waiting) {
+//         return customCircularLoader("Clients");
+//       } else {
+//         if (snapshot.data!.docs.isEmpty) {
+//           return noDataWidget();
+//         } else {
+//           return ListView.builder(
+//               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+//               shrinkWrap: true,
+//               physics: const NeverScrollableScrollPhysics(),
+//               itemCount: snapshot.data!.docs.length,
+//               itemBuilder: (context, index) {
+//                 // return Text("erfdfv");
+//                 if (isBirthday) {
+//                   DateTime birthday =
+//                       UserModel.fromFirestore(snapshot.data!.docs[index])
+//                           .dob
+//                           .toDate();
+//                   if (birthday.day == DateTime.now().day &&
+//                       birthday.month == DateTime.now().month) {
+//                     return bDayuserTile(
+//                       context,
+//                       UserModel.fromFirestore(snapshot.data!.docs[index]),
+//                     );
+//                   }
+//                 } else {
+//                   return userTile(
+//                     isChoosing,
+//                     context,
+//                     UserModel.fromFirestore(snapshot.data!.docs[index]),
+//                   );
+//                 }
+//                 return null;
+//               });
+//         }
+//       }
+//     },
+//   );
+// }
 
 Widget streamMembers(headID, {bool isMini = false, bool isChoosing = false}) {
   return StreamBuilder<QuerySnapshot>(

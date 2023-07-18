@@ -593,7 +593,7 @@ Widget birthdayWidget(BuildContext context) {
               padding: const EdgeInsets.all(8.0),
               child: heading("Today's Birthday", 22),
             ),
-            streamUsers(false, isBirthday: true),
+            // streamUsers(false, isBirthday: true),
           ],
         ),
       ));

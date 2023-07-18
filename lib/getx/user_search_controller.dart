@@ -14,13 +14,14 @@ class UserSearchController extends GetxController {
   @override
   void onInit() {
     // Fetch user data from the Hive box
+    print('Hive user UserSearchController init called');
     userBox = UserHiveHelper.userBox;
     users.addAll(userBox!.values.toList());
     super.onInit();
   }
 
   void filterUsers(String query) {
-    // Filter the users on the Hive level and load only the filtered elements
+    print(query);
     users.clear();
     users = userBox!.values
         .where((user) => user.name.toLowerCase().contains(query.toLowerCase()))

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/choose_exist.dart';
+import 'package:health_model/hive/hive_model/user_hive_model.dart';
 import 'package:health_model/shared/drafted_msgs.dart';
 import 'package:health_model/enter_fd.dart';
 import 'package:health_model/models/commission_model.dart';
@@ -87,7 +88,7 @@ Widget bDayuserTile(BuildContext context, UserModel model) {
   );
 }
 
-Widget userTile(bool isChoosing, BuildContext context, UserModel model) {
+Widget userTile(bool isChoosing, BuildContext context, UserHiveModel model) {
   final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
   final fdProvider = Provider.of<FDProvider>(context, listen: false);
 
@@ -122,11 +123,11 @@ Widget userTile(bool isChoosing, BuildContext context, UserModel model) {
         : () {
             userProvider.changeMemberCount(model.membersCount);
             userProvider.setUserid(model.userid);
-            navigate(
-                UserDetailPage(
-                  model: model,
-                ),
-                context);
+            // navigate(
+            //     UserDetailPage(
+            //       model: model,
+            //     ),
+            //     context);
           },
     child: Container(
       // height: 120,
@@ -177,7 +178,7 @@ Widget userTile(bool isChoosing, BuildContext context, UserModel model) {
                 children: [
                   heading("Age", 16),
                   productTileText(
-                      timeago.format(model.dob.toDate(),
+                      timeago.format(model.dob,
                           allowFromNow: true, locale: 'en_short'),
                       14),
                 ],
@@ -199,11 +200,11 @@ Widget userTile(bool isChoosing, BuildContext context, UserModel model) {
                   userProvider.changeMemberCount(model.membersCount);
 
                   userProvider.setUserid(model.userid);
-                  navigate(
-                      UserDetailPage(
-                        model: model,
-                      ),
-                      context);
+                  // navigate(
+                  // UserDetailPage(
+                  //   model: model,
+                  // ),
+                  // context);
                   // addMemberSheet(context, widget.userid, docId);
                 }, context, isExpanded: false),
             ],

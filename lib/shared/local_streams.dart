@@ -97,19 +97,20 @@ Widget userStream(DashProvider dashProvider, bool isChoosing) {
     provider,
     child,
   ) {
-    return ListView.builder(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: dashProvider.userSearchList.length,
-        itemBuilder: (context, index) {
-          // return Text(dashProvider.userSearchList[index].name +
-          //     " is " +
-          //     dashProvider.userSearchList[index].userid +
-          //     dashProvider.userSearchList[index].email);
+    return Container();
+    // ListView.builder(
+    //     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+    //     shrinkWrap: true,
+    //     physics: const NeverScrollableScrollPhysics(),
+    //     itemCount: dashProvider.userSearchList.length,
+    //     itemBuilder: (context, index) {
+    //       // return Text(dashProvider.userSearchList[index].name +
+    //       //     " is " +
+    //       //     dashProvider.userSearchList[index].userid +
+    //       //     dashProvider.userSearchList[index].email);
 
-          return userTile(
-              isChoosing, context, dashProvider.userSearchList[index]);
-        });
+    //       return userTile(
+    //           isChoosing, context, dashProvider.userSearchList[index]);
+    //     });
   });
 }

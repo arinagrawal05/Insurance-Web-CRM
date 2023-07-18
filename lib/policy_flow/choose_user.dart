@@ -1,47 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:health_model/getx/user_search_controller.dart';
+import 'package:health_model/shared/functions.dart';
+import 'package:health_model/shared/keyboard_listener.dart';
 import 'package:health_model/shared/local_streams.dart';
 import 'package:health_model/providers/dash_provider.dart';
+import 'package:health_model/providers/user_provider.dart';
+import 'package:health_model/shared/tiles.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
-class ChooseUser extends StatelessWidget {
+class ChooseUser extends StatefulWidget {
+  const ChooseUser({super.key});
+
   // List<QueryDocumentSnapshot<Object?>> docs;
   //  UsersPage({required this.docs});
 
   @override
-  Widget build(BuildContext context) {
-    final dashProvider = Provider.of<DashProvider>(context, listen: false);
-    print("qq" + "Building");
-    return Scaffold(
-      // backgroundColor: scaffoldColor,
+  State<ChooseUser> createState() => _ChooseUserState();
+}
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              chooseHeader("Choose Client", 1),
-              Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  width: double.infinity,
-                  // child: DebounceBuilder(
-                  // delay: const Duration(milliseconds: 250),
-                  // builder: (context, debounce) {
-                  // return
-                  child: customTextfield(
-                      dashProvider.userController, "Search", context,
-                      onChange: (value) {
-                    dashProvider.searchUser(value);
-                  }, isExpanded: true)
-                  // }
-                  // ),
+class _ChooseUserState extends State<ChooseUser> {
+  final ScrollController scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  Widget build(BuildContext context) {
+    // final userProvider = Provider.of<UserProvider>(context, listen: true);
+    // final dashProvider = Provider.of<DashProvider>(context, listen: false);
+
+    return Scaffold(
+      appBar: customAppbar("Clients list", context),
+      body: RawKeyboardListener(
+        autofocus: true,
+        focusNode: _focusNode,
+        onKey: (rawKeyEvent) {
+          handleKeyEvent(rawKeyEvent, scrollController);
+          // throw Exception('No return value');
+        },
+        child: GetBuilder<UserSearchController>(
+            init: UserSearchController(),
+            builder: (controller) {
+              return Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        customTextfield(
+                            controller.searchController, "Search", context,
+                            onChange: (value) {
+                          controller.filterUsers(value);
+                        }),
+                      ],
+                    ),
                   ),
-              userStream(dashProvider, true)
-              // streamUsers(true),
-            ],
-          ),
-        ),
+                  // streamUsers(false),
+                  // userStream(dashProvider, false)
+
+                  Expanded(
+                    child: ListView.builder(
+                        controller: scrollController,
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        // shrinkWrap: true,
+                        // physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.users.length,
+                        itemBuilder: (context, index) {
+                          return userTile(
+                              true, context, controller.users[index]);
+                        }),
+                  )
+                ],
+              );
+            }),
       ),
     );
   }
