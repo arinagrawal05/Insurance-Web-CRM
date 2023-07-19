@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_model/shared/const.dart';
 
 class GenericInvestmentData {
   final String type;
@@ -14,6 +15,8 @@ class GenericInvestmentData {
   final String companyName;
   final String companyLogo;
   final String companyID;
+  final String bankDetails;
+  final String payMode;
 
   GenericInvestmentData(
       {required this.name,
@@ -26,7 +29,9 @@ class GenericInvestmentData {
       required this.type,
       required this.companyName,
       required this.companyID,
-      required this.companyLogo});
+      required this.companyLogo,
+      required this.bankDetails,
+      required this.payMode});
 }
 
 class PolicyData {
@@ -41,7 +46,7 @@ class PolicyData {
   factory PolicyData.fromFirestore(DocumentSnapshot doc) {
     dynamic map = doc.data();
 
-    if (map['type'] == 'FD') {
+    if (map['type'] == AppConsts.fd) {
       return PolicyData(data: FdModel.fromMap(map));
       // data = PolicyModel.fromMap(map);
     } else {
@@ -68,7 +73,6 @@ class PolicyModel extends GenericInvestmentData {
   String planID;
   String advisorName;
   String nomineeName;
-  String payMode;
   bool isFresh;
   String portCompanyName;
   String portPolicyNo;
@@ -90,6 +94,8 @@ class PolicyModel extends GenericInvestmentData {
     required String companyName,
     required String companyID,
     required String companyLogo,
+    required String bankDetails,
+    required String payMode,
     required this.membersCount,
     required this.policyID,
     required this.policyNo,
@@ -103,7 +109,6 @@ class PolicyModel extends GenericInvestmentData {
     required this.planName,
     required this.advisorName,
     required this.nomineeName,
-    required this.payMode,
     required this.isFresh,
     required this.portCompanyName,
     required this.portPolicyNo,
@@ -124,7 +129,9 @@ class PolicyModel extends GenericInvestmentData {
             userid: userid,
             companyName: companyName,
             companyID: companyID,
-            companyLogo: companyLogo);
+            companyLogo: companyLogo,
+            bankDetails: bankDetails,
+            payMode: payMode);
 
   Map<String, dynamic> toMap() {
     return {
@@ -183,6 +190,7 @@ class PolicyModel extends GenericInvestmentData {
       companyName: map['company_name'] ?? "NA",
       companyLogo: map['company_logo'] ?? "NA",
       companyID: map['company_id'] ?? "NA",
+      bankDetails: map['bank_details'] ?? "NA",
       planID: map['plan_id'] ?? "NA",
       planName: map['plan_name'] ?? "NA",
       nomineeName: map['nominee_name'] ?? "NA",
@@ -217,9 +225,10 @@ class FdModel extends GenericInvestmentData {
   String portFdNo;
   String portMaturityAmt;
   Timestamp portMaturityDate;
-  String fDpayMode;
   bool isCummulative;
   String fdNo;
+  String cummulativeTerm;
+
   FdModel({
     required String type,
     required String name,
@@ -232,13 +241,14 @@ class FdModel extends GenericInvestmentData {
     required String companyID,
     required bool isMale,
     required Timestamp dob,
+    required String bankDetails,
+    required String payMode,
     required this.fdId,
     required this.fdStatus,
     required this.maturityDate,
     required this.fdNomineeName,
     required this.initialDate,
     required this.investedAmt,
-    required this.fDpayMode,
     required this.portCompanyName,
     required this.portFdNo,
     required this.portMaturityAmt,
@@ -248,6 +258,7 @@ class FdModel extends GenericInvestmentData {
     required this.certificateTakenDate,
     required this.isCummulative,
     required this.fdNo,
+    required this.cummulativeTerm,
 
     // required this.headUserid,
   }) : super(
@@ -261,7 +272,9 @@ class FdModel extends GenericInvestmentData {
             userid: userid,
             companyName: companyName,
             companyID: companyID,
-            companyLogo: companyLogo);
+            companyLogo: companyLogo,
+            bankDetails: bankDetails,
+            payMode: payMode);
 
   Map<String, dynamic> toMap() {
     return {
@@ -286,9 +299,10 @@ class FdModel extends GenericInvestmentData {
       "port_fd_no": portFdNo,
       "port_maturity_date": portMaturityDate,
       "port_maturity_amt": portMaturityAmt,
-      "payMode": fDpayMode,
+      "payMode": payMode,
       "isCummulative": isCummulative,
-      "fd_no": fdNo
+      "fd_no": fdNo,
+      "cummulative_term": cummulativeTerm
     };
   }
 
@@ -318,9 +332,11 @@ class FdModel extends GenericInvestmentData {
       portFdNo: map['port_fd_no'] ?? "NA",
       portMaturityDate: map['port_maturity_date'] ?? Timestamp.now(),
       portMaturityAmt: map['port_maturity_amt'] ?? "NA",
-      fDpayMode: map['payMode'] ?? "NA",
+      payMode: map['payMode'] ?? "NA",
       isCummulative: map['isCummulative'] ?? "NA",
       fdNo: map['fd_no'] ?? "NA",
+      cummulativeTerm: map['cummulative_term'] ?? "NA",
+      bankDetails: map['bank_details'] ?? "NA",
     );
   }
 
