@@ -1,16 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/fd_provider.dart';
-// ignore: unused_import
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/shared/toggle.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+
+import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class EnterFdDetails extends StatelessWidget {

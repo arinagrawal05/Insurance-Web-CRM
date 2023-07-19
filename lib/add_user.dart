@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_model/user_hive_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/user_model.dart';
 import 'package:health_model/providers/user_provider.dart';
@@ -15,7 +16,7 @@ import 'package:uuid/uuid.dart';
 
 // ignore: must_be_immutable
 class AddUserPage extends StatefulWidget {
-  UserModel? model;
+  UserHiveModel? model;
   String userid;
   AddUserPage({super.key, required this.userid, required this.model});
   @override
@@ -40,7 +41,7 @@ class _AddUserPageState extends State<AddUserPage> {
       phone.text = widget.model!.phone;
       email.text = widget.model!.email;
       address.text = widget.model!.address;
-      dob.text = dateTimetoText(widget.model!.dob.toDate());
+      dob.text = dateTimetoText(widget.model!.dob);
     }
   }
 

@@ -204,17 +204,17 @@ void updateTemp() async {
       print("Successfully Temp Updated");
     }
   });
-  FirebaseFirestore.instance.collection("Policies").get().then((value) {
-    if (value.docs.isNotEmpty) {
-      for (var i = 0; i < value.docs.length; i++) {
-        FirebaseFirestore.instance
-            .collection("Policies")
-            .doc(value.docs[i]["policy_id"])
-            .update({"type": AppConsts.health});
-      }
-      print("Successfully Temp Updated");
-    }
-  });
+  // FirebaseFirestore.instance.collection("Policies").get().then((value) {
+  //   if (value.docs.isNotEmpty) {
+  //     for (var i = 0; i < value.docs.length; i++) {
+  //       FirebaseFirestore.instance
+  //           .collection("Policies")
+  //           .doc(value.docs[i]["policy_id"])
+  //           .update({"type": AppConsts.health});
+  //     }
+  //     print("Successfully Temp Updated");
+  //   }
+  // });
 }
 
 bool selectedPolicy(PolicyModel policyModel, String companyFilter,

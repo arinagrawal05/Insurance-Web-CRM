@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/shared/local_streams.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 class DoneCommissionsPage extends StatefulWidget {
   // List<QueryDocumentSnapshot<Object?>> docs;
@@ -15,7 +9,7 @@ class DoneCommissionsPage extends StatefulWidget {
 }
 
 class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
-  final ScrollController controller = ScrollController();
+  final ScrollController scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   TextEditingController searchController = TextEditingController();
 
@@ -32,52 +26,62 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
       // backgroundColor: scaffoldColor,
       appBar: customAppbar("recieved Commission", context),
       body: RawKeyboardListener(
-        autofocus: true,
-        focusNode: _focusNode,
-        onKey: (rawKeyEvent) {
-          handleKeyEvent(rawKeyEvent, controller);
-          // throw Exception('No return value');
-        },
-        child: SingleChildScrollView(
-            controller: controller,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      customTextfield(searchController, "Search", context,
-                          onChange: (value) {
-                        dashProvider.searchCommission(value);
-                      }),
-                      genericPicker(
-                        provider.companyList,
-                        provider.companyFilter,
-                        "Company",
-                        (value) {
-                          provider.changeCompany(value);
-                        },
-                        context,
+          autofocus: true,
+          focusNode: _focusNode,
+          onKey: (rawKeyEvent) {
+            handleKeyEvent(rawKeyEvent, scrollController);
+            // throw Exception('No return value');
+          },
+          child: GetBuilder<CommissionSearchController>(
+              init: CommissionSearchController(),
+              builder: (controller) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          customTextfield(
+                              controller.searchController, "Search", context,
+                              onChange: (value) {
+                            controller.filterCommissions(value);
+                          }),
+                          genericPicker(
+                            provider.companyList,
+                            provider.companyFilter,
+                            "Company",
+                            (value) {
+                              provider.changeCompany(value);
+                            },
+                            context,
+                          ), // customTextField(controller, "Search", context),
+                          customButton("View Received Commision", () async {
+                            // setState(() {});
+                            navigate(DoneCommissionsPage(), context);
+                          }, context, isExpanded: false),
+                        ],
                       ),
-                    ],
-                  ),
-                  commissionStream(
-                      dashProvider,
-                      false,
-                      dashProvider.dashName,
-                      provider.companyFilter,
-                      provider.fromDate,
-                      provider.toDate)
-                  // streamCommissions(
-                  //     false,
-                  //     dashProvider.dashName,
-                  //     provider.companyFilter,
-                  //     provider.fromDate,
-                  //     provider.toDate),
-                ],
-              ),
-            )),
-      ),
+                    ),
+                    // streamUsers(false),
+                    // userStream(dashProvider, false)
+
+                    Expanded(
+                      child: ListView.builder(
+                          controller: scrollController,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          // shrinkWrap: true,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.commissions.length,
+                          itemBuilder: (context, index) {
+                            return CommissionTile(
+                                model: controller.commissions[index]);
+                          }),
+                    )
+                  ],
+                );
+              })),
       bottomNavigationBar: totalWidget(context, () {
         provider.sumCommission(false, dashProvider.dashName).then((value) {
           setState(() {});

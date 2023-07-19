@@ -1,20 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:el_tooltip/el_tooltip.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_custom_selector/widget/flutter_single_select.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/providers/theme_provider.dart';
-import 'package:health_model/settings.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 Widget cachedImage(String companyImg) {
   return CachedNetworkImage(

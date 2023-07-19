@@ -15,9 +15,11 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'hive/hive_model/user_hive_model.dart';
+
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {
-  UserModel model;
+  UserHiveModel model;
   UserDetailPage({required this.model});
   @override
   _UserDetailPageState createState() => _UserDetailPageState();
@@ -68,7 +70,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
     final userProvider = Provider.of<UserProvider>(context, listen: true);
     final dashProvider = Provider.of<DashProvider>(context, listen: true);
 
-    UserModel model = widget.model;
+    UserHiveModel model = widget.model;
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
 
     return Scaffold(
@@ -241,7 +243,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                   "email", model.email, Ionicons.mail),
                               userDetailShow(
                                   "Birthday",
-                                  dateTimetoText(model.dob.toDate()),
+                                  dateTimetoText(model.dob),
                                   Ionicons.medical_outline),
                               userDetailShow(
                                   "Gender",

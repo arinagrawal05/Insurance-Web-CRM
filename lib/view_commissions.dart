@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:health_model/done_commision.dart';
+import 'package:health_model/getx/commission_search_controller.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/keyboard_listener.dart';
 import 'package:health_model/shared/local_streams.dart';
@@ -8,6 +10,7 @@ import 'package:health_model/providers/filter_provider.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/widgets/tiles/commission_tile_widget.dart';
 import 'package:provider/provider.dart';
 
 class CommissionsPage extends StatefulWidget {
@@ -19,7 +22,7 @@ class CommissionsPage extends StatefulWidget {
 }
 
 class _CommissionsPageState extends State<CommissionsPage> {
-  final ScrollController controller = ScrollController();
+  final ScrollController scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -28,7 +31,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
     super.dispose();
   }
 
-  bool isUnlocked = false;
+  bool isUnlocked = true;
 
   TextEditingController pinController = TextEditingController();
 
@@ -44,57 +47,62 @@ class _CommissionsPageState extends State<CommissionsPage> {
       // backgroundColor: scaffoldColor,
       appBar: customAppbar("Pending Commission", context),
       body: RawKeyboardListener(
-        autofocus: true,
-        focusNode: _focusNode,
-        onKey: (rawKeyEvent) {
-          handleKeyEvent(rawKeyEvent, controller);
-          // throw Exception('No return value');
-        },
-        child: SingleChildScrollView(
-          controller: controller,
-          child: true
-              ? Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          customTextfield(dashProvider.commissionController,
-                              "Search", context, onChange: (value) {
-                            dashProvider.searchCommission(value);
-                          }),
-                          genericPicker(
-                            provider.companyList,
-                            provider.companyFilter,
-                            "Company",
-                            (value) {
-                              provider.changeCompany(value);
-                            },
-                            context,
-                          ), // customTextField(controller, "Search", context),
-                          customButton("View Received Commision", () async {
-                            // setState(() {});
-                            navigate(DoneCommissionsPage(), context);
-                          }, context, isExpanded: false),
-                        ],
-                      ),
-                    ),
-                    commissionStream(
-                        dashProvider,
-                        true,
-                        dashProvider.dashName,
-                        provider.companyFilter,
-                        provider.fromDate,
-                        provider.toDate)
-                    // streamCommissions(
-                    //     true,
-                    //     dashProvider.dashName,
-                    //     provider.companyFilter,
-                    //     provider.fromDate,
-                    //     provider.toDate),
-                  ],
-                )
+          autofocus: true,
+          focusNode: _focusNode,
+          onKey: (rawKeyEvent) {
+            handleKeyEvent(rawKeyEvent, scrollController);
+            // throw Exception('No return value');
+          },
+          child: isUnlocked
+              ? GetBuilder<CommissionSearchController>(
+                  init: CommissionSearchController(),
+                  builder: (controller) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              customTextfield(controller.searchController,
+                                  "Search", context, onChange: (value) {
+                                controller.filterCommissions(value);
+                              }),
+                              genericPicker(
+                                provider.companyList,
+                                provider.companyFilter,
+                                "Company",
+                                (value) {
+                                  provider.changeCompany(value);
+                                },
+                                context,
+                              ), // customTextField(controller, "Search", context),
+                              customButton("View Received Commision", () async {
+                                // setState(() {});
+                                navigate(DoneCommissionsPage(), context);
+                              }, context, isExpanded: false),
+                            ],
+                          ),
+                        ),
+                        // streamUsers(false),
+                        // userStream(dashProvider, false)
+
+                        Expanded(
+                          child: ListView.builder(
+                              controller: scrollController,
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              // shrinkWrap: true,
+                              // physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.commissions.length,
+                              itemBuilder: (context, index) {
+                                return CommissionTile(
+                                    model: controller.commissions[index]);
+                              }),
+                        )
+                      ],
+                    );
+                  })
               : SizedBox(
                   width: double.infinity,
                   child: Column(
@@ -140,9 +148,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                       ),
                     ],
                   ),
-                ),
-        ),
-      ),
+                )),
 
       bottomNavigationBar: isUnlocked
           ? totalWidget(context, () {

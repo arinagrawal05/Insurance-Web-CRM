@@ -1,3 +1,4 @@
+import 'package:health_model/hive/hive_model/user_hive_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/models/user_model.dart';
@@ -9,7 +10,7 @@ String renewalDraftMsg(PolicyModel model) {
   return draftedMessage;
 }
 
-String BDayWishDraftMsg(UserModel model) {
+String BDayWishDraftMsg(UserHiveModel model) {
   String draftedMessage =
       "Hello ${model.name},  जन्मदिन की हार्दिक शुभकामनाएं!";
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/keyboard_listener.dart';
@@ -80,7 +81,7 @@ class _PoliciesPageState extends State<PoliciesPage> {
                     ),
                     customButton("Add ${dashProvider.dashName}", () async {
                       policyProvider.clearPort();
-                      dashProvider.resetUserList();
+                      // UserHiveHelper.fetchUsersFromFirebase();
 
                       navigate(
                         ChooseUser(),

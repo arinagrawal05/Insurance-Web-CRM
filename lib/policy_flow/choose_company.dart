@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 class ChooseCompany extends StatelessWidget {
   // List<QueryDocumentSnapshot<Object?>> docs;

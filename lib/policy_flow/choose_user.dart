@@ -8,6 +8,7 @@ import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/providers/user_provider.dart';
 import 'package:health_model/shared/tiles.dart';
 import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/widgets/tiles/user_tile_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -69,8 +70,8 @@ class _ChooseUserState extends State<ChooseUser> {
                         // physics: const NeverScrollableScrollPhysics(),
                         itemCount: controller.users.length,
                         itemBuilder: (context, index) {
-                          return userTile(
-                              true, context, controller.users[index]);
+                          return UserTile(
+                              isChoosing: true, model: controller.users[index]);
                         }),
                   )
                 ],

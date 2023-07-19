@@ -1,24 +1,4 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:health_model/fd_dashboard.dart';
-
-import 'package:health_model/health_dash.dart';
-import 'package:health_model/health_dashboard.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/lottie.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/fd_provider.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/some2.dart';
-import 'package:health_model/view_user.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../shared/exports.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -93,7 +73,9 @@ class _HomePageState extends State<HomePage> {
                           filterProvider.getCompanies(AppConsts.health);
                           dashProvider.getAllPolicies(AppConsts.health);
                           dashProvider.getAllCommissions(AppConsts.health);
-                          dashProvider.getAllUsers();
+                          UserHiveHelper.fetchUsersFromFirebase();
+                          CommissionHiveHelper.fetchCommissionsFromFirebase();
+
                           filterProvider.setDefaultStatus("active");
 
                           checkGraced();
@@ -119,8 +101,8 @@ class _HomePageState extends State<HomePage> {
                         Colors.blueAccent.shade100,
                         Ionicons.car,
                         () {
-                          // updateTemp();
-                          deleteTemp();
+                          updateTemp();
+                          // deleteTemp();
                           // final snackBar = SnackBar(
                           //   behavior: SnackBarBehavior.floating,
                           //   backgroundColor: Colors.transparent,
@@ -151,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                           filterProvider.getCompanies(AppConsts.fd);
                           dashProvider.getAllPolicies(AppConsts.fd);
                           dashProvider.getAllCommissions(AppConsts.fd);
-                          dashProvider.getAllUsers();
+                          UserHiveHelper.fetchUsersFromFirebase();
                           filterProvider.setDefaultStatus("applied");
 
                           checkGraced();
@@ -167,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: GestureDetector(
                       onTap: () {
-                        dashProvider.getAllUsers();
+                        // dashProvider.getAllUsers();
                         // filterProvider.getCompanies(AppConsts.fd);
 
                         // fdProvider.getList();

@@ -11,6 +11,7 @@ import 'package:health_model/models/transaction_model.dart';
 import 'package:health_model/models/user_model.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/shared/tiles.dart';
+import 'package:health_model/widgets/tiles/commission_tile_widget.dart';
 
 // Widget streamUsers(bool isChoosing, {bool isBirthday = false}) {
 //   return StreamBuilder<QuerySnapshot>(
@@ -312,65 +313,64 @@ Widget streamUserPolicies(bool isChoosing, String companyFilter,
   );
 }
 
-Widget streamCommissions(bool? isPending, String name, String companyFilter,
-    DateTime fromDate, DateTime toDate) {
-  // final now = DateTime.now();
-  // final oneMonthAgo = now.subtract(const Duration(days: 30));
+// Widget streamCommissions(bool? isPending, String name, String companyFilter,
+//     DateTime fromDate, DateTime toDate) {
+//   // final now = DateTime.now();
+//   // final oneMonthAgo = now.subtract(const Duration(days: 30));
 
-  return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseFirestore.instance
-        .collection("Commission")
-        .where('commission_date', isGreaterThan: fromDate)
-        .where('commission_date', isLessThan: toDate)
-        .orderBy(
-          "commission_date",
-        )
-        .snapshots(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Commission Files");
-      } else {
-        if (snapshot.data!.docs.isEmpty) {
-          return noDataWidget();
-        } else {
-          return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                // return Text("erfdfv");
-                if (CommissionModel.fromFirestore(snapshot.data!.docs[index])
-                        .commissionType ==
-                    name) {
-                  if (CommissionModel.fromFirestore(snapshot.data!.docs[index])
-                          .isPending ==
-                      isPending) {
-                    if (CommissionModel.fromFirestore(
-                                    snapshot.data!.docs[index])
-                                .companyName ==
-                            companyFilter ||
-                        companyFilter == "all companies") {
-                      return commissionTile(
-                        context,
-                        CommissionModel.fromFirestore(
-                            snapshot.data!.docs[index]),
-                      );
-                    }
-                    // else {
-                    //   return commissionTile(
-                    //     context,
-                    //     CommissionModel.fromFirestore(snapshot.data!.docs[index]),
-                    //   );
-                    // }
-                  }
-                }
-                return Container();
-              });
-        }
-      }
-    },
-  );
-}
+//   return StreamBuilder<QuerySnapshot>(
+//     stream: FirebaseFirestore.instance
+//         .collection("Commission")
+//         .where('commission_date', isGreaterThan: fromDate)
+//         .where('commission_date', isLessThan: toDate)
+//         .orderBy(
+//           "commission_date",
+//         )
+//         .snapshots(),
+//     builder: (context, snapshot) {
+//       if (snapshot.connectionState == ConnectionState.waiting) {
+//         return customCircularLoader("Commission Files");
+//       } else {
+//         if (snapshot.data!.docs.isEmpty) {
+//           return noDataWidget();
+//         } else {
+//           return ListView.builder(
+//               shrinkWrap: true,
+//               physics: const NeverScrollableScrollPhysics(),
+//               itemCount: snapshot.data!.docs.length,
+//               itemBuilder: (context, index) {
+//                 // return Text("erfdfv");
+//                 if (CommissionModel.fromFirestore(snapshot.data!.docs[index])
+//                         .commissionType ==
+//                     name) {
+//                   if (CommissionModel.fromFirestore(snapshot.data!.docs[index])
+//                           .isPending ==
+//                       isPending) {
+//                     if (CommissionModel.fromFirestore(
+//                                     snapshot.data!.docs[index])
+//                                 .companyName ==
+//                             companyFilter ||
+//                         companyFilter == "all companies") {
+//                       return CommissionTile(
+//                         model: CommissionModel.fromFirestore(
+//                             snapshot.data!.docs[index]),
+//                       );
+//                     }
+//                     // else {
+//                     //   return commissionTile(
+//                     //     context,
+//                     //     CommissionModel.fromFirestore(snapshot.data!.docs[index]),
+//                     //   );
+//                     // }
+//                   }
+//                 }
+//                 return Container();
+//               });
+//         }
+//       }
+//     },
+//   );
+// }
 
 Widget streamRenewals(bool isPast, DateTime fromDate, DateTime toDate) {
   return StreamBuilder<QuerySnapshot>(

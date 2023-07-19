@@ -3,12 +3,8 @@ import 'package:get/get.dart';
 import 'package:health_model/getx/user_search_controller.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/shared/local_streams.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/user_provider.dart';
-import 'package:health_model/shared/tiles.dart';
 import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:health_model/widgets/tiles/user_tile_widget.dart';
 import 'package:uuid/uuid.dart';
 
 import 'add_user.dart';
@@ -78,8 +74,9 @@ class _UsersPageState extends State<UsersPage> {
                         // physics: const NeverScrollableScrollPhysics(),
                         itemCount: controller.users.length,
                         itemBuilder: (context, index) {
-                          return userTile(
-                              false, context, controller.users[index]);
+                          return UserTile(
+                              isChoosing: false,
+                              model: controller.users[index]);
                         }),
                   )
                 ],

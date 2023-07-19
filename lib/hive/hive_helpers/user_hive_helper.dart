@@ -10,7 +10,6 @@ class UserHiveHelper {
 
   static Future<void> init() async {
     print("Hive initialized!!");
-    await Hive.initFlutter();
     Hive.registerAdapter(UserHiveModelAdapter());
     userBox = await Hive.openBox<UserHiveModel>(_userBoxName);
   }

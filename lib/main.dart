@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/commission_hive_helper.dart';
+import 'package:health_model/hive/hive_helpers/hive_helper.dart';
 import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
 import 'package:health_model/homepage.dart';
 import 'package:health_model/providers/dash_provider.dart';
@@ -28,7 +30,7 @@ void main() async {
     }
   };
   WidgetsFlutterBinding.ensureInitialized();
-  UserHiveHelper.init();
+  HiveHelper.init();
 
   await Firebase.initializeApp(
     options: const FirebaseOptions(

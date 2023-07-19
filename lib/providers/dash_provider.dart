@@ -34,38 +34,38 @@ class DashProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<UserModel> userModelList = [];
-  List<UserModel> userSearchList = [];
-  resetUserList() {
-    userSearchList = userModelList;
-  }
+  // List<UserModel> userModelList = [];
+  // List<UserModel> userSearchList = [];
+  // resetUserList() {
+  //   userSearchList = userModelList;
+  // }
 
-  searchUser(String query) {
-    if (query != "") {
-      resetUserList();
-    }
-    print(query);
-    userSearchList = [];
-    userModelList.forEach((element) {
-      if (element.name.toLowerCase().contains(query.toLowerCase())) {
-        userSearchList.add(element);
-        // print("Selected");
-      }
-    });
+  // searchUser(String query) {
+  //   if (query != "") {
+  //     resetUserList();
+  //   }
+  //   print(query);
+  //   userSearchList = [];
+  //   userModelList.forEach((element) {
+  //     if (element.name.toLowerCase().contains(query.toLowerCase())) {
+  //       userSearchList.add(element);
+  //       // print("Selected");
+  //     }
+  //   });
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
-  void getAllUsers() async {
-    userModelList = [];
-    FirebaseFirestore.instance.collection("Users").snapshots().listen((event) {
-      for (var i = 0; i < event.docs.length; i++) {
-        userModelList.add(UserModel.fromFirestore(event.docs[i]));
-      }
-    });
+  // void getAllUsers() async {
+  //   userModelList = [];
+  //   FirebaseFirestore.instance.collection("Users").snapshots().listen((event) {
+  //     for (var i = 0; i < event.docs.length; i++) {
+  //       userModelList.add(UserModel.fromFirestore(event.docs[i]));
+  //     }
+  //   });
 
-    // print("Got All Users");
-  }
+  //   // print("Got All Users");
+  // }
 
   List<PolicyData> policyModelList = [];
   List<PolicyData> policySearchList = [];
@@ -96,7 +96,7 @@ class DashProvider extends ChangeNotifier {
 
   searchPolicy(String query) {
     if (query != "") {
-      resetUserList();
+      // resetUserList();
     }
     print(query);
     policySearchList = [];

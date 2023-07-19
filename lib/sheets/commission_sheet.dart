@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_model/commission_hive_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/commission_model.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
@@ -7,7 +8,7 @@ import 'package:health_model/shared/widgets.dart';
 
 void confirmCommission(
   BuildContext context,
-  CommissionModel model,
+  CommissionHiveModel model,
   HealthStatsProvider provider,
 
   //  int count

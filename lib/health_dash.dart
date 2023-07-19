@@ -1,18 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/health_dashboard.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/view_commissions.dart';
-import 'package:health_model/view_companies.dart';
-import 'package:health_model/view_policies.dart';
-import 'package:health_model/view_user.dart';
-import 'package:health_model/shared/loading.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 class HealthDash extends StatelessWidget {
   // List<ChartData> data;
@@ -54,7 +40,7 @@ class HealthDash extends StatelessWidget {
                   }, 0, dashProvider.dashHealthIndex),
                   sideBarTile("Clients", const Icon(Ionicons.person_outline),
                       () {
-                    dashProvider.resetUserList();
+                    // dashProvider.resetUserList();
                     dashProvider.changeHealthDash(1);
                   }, 1, dashProvider.dashHealthIndex),
                   sideBarTile("Companies", const Icon(Ionicons.build_outline),

@@ -1,18 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
-import 'package:health_model/health_dash.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/shared/charts.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class HealthDashboardPage extends StatelessWidget {
