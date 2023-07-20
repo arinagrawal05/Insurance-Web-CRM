@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/drafted_msgs.dart';
@@ -17,10 +18,12 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'hive/hive_model/policy_models/fd_model.dart';
+
 // ignore: must_be_immutable
-class PolicyDetailPage extends StatelessWidget {
-  PolicyHiveModel model;
-  PolicyDetailPage({required this.model});
+class FdDetailPage extends StatelessWidget {
+  FdHiveModel model;
+  FdDetailPage({required this.model});
   late TooltipBehavior tooltip = TooltipBehavior();
 
   @override
@@ -49,34 +52,34 @@ class PolicyDetailPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: heading(" Client Profile", 18),
                     ),
-                    const CircleAvatar(
-                      minRadius: 50,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(
-                          Ionicons.person_add,
-                          size: 60,
-                        ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 45),
+                      // height: 200,
+                      // width: 150,
+                      child: Icon(
+                        Ionicons.person_outline,
+                        size: 80,
                       ),
                     ),
-                    Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          heading(model.name, 22),
-                          Container(
-                            child: productTileText(
-                                model.isMale ? "Male" : "Female", 12),
-                          ),
-                        ],
-                      ),
+                    heading(model.name, 22),
+                    heading1("Arin Agrawals" + "'s member", 15),
+                    Divider(
+                      endIndent: 20,
+                      indent: 20,
                     ),
-                    userCardShow("phone", model.phone),
-                    userCardShow("email", model.email),
-                    userCardShow("Date of Birth", dateTimetoText(model.dob)),
-                    userCardShow("Address", model.address),
-                    userCardShow("Nominee", model.nomineeName),
-                    membersShowcase(model.membersCount, model.userid)
+                    userDetailShow(
+                        "phone", model.phone, Ionicons.phone_portrait_outline),
+                    userDetailShow("email", model.email, Ionicons.mail),
+                    userDetailShow("Birthday", dateTimetoText(model.dob),
+                        Ionicons.medical_outline),
+                    userDetailShow(
+                        "Gender",
+                        model.isMale ? "Male" : "Female",
+                        model.isMale
+                            ? Ionicons.man_outline
+                            : Ionicons.woman_outline),
+                    userDetailShow(
+                        "Address", "Borewali mumbai", Ionicons.home_outline),
                   ],
                 ),
               ),
@@ -97,33 +100,34 @@ class PolicyDetailPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          heading("About Policy", 18),
-                          model.policyStatus == "active"
+                          heading("About FD", 18),
+                          model.fdStatus == "applied"
                               ? Row(
                                   children: [
-                                    customButton("Renew", () {
-                                      navigate(RenewPolicyPage(model: model),
-                                          context);
+                                    customButton("Got Certificate", () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              errorDialog("bolo?"));
+                                      // Get.snackbar(
+                                      //   "hello",
+                                      //   "this is message",
+                                      //   snackPosition: SnackPosition.BOTTOM,
+                                      // );
+                                      // print("object");
+                                      // navigate(RenewPolicyPage(model: model),
+                                      // context);
                                     }, context, isExpanded: false),
-                                    customButton("Port", () {
-                                      provider.feedPort(
-                                          model.companyName,
-                                          model.policyNo,
-                                          model.sumAssured.toString(),
-                                          model.policyID,
-                                          model.issuedDate);
-                                      navigate(ChooseUser(), context);
-                                    }, context, isExpanded: false),
-                                    customButton("Edit", () {
-                                      navigate(EditDetailsPage(model: model),
-                                          context);
+                                    customButton("Edit FD", () {
+                                      // navigate(EditDetailsPage(model: model),
+                                      // context);
                                     }, context, isExpanded: false),
                                     customDeleteButton(Ionicons.trash_outline,
                                         Colors.red.shade500, () async {
                                       confirmRemoveSheet(context, "Policy", () {
                                         FirebaseFirestore.instance
                                             .collection("Policies")
-                                            .doc(model.policyID)
+                                            .doc(model.fdId)
                                             .delete();
                                       });
                                     }, context),
@@ -131,21 +135,23 @@ class PolicyDetailPage extends StatelessWidget {
                                 )
                               : Row(
                                   children: [
-                                    customButton("Grant Renew", () {
-                                      navigate(RenewPolicyPage(model: model),
-                                          context);
-                                    }, context, isExpanded: false),
+                                    // customButton("Grant Renew", () {
+                                    //   navigate(RenewPolicyPage(model: model),
+                                    //       context);
+                                    // }, context, isExpanded: false),
                                     customDeleteButton(Ionicons.trash_outline,
                                         Colors.red.shade500, () async {
                                       confirmRemoveSheet(context, "Policy", () {
                                         FirebaseFirestore.instance
                                             .collection("Policies")
-                                            .doc(model.policyID)
+                                            .doc(model.fdId)
                                             .delete();
                                       });
                                     }, context),
                                   ],
                                 ),
+
+                          // Container(),
                         ],
                       ),
                     ),
@@ -160,7 +166,7 @@ class PolicyDetailPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               productTileText(
-                                "Policy No: ${model.policyNo}",
+                                "FD No: ${model.fdNo}",
                                 22,
                               ),
                               // Text(
@@ -172,8 +178,8 @@ class PolicyDetailPage extends StatelessWidget {
                               // ),
                               GestureDetector(
                                   onTap: () {
-                                    launchURL(
-                                        "https://wa.me/${model.phone}?text=${renewalDraftMsg(model)}");
+                                    // launchURL(
+                                    //     "https://wa.me/${model.phone}?text=${renewalDraftMsg(model)}");
                                   },
                                   child: Icon(
                                     Ionicons.logo_whatsapp,
@@ -188,7 +194,7 @@ class PolicyDetailPage extends StatelessWidget {
                                 22,
                               ),
                               Text(
-                                "RS ${model.sumAssured}",
+                                "RS ${model.investedAmt.toString()}",
                                 style: GoogleFonts.nunito(
                                     fontSize: 22,
                                     color: Colors.green.shade300,
@@ -201,14 +207,10 @@ class PolicyDetailPage extends StatelessWidget {
                             22,
                           ),
                           productTileText(
-                            "Plan: ${model.planName}",
+                            "Renewal Date: ${dateTimetoText(model.maturityDate)}",
                             22,
                           ),
-                          productTileText(
-                            "Renewal Date: ${dateTimetoText(model.renewalDate)}",
-                            22,
-                          ),
-                          Text(model.isFresh.toString())
+                          Text(model.isCummulative.toString())
                         ],
                       ),
                     ),
@@ -224,15 +226,15 @@ class PolicyDetailPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            healthTransactionHeader(),
-                            model.inceptionDate == model.issuedDate
+                            fDTransactionHeader(),
+                            // model.inceptionDate == model.issuedDate
+                            //     ? Container()
+                            //     : inceptionWidget(model.inceptionDate, context),
+                            streamTransactions("policy_id", model.fdId),
+                            model.fdStatus == "applied"
                                 ? Container()
-                                : inceptionWidget(model.inceptionDate, context),
-                            streamTransactions("policy_id", model.policyID),
-                            model.policyStatus == "active"
-                                ? Container()
-                                : statusFooter(model.policyStatus,
-                                    model.statusDate, context)
+                                : statusFooter(
+                                    model.fdStatus, model.initialDate, context)
                           ],
                         ),
                       ),
@@ -254,5 +256,41 @@ Widget inceptionWidget(DateTime inceptionDate, BuildContext context) {
     margin: const EdgeInsets.symmetric(vertical: 3),
     child: simpleText("Inception Date: ${dateTimetoText(inceptionDate)}", 16),
     // child: Text()
+  );
+}
+
+Dialog errorDialog(String title) {
+  return Dialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0)), //this right here
+    child: Container(
+      height: 300.0,
+      width: 300.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: heading("Certificate Submission", 22),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text(
+              'Awesome',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 50.0)),
+          TextButton(
+              onPressed: () {
+                // Navigator.of(context).pop();
+              },
+              child: Text(
+                'Got It!',
+                style: TextStyle(color: Colors.purple, fontSize: 18.0),
+              ))
+        ],
+      ),
+    ),
   );
 }

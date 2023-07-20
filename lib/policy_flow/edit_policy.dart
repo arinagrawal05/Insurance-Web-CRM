@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/providers/policy_provider.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class EditDetailsPage extends StatefulWidget {
-  PolicyModel model;
+  PolicyHiveModel model;
   // String portCompanyName, portPolicyNo, portSumAssured;
   // DateTime portIssueDate;
   // bool isFress;
@@ -69,8 +70,8 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
     policyNumber.text = widget.model.policyNo;
     sumAssured.text = widget.model.sumAssured.toString();
     premiumAmt.text = widget.model.premuimAmt.toString();
-    issuedDate.text = dateTimetoText(widget.model.issuedDate.toDate());
-    inceptionDate.text = dateTimetoText(widget.model.inceptionDate.toDate());
+    issuedDate.text = dateTimetoText(widget.model.issuedDate);
+    inceptionDate.text = dateTimetoText(widget.model.inceptionDate);
     nomineeName.text = widget.model.nomineeName;
     advisorName.text = widget.model.advisorName;
     withGST = widget.model.premuimAmt;

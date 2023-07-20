@@ -18,7 +18,7 @@ class FilterProvider extends ChangeNotifier {
   DateTime toDate = foreverMore;
   DateTime fromDate = foreverAgo;
   num commissionSuma = 0;
-  String companyFilter = "all companies";
+  String companyFilter = "All Companies";
   String statusFilter = "active";
 
   String filterName = "by Date";

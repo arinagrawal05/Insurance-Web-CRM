@@ -1,19 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:health_model/done_commision.dart';
-import 'package:health_model/getx/commission_search_controller.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/shared/local_streams.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/widgets/tiles/commission_tile_widget.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 class CommissionsPage extends StatefulWidget {
+  final ProductType type;
+
+  const CommissionsPage({super.key, required this.type});
   // List<QueryDocumentSnapshot<Object?>> docs;
   //  UsersPage({required this.docs});
 
@@ -43,120 +33,118 @@ class _CommissionsPageState extends State<CommissionsPage> {
     final dashProvider = Provider.of<DashProvider>(context, listen: false);
 
     // TextEditingController controller = TextEditingController();
-    return Scaffold(
-      // backgroundColor: scaffoldColor,
-      appBar: customAppbar("Pending Commission", context),
-      body: RawKeyboardListener(
-          autofocus: true,
-          focusNode: _focusNode,
-          onKey: (rawKeyEvent) {
-            handleKeyEvent(rawKeyEvent, scrollController);
-            // throw Exception('No return value');
-          },
-          child: isUnlocked
-              ? GetBuilder<CommissionSearchController>(
-                  init: CommissionSearchController(),
-                  builder: (controller) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              customTextfield(controller.searchController,
-                                  "Search", context, onChange: (value) {
-                                controller.filterCommissions(value);
-                              }),
-                              genericPicker(
-                                provider.companyList,
-                                provider.companyFilter,
-                                "Company",
-                                (value) {
-                                  provider.changeCompany(value);
-                                },
-                                context,
-                              ), // customTextField(controller, "Search", context),
-                              customButton("View Received Commision", () async {
-                                // setState(() {});
-                                navigate(DoneCommissionsPage(), context);
-                              }, context, isExpanded: false),
-                            ],
+    return GetBuilder<CommissionSearchController>(
+        init: CommissionSearchController(type: widget.type),
+        builder: (controller) {
+          return Scaffold(
+            // backgroundColor: scaffoldColor,
+            appBar: customAppbar("Pending Commission", context),
+            body: RawKeyboardListener(
+                autofocus: true,
+                focusNode: _focusNode,
+                onKey: (rawKeyEvent) {
+                  handleKeyEvent(rawKeyEvent, scrollController);
+                  // throw Exception('No return value');
+                },
+                child: isUnlocked
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                customTextfield(controller.searchController,
+                                    "Search", context, onChange: (value) {
+                                  controller.filterCommissions();
+                                }),
+                                genericPicker(
+                                  controller.companyList,
+                                  controller.companyFilter,
+                                  "Company",
+                                  (value) {
+                                    controller.changeCompany(value);
+                                  },
+                                  context,
+                                ), // customTextField(controller, "Search", context),
+                                customButton("View Received Commision",
+                                    () async {
+                                  // setState(() {});
+                                  navigate(
+                                      DoneCommissionsPage(type: widget.type),
+                                      context);
+                                }, context, isExpanded: false),
+                              ],
+                            ),
                           ),
-                        ),
-                        // streamUsers(false),
-                        // userStream(dashProvider, false)
+                          // streamUsers(false),
+                          // userStream(dashProvider, false)
 
-                        Expanded(
-                          child: ListView.builder(
-                              controller: scrollController,
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
-                              // shrinkWrap: true,
-                              // physics: const NeverScrollableScrollPhysics(),
-                              itemCount: controller.commissions.length,
-                              itemBuilder: (context, index) {
-                                return CommissionTile(
-                                    model: controller.commissions[index]);
-                              }),
-                        )
-                      ],
-                    );
-                  })
-              : SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 100,
-                      ),
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          padding: const EdgeInsets.all(20),
-                          // elevation: 5,
-                          decoration: dashBoxDex(context),
-                          child: Column(
-                            children: [
-                              heading("Enter Admin Pin", 30),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: formTextField(
-                                    pinController, "Enter Pin", "Wrong Pin",
-                                    kType: TextInputType.number),
+                          Expanded(
+                            child: ListView.builder(
+                                controller: scrollController,
+                                keyboardDismissBehavior:
+                                    ScrollViewKeyboardDismissBehavior.onDrag,
+                                // shrinkWrap: true,
+                                // physics: const NeverScrollableScrollPhysics(),
+                                itemCount: controller.commissions.length,
+                                itemBuilder: (context, index) {
+                                  return CommissionTile(
+                                      model: controller.commissions[index]);
+                                }),
+                          )
+                        ],
+                      )
+                    : SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 100,
+                            ),
+                            Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                padding: const EdgeInsets.all(20),
+                                // elevation: 5,
+                                decoration: dashBoxDex(context),
+                                child: Column(
+                                  children: [
+                                    heading("Enter Admin Pin", 30),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: formTextField(pinController,
+                                          "Enter Pin", "Wrong Pin",
+                                          kType: TextInputType.number),
+                                    ),
+                                    customButton("Unlock", () {
+                                      if (pinController.text ==
+                                          statsProvider.adminPin) {
+                                        provider
+                                            .sumCommission(
+                                                true, dashProvider.dashName)
+                                            .then((value) {
+                                          setState(() {});
+                                        });
+                                        // _focusNode.nextFocus();
+                                        setState(() {
+                                          isUnlocked = true;
+                                        });
+                                      } else {
+                                        print("pin Wrong");
+                                      }
+                                    }, context, isExpanded: false),
+                                  ],
+                                ),
                               ),
-                              customButton("Unlock", () {
-                                if (pinController.text ==
-                                    statsProvider.adminPin) {
-                                  provider
-                                      .sumCommission(
-                                          true, dashProvider.dashName)
-                                      .then((value) {
-                                    setState(() {});
-                                  });
-                                  // _focusNode.nextFocus();
-                                  setState(() {
-                                    isUnlocked = true;
-                                  });
-                                } else {
-                                  print("pin Wrong");
-                                }
-                              }, context, isExpanded: false),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                )),
+                      )),
 
-      bottomNavigationBar: isUnlocked
-          ? totalWidget(context, () {
-              provider.sumCommission(true, dashProvider.dashName).then((value) {
-                setState(() {});
-              });
-            }, provider)
-          : null,
-    );
+            bottomNavigationBar:
+                isUnlocked ? totalWidget(controller.currentSum) : null,
+          );
+        });
   }
 }

@@ -39,53 +39,53 @@ import '../models/policy_model.dart';
 //   });
 // }
 
-Widget policyStream(
-    DashProvider dashProvider,
-    bool isChoosing,
-    String companyFilter,
-    String statusFilter,
-    DateTime fromDate,
-    DateTime toDate) {
-  return Consumer<DashProvider>(builder: (
-    context,
-    provider,
-    child,
-  ) {
-    return ListView.builder(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: dashProvider.policySearchList.length,
-        itemBuilder: (context, index) {
-          GenericInvestmentData currentModel =
-              dashProvider.policySearchList[index].data;
+// Widget policyStream(
+//     DashProvider dashProvider,
+//     bool isChoosing,
+//     String companyFilter,
+//     String statusFilter,
+//     DateTime fromDate,
+//     DateTime toDate) {
+//   return Consumer<DashProvider>(builder: (
+//     context,
+//     provider,
+//     child,
+//   ) {
+//     return ListView.builder(
+//         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+//         shrinkWrap: true,
+//         physics: const NeverScrollableScrollPhysics(),
+//         itemCount: dashProvider.policySearchList.length,
+//         itemBuilder: (context, index) {
+//           GenericInvestmentData currentModel =
+//               dashProvider.policySearchList[index].data;
 
-          if (currentModel is PolicyModel) {
-            PolicyModel policyModel = currentModel as PolicyModel;
+//           if (currentModel is PolicyModel) {
+//             PolicyModel policyModel = currentModel as PolicyModel;
 
-            if (selectedPolicy(
-                policyModel, companyFilter, statusFilter, fromDate, toDate)) {
-              return policyTile(
-                context,
-                policyModel,
-              );
-            }
-          } else {
-            FdModel fdModel = currentModel as FdModel;
-            if (selectedFd(
-                fdModel, companyFilter, statusFilter, fromDate, toDate)) {
-              return fdTile(
-                context,
-                fdModel,
-              );
-            }
-          }
-          return Container(
-            child: Text(currentModel.type),
-          );
-        });
-  });
-}
+//             if (selectedPolicy(
+//                 policyModel, companyFilter, statusFilter, fromDate, toDate)) {
+//               return policyTile(
+//                 context,
+//                 policyModel,
+//               );
+//             }
+//           } else {
+//             FdModel fdModel = currentModel as FdModel;
+//             if (selectedFd(
+//                 fdModel, companyFilter, statusFilter, fromDate, toDate)) {
+//               return fdTile(
+//                 context,
+//                 fdModel,
+//               );
+//             }
+//           }
+//           return Container(
+//             child: Text(currentModel.type),
+//           );
+//         });
+//   });
+// }
 
 Widget userStream(DashProvider dashProvider, bool isChoosing) {
   return Consumer<DashProvider>(builder: (

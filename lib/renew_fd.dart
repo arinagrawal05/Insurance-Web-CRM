@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
-class EnterFdDetails extends StatelessWidget {
-  EnterFdDetails({super.key});
+class RenewFdPage extends StatelessWidget {
+  final FdHiveModel model;
+
+  const RenewFdPage({super.key, required this.model});
 
   // @override
   Widget build(BuildContext context) {
@@ -51,24 +53,21 @@ class EnterFdDetails extends StatelessWidget {
                               size: 80,
                             ),
                           ),
-                          heading("Parul Gupta", 22),
+                          heading(model.name, 22),
                           heading1("Arin Agrawals" + "'s member", 15),
                           Divider(
                             endIndent: 20,
                             indent: 20,
                           ),
-                          userDetailShow("phone", "9383967893",
+                          userDetailShow("phone", model.phone,
                               Ionicons.phone_portrait_outline),
-                          userDetailShow("email", "arinagrawal07128@gmail.com",
-                              Ionicons.mail),
-                          userDetailShow(
-                              "Birthday",
-                              dateTimetoText(DateTime.now()),
+                          userDetailShow("email", model.email, Ionicons.mail),
+                          userDetailShow("Birthday", dateTimetoText(model.dob),
                               Ionicons.medical_outline),
                           userDetailShow(
                               "Gender",
-                              true ? "Male" : "Female",
-                              true
+                              model.isMale ? "Male" : "Female",
+                              model.isMale
                                   ? Ionicons.man_outline
                                   : Ionicons.woman_outline),
                           userDetailShow("Address", "Borewali mumbai",

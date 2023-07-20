@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_model/models/user_model.dart';
+import 'package:health_model/shared/enum_utils.dart';
 
 import '../hive/hive_model/user_hive_model.dart';
 
@@ -16,4 +17,25 @@ class AppConsts {
     dob: DateTime.now(),
     membersCount: 3,
   );
+
+  static List<String> healthPolicyStatusList = [
+    "all status",
+    "active",
+    "ported",
+    "lapsed",
+  ];
+  static List<String> fDStatusList = [
+    "all status",
+    "applied",
+    "claimed",
+    "released",
+  ];
+
+  static List<String> getStatusList(ProductType type) {
+    if (type == ProductType.health) {
+      return healthPolicyStatusList;
+    } else {
+      return fDStatusList;
+    }
+  }
 }

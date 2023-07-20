@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/enter_fd.dart';
-import 'package:health_model/providers/fd_provider.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/policy_flow/enter_policy.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 class ChooseExisting extends StatelessWidget {
   ChooseExisting({

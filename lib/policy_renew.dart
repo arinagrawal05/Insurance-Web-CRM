@@ -1,15 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class RenewPolicyPage extends StatefulWidget {
-  PolicyModel model;
+  PolicyHiveModel model;
   RenewPolicyPage({required this.model});
   @override
   _RenewPolicyPageState createState() => _RenewPolicyPageState();
@@ -52,12 +45,12 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
   }
 
   Widget build(BuildContext context) {
-    PolicyModel model = widget.model;
+    PolicyHiveModel model = widget.model;
     final statsProvider =
         Provider.of<HealthStatsProvider>(context, listen: true);
     DateTime startingDate = textToDateTime(issuedDate.text);
-    if (model.renewalDate.toDate().isAfter(textToDateTime(issuedDate.text))) {
-      startingDate = model.renewalDate.toDate();
+    if (model.renewalDate.isAfter(textToDateTime(issuedDate.text))) {
+      startingDate = model.renewalDate;
     } else {
       startingDate = textToDateTime(issuedDate.text);
     }

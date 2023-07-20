@@ -67,48 +67,48 @@ class DashProvider extends ChangeNotifier {
   //   // print("Got All Users");
   // }
 
-  List<PolicyData> policyModelList = [];
-  List<PolicyData> policySearchList = [];
-  void getAllPolicies(String type) async {
-    policyModelList.clear();
-    policySearchList.clear();
-    FirebaseFirestore.instance
-        .collection("Policies")
-        .where("type", isEqualTo: type)
-        // .orderBy("renewal_date")
-        .snapshots()
-        .listen((event) {
-      for (var i = 0; i < event.docs.length; i++) {
-        String type = event.docs[i].data()['type'];
-        if (type == 'FD') {
-          print('--------------------FD---------------');
-        }
-        policyModelList.add(PolicyData.fromFirestore(event.docs[i]));
-      }
-    });
+  // List<PolicyData> policyModelList = [];
+  // List<PolicyData> policySearchList = [];
+  // void getAllPolicies(String type) async {
+  //   policyModelList.clear();
+  //   policySearchList.clear();
+  //   FirebaseFirestore.instance
+  //       .collection("Policies")
+  //       .where("type", isEqualTo: type)
+  //       // .orderBy("renewal_date")
+  //       .snapshots()
+  //       .listen((event) {
+  //     for (var i = 0; i < event.docs.length; i++) {
+  //       String type = event.docs[i].data()['type'];
+  //       if (type == 'FD') {
+  //         print('--------------------FD---------------');
+  //       }
+  //       policyModelList.add(PolicyData.fromFirestore(event.docs[i]));
+  //     }
+  //   });
 
-    print("Got All Policies");
-  }
+  //   print("Got All Policies");
+  // }
 
-  resetPolicyList() {
-    policySearchList = policyModelList;
-  }
+  // resetPolicyList() {
+  //   policySearchList = policyModelList;
+  // }
 
-  searchPolicy(String query) {
-    if (query != "") {
-      // resetUserList();
-    }
-    print(query);
-    policySearchList = [];
-    policyModelList.forEach((element) {
-      if (element.data.name.toLowerCase().contains(query.toLowerCase())) {
-        policySearchList.add(element);
-        // print("Selected");
-      }
-    });
+  // searchPolicy(String query) {
+  //   if (query != "") {
+  //     // resetUserList();
+  //   }
+  //   print(query);
+  //   policySearchList = [];
+  //   policyModelList.forEach((element) {
+  //     if (element.data.name.toLowerCase().contains(query.toLowerCase())) {
+  //       policySearchList.add(element);
+  //       // print("Selected");
+  //     }
+  //   });
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   List<CommissionModel> commissionModelList = [];
   List<CommissionModel> commissionSearchList = [];

@@ -1,13 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:health_model/getx/user_search_controller.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/widgets/tiles/user_tile_widget.dart';
-import 'package:uuid/uuid.dart';
-
 import 'add_user.dart';
+import '../../shared/exports.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({super.key});

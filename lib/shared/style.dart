@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget heading(
@@ -71,5 +72,5 @@ BoxDecoration dashBoxDex(BuildContext context, {bool isContrast = false}) {
       borderRadius: BorderRadius.circular(10),
       color: isContrast
           ? Colors.blueGrey
-          : Theme.of(context).dialogBackgroundColor);
+          : Theme.of(Get.context!).dialogBackgroundColor);
 }

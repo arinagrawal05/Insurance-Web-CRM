@@ -175,17 +175,17 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ListView.builder(
-                      itemCount: initialSnapshot.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return policyTile(
-                            context,
-                            PolicyModel.fromMap(
-                                initialSnapshot[index].data() as Map));
-                      },
-                    ),
+                    // ListView.builder(
+                    //   itemCount: initialSnapshot.length,
+                    //   physics: const NeverScrollableScrollPhysics(),
+                    //   shrinkWrap: true,
+                    //   itemBuilder: (context, index) {
+                    //     return policyTile(
+                    //         context,
+                    //         PolicyModel.fromMap(
+                    //             initialSnapshot[index].data() as Map));
+                    //   },
+                    // ),
                   ],
                 ),
               ),

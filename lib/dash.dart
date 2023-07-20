@@ -1,6 +1,8 @@
+import 'package:health_model/shared/enum_utils.dart';
+
 import '../../shared/exports.dart';
 
-class HealthDash extends StatelessWidget {
+class Dash extends StatelessWidget {
   // List<ChartData> data;
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class HealthDash extends StatelessWidget {
                   }, 2, dashProvider.dashHealthIndex),
                   sideBarTile(getWord(dashProvider.dashName),
                       const Icon(Ionicons.reader_outline), () {
-                    dashProvider.resetPolicyList();
+                    // dashProvider.resetPolicyList();
 
                     dashProvider.changeHealthDash(3);
                   }, 3, dashProvider.dashHealthIndex),
@@ -79,8 +81,18 @@ class HealthDash extends StatelessWidget {
                         : dashProvider.dashHealthIndex == 2
                             ? CompaniesPage()
                             : dashProvider.dashHealthIndex == 3
-                                ? PoliciesPage()
-                                : CommissionsPage()),
+                                ? PoliciesPage(
+                                    type: dashProvider.dashName ==
+                                            AppConsts.health
+                                        ? ProductType.health
+                                        : ProductType.fd,
+                                  )
+                                : CommissionsPage(
+                                    type: dashProvider.dashName ==
+                                            AppConsts.health
+                                        ? ProductType.health
+                                        : ProductType.fd,
+                                  )),
           )
         ],
       ),

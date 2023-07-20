@@ -191,7 +191,7 @@ class PolicyProvider extends ChangeNotifier {
       "port_sum_assured": portSumAssured,
       "payMode": payModeSelected,
       "status_date": Timestamp.now(),
-      "cheque_details":
+      "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
       "type": AppConsts.health,
     });

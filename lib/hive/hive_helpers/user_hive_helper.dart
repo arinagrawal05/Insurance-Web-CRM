@@ -12,6 +12,7 @@ class UserHiveHelper {
     print("Hive initialized!!");
     Hive.registerAdapter(UserHiveModelAdapter());
     userBox = await Hive.openBox<UserHiveModel>(_userBoxName);
+    fetchUsersFromFirebase();
   }
 
   static Future<void> fetchUsersFromFirebase() async {
@@ -27,7 +28,7 @@ class UserHiveHelper {
       final user = UserHiveModel.fromFirestore(doc);
       // userBox.add(user);
       userBox.put(doc.id, user);
-      print('Adding ${user.name}');
+      // print('Adding ${user.name}');
     }
   }
 

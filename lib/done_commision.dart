@@ -1,6 +1,11 @@
 import '../../shared/exports.dart';
 
 class DoneCommissionsPage extends StatefulWidget {
+  final ProductType type;
+
+  const DoneCommissionsPage({super.key, required this.type});
+  // List<QueryDocumentSnapshot<Object?>> docs;
+  //  UsersPage({required this.docs});
   // List<QueryDocumentSnapshot<Object?>> docs;
   //  UsersPage({required this.docs});
 
@@ -17,9 +22,9 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<FilterProvider>(context, listen: true);
+    // final provider = Provider.of<FilterProvider>(context, listen: true);
     // final statsProvider = Provider.of<StatsProvider>(context, listen: true);
-    final dashProvider = Provider.of<DashProvider>(context, listen: true);
+    // final dashProvider = Provider.of<DashProvider>(context, listen: true);
 
     // TextEditingController controller = TextEditingController();
     return Scaffold(
@@ -33,7 +38,7 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
             // throw Exception('No return value');
           },
           child: GetBuilder<CommissionSearchController>(
-              init: CommissionSearchController(),
+              init: CommissionSearchController(type: widget.type),
               builder: (controller) {
                 return Column(
                   children: [
@@ -45,21 +50,17 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
                           customTextfield(
                               controller.searchController, "Search", context,
                               onChange: (value) {
-                            controller.filterCommissions(value);
+                            controller.filterCommissions();
                           }),
                           genericPicker(
-                            provider.companyList,
-                            provider.companyFilter,
+                            controller.companyList,
+                            controller.companyFilter,
                             "Company",
                             (value) {
-                              provider.changeCompany(value);
+                              controller.changeCompany(value);
                             },
                             context,
-                          ), // customTextField(controller, "Search", context),
-                          customButton("View Received Commision", () async {
-                            // setState(() {});
-                            navigate(DoneCommissionsPage(), context);
-                          }, context, isExpanded: false),
+                          ),
                         ],
                       ),
                     ),
@@ -82,11 +83,11 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
                   ],
                 );
               })),
-      bottomNavigationBar: totalWidget(context, () {
-        provider.sumCommission(false, dashProvider.dashName).then((value) {
-          setState(() {});
-        });
-      }, provider),
+      // bottomNavigationBar: totalWidget(context, () {
+      //   provider.sumCommission(false, dashProvider.dashName).then((value) {
+      //     setState(() {});
+      //   });
+      // }, provider),
     );
   }
 }

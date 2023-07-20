@@ -1,40 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:health_model/choose_exist.dart';
-import 'package:health_model/hive/hive_model/user_hive_model.dart';
-import 'package:health_model/shared/drafted_msgs.dart';
-import 'package:health_model/enter_fd.dart';
-import 'package:health_model/models/commission_model.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/models/transaction_model.dart';
-import 'package:health_model/policy_detail.dart';
-import 'package:health_model/policy_flow/choose_company.dart';
-import 'package:health_model/policy_flow/choose_fresh.dart';
-import 'package:health_model/policy_flow/choose_plan.dart';
-import 'package:health_model/policy_renew.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/fd_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/providers/user_provider.dart';
-import 'package:health_model/shared/colors.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/models/company_model.dart';
-import 'package:health_model/models/member_model.dart';
-import 'package:health_model/models/plan_model.dart';
-import 'package:health_model/models/user_model.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/sheets/commission_sheet.dart';
-import 'package:health_model/sheets/confirm_sheet.dart';
-import 'package:health_model/sheets/member_sheet.dart';
-import 'package:health_model/policy_flow/enter_policy.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/choose_members.dart';
-import 'package:health_model/view_plans.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
+import 'package:health_model/fd_detail.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import '../../shared/exports.dart';
 
 Widget bDayuserTile(BuildContext context, UserHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
@@ -398,13 +364,13 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
   );
 }
 
-Widget fdTile(BuildContext context, FdModel model) {
+Widget fdTile(BuildContext context, FdHiveModel model) {
   return InkWell(
     onTap: () {
-      // navigate(
-      //   PolicyDetailPage(model: model),
-      //   context,
-      // );
+      navigate(
+        FdDetailPage(model: model),
+        context,
+      );
       // addMemberSheet(context, widget.userid, docId);
     },
     child: Container(
@@ -455,8 +421,7 @@ Widget fdTile(BuildContext context, FdModel model) {
               Column(
                 children: [
                   heading("Invested Date", 16),
-                  productTileText(
-                      dateTimetoText(model.initialDate.toDate()), 14),
+                  productTileText(dateTimetoText(model.initialDate), 14),
                 ],
               ),
               Column(
@@ -472,10 +437,10 @@ Widget fdTile(BuildContext context, FdModel model) {
                 ],
               ),
               customButton("View FD", () async {
-                // navigate(
-                //   PolicyDetailPage(model: model),
-                //   context,
-                // );
+                navigate(
+                  FdDetailPage(model: model),
+                  context,
+                );
                 // addMemberSheet(context, widget.userid, docId);
               }, context, isExpanded: false)
             ],
@@ -486,7 +451,7 @@ Widget fdTile(BuildContext context, FdModel model) {
   );
 }
 
-Widget policyTile(BuildContext context, PolicyModel model) {
+Widget policyTile(BuildContext context, PolicyHiveModel model) {
   return InkWell(
     onTap: () {
       navigate(
@@ -543,8 +508,7 @@ Widget policyTile(BuildContext context, PolicyModel model) {
               Column(
                 children: [
                   heading("Renewal Date", 16),
-                  productTileText(
-                      dateTimetoText(model.renewalDate.toDate()), 14),
+                  productTileText(dateTimetoText(model.renewalDate), 14),
                 ],
               ),
               Column(
@@ -574,7 +538,7 @@ Widget policyTile(BuildContext context, PolicyModel model) {
   );
 }
 
-Widget renewalTile(bool isPast, BuildContext context, PolicyModel model) {
+Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
   // Duration diff = model.renewalDate.toDate().difference(DateTime.now());
   // Timestamp time = model["d;
@@ -635,8 +599,7 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyModel model) {
               Column(
                 children: [
                   heading("Renewal Date", 16),
-                  productTileText(
-                      dateTimetoText(model.renewalDate.toDate()), 14),
+                  productTileText(dateTimetoText(model.renewalDate), 14),
                 ],
               ),
               Column(
@@ -650,7 +613,7 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyModel model) {
                       children: [
                         heading("Graced", 16),
                         productTileText(
-                            "${DateTime.now().difference(model.renewalDate.toDate()).inDays} days",
+                            "${DateTime.now().difference(model.renewalDate).inDays} days",
                             14),
                       ],
                     )
@@ -658,7 +621,7 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyModel model) {
                       children: [
                         heading("Days to go", 16),
                         productTileText(
-                            "${model.renewalDate.toDate().difference(DateTime.now()).inDays} days",
+                            "${model.renewalDate.difference(DateTime.now()).inDays} days",
                             14),
                       ],
                     ),
@@ -688,8 +651,15 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyModel model) {
 
 Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
-  // Duration diff = model.renewalDate.toDate().difference(DateTime.now());
+  // Duration diff = model.renewalDate .difference(DateTime.now());
   // Timestamp time = model["d;
+  DateTime addedDate;
+  if (model.terms >= 6) {
+    addedDate = model.beginsDate.toDate().add(Duration(days: model.terms * 30));
+  } else {
+    addedDate =
+        model.beginsDate.toDate().add(Duration(days: model.terms * 365));
+  }
   return InkWell(
     onTap: null,
     child: Container(
@@ -704,11 +674,7 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
             productTileText("$index.", 16),
             productTileText(model.policyNo, 16),
             productTileText(dateTimetoText(model.beginsDate.toDate()), 16),
-            productTileText(
-                dateTimetoText(model.beginsDate
-                    .toDate()
-                    .add(Duration(days: model.terms * 365))),
-                16),
+            productTileText(dateTimetoText(addedDate), 16),
             productTileText("${model.premuimAmt} Rs", 16),
             productTileText(dateTimetoText(model.timestamp.toDate()), 16),
           ],

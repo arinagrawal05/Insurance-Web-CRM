@@ -1,22 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:health_model/hive/hive_helpers/commission_hive_helper.dart';
-import 'package:health_model/hive/hive_helpers/hive_helper.dart';
-import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
-import 'package:health_model/homepage.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/fd_provider.dart';
-import 'package:health_model/providers/fd_stats_provider.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/providers/image_provider.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
-import 'package:health_model/providers/theme_provider.dart';
-import 'package:health_model/providers/user_provider.dart';
-import 'package:health_model/shared/loading.dart';
-import 'package:health_model/some2.dart';
-import 'package:provider/provider.dart';
+import '../../shared/exports.dart';
 
 void main() async {
   // ErrorWidget.builder = (FlutterErrorDetails details) => SomethingWrong(
@@ -80,7 +62,7 @@ class MyApp extends StatelessWidget {
           ],
           builder: (context, _) {
             final themeProvider = Provider.of<ThemeProvider>(context);
-            return MaterialApp(
+            return GetMaterialApp(
               title: 'Health App',
               themeMode: themeProvider.themeMode,
               theme: MyThemes.lightTheme,

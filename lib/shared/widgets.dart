@@ -138,6 +138,7 @@ Widget formTextField(
 
 AppBar genericAppbar({List<Widget>? actions}) {
   return AppBar(
+    backgroundColor: Colors.transparent,
     actions: actions,
   );
 }
@@ -583,10 +584,10 @@ Widget birthdayWidget(BuildContext context) {
       ));
 }
 
-isGraced(Timestamp renewalDate) {
+isGraced(DateTime renewalDate) {
   final now = DateTime.now();
   final oneMonthAgo = now.add(const Duration(days: 30));
-  if (renewalDate.toDate().difference(now) < const Duration(days: 30)) {
+  if (renewalDate.difference(now) < const Duration(days: 30)) {
     return true;
   }
   return false;
@@ -684,7 +685,7 @@ Widget membersShowcase(int membersCount, String headID) {
   );
 }
 
-Widget transactionHeader() {
+Widget healthTransactionHeader() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -698,17 +699,30 @@ Widget transactionHeader() {
   );
 }
 
-Widget totalWidget(
-    BuildContext context, void Function()? ontap, FilterProvider provider) {
+Widget fDTransactionHeader() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      heading("S. No", 18),
+      heading("Fd No", 18),
+      heading("Invested Date", 18),
+      heading("Maturated Date", 18),
+      heading("Investment", 18),
+      heading("Renew Date", 18),
+    ],
+  );
+}
+
+Widget totalWidget(int amount) {
   return Container(
     margin: const EdgeInsets.all(5),
     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-    decoration: dashBoxDex(context),
+    // decoration: dashBoxDex(context),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        customButton("Calculate Total", ontap, context, isExpanded: false),
-        heading1("${provider.commissionSuma}Rs", 22),
+        // customButton("Calculate Total", ontap, context, isExpanded: false),
+        heading1("${AppUtils.formatAmount(amount)} Rs", 22),
       ],
     ),
   );

@@ -6,6 +6,24 @@ import 'package:health_model/shared/const.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:to_csv/to_csv.dart' as exportCSV;
+import 'package:intl/intl.dart';
+
+class AppUtils {
+  static String getFirstWord(String fullName) {
+    List local = fullName.split(" ");
+    return local[0];
+  }
+
+  static String formatAmount(int number) {
+    final NumberFormat numberFormat = NumberFormat("#,##0", "en_US");
+    return numberFormat.format(number);
+  }
+}
+
+String getFirstWord(String fullName) {
+  List local = fullName.split(" ");
+  return local[0];
+}
 
 bool getGender(
   String selectedGender,
@@ -77,11 +95,6 @@ DateTime textToDateTime(String text) {
   );
 }
 
-String getFirstWord(String fullName) {
-  List local = fullName.split(" ");
-  return local[0];
-}
-
 Future<Future> navigate(
   Widget pagename,
   BuildContext context,
@@ -133,7 +146,11 @@ void downloadClientsExcel() {
 void downloadPolicyExcel() {
   List<List<String>> listOfLists = [];
 
-  FirebaseFirestore.instance.collection("Policies").get().then((value) {
+  FirebaseFirestore.instance
+      .collection("Policies")
+      .where("type", isEqualTo: AppConsts.health)
+      .get()
+      .then((value) {
     if (value.docs.isNotEmpty) {
       for (var i = 0; i < value.docs.length; i++) {
         List<String> temp = [
@@ -204,47 +221,51 @@ void updateTemp() async {
       print("Successfully Temp Updated");
     }
   });
-  // FirebaseFirestore.instance.collection("Policies").get().then((value) {
-  //   if (value.docs.isNotEmpty) {
-  //     for (var i = 0; i < value.docs.length; i++) {
-  //       FirebaseFirestore.instance
-  //           .collection("Policies")
-  //           .doc(value.docs[i]["policy_id"])
-  //           .update({"type": AppConsts.health});
-  //     }
-  //     print("Successfully Temp Updated");
-  //   }
-  // });
+  FirebaseFirestore.instance
+      .collection("Policies")
+      .where("type", isEqualTo: AppConsts.health)
+      .get()
+      .then((value) {
+    if (value.docs.isNotEmpty) {
+      for (var i = 0; i < value.docs.length; i++) {
+        FirebaseFirestore.instance
+            .collection("Policies")
+            .doc(value.docs[i]["policy_id"])
+            .update({"bank_details": ""});
+      }
+      print("Successfully Temp Updated");
+    }
+  });
 }
 
-bool selectedPolicy(PolicyModel policyModel, String companyFilter,
-    String statusFilter, DateTime fromDate, DateTime toDate) {
-  if (getFirstWord(policyModel.companyName) == companyFilter ||
-      companyFilter == "all companies") {
-    if (policyModel.policyStatus == statusFilter ||
-        statusFilter == "all status") {
-      if (policyModel.renewalDate.toDate().isAfter(fromDate) &&
-          policyModel.renewalDate.toDate().isBefore(toDate)) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
+// bool selectedPolicy(PolicyModel policyModel, String companyFilter,
+//     String statusFilter, DateTime fromDate, DateTime toDate) {
+//   if (getFirstWord(policyModel.companyName) == companyFilter ||
+//       companyFilter == "all companies") {
+//     if (policyModel.policyStatus == statusFilter ||
+//         statusFilter == "all status") {
+//       if (policyModel.renewalDate.toDate().isAfter(fromDate) &&
+//           policyModel.renewalDate.toDate().isBefore(toDate)) {
+//         return true;
+//       }
+//     }
+//   }
+//   return false;
+// }
 
-bool selectedFd(FdModel fdModel, String companyFilter, String statusFilter,
-    DateTime fromDate, DateTime toDate) {
-  if (getFirstWord(fdModel.companyName) == companyFilter ||
-      companyFilter == "all companies") {
-    if (fdModel.fdStatus == statusFilter || statusFilter == "all status") {
-      if (fdModel.initialDate.toDate().isAfter(fromDate) &&
-          fdModel.initialDate.toDate().isBefore(toDate)) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
+// bool selectedFd(FdModel fdModel, String companyFilter, String statusFilter,
+//     DateTime fromDate, DateTime toDate) {
+//   if (getFirstWord(fdModel.companyName) == companyFilter ||
+//       companyFilter == "all companies") {
+//     if (fdModel.fdStatus == statusFilter || statusFilter == "all status") {
+//       if (fdModel.initialDate.toDate().isAfter(fromDate) &&
+//           fdModel.initialDate.toDate().isBefore(toDate)) {
+//         return true;
+//       }
+//     }
+//   }
+//   return false;
+// }
 
 void deleteTemp() {
   print("called");

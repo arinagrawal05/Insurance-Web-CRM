@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_model/hive/hive_model/commission_hive_model.dart';
+import 'package:health_model/hive/hive_model/commission_models/commission_hive_model.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -11,6 +11,7 @@ class CommissionHiveHelper {
     print("Hive initialized!!");
     Hive.registerAdapter(CommissionHiveModelAdapter());
     commissionBox = await Hive.openBox<CommissionHiveModel>(_commissionBoxName);
+    fetchCommissionsFromFirebase();
   }
 
   static Future<void> fetchCommissionsFromFirebase() async {
@@ -27,7 +28,6 @@ class CommissionHiveHelper {
       final commission = CommissionHiveModel.fromFirestore(doc);
       // userBox.add(user);
       commissionBox.put(doc.id, commission);
-      print('Adding ${commission.name}');
     }
   }
 

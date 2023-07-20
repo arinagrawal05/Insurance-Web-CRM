@@ -1,3 +1,5 @@
+import 'package:health_model/dialogs/admin_dialog.dart';
+
 import '../../shared/exports.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             homepageAppbar(context),
 
             Container(
-              decoration: dashBoxDex(context),
+              decoration: dashBoxDex(Get.context!),
               width: double.infinity,
               padding: const EdgeInsets.all(40),
               margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 40),
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                         children: [bar(), bar(), bar()],
                       ),
                       Container(
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                           // height: 100,
                           width: 250,
                           child: Image.asset(
@@ -71,29 +73,24 @@ class _HomePageState extends State<HomePage> {
                           provider.getStats(AppConsts.health);
                           provider.getCompaniesChartData(AppConsts.health);
                           filterProvider.getCompanies(AppConsts.health);
-                          dashProvider.getAllPolicies(AppConsts.health);
-                          dashProvider.getAllCommissions(AppConsts.health);
-                          UserHiveHelper.fetchUsersFromFirebase();
-                          CommissionHiveHelper.fetchCommissionsFromFirebase();
+                          // dashProvider.getAllPolicies(AppConsts.health);
+                          // dashProvider.getAllCommissions(AppConsts.health);
+                          // UserHiveHelper.fetchUsersFromFirebase();
+                          // CommissionHiveHelper.fetchCommissionsFromFirebase();
 
-                          filterProvider.setDefaultStatus("active");
+                          // filterProvider.setDefaultStatus("active");
 
                           checkGraced();
                         }
-                        navigate(HealthDash(), context);
+                        navigate(Dash(), context);
                       }),
                       dashWidget(
                           "Life",
                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSZ9zuc0ypSpZi0vW7S-dWQ4E34_jM3nvBCQ&usqp=CAU",
                           Colors.cyanAccent.shade100,
                           Ionicons.nuclear, () {
-                        // userProvider
-                        //     .setUserid("06885b49-8870-40df-a27a-46326b409a10");
-                        // navigate(
-                        //     UserDetailPage(
-                        //       model: AppConsts.userModel,
-                        //     ),
-                        //     context);
+                        adminDialog(context, "companyId", "planId");
+                        // Get.changeTheme(  ThemeData.dark());
                       }),
                       dashWidget(
                         "General",
@@ -101,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                         Colors.blueAccent.shade100,
                         Ionicons.car,
                         () {
-                          updateTemp();
+                          // updateTemp();
                           // deleteTemp();
                           // final snackBar = SnackBar(
                           //   behavior: SnackBarBehavior.floating,
@@ -131,22 +128,22 @@ class _HomePageState extends State<HomePage> {
                           provider.getStats(AppConsts.fd);
                           provider.getCompaniesChartData(AppConsts.fd);
                           filterProvider.getCompanies(AppConsts.fd);
-                          dashProvider.getAllPolicies(AppConsts.fd);
-                          dashProvider.getAllCommissions(AppConsts.fd);
-                          UserHiveHelper.fetchUsersFromFirebase();
-                          filterProvider.setDefaultStatus("applied");
+                          // dashProvider.getAllPolicies(AppConsts.fd);
+                          // dashProvider.getAllCommissions(AppConsts.fd);
+                          // UserHiveHelper.fetchUsersFromFirebase();
+                          // filterProvider.setDefaultStatus("applied");
 
                           checkGraced();
                         }
-                        navigate(HealthDash(), context);
+                        navigate(Dash(), context);
                       })
 
                       // Lotia(),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: GestureDetector(
                       onTap: () {
                         // dashProvider.getAllUsers();
@@ -157,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                         navigate(SamplePage(), context);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         // width: double.infinity,
                         decoration: dashBoxDex(context)
                             .copyWith(color: Colors.indigoAccent.shade100),
@@ -192,7 +189,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget bar() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: dashBoxDex(context).copyWith(color: Colors.white),
       height: 20,
       width: 200,

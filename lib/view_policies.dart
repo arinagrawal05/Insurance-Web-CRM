@@ -1,27 +1,21 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/shared/local_streams.dart';
-import 'package:health_model/policy_flow/choose_user.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/filter_provider.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/models/policy_model.dart';
 
-import 'package:provider/provider.dart';
+import 'hive/hive_model/policy_models/generic_investment_data.dart';
+import 'hive/hive_model/policy_models/policy_model.dart';
+
+import '../../shared/exports.dart';
 
 class PoliciesPage extends StatefulWidget {
-  // List<QueryDocumentSnapshot<Object?>> docs;
-  //  UsersPage({required this.docs});
+  final ProductType type;
+
+  const PoliciesPage({super.key, required this.type});
 
   @override
   State<PoliciesPage> createState() => _PoliciesPageState();
 }
 
 class _PoliciesPageState extends State<PoliciesPage> {
-  final ScrollController controller = ScrollController();
+  final ScrollController scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -32,23 +26,22 @@ class _PoliciesPageState extends State<PoliciesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filterProvider = Provider.of<FilterProvider>(context, listen: true);
+    // final filterProvider = Provider.of<FilterProvider>(context, listen: true);
     final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
     final dashProvider = Provider.of<DashProvider>(context, listen: false);
-
+    final searchController = Get.put(PolicySearchController(type: widget.type),
+        tag: widget.type.name);
     return Scaffold(
-      // backgroundColor: scaffoldColor,
-      appBar:
-          customAppbar("Clients ${getWord(dashProvider.dashName)}", context),
-      body: RawKeyboardListener(
-        autofocus: true,
-        focusNode: _focusNode,
-        onKey: (rawKeyEvent) {
-          handleKeyEvent(rawKeyEvent, controller);
-          // throw Exception('No return value');
-        },
-        child: SingleChildScrollView(
-          controller: controller,
+        // backgroundColor: scaffoldColor,
+        appBar:
+            customAppbar("Clients ${getWord(dashProvider.dashName)}", context),
+        body: RawKeyboardListener(
+          autofocus: true,
+          focusNode: _focusNode,
+          onKey: (rawKeyEvent) {
+            handleKeyEvent(rawKeyEvent, scrollController);
+            // throw Exception('No return value');
+          },
           child: Column(
             children: [
               SizedBox(
@@ -57,25 +50,25 @@ class _PoliciesPageState extends State<PoliciesPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     customTextfield(
-                        dashProvider.policyController, "Search", context,
+                        searchController.searchController, "Search", context,
                         onChange: (value) {
-                      dashProvider.searchPolicy(value);
+                      searchController.filterpolicies();
                     }),
                     genericPicker(
-                      filterProvider.companyList,
-                      filterProvider.companyFilter,
+                      searchController.companyList,
+                      searchController.companyFilter,
                       "Company",
                       (value) {
-                        filterProvider.changeCompany(value);
+                        searchController.changeCompany(value);
                       },
                       context,
                     ),
                     genericPicker(
-                      filterProvider.getStatusList(dashProvider.dashName),
-                      filterProvider.statusFilter,
+                      searchController.getCurrentStatusList,
+                      searchController.getCurrentStatusList[0],
                       "Status",
                       (value) {
-                        filterProvider.changeStatus(value);
+                        // controller.changeStatus(healthStatus: HealthStatus.allStatus);
                       },
                       context,
                     ),
@@ -91,13 +84,45 @@ class _PoliciesPageState extends State<PoliciesPage> {
                   ],
                 ),
               ),
-              policyStream(
-                  dashProvider,
-                  false,
-                  filterProvider.companyFilter,
-                  filterProvider.statusFilter,
-                  filterProvider.fromDate,
-                  filterProvider.toDate),
+              Expanded(
+                child: GetBuilder<PolicySearchController>(
+                    init: searchController,
+                    builder: (controller) {
+                      return ListView.builder(
+                          controller: scrollController,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemCount: controller.policies.length,
+                          itemBuilder: (context, index) {
+                            GenericInvestmentHiveData? currentModel =
+                                controller.policies[index].data;
+
+                            if (currentModel == null) {
+                              return Container();
+                            }
+
+                            if (currentModel is PolicyHiveModel) {
+                              PolicyHiveModel policyModel = currentModel;
+
+                              return policyTile(
+                                context,
+                                policyModel,
+                              );
+                            } else {
+                              if (currentModel is FdHiveModel) {
+                                FdHiveModel fdModel = currentModel;
+
+                                return fdTile(
+                                  context,
+                                  fdModel,
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }
+                          });
+                    }),
+              )
               // streamPolicies(
               //     false,
               //     filterProvider.companyFilter,
@@ -108,8 +133,6 @@ class _PoliciesPageState extends State<PoliciesPage> {
               //  )
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

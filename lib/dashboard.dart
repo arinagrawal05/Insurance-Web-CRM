@@ -53,7 +53,7 @@ class HealthDashboardPage extends StatelessWidget {
                                     // cardFlipController.flipcard();
                                   },
                                   child: statsBox(
-                                      "${statsProvider.users_count} Clients",
+                                      "${UserHiveHelper.userBox.length} Clients",
                                       Ionicons.person,
                                       context),
                                 ),

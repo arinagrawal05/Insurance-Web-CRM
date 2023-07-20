@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 
+enum Cummulative { isCummulative, isNonCummulative }
+
 class FDProvider extends ChangeNotifier {
   String client_head_name = "";
   String client_member_name = "";
@@ -24,10 +26,16 @@ class FDProvider extends ChangeNotifier {
   String companyLogo = "";
   String companyID = "";
   // String companyName = "";
-  bool isCummulative = false;
+  Cummulative isCummulative = Cummulative.isNonCummulative;
   String payModeSelected = "Credit/Debit";
   String termSelected = "12 Months";
+  String cTermSelected = "By Month";
 
+  List<String> cTermList = [
+    "By Month",
+    "By 6 months",
+    "By Year",
+  ];
   List<String> payModeList = [
     "Net banking",
     "Credit/Debit",
@@ -43,6 +51,7 @@ class FDProvider extends ChangeNotifier {
     "50 Months",
     "60 Months",
   ];
+
   void selectpayMode(String mode) {
     payModeSelected = mode;
     notifyListeners();
@@ -53,7 +62,12 @@ class FDProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTheme(bool isOn) {
+  void selectCterm(String term) {
+    cTermSelected = term;
+    notifyListeners();
+  }
+
+  void toggleCummulative(Cummulative isOn) {
     isCummulative = isOn;
     notifyListeners();
   }
@@ -141,6 +155,8 @@ class FDProvider extends ChangeNotifier {
       "type": AppConsts.fd,
       "premium_term": int.parse(getFirstWord(termSelected)),
       "nominee_name": nomineeName.text,
+      "nominee_relation": nomineeRelation.text,
+      "nominee_dob": textToDateTime(nomineeDob.text),
       "fd_taken_date": Timestamp.now(),
       "fd_given_date": Timestamp.now(),
       "port_company_name": portCompanyNameController.text,
@@ -148,8 +164,12 @@ class FDProvider extends ChangeNotifier {
       "port_maturity_date": textToDateTime(portMaturityDate.text),
       "port_maturity_amt": portMaturityAmt.text,
       "payMode": payModeSelected,
-      "isCummulative": isCummulative,
-      "fd_no": "NA"
+      "isCummulative":
+          isCummulative == Cummulative.isCummulative ? true : false,
+      "cummulative_term": cTermSelected,
+      "bank_details":
+          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
+      "fd_no": "NA",
     };
 
     print('Sending ' + body.toString());
@@ -170,6 +190,9 @@ class FDProvider extends ChangeNotifier {
   final freshFormKey = GlobalKey<FormState>();
   final TextEditingController investedAmt = TextEditingController();
   final TextEditingController nomineeName = TextEditingController();
+  final TextEditingController nomineeRelation = TextEditingController();
+  final TextEditingController nomineeDob = TextEditingController();
+
   final TextEditingController chequeNo = TextEditingController();
   final TextEditingController bankDate = TextEditingController();
   final TextEditingController bankName = TextEditingController();
