@@ -367,6 +367,9 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
 
 Widget fdTile(BuildContext context, FdHiveModel model) {
   return InkWell(
+    onLongPress: () {
+      AppUtils.showSnackMessage(model.fdId, "This is Fd Id");
+    },
     onTap: () {
       navigate(
         FdDetailPage(model: model),
@@ -421,14 +424,14 @@ Widget fdTile(BuildContext context, FdHiveModel model) {
               ),
               Column(
                 children: [
-                  heading("Invested Date", 16),
-                  productTileText(dateTimetoText(model.initialDate), 14),
+                  heading("Maturated Date", 16),
+                  productTileText(dateTimetoText(model.maturityDate), 14),
                 ],
               ),
               Column(
                 children: [
                   heading("Term", 16),
-                  productTileText(addWithGST(model.fDterm).toString(), 14),
+                  productTileText(model.fDterm.toString(), 14),
                 ],
               ),
               Column(
@@ -539,7 +542,7 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
   );
 }
 
-Widget renewalTile(
+Widget policyRenewalTile(
     bool isPast, BuildContext context, PolicyDataHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
   // Duration diff = model.renewalDate.toDate().difference(DateTime.now());
@@ -637,6 +640,123 @@ Widget renewalTile(
                         RenewPolicyPage(model: thisModel),
                         context,
                       );
+                      // addMemberSheet(context, widget.userid, docId);
+                    }, context, isExpanded: false)
+                  : customButton("Laps", () async {
+                      navigate(
+                        ChooseMember(
+                            headUserid: model.data!.userid,
+                            headName: model.data!.name),
+                        context,
+                      );
+                      // addMemberSheet(context, widget.userid, docId);
+                    }, context, isExpanded: false)
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget fDRenewalTile(
+    bool isPast, BuildContext context, PolicyDataHiveModel model) {
+  // final provider = Provider.of<PolicyProvider>(context, listen: false);
+  // Duration diff = model.renewalDate.toDate().difference(DateTime.now());
+  // Timestamp time = model["d;
+  FdHiveModel thisModel = model.data as FdHiveModel;
+  return InkWell(
+    onTap: null,
+    child: Container(
+      // height: 120,
+      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+
+      decoration: dashBoxDex(context),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                // color: Colors.amber,
+                width: 270,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: model.data!.isMale
+                          ? Colors.blueAccent
+                          : Colors.pinkAccent,
+                      child: Center(
+                        child: Icon(model.data!.isMale
+                            ? Ionicons.male
+                            : Ionicons.female),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heading(model.data!.name, 16),
+                        productTileText(model.data!.email, 14),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  heading("Company", 16),
+                  productTileText(
+                      AppUtils.getFirstWord(thisModel.companyName.toString()),
+                      14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Sum Assured", 16),
+                  productTileText(thisModel.investedAmt.toString(), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Maturity Date", 16),
+                  productTileText(dateTimetoText(thisModel.maturityDate), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Basic Premium", 16),
+                  productTileText(thisModel.investedAmt.toString(), 14),
+                ],
+              ),
+              isPast
+                  ? Column(
+                      children: [
+                        heading("Maturity", 16),
+                        productTileText(
+                            "${30 - (DateTime.now().difference(thisModel.maturityDate).inDays)} days",
+                            14),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        heading("Days to go", 16),
+                        productTileText(
+                            "${thisModel.maturityDate.difference(DateTime.now()).inDays} days",
+                            14),
+                      ],
+                    ),
+              isGraced(thisModel.maturityDate)
+                  ? customButton("Renew", () async {
+                      // navigate(
+                      //   RenewPolicyPage(model: thisModel),
+                      //   context,
+                      // );
                       // addMemberSheet(context, widget.userid, docId);
                     }, context, isExpanded: false)
                   : customButton("Laps", () async {

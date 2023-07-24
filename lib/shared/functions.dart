@@ -217,6 +217,7 @@ updatePolicyStatus(String policyID, String status, DateTime statusDate) {
 }
 
 void updateTemp() async {
+  print("object");
   FirebaseFirestore.instance.collection("Commission").get().then((value) {
     if (value.docs.isNotEmpty) {
       for (var i = 0; i < value.docs.length; i++) {
@@ -228,21 +229,27 @@ void updateTemp() async {
       print("Successfully Temp Updated");
     }
   });
-  FirebaseFirestore.instance
-      .collection("Policies")
-      .where("type", isEqualTo: AppConsts.health)
-      .get()
-      .then((value) {
-    if (value.docs.isNotEmpty) {
-      for (var i = 0; i < value.docs.length; i++) {
-        FirebaseFirestore.instance
-            .collection("Policies")
-            .doc(value.docs[i]["policy_id"])
-            .update({"bank_details": ""});
-      }
-      print("Successfully Temp Updated");
-    }
-  });
+  // FirebaseFirestore.instance
+  //     .collection("Policies")
+  //     .where("company_name", isEqualTo: "Care Health Insurance Co.")
+  //     .get()
+  //     .then((value) {
+  //   if (value.docs.isNotEmpty) {
+  //     for (var i = 0; i < value.docs.length; i++) {
+  //       // print(value.docs[i]["policy_id"]);
+  //       FirebaseFirestore.instance
+  //           .collection("Policies")
+  //           .doc(value.docs[i]["policy_id"])
+  //           .update({
+  //         "company_logo":
+  //             "https://play-lh.googleusercontent.com/ZBdHZIdRgt-8pMRTHrSiJqLLQ_03SDr9LVfj_wZOUOgEb5CXA2_Dy-0pJdNKVicex-BS"
+  //       });
+  //     }
+  // print("Successfully Temp Updated");
+  // }
+  // print("Successfully Temp Updated 2");
+  // });
+  // print("Successfully Temp Updated 3");
 }
 
 // bool selectedPolicy(PolicyModel policyModel, String companyFilter,

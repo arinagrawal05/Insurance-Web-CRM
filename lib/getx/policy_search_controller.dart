@@ -30,7 +30,11 @@ class PolicySearchController extends GetxController {
   void onInit() {
     // Fetch user data from the Hive box
     print('Hive user PolicySearchController init called $type');
-    policyBox = PolicyHiveHelper.policyBox;
+    if (type == ProductType.health) {
+      policyBox = PolicyHiveHelper.policyBox;
+    } else {
+      policyBox = PolicyHiveHelper.fDBox;
+    }
     policies.addAll(policyBox!.values.toList());
     filterpolicies();
     getCompanies();
@@ -48,17 +52,19 @@ class PolicySearchController extends GetxController {
       if (policy.data == null) {
         return false;
       }
-      print(' case 1 ${policy.data!.name} ${policy.data!.type} $type');
+      //  print(' case 1 ${policy.data!.name} ${policy.data!.type} $type');
 
       if (!((type == ProductType.health && policy.data is PolicyHiveModel) ||
           (type == ProductType.fd && policy.data is FdHiveModel))) {
-        print(
-            ' case 1a ${(type == ProductType.health && policy.data is PolicyHiveModel)} $type');
-        print(
-            ' case 1b ${(type == ProductType.fd && policy.data is FdHiveModel)} $type');
+        // print(
+        //     ' case 1a ${(type == ProductType.health && policy.data is PolicyHiveModel)} $type');
+        // print(
+        //     ' case 1b ${(type == ProductType.fd && policy.data is FdHiveModel)} $type');
         return false;
       }
-      print(' case 2 ${policy.data!.name}');
+      // print(' case 2 ${policy.data!.name} ${policy.data!.type} $type');
+
+      // print(' case 2 ${policy.data!.name}');
 
       // if (!(type == ProductType.fd && policy.data is FdHiveModel)) {
       //   return false;
@@ -68,21 +74,21 @@ class PolicySearchController extends GetxController {
       if (!(policy.data!.name.toLowerCase().contains(query.toLowerCase()))) {
         return false;
       }
-      print(' case 4 ${policy.data!.name}');
-      print(' case 4a ${companyFilter}');
-      print(' case 4b ${policy.data!.companyName}');
+      // print(' case 4 ${policy.data!.name}');
+      // print(' case 4a ${companyFilter}');
+      // print(' case 4b ${policy.data!.companyName}');
 
       if (!(companyFilter == 'All Companies' ||
           companyFilter == AppUtils.getFirstWord(policy.data!.companyName))) {
         return false;
       }
-      print(' case 5 ${policy.data!.name}');
+      // print(' case 5 ${policy.data!.name}');
 
       if (!checkStatusFilter(policy.data!)) {
         return false;
       }
 
-      print(' case 6 ${policy.data!.name}');
+      // print(' case 6 ${policy.data!.name}');
 
       return true;
     }).toList();

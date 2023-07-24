@@ -21,7 +21,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PolicyProvider>(context, listen: false);
-    final statsProvider = Get.find<HealthStatsProvider>();
+    final statsProvider = Get.find<GeneralStatsProvider>();
     ;
 
     return Scaffold(

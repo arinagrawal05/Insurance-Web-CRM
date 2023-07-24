@@ -46,7 +46,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
 
   Widget build(BuildContext context) {
     PolicyHiveModel model = widget.model;
-    final statsProvider = Get.find<HealthStatsProvider>();
+    final statsProvider = Get.find<GeneralStatsProvider>();
 
     DateTime startingDate = textToDateTime(issuedDate.text);
     if (model.renewalDate.isAfter(textToDateTime(issuedDate.text))) {

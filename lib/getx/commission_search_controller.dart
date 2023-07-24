@@ -14,10 +14,14 @@ class CommissionSearchController extends GetxController {
   Box<CommissionHiveModel>? commissionBox;
   TextEditingController searchController = TextEditingController();
   final ProductType type;
+  final bool isPending;
 
   int currentSum = 0;
 
-  CommissionSearchController({required this.type});
+  CommissionSearchController({
+    required this.type,
+    required this.isPending,
+  });
   String companyFilter = 'All Companies';
 // TextEDo
 
@@ -25,7 +29,12 @@ class CommissionSearchController extends GetxController {
   void onInit() {
     // Fetch user data from the Hive box
     print('Hive user CommissionSearchController init called');
-    commissionBox = CommissionHiveHelper.commissionBox;
+    if (type == ProductType.health) {
+      commissionBox = CommissionHiveHelper.healthCommissionBox;
+    } else {
+      commissionBox = CommissionHiveHelper.fDCommissionBox;
+    }
+
     commissions.addAll(commissionBox!.values.toList());
     getCompanies();
     super.onInit();
@@ -41,6 +50,16 @@ class CommissionSearchController extends GetxController {
       if (commission.name.toLowerCase().contains(query.toLowerCase())) {
         if (companyFilter == 'All Companies' ||
             companyFilter == commission.companyName) {
+          if (isPending) {
+            if (!commission.isPending) {
+              return false;
+            }
+          } else {
+            if (commission.isPending) {
+              return false;
+            }
+          }
+
           currentSum += commission.commissionAmt;
           return true;
         }

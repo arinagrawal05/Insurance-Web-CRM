@@ -128,19 +128,36 @@ class FdDetailPage extends StatelessWidget {
                                             // navigate(RenewPolicyPage(model: model),
                                             // context);
                                           }, context, isExpanded: false)
-                                        : customButton("Give Certificate", () {
-                                            FirebaseFirestore.instance
-                                                .collection("Policies")
-                                                .doc(model.fdId)
-                                                .update({
-                                              // "fd_status"
-                                              "fd_taken_date": Timestamp.now()
+                                        : customButton("handover to customer",
+                                            () {
+                                            print("object");
+                                            confirmRemoveSheet(
+                                                context, "handover", () {
+                                              FirebaseFirestore.instance
+                                                  .collection("Policies")
+                                                  .doc(model.fdId)
+                                                  .update({
+                                                "fd_given_date": DateTime.now(),
+                                                "fd_status": "handover"
+                                              });
                                             });
+                                            // navigate(
+                                            //     RenewPolicyPage(model: model), context);
                                           }, context, isExpanded: false)
                                     : Row(
                                         children: [
                                           customButton("Redeem", () {
                                             print("object");
+                                            confirmRemoveSheet(
+                                                context, "Redeem", () {
+                                              FirebaseFirestore.instance
+                                                  .collection("Policies")
+                                                  .doc(model.fdId)
+                                                  .update({
+                                                "status_date": DateTime.now(),
+                                                "fd_status": "redeemed"
+                                              });
+                                            });
                                             // navigate(
                                             //     RenewPolicyPage(model: model), context);
                                           }, context, isExpanded: false),

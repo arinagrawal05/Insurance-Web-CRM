@@ -28,7 +28,8 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
 
     // TextEditingController controller = TextEditingController();
     return GetBuilder<CommissionSearchController>(
-        init: CommissionSearchController(type: widget.type),
+        init: CommissionSearchController(type: widget.type, isPending: false),
+        tag: '${widget.type}ForDoneCommission',
         builder: (controller) {
           return Scaffold(
             // backgroundColor: scaffoldColor,

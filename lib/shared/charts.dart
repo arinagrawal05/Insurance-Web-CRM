@@ -6,37 +6,40 @@ import 'exports.dart';
 
 Widget policyCountCircularChart(
     String d, BuildContext context, TooltipBehavior? tooltipBehavior) {
-  final statsProvider = Get.find<HealthStatsProvider>();
-
-  return Container(
-    decoration: dashBoxDex(context),
-    // width: 400,
-    // height: 250,
-    margin: const EdgeInsets.symmetric(vertical: 5),
-    child: SfCircularChart(
-      title: ChartTitle(text: 'Distribution', textStyle: GoogleFonts.nunito()),
-      legend:
-          Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-      tooltipBehavior: tooltipBehavior,
-      series: <CircularSeries>[
-        PieSeries<PolicyDistributionChartData, String>(
-          dataSource: statsProvider.policyDistributionChartData,
-          xValueMapper: (PolicyDistributionChartData data, _) => data.x,
-          yValueMapper: (PolicyDistributionChartData data, _) => data.y,
-          // innerRadius: "50",
-          dataLabelSettings: const DataLabelSettings(isVisible: true),
-          enableTooltip: true,
-          // maximumValue: 40000
-        )
-      ],
-    ),
-  );
+  return GetBuilder<GeneralStatsProvider>(builder: (statsProvider) {
+    if (statsProvider.policyDistributionChartData.isEmpty) {
+      return Container();
+    }
+    return Container(
+      decoration: dashBoxDex(context),
+      // width: 400,
+      // height: 250,
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      child: SfCircularChart(
+        title:
+            ChartTitle(text: 'Distribution', textStyle: GoogleFonts.nunito()),
+        legend:
+            Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+        tooltipBehavior: tooltipBehavior,
+        series: <CircularSeries>[
+          PieSeries<PolicyDistributionChartData, String>(
+            dataSource: statsProvider.policyDistributionChartData,
+            xValueMapper: (PolicyDistributionChartData data, _) => data.x,
+            yValueMapper: (PolicyDistributionChartData data, _) => data.y,
+            // innerRadius: "50",
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
+            enableTooltip: true,
+            // maximumValue: 40000
+          )
+        ],
+      ),
+    );
+  });
 }
 
 Widget policyCircularChart(
     String dashName, BuildContext context, TooltipBehavior? tooltipBehavior) {
-  final statsProvider = Get.find<HealthStatsProvider>();
-  ;
+  final statsProvider = Get.find<GeneralStatsProvider>();
 
   return Container(
     decoration: dashBoxDex(context),
@@ -87,8 +90,8 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
     elevation: 1,
   );
   // List<_ChartData> data
-  final statsProvider = Get.find<HealthStatsProvider>();
-  ;
+  final statsProvider = Get.find<GeneralStatsProvider>();
+
   return FlipCard(
       rotateSide: RotateSide.left,
       onTapFlipping: true,
@@ -118,7 +121,7 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
             tooltipBehavior: tooltip,
             series: <ChartSeries<CompanyChartData, String>>[
               ColumnSeries<CompanyChartData, String>(
-                  dataSource: statsProvider.chartData,
+                  dataSource: statsProvider.chartCompanyData,
                   xValueMapper: (CompanyChartData data, _) => data.x,
                   yValueMapper: (CompanyChartData data, _) => data.y,
                   name: 'Bussiness',
@@ -144,9 +147,9 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     productTileText(
-                        statsProvider.chartData[index].x.toString(), 22),
+                        statsProvider.chartCompanyData[index].x.toString(), 22),
                     productTileText(
-                        statsProvider.chartData[index].y.toString(), 22),
+                        statsProvider.chartCompanyData[index].y.toString(), 22),
                   ],
                 ),
               );

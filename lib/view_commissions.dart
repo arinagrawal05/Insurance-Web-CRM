@@ -30,11 +30,12 @@ class _CommissionsPageState extends State<CommissionsPage> {
     // final provider = Get.find<FilterProvider>();
     // final provider = Get.find<HealthStatsProvider>();
 
-    final dashProvider = Get.find<DashProvider>();
+    // final dashProvider = Get.find<DashProvider>();
 
     // TextEditingController controller = TextEditingController();
     return GetBuilder<CommissionSearchController>(
-        init: CommissionSearchController(type: widget.type),
+        init: CommissionSearchController(type: widget.type, isPending: true),
+        tag: '${widget.type}ForPendingCommission',
         builder: (controller) {
           return Scaffold(
             // backgroundColor: scaffoldColor,

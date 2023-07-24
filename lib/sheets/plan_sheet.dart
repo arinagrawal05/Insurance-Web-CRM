@@ -14,7 +14,7 @@ void addPlanSheet(
   //  int count
 ) {
   final name = TextEditingController();
-  final provider = Get.find<HealthStatsProvider>();
+  final provider = Get.find<GeneralStatsProvider>();
 
   showModalBottomSheet(
       backgroundColor: Colors.transparent,

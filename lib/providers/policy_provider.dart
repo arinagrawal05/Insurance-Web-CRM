@@ -121,7 +121,7 @@ class PolicyProvider extends ChangeNotifier {
 
   void performPolicyFunctions(
     String docId,
-    HealthStatsProvider statsProvider,
+    GeneralStatsProvider statsProvider,
     String inceptionDate,
   ) {
     addPolicy(

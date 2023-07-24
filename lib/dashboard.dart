@@ -21,12 +21,12 @@ class HealthDashboardPage extends StatelessWidget {
 
     // final dashProvider = Get.find<DashProvider>();
 
-    return GetBuilder<HealthStatsProvider>(
-        init: HealthStatsProvider(type: type),
+    return GetBuilder<GeneralStatsProvider>(
+        init: GeneralStatsProvider(type: type),
         builder: (statsProvider) {
           return renderScaffold(
               EnumUtils.convertTypeToKey(type), context, statsProvider);
-          //  GestureDetector(
+          // GestureDetector(
           //     onTap: () {
           //       statsProvider.calculatePolicyStatsFromHive();
           //     },
@@ -38,7 +38,7 @@ class HealthDashboardPage extends StatelessWidget {
   }
 
   Scaffold renderScaffold(
-      String name, BuildContext context, HealthStatsProvider statsProvider) {
+      String name, BuildContext context, GeneralStatsProvider statsProvider) {
     return Scaffold(
       appBar: customAppbar("$name Dashboard", context),
       body: RawKeyboardListener(
@@ -89,7 +89,7 @@ class HealthDashboardPage extends StatelessWidget {
                                   statsBox("${statsProvider.plans_count} Plans",
                                       Ionicons.reader_outline, context),
                                   statsBox(
-                                      "${PolicyHiveHelper.policyBox.length.toString()} $name)}",
+                                      "${statsProvider.getPolicyCount} $name",
                                       Ionicons.receipt_outline,
                                       context),
                                 ],
@@ -129,9 +129,10 @@ class HealthDashboardPage extends StatelessWidget {
                         child: Column(
                           children: [
                             Expanded(
-                                flex: 4,
-                                child: policyCircularChart(
-                                    "$name", context, tooltip)),
+                              flex: 4,
+                              child: policyCircularChart(
+                                  "$name", context, tooltip),
+                            ),
                             Expanded(flex: 5, child: birthdayWidget(context))
                           ],
                         ),
@@ -165,13 +166,13 @@ class HealthDashboardPage extends StatelessWidget {
                             child: heading("Due for Renewal", 20),
                           ),
                           streamRenewals(
-                              true, PolicyHiveHelper.getGracedPolicies()),
+                              true, PolicyHiveHelper.getMaturatedFDs()),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: heading("Upcoming Renewals", 20),
                           ),
                           streamRenewals(
-                              false, PolicyHiveHelper.getUpcomingPolicies())
+                              false, PolicyHiveHelper.getUpcomingFds())
                         ],
                       )
               ]),

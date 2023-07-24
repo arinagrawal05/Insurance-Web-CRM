@@ -99,8 +99,9 @@ class _HomePageState extends State<HomePage> {
                                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSZ9zuc0ypSpZi0vW7S-dWQ4E34_jM3nvBCQ&usqp=CAU",
                                       Colors.cyanAccent.shade100,
                                       Ionicons.nuclear, () {
-                                    PolicyHiveHelper
-                                        .updatePolicyInSearhController();
+                                    // print("objectttt");
+
+                                    // updateTemp();
                                   }),
                                   dashWidget(
                                     "General",
@@ -108,7 +109,6 @@ class _HomePageState extends State<HomePage> {
                                     Colors.blueAccent.shade100,
                                     Ionicons.car,
                                     () {
-                                      // updateTemp();
                                       // deleteTemp();
                                       //   AppUtils.showSnackMessage(
                                       //       "FD Redeemed Successfuly",

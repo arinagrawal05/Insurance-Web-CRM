@@ -11,7 +11,10 @@ import '../hive_model/user_hive_model.dart';
 
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';
+  static const String _fDBoxName = 'fDBox';
+
   static late Box<PolicyDataHiveModel> policyBox;
+  static late Box<PolicyDataHiveModel> fDBox;
 
   static Future<void> init() async {
     print("Hive initialized!!");
@@ -21,27 +24,67 @@ class PolicyHiveHelper {
     Hive.registerAdapter(FdHiveModelAdapter());
 
     policyBox = await Hive.openBox<PolicyDataHiveModel>(_policyBoxName);
+    fDBox = await Hive.openBox<PolicyDataHiveModel>(_fDBoxName);
+
     fetchPoliciesFromFirebase();
   }
 
   static Future<void> fetchPoliciesFromFirebase() async {
-    final policiesCollection =
-        FirebaseFirestore.instance.collection('Policies');
-    final snapshot = await policiesCollection.get();
+    final policiesCollection = FirebaseFirestore.instance
+        .collection('Policies')
+        .where("type", isEqualTo: "Health")
+        .orderBy("renewal_date");
+    ;
+    final fDCollection = FirebaseFirestore.instance
+        .collection('Policies')
+        .where("type", isEqualTo: "FD")
+        .orderBy("maturity_date");
+
+    policiesCollection.get().then((snapshot) async {
+      // print("LLLLL Firebase data policy ${snapshot.docs.length}");
+      await policyBox.clear(); // Clear existing data before adding new users
+      print('Policy Hive cleared');
+      for (var doc in snapshot.docs) {
+        // print('Adding before');
+        // print(doc.id);
+        final policy = PolicyDataHiveModel.fromFirestore(doc);
+        // userBox.add(user);
+        if (policy.data != null) {
+          // policyBox.put(doc.id, policy);
+          policyBox.add(policy);
+          PolicyHiveModel kk = policy.data as PolicyHiveModel;
+          // print(
+          //     "LLLLL Adding data policy in hive ${kk.name} ${kk.renewalDate}");
+
+          // print('Adding ${policy.data!.name}');
+        }
+      }
+    });
+
+    fDCollection.get().then((snapshot) async {
+      // print("LLLLL Firebase data FD ${snapshot.docs.length}");
+
+      await fDBox.clear(); // Clear existing data before adding new users
+      print('Policy Hive cleared');
+      for (var doc in snapshot.docs) {
+        // print('Adding before');
+        // print(doc.id);
+        final policy = PolicyDataHiveModel.fromFirestore(doc);
+        // userBox.add(user);
+        if (policy.data != null) {
+          fDBox.put(doc.id, policy);
+
+          // print('Adding ${policy.data!.name}');
+          FdHiveModel kk = policy.data as FdHiveModel;
+          // print(
+          //     "LLLLL Adding data fd in hive ${kk.name} ${kk.maturityDate} ${kk.fDterm}");
+        }
+      }
+
+      // print("LLLLL Hive data FD ${fDBox.length}");
+    });
 
     // final userBox = Hive.box<UserHiveModel>(_userBoxName);
-    await policyBox.clear(); // Clear existing data before adding new users
-    print('Policy Hive cleared');
-    for (var doc in snapshot.docs) {
-      // print('Adding before');
-      // print(doc.id);
-      final policy = PolicyDataHiveModel.fromFirestore(doc);
-      // userBox.add(user);
-      if (policy.data != null) {
-        policyBox.put(doc.id, policy);
-        // print('Adding ${policy.data!.name}');
-      }
-    }
   }
 
   static List<PolicyDataHiveModel> getPolicyByUser({required String userId}) {
@@ -95,6 +138,50 @@ class PolicyHiveHelper {
         PolicyHiveModel data = policy.data as PolicyHiveModel;
         if (data.renewalDate.isAfter(DateTime.now()) &&
             data.renewalDate.isBefore(DateTime.now().add(Duration(days: 30)))) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static List<PolicyDataHiveModel> getMaturatedFDs() {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = fDBox.values.where((fd) {
+      if (fd.data == null) {
+        return false;
+      }
+      if (fd.data is FdHiveModel) {
+        FdHiveModel data = fd.data as FdHiveModel;
+        if (data.maturityDate.isBefore(DateTime.now()) &&
+            data.maturityDate
+                .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static List<PolicyDataHiveModel> getUpcomingFds() {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = fDBox.values.where((fd) {
+      if (fd.data == null) {
+        return false;
+      }
+      if (fd.data is FdHiveModel) {
+        FdHiveModel data = fd.data as FdHiveModel;
+        if (data.maturityDate.isAfter(DateTime.now()) &&
+            data.maturityDate
+                .isBefore(DateTime.now().add(Duration(days: 30)))) {
           return true;
         }
       }

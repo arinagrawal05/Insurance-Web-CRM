@@ -81,7 +81,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
 
   Widget build(BuildContext context) {
     final provider = Provider.of<PolicyProvider>(context, listen: false);
-    final statsProvider = Get.find<HealthStatsProvider>();
+    final statsProvider = Get.find<GeneralStatsProvider>();
 
     return Scaffold(
       body: SingleChildScrollView(

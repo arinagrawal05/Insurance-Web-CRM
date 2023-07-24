@@ -13,7 +13,7 @@ void adminDialog(
   String planId,
   //  int count
 ) {
-  final statsProvider = Get.find<HealthStatsProvider>();
+  final statsProvider = Get.find<GeneralStatsProvider>();
 
   TextEditingController advisorListField =
       TextEditingController(text: statsProvider.advisorList.join(","));

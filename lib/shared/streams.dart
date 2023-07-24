@@ -369,12 +369,20 @@ Widget streamRenewals(bool isPast, List<PolicyDataHiveModel> data) {
       itemBuilder: (context, index) {
         // return Text("erfdfv");
         // return Text("Some Data Here");
-
-        return renewalTile(
-          isPast,
-          context,
-          data[index],
-        );
+        // return Text(data[index].data!.type);
+        if (data[index].data is PolicyHiveModel) {
+          return policyRenewalTile(
+            isPast,
+            context,
+            data[index],
+          );
+        } else {
+          return fDRenewalTile(
+            isPast,
+            context,
+            data[index],
+          );
+        }
       });
   ;
 }

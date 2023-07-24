@@ -55,7 +55,7 @@ export 'package:flutter/foundation.dart';
 export 'package:health_model/hive/hive_helpers/hive_helper.dart';
 export 'package:health_model/homepage.dart';
 // export 'package:health_model/providers/fd_stats_provider.dart';
-export 'package:health_model/getx/policy_seach_controller.dart';
+export 'package:health_model/getx/policy_search_controller.dart';
 export 'package:health_model/hive/hive_model/policy_models/fd_model.dart';
 export 'package:health_model/policy_flow/choose_user.dart';
 export 'package:health_model/shared/tiles.dart';
