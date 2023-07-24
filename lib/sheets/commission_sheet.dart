@@ -4,7 +4,7 @@ import '../../shared/exports.dart';
 void confirmCommission(
   BuildContext context,
   CommissionHiveModel model,
-  HealthStatsProvider provider,
+  // HealthStatsProvider provider,
 
   //  int count
 ) {

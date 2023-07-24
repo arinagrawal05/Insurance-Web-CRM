@@ -7,6 +7,7 @@ import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dar
 import 'package:health_model/hive/hive_model/user_hive_model.dart';
 import 'package:health_model/models/user_model.dart';
 import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/stepper.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -31,66 +32,71 @@ class SamplePage extends StatelessWidget {
                     icon: Icon(Icons.delete)),
               ],
             ),
-            body: ValueListenableBuilder<Box<PolicyDataHiveModel>>(
-              valueListenable: PolicyHiveHelper.policyBox.listenable(),
-              builder: (context, box, _) {
-                if (box.isEmpty) {
-                  return Center(
-                    child: Text('No users found'),
-                  );
-                }
+            body:
 
-                return ListView.builder(
-                  itemCount: box.length,
-                  itemBuilder: (context, index) {
-                    final user = box.getAt(index);
+                //  ValueListenableBuilder<Box<PolicyDataHiveModel>>(
+                //   valueListenable: PolicyHiveHelper.policyBox.listenable(),
+                //   builder: (context, box, _) {
+                //     if (box.isEmpty) {
+                //       return Center(
+                //         child: Text('No users found'),
+                //       );
+                //     }
 
-                    if (user == null || user.data == null) {
-                      return Container();
-                    }
-                    return ListTile(
-                      title: Text(user!.data!.name),
-                      // subtitle: Text(user.email),
-                      onTap: () {
-                        // Handle user selection
-                      },
-                    );
-                  },
-                );
-              },
-            )));
-    // body: Scaffold(body: Builder(builder: (context) {
-    //   return GetBuilder<UserSearchController>(
-    //       init: UserSearchController(),
-    //       builder: (controller) {
-    //         return Column(
-    //           children: [
-    //             customTextfield(
-    //                 controller.searchController, "Search", context,
-    //                 onChange: (query) {
-    //               controller.filterUsers(query);
-    //             }),
-    //             Expanded(
-    //               child: ListView.builder(
-    //                 // shrinkWrap: true,
-    //                 // physics: NeverScrollableScrollPhysics(),
-    //                 itemCount: controller.users.length,
-    //                 itemBuilder: (context, index) {
-    //                   final user = controller.users[index];
+                //     return ListView.builder(
+                //       itemCount: box.length,
+                //       itemBuilder: (context, index) {
+                //         final user = box.getAt(index);
 
-    //                   return ListTile(
-    //                     title: Text(user!.name),
-    //                     subtitle: Text(user.email),
-    //                     onTap: () {
-    //                       // Handle user selection
-    //                     },
-    //                   );
-    //                 },
-    //               ),
-    //             ),
-    //           ],
-    //         );
-    //       });
-    // }))));
+                //         if (user == null || user.data == null) {
+                //           return Container();
+                //         }
+                //         return ListTile(
+                //           title: Text(user!.data!.name),
+                //           // subtitle: Text(user.email),
+                //           onTap: () {
+                //             // Handle user selection
+                //           },
+                //         );
+                //       },
+                //     );
+                //   },
+                // )));
+
+                Scaffold(body: Builder(builder: (context) {
+              return
+                  // GetBuilder<UserSearchController>(
+                  //     init: UserSearchController(),
+                  //     builder: (controller) {
+                  // return
+                  Column(
+                children: [
+                  // customTextfield(
+                  //     controller.searchController, "Search", context,
+                  //     onChange: (query) {
+                  //   controller.filterUsers(query);
+                  // }),
+                  // Expanded(
+                  //   child: ListView.builder(
+                  //     // shrinkWrap: true,
+                  //     // physics: NeverScrollableScrollPhysics(),
+                  //     itemCount: controller.users.length,
+                  //     itemBuilder: (context, index) {
+                  //       final user = controller.users[index];
+
+                  //       return ListTile(
+                  //         title: Text(user!.name),
+                  //         subtitle: Text(user.email),
+                  //         onTap: () {
+                  //           // Handle user selection
+                  //         },
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                ],
+              );
+              // });
+            }))));
   }
 }

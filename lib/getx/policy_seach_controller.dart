@@ -22,7 +22,7 @@ class PolicySearchController extends GetxController {
   PolicySearchController({required this.type});
   String companyFilter = 'All Companies';
   HealthStatus healthStatusFilter = HealthStatus.active;
-  FDStatus fDStatusFilter = FDStatus.applied;
+  FDStatus fDStatusFilter = FDStatus.allStatus;
 
 // TextEDo
 
@@ -38,52 +38,51 @@ class PolicySearchController extends GetxController {
   }
 
   void filterpolicies() {
+    print('filterpolicies called with $type');
     String query = searchController.text;
-
+    // FilterProvider filterController = Get.find<FilterProvider>();
+    // filterController.toDate;
     print(query);
     policies.clear();
-    policies = policyBox!.values.where((commission) {
-      if (commission.data == null) {
+    policies = policyBox!.values.where((policy) {
+      if (policy.data == null) {
         return false;
       }
-      // print(' case 1 ${commission.data!.name} ${commission.data!.type} $type');
+      print(' case 1 ${policy.data!.name} ${policy.data!.type} $type');
 
-      if (!((type == ProductType.health &&
-              commission.data is PolicyHiveModel) ||
-          (type == ProductType.fd && commission.data is FdHiveModel))) {
-        // print(
-        //     ' case 1a ${(type == ProductType.health && commission.data is PolicyHiveModel)} $type');
-        // print(
-        //     ' case 1b ${(type == ProductType.fd && commission.data is FdHiveModel)} $type');
+      if (!((type == ProductType.health && policy.data is PolicyHiveModel) ||
+          (type == ProductType.fd && policy.data is FdHiveModel))) {
+        print(
+            ' case 1a ${(type == ProductType.health && policy.data is PolicyHiveModel)} $type');
+        print(
+            ' case 1b ${(type == ProductType.fd && policy.data is FdHiveModel)} $type');
         return false;
       }
-      // print(' case 2 ${commission.data!.name}');
+      print(' case 2 ${policy.data!.name}');
 
-      // if (!(type == ProductType.fd && commission.data is FdModel)) {
+      // if (!(type == ProductType.fd && policy.data is FdHiveModel)) {
       //   return false;
       // }
-      // print(' case 3 ${commission.data!.name}');
+      // print(' case 3 ${policy.data!.name}');
 
-      if (!(commission.data!.name
-          .toLowerCase()
-          .contains(query.toLowerCase()))) {
+      if (!(policy.data!.name.toLowerCase().contains(query.toLowerCase()))) {
         return false;
       }
-      // print(' case 4 ${commission.data!.name}');
-      // print(' case 4a ${companyFilter}');
-      // print(' case 4b ${commission.data!.companyName}');
+      print(' case 4 ${policy.data!.name}');
+      print(' case 4a ${companyFilter}');
+      print(' case 4b ${policy.data!.companyName}');
 
       if (!(companyFilter == 'All Companies' ||
-          companyFilter == getFirstWord(commission.data!.companyName))) {
+          companyFilter == AppUtils.getFirstWord(policy.data!.companyName))) {
         return false;
       }
-      // print(' case 5 ${commission.data!.name}');
+      print(' case 5 ${policy.data!.name}');
 
-      if (!checkStatusFilter(commission.data!)) {
+      if (!checkStatusFilter(policy.data!)) {
         return false;
       }
 
-      // print(' case 6 ${commission.data!.name}');
+      print(' case 6 ${policy.data!.name}');
 
       return true;
     }).toList();
@@ -114,13 +113,13 @@ class PolicySearchController extends GetxController {
     filterpolicies();
   }
 
-  void changeStatus({HealthStatus? healthStatus, FDStatus? fdStatus}) {
-    if (healthStatus != null) {
-      healthStatusFilter = healthStatus;
+  void changeStatus(String status) {
+    if (type == ProductType.health) {
+      healthStatusFilter = EnumUtils.convertNameToHealthStatus(status);
+    } else if (type == ProductType.fd) {
+      fDStatusFilter = EnumUtils.convertNameToFdStatus(status);
     }
-    if (fdStatus != null) {
-      fdStatus = fdStatus;
-    }
+
     filterpolicies();
   }
 
@@ -134,7 +133,7 @@ class PolicySearchController extends GetxController {
     ];
     FirebaseFirestore.instance
         .collection("Companies")
-        .where("company_type", isEqualTo: EnumUtils().convertTypeToKey(type))
+        .where("company_type", isEqualTo: EnumUtils.convertTypeToKey(type))
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {

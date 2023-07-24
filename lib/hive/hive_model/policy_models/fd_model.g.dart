@@ -48,13 +48,16 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       cummulativeTerm: fields[28] as String,
       nomineeDob: fields[30] as DateTime,
       nomineeRelation: fields[29] as String,
+      headName: fields[32] as String,
+      statusDate: fields[31] as DateTime,
+      isFresh: fields[33] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, FdHiveModel obj) {
     writer
-      ..writeByte(31)
+      ..writeByte(34)
       ..writeByte(13)
       ..write(obj.fdId)
       ..writeByte(14)
@@ -91,6 +94,12 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       ..write(obj.nomineeRelation)
       ..writeByte(30)
       ..write(obj.nomineeDob)
+      ..writeByte(31)
+      ..write(obj.statusDate)
+      ..writeByte(32)
+      ..write(obj.headName)
+      ..writeByte(33)
+      ..write(obj.isFresh)
       ..writeByte(0)
       ..write(obj.type)
       ..writeByte(1)

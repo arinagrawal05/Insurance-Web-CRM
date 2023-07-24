@@ -6,7 +6,7 @@ class ChooseCompany extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashProvider = Provider.of<DashProvider>(context, listen: true);
+    final dashProvider = Get.find<DashProvider>();
 
     // TextEditingController controller = TextEditingController();
     return Scaffold(
@@ -28,7 +28,8 @@ class ChooseCompany extends StatelessWidget {
             //     ],
             //   ),
             // ),
-            streamCompanies(true, dashProvider.dashName)
+            streamCompanies(
+                true, EnumUtils.convertTypeToKey(dashProvider.currentDashBoard))
           ],
         ),
       ),

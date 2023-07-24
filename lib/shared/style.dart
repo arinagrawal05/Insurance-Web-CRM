@@ -64,10 +64,10 @@ BoxDecoration dashBoxDex(BuildContext context, {bool isContrast = false}) {
   return BoxDecoration(
       // boxShadow: [
       //   BoxShadow(
-      //       spreadRadius: 1,
-      //       offset: Offset(0.5, 0.5),
+      //       spreadRadius: 2,
+      //       offset: Offset(0.2, 0.2),
       //       blurRadius: 1.0,
-      //       color: Colors.grey.shade300),
+      //       color: Colors.blueGrey),
       // ],
       borderRadius: BorderRadius.circular(10),
       color: isContrast

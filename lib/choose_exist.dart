@@ -19,7 +19,7 @@ class ChooseExisting extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                chooseHeader("Fresh or Existing", 4),
+                chooseHeader("Fresh or Renewal", 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -31,7 +31,7 @@ class ChooseExisting extends StatelessWidget {
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
                         child: formTextField(
-                            provider.portFdNo, "Fd No", "Enter Fd No")),
+                            provider.portFdNo, "FD No", "Enter FD No")),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
                         child: formTextField(provider.portMaturityAmt,
@@ -47,10 +47,12 @@ class ChooseExisting extends StatelessWidget {
                   ],
                 ),
                 customButton("Fresh", () {
+                  provider.toggleFresh(true);
                   navigate(EnterFdDetails(), context);
                 }, context),
-                customButton("Existed", () {
+                customButton("Renewal", () {
                   if (provider.freshFormKey.currentState?.validate() == true) {
+                    provider.toggleFresh(false);
                     navigate(EnterFdDetails(), context);
                   }
                 }, context),

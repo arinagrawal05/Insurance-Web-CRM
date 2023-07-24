@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/shared/const.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/functions.dart';
 
 final oneMonthMore = DateTime.now().add(const Duration(days: 30));
@@ -14,7 +15,7 @@ final oneYearAgo = DateTime.now().subtract(const Duration(days: 365));
 final foreverAgo = DateTime.now().subtract(const Duration(days: 30 * 365));
 final foreverMore = DateTime.now().add(const Duration(days: 30 * 365));
 
-class FilterProvider extends ChangeNotifier {
+class FilterProvider extends GetxController {
   DateTime toDate = foreverMore;
   DateTime fromDate = foreverAgo;
   num commissionSuma = 0;
@@ -24,26 +25,26 @@ class FilterProvider extends ChangeNotifier {
   String filterName = "by Date";
 
   int tooltime = 0;
-  List<String> policyStatusList = [
-    "all status",
-    "active",
-    "ported",
-    "lapsed",
-  ];
-  List<String> fDStatusList = [
-    "all status",
-    "applied",
-    "claimed",
-    "released",
-  ];
+  // List<String> policyStatusList = [
+  //   "all status",
+  //   "active",
+  //   "ported",
+  //   "lapsed",
+  // ];
+  // List<String> fDStatusList = [
+  //   "all status",
+  //   "applied",
+  //   "claimed",
+  //   "released",
+  // ];
 
-  List<String> getStatusList(String dashName) {
-    if (dashName == AppConsts.health) {
-      return policyStatusList;
-    } else {
-      return fDStatusList;
-    }
-  }
+  // List<String> getStatusList(String dashName) {
+  //   if (dashName == ProductType.health) {
+  //     return policyStatusList;
+  //   } else {
+  //     return fDStatusList;
+  //   }
+  // }
 
   List<String> companyList = [
     "all companies",
@@ -51,59 +52,59 @@ class FilterProvider extends ChangeNotifier {
     // "Star",
     // "none",
   ];
-  void setDefaultStatus(String status) {
-    statusFilter = status;
-    notifyListeners();
-  }
+  // void setDefaultStatus(String status) {
+  //   statusFilter = status;
+  //   update();
+  // }
 
   void changeCompany(String newOne) {
     companyFilter = newOne;
-    notifyListeners();
+    update();
   }
 
-  void changeStatus(String newOne) {
-    statusFilter = newOne;
-    notifyListeners();
-  }
+  // void changeStatus(String newOne) {
+  //   statusFilter = newOne;
+  //   update();
+  // }
 
   void closeToolTip() {
     tooltime = 1;
 
-    notifyListeners();
+    update();
   }
 
-  void clearSum() {
-    commissionSuma = 0;
+  // void clearSum() {
+  //   commissionSuma = 0;
 
-    notifyListeners();
-  }
+  //   update();
+  // }
 
   void filterByWeek() {
     fromDate = oneWeekAgo;
     toDate = now;
 
-    notifyListeners();
+    update();
   }
 
   void filterByMonth() {
     fromDate = oneMonthAgo;
     toDate = now;
     filterName = "By Month";
-    notifyListeners();
+    update();
   }
 
   void filterByThreeMonths() {
     fromDate = threeMonthsAgo;
     toDate = now;
 
-    notifyListeners();
+    update();
   }
 
   void filterBySixMonths() {
     fromDate = sixMonthsAgo;
     toDate = now;
 
-    notifyListeners();
+    update();
   }
 
   void filterByYear() {
@@ -111,7 +112,7 @@ class FilterProvider extends ChangeNotifier {
     toDate = now;
     filterName = "By Year";
 
-    notifyListeners();
+    update();
   }
 
   void filterByTillNow() {
@@ -119,7 +120,7 @@ class FilterProvider extends ChangeNotifier {
     toDate = foreverMore;
     filterName = "By Date";
 
-    notifyListeners();
+    update();
   }
 
   void filterByManual(DateTime fDate, DateTime tDate) {
@@ -127,7 +128,7 @@ class FilterProvider extends ChangeNotifier {
     toDate = tDate;
     filterName = "By Manual";
 
-    notifyListeners();
+    update();
   }
 
   void getCompanies(String type) {
@@ -141,39 +142,11 @@ class FilterProvider extends ChangeNotifier {
         .then((value) {
       if (value.docs.isNotEmpty) {
         for (var i = 0; i < value.docs.length; i++) {
-          companyList.add(getFirstWord(value.docs[i]["name"]));
-          print("Added " + getFirstWord(value.docs[i]["name"]));
+          companyList.add(AppUtils.getFirstWord(value.docs[i]["name"]));
+          print("Added " + AppUtils.getFirstWord(value.docs[i]["name"]));
         }
       }
     });
-    notifyListeners();
-  }
-
-  Future<num> sumCommission(bool isPending, String type) {
-    num temp = 0;
-
-    commissionSuma = 0;
-    FirebaseFirestore.instance
-        .collection("Commission")
-        .where('commission_date', isGreaterThan: fromDate)
-        .where('commission_date', isLessThan: toDate)
-        .where("isPending", isEqualTo: true)
-        .where("commission_type", isEqualTo: type)
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        for (var i = 0; i < value.docs.length; i++) {
-          if (value.docs[i]["isPending"] == isPending) {
-            if (value.docs[i]["company_name"] == companyFilter ||
-                companyFilter == "all companies") {
-              temp += value.docs[i]["commission_amt"];
-            }
-          }
-        }
-      }
-      commissionSuma = temp;
-    });
-    notifyListeners();
-    return Future(() => commissionSuma);
+    update();
   }
 }

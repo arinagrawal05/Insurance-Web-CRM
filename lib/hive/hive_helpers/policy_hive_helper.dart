@@ -3,6 +3,7 @@ import 'package:health_model/hive/hive_model/policy_models/fd_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/generic_investment_data.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -41,6 +42,98 @@ class PolicyHiveHelper {
         // print('Adding ${policy.data!.name}');
       }
     }
+  }
+
+  static List<PolicyDataHiveModel> getPolicyByUser({required String userId}) {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = policyBox.values.where((policy) {
+      if (policy.data == null) {
+        return false;
+      }
+
+      if (policy.data!.userid == userId) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static List<PolicyDataHiveModel> getGracedPolicies() {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = policyBox.values.where((policy) {
+      if (policy.data == null) {
+        return false;
+      }
+      if (policy.data is PolicyHiveModel) {
+        PolicyHiveModel data = policy.data as PolicyHiveModel;
+        if (data.renewalDate.isBefore(DateTime.now()) &&
+            data.renewalDate
+                .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static List<PolicyDataHiveModel> getUpcomingPolicies() {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = policyBox.values.where((policy) {
+      if (policy.data == null) {
+        return false;
+      }
+      if (policy.data is PolicyHiveModel) {
+        PolicyHiveModel data = policy.data as PolicyHiveModel;
+        if (data.renewalDate.isAfter(DateTime.now()) &&
+            data.renewalDate.isBefore(DateTime.now().add(Duration(days: 30)))) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static Future<void> updateSpecificPolicy({required String documentID}) async {
+    final policiesCollection =
+        FirebaseFirestore.instance.collection('Policies');
+    final snapshot = await policiesCollection.doc(documentID).get();
+
+    print('updateSpecificPolicy called for $documentID');
+
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+
+    final policy = PolicyDataHiveModel.fromFirestore(snapshot);
+    // userBox.add(user);
+    if (policy.data != null) {
+      policyBox.put(documentID, policy);
+      // print('Adding ${policy.data!.name}');
+    }
+
+    updatePolicyInSearhController();
+  }
+
+  static void updatePolicyInSearhController() {
+    ProductType type = Get.find<DashProvider>().currentDashBoard;
+    Get.find()<PolicySearchController>(tag: type.name).filterpolicies();
+  }
+
+  static void deleteSpecificPolicy({required String documentID}) {
+    policyBox.delete(documentID);
+    updatePolicyInSearhController();
+
+    // print('Adding ${policy.data!.name}');
   }
 
   static void printAllUsers() {

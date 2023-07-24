@@ -33,13 +33,14 @@ class PolicyDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: genericAppbar(),
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 1,
             child: SingleChildScrollView(
               child: Container(
                 decoration: dashBoxDex(context),
-                margin: const EdgeInsets.all(12),
+                margin: const EdgeInsets.symmetric(horizontal: 12),
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class PolicyDetailPage extends StatelessWidget {
           Expanded(
             flex: 4,
             child: Container(
-                margin: const EdgeInsets.all(12),
+                margin: const EdgeInsets.symmetric(horizontal: 12),
                 // color: const Color.fromRGBO(0, 0, 0, 0),
                 padding: const EdgeInsets.all(12),
                 width: double.infinity,
@@ -93,7 +94,7 @@ class PolicyDetailPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -173,7 +174,7 @@ class PolicyDetailPage extends StatelessWidget {
                               GestureDetector(
                                   onTap: () {
                                     launchURL(
-                                        "https://wa.me/${model.phone}?text=${renewalDraftMsg(model)}");
+                                        "https://wa.me/${model.phone}?text=${healthRenewalDraftMsg(model)}");
                                   },
                                   child: Icon(
                                     Ionicons.logo_whatsapp,
@@ -208,7 +209,35 @@ class PolicyDetailPage extends StatelessWidget {
                             "Renewal Date: ${dateTimetoText(model.renewalDate)}",
                             22,
                           ),
-                          Text(model.isFresh.toString())
+                          !(model.isFresh)
+                              ? Container(
+                                  padding: EdgeInsets.all(12),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Ionicons.information_circle_outline,
+                                        size: 45,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            heading(
+                                                "This Policy is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portIssueDate)}",
+                                                20),
+                                            heading1(
+                                                "Ported Policy no is ${model.portPolicyNo}",
+                                                16)
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ))
+                              : Container()
                         ],
                       ),
                     ),

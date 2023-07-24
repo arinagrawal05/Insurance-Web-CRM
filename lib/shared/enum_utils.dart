@@ -5,7 +5,7 @@ enum HealthStatus { allStatus, active, ported, lapsed }
 enum FDStatus { allStatus, applied, inHand, redeemed }
 
 class EnumUtils {
-  String convertTypeToKey(ProductType type) {
+  static String convertTypeToKey(ProductType type) {
     switch (type) {
       case ProductType.health:
         return 'Health';
@@ -14,7 +14,7 @@ class EnumUtils {
     }
   }
 
-  String convertHealthStatusToName(HealthStatus status) {
+  static String convertHealthStatusToName(HealthStatus status) {
     switch (status) {
       case HealthStatus.allStatus:
         return 'All Status';
@@ -23,7 +23,7 @@ class EnumUtils {
     }
   }
 
-  String convertFDStatusToName(FDStatus status) {
+  static String convertFDStatusToName(FDStatus status) {
     switch (status) {
       case FDStatus.allStatus:
         return 'All Status';
@@ -32,7 +32,7 @@ class EnumUtils {
     }
   }
 
-  FDStatus convertNameToFdStatus(String status) {
+  static FDStatus convertNameToFdStatus(String status) {
     switch (status) {
       case "All Status":
         return FDStatus.allStatus;
@@ -44,6 +44,21 @@ class EnumUtils {
         return FDStatus.redeemed;
       default:
         return FDStatus.allStatus;
+    }
+  }
+
+  static HealthStatus convertNameToHealthStatus(String status) {
+    switch (status) {
+      case "All Status":
+        return HealthStatus.allStatus;
+      case "active":
+        return HealthStatus.active;
+      case "ported":
+        return HealthStatus.ported;
+      case "lapsed":
+        return HealthStatus.lapsed;
+      default:
+        return HealthStatus.allStatus;
     }
   }
 }

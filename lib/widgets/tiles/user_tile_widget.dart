@@ -11,12 +11,12 @@ class UserTile extends StatelessWidget {
     final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
     final fdProvider = Provider.of<FDProvider>(context, listen: false);
 
-    final dashProvider = Provider.of<DashProvider>(context, listen: false);
+    final dashProvider = Get.find<DashProvider>();
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return InkWell(
       onTap: isChoosing
           ? () {
-              if (dashProvider.dashName == AppConsts.health) {
+              if (dashProvider.currentDashBoard == ProductType.health) {
                 policyProvider.setClient(
                     model.userid,
                     model.name,

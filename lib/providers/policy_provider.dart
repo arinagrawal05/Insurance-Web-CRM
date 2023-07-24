@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/shared/const.dart';
+import 'package:health_model/shared/enum_utils.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
 
@@ -138,16 +139,16 @@ class PolicyProvider extends ChangeNotifier {
         policyNumber.text,
         int.parse(premiumAmt.text),
         textToDateTime(issuedDate.text),
-        getFirstWord(companyName),
+        AppUtils.getFirstWord(companyName),
         statsProvider.healthPercent.toDouble(),
-        AppConsts.health);
+        "Health");
     makeATransaction(
         client_uid,
         docId,
         policyNumber.text,
         companyName,
         textToDateTime(issuedDate.text),
-        int.parse(getFirstWord(termSelected)),
+        int.parse(AppUtils.getFirstWord(termSelected)),
         int.parse(premiumAmt.text),
         membersCount,
         textToDateTime(issuedDate.text));
@@ -173,15 +174,15 @@ class PolicyProvider extends ChangeNotifier {
       "isMale": client_isMale,
       "phone": client_phone,
       "email": client_email,
-      "renewal_date": issuedDate
-          .add(Duration(days: 365 * int.parse(getFirstWord(termSelected)))),
+      "renewal_date": issuedDate.add(
+          Duration(days: 365 * int.parse(AppUtils.getFirstWord(termSelected)))),
       "policy_no": policyNumber.text,
       "issued_date": issuedDate,
       "inception_date": inceptionDate,
       "policy_status": "active",
       "sum_assured": int.parse(sumAssured.text),
       "premium_amt": int.parse(premiumAmt.text),
-      "premium_term": int.parse(getFirstWord(termSelected)),
+      "premium_term": int.parse(AppUtils.getFirstWord(termSelected)),
       "nominee_name": nomineeName.text,
       "advisor_name": advisorName.text,
       "isFress": isFresh,
@@ -193,7 +194,7 @@ class PolicyProvider extends ChangeNotifier {
       "status_date": Timestamp.now(),
       "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
-      "type": AppConsts.health,
+      "type": ProductType.health,
     });
   }
 

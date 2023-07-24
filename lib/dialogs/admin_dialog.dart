@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/providers/health_stats_provider.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +13,8 @@ void adminDialog(
   String planId,
   //  int count
 ) {
-  final statsProvider =
-      Provider.of<HealthStatsProvider>(context, listen: false);
+  final statsProvider = Get.find<HealthStatsProvider>();
+
   TextEditingController advisorListField =
       TextEditingController(text: statsProvider.advisorList.join(","));
 
@@ -52,6 +54,95 @@ void adminDialog(
                     }, context)
                   ],
                 ),
+              ),
+            ),
+          ));
+}
+
+void showCertificateDialog(FdHiveModel model) {
+  TextEditingController fdNoController = TextEditingController();
+  TextEditingController folioController = TextEditingController();
+
+  TextEditingController maturityAmt = TextEditingController();
+
+  TextEditingController maturityDate =
+      TextEditingController(text: dateTimetoText(model.maturityDate));
+  showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) => Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0)), //this right here
+            child: Container(
+              padding: EdgeInsets.all(25.0),
+              height: 550.0,
+              width: 900.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  heading("Certificate Submission", 22),
+                  formTextField(
+                    folioController,
+                    "Folio number",
+                    "Enter Folio number",
+                  ),
+                  formTextField(
+                    fdNoController,
+                    "FD number",
+                    "Enter FD number",
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: formTextField(
+                      maturityAmt,
+                      "Maturity Value",
+                      "Enter Maturity Value",
+                    ),
+                  ),
+                  formTextField(
+                      maturityDate, "Maturity Date", "Enter Maturity Date"),
+
+                  // textFormField(fdNoController, "FD number", Get.context!,
+                  //     isExpanded: true),
+
+                  const Spacer(),
+                  customButton("Get Certificate", () {
+                    addCommision(
+                        model.name,
+                        model.fdNo,
+                        model.investedAmt,
+                        DateTime.now(),
+                        model.companyName,
+                        getFdCommission(model.fDterm),
+                        AppConsts.fd);
+                    makeATransaction(
+                        model.userid,
+                        model.fdId,
+                        fdNoController.text,
+                        model.companyName,
+                        model.initialDate,
+                        model.fDterm,
+                        model.investedAmt,
+                        int.parse(maturityAmt.text),
+                        textToDateTime(maturityDate.text));
+                    // List list = advisorListField.text.split(",");
+                    FirebaseFirestore.instance
+                        .collection("Policies")
+                        .doc(model.fdId)
+                        .update({
+                      "maturity_date": textToDateTime(maturityDate.text),
+                      "maturity_amt": int.parse(maturityAmt.text),
+                      "fd_taken_date": Timestamp.now(),
+                      "fd_no": fdNoController.text,
+                      "fd_status": FDStatus.inHand.name,
+                      "folio_no": folioController.text,
+                    }).then((value) {
+                      PolicyHiveHelper.updateSpecificPolicy(
+                          documentID: model.fdId);
+                      Navigator.pop(Get.context!);
+                      Navigator.pop(Get.context!);
+                    });
+                  }, Get.context!)
+                ],
               ),
             ),
           ));

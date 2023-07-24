@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:health_model/models/plan_model.dart';
 import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/shared/const.dart';
+import 'package:health_model/shared/enum_utils.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/sheets/plan_sheet.dart';
@@ -23,7 +25,7 @@ class AddCompanyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //var uploadImage = Provider.of<UploadImage>(context);
-    final dashProvider = Provider.of<DashProvider>(context, listen: true);
+    final dashProvider = Get.find<DashProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +40,7 @@ class AddCompanyPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               formTextField(name, "Company Name", "Enter Company Name"),
-              dashProvider.dashName == AppConsts.health
+              dashProvider.currentDashBoard == ProductType.health
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -90,7 +92,8 @@ class AddCompanyPage extends StatelessWidget {
                     "plans_count": 0,
                     "policy_count": 0,
                     "timestamp": Timestamp.now(),
-                    "company_type": dashProvider.dashName,
+                    "company_type": EnumUtils.convertTypeToKey(
+                        dashProvider.currentDashBoard),
                     "total_bussiness": 0,
                     "logo":
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReatD6bpUCpOVAd7ojjwBFEi9aIRCe55KlVQ&usqp=CAU",

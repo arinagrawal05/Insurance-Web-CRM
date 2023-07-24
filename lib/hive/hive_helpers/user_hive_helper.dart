@@ -49,6 +49,26 @@ class UserHiveHelper {
     }
   }
 
+  static Future<void> updateSpecifiUser({required String documentID}) async {
+    final userCollection = FirebaseFirestore.instance.collection('Users');
+    final snapshot = await userCollection.doc(documentID).get();
+
+    print('updateSpecificUser called for $documentID');
+
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+    final user = UserHiveModel.fromFirestore(snapshot);
+    // userBox.add(user);
+    if (user != null) {
+      userBox.put(documentID, user);
+      // print('Adding ${policy.data!.name}');
+    }
+  }
+
+  static void deleteSpecificUser({required String documentID}) {
+    userBox.delete(documentID);
+    // print('Adding ${policy.data!.name}');
+  }
+
   static Future<void> deleteAllUserData() async {
     // final userBox = Hive.box<UserHiveModel>(_userBoxName);
     await userBox.clear();

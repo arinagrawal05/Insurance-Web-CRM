@@ -27,9 +27,15 @@ class FDProvider extends ChangeNotifier {
   String companyID = "";
   // String companyName = "";
   Cummulative isCummulative = Cummulative.isNonCummulative;
-  String payModeSelected = "Credit/Debit";
+  String payModeSelected = "Cheque";
   String termSelected = "12 Months";
   String cTermSelected = "By Month";
+  bool isFresh = true;
+
+  void toggleFresh(bool isfresh) {
+    isFresh = isfresh;
+    notifyListeners();
+  }
 
   List<String> cTermList = [
     "By Month",
@@ -37,18 +43,21 @@ class FDProvider extends ChangeNotifier {
     "By Year",
   ];
   List<String> payModeList = [
+    "Cheque",
     "Net banking",
     "Credit/Debit",
     "UPI",
-    "Cheque",
   ];
 
   List<String> termList = [
     "12 Months",
+    "18 Months",
     "24 Months",
+    "30 Months",
     "36 Months",
+    "42 Months",
     "48 Months",
-    "50 Months",
+    "54 Months",
     "60 Months",
   ];
 
@@ -133,13 +142,14 @@ class FDProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addFd(String docId) {
+  Future<void> addFd(String docId) async {
     var body = {
       "company_logo": companyLogo,
       "company_name": companyName,
       "company_id": companyID,
       "fd_id": docId,
       "head_uid": client_uid,
+      "head_name": client_head_name,
       "name": client_member_name,
       "uid": client_member_uid,
       "dob": client_dob,
@@ -148,17 +158,18 @@ class FDProvider extends ChangeNotifier {
       "phone": client_phone,
       "email": client_email,
       "initial_date": textToDateTime(initialDate.text),
-      "maturity_date": textToDateTime(initialDate.text)
-          .add(Duration(days: 30 * int.parse(getFirstWord(termSelected)))),
+      "maturity_date": textToDateTime(initialDate.text).add(
+          Duration(days: 30 * int.parse(AppUtils.getFirstWord(termSelected)))),
       "fd_status": "applied",
       "invested_amt": int.parse(investedAmt.text),
       "type": AppConsts.fd,
-      "premium_term": int.parse(getFirstWord(termSelected)),
+      "premium_term": int.parse(AppUtils.getFirstWord(termSelected)),
       "nominee_name": nomineeName.text,
       "nominee_relation": nomineeRelation.text,
       "nominee_dob": textToDateTime(nomineeDob.text),
       "fd_taken_date": Timestamp.now(),
       "fd_given_date": Timestamp.now(),
+      "port_maturity_date": Timestamp.now(),
       "port_company_name": portCompanyNameController.text,
       "port_fd_no": portFdNo.text,
       "port_maturity_date": textToDateTime(portMaturityDate.text),
@@ -170,11 +181,17 @@ class FDProvider extends ChangeNotifier {
       "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
       "fd_no": "NA",
+      "isFresh": isFresh,
+      "status_date": DateTime.now(),
     };
 
     print('Sending ' + body.toString());
-
-    FirebaseFirestore.instance.collection("Policies").doc(docId).set(body);
+    AppUtils.showSnackMessage("FD Successfully Added", "");
+    await FirebaseFirestore.instance
+        .collection("Policies")
+        .doc(docId)
+        .set(body)
+        .then((value) {});
   }
 
   final TextEditingController portCompanyNameController =

@@ -1,13 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:health_model/add_company.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:health_model/shared/exports.dart';
 
 class CompaniesPage extends StatefulWidget {
+  final ProductType type;
+
+  const CompaniesPage({super.key, required this.type});
   @override
   State<CompaniesPage> createState() => _CompaniesPageState();
 }
@@ -16,8 +13,6 @@ class _CompaniesPageState extends State<CompaniesPage> {
   // List<QueryDocumentSnapshot<Object?>> docs;
   @override
   Widget build(BuildContext context) {
-    final dashProvider = Provider.of<DashProvider>(context, listen: false);
-
     // TextEditingController controller = TextEditingController();
     return Scaffold(
       // backgroundColor: scaffoldColor,
@@ -38,7 +33,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                 ],
               ),
             ),
-            streamCompanies(false, dashProvider.dashName)
+            streamCompanies(false, EnumUtils.convertTypeToKey(widget.type))
           ],
         ),
       ),

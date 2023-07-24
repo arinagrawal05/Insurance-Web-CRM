@@ -1,3 +1,5 @@
+import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
+
 import '../../shared/exports.dart';
 
 // Widget streamUsers(bool isChoosing, {bool isBirthday = false}) {
@@ -359,41 +361,22 @@ Widget streamUserPolicies(bool isChoosing, String companyFilter,
 //   );
 // }
 
-Widget streamRenewals(bool isPast, DateTime fromDate, DateTime toDate) {
-  return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseFirestore.instance
-        .collection("Policies")
-        // .where("policy_status", isEqualTo: "active")
-        .where('renewal_date', isGreaterThan: fromDate)
-        .where('renewal_date', isLessThan: toDate)
-        .snapshots(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return isPast
-            ? customCircularLoader("Graced Policies")
-            : customCircularLoader("Upcoming Policies");
-      } else {
-        if (snapshot.data!.docs.isEmpty) {
-          return noDataWidget();
-        } else {
-          return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                // return Text("erfdfv");
-                return Text("Some Data Here");
+Widget streamRenewals(bool isPast, List<PolicyDataHiveModel> data) {
+  return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        // return Text("erfdfv");
+        // return Text("Some Data Here");
 
-                // return renewalTile(
-                //   isPast,
-                //   context,
-                //   PolicyModel.fromFirestore(snapshot.data!.docs[index]),
-                // );
-              });
-        }
-      }
-    },
-  );
+        return renewalTile(
+          isPast,
+          context,
+          data[index],
+        );
+      });
+  ;
 }
 
 Widget streamTransactions(String filterKey, String filterValue) {

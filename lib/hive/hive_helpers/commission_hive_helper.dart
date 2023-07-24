@@ -48,6 +48,29 @@ class CommissionHiveHelper {
     }
   }
 
+  static Future<void> updateSpecifiCommission(
+      {required String documentID}) async {
+    final commissionCollection =
+        FirebaseFirestore.instance.collection('Commission');
+    final snapshot = await commissionCollection.doc(documentID).get();
+
+    print('updateSpecificCommission called for $documentID');
+
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+
+    final commission = CommissionHiveModel.fromFirestore(snapshot);
+    // userBox.add(user);
+    if (commission != null) {
+      commissionBox.put(documentID, commission);
+      // print('Adding ${policy.data!.name}');
+    }
+  }
+
+  static void deleteSpecificCommission({required String documentID}) {
+    commissionBox.delete(documentID);
+    // print('Adding ${policy.data!.name}');
+  }
+
   static Future<void> deleteAllCommissionData() async {
     // final userBox = Hive.box<UserHiveModel>(_userBoxName);
     await commissionBox.clear();

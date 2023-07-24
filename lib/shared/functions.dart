@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:health_model/hive/hive_helpers/commission_hive_helper.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/shared/const.dart';
+import 'package:health_model/shared/enum_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:to_csv/to_csv.dart' as exportCSV;
@@ -18,11 +22,14 @@ class AppUtils {
     final NumberFormat numberFormat = NumberFormat("#,##0", "en_US");
     return numberFormat.format(number);
   }
-}
 
-String getFirstWord(String fullName) {
-  List local = fullName.split(" ");
-  return local[0];
+  static void showSnackMessage(String title, String subtitle) {
+    Get.snackbar(
+      title,
+      subtitle,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
 }
 
 bool getGender(
@@ -148,7 +155,7 @@ void downloadPolicyExcel() {
 
   FirebaseFirestore.instance
       .collection("Policies")
-      .where("type", isEqualTo: AppConsts.health)
+      .where("type", isEqualTo: ProductType.health)
       .get()
       .then((value) {
     if (value.docs.isNotEmpty) {
@@ -439,6 +446,8 @@ void claimCommission(
     "commission_amt": commisionAmt,
     "commission_date": commisionDate,
     "isPending": false
+  }).then((value) {
+    CommissionHiveHelper.updateSpecifiCommission(documentID: commissionId);
   });
 }
 
@@ -499,7 +508,7 @@ DocumentSnapshot<Object?>? getPolicy(String uid) {
 }
 
 String getWord(String dashName) {
-  if (dashName == AppConsts.health) {
+  if (dashName == ProductType.health) {
     return "Policies";
   } else {
     return "Fds";

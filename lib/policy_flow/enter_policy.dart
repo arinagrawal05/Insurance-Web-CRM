@@ -21,8 +21,8 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PolicyProvider>(context, listen: false);
-    final statsProvider =
-        Provider.of<HealthStatsProvider>(context, listen: false);
+    final statsProvider = Get.find<HealthStatsProvider>();
+    ;
 
     return Scaffold(
       body: Consumer<PolicyProvider>(builder: (context, controller, child) {
@@ -117,7 +117,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: buttonText(
-                        "Your policy will be issued from ${controller.issuedDate.text} to ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(getFirstWord(controller.termSelected)) * 365)))}",
+                        "Your policy will be issued from ${controller.issuedDate.text} to ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.termSelected)) * 365)))}",
                         14,
                         color: Colors.greenAccent),
                   ),

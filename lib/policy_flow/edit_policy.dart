@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/policy_model.dart';
@@ -80,8 +81,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
 
   Widget build(BuildContext context) {
     final provider = Provider.of<PolicyProvider>(context, listen: false);
-    final statsProvider =
-        Provider.of<HealthStatsProvider>(context, listen: false);
+    final statsProvider = Get.find<HealthStatsProvider>();
 
     return Scaffold(
       body: SingleChildScrollView(

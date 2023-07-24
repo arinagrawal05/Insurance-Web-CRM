@@ -51,27 +51,28 @@ class EnterFdDetails extends StatelessWidget {
                               size: 80,
                             ),
                           ),
-                          heading("Parul Gupta", 22),
-                          heading1("Arin Agrawals" + "'s member", 15),
+                          heading(controller.client_member_name, 22),
+                          heading1(
+                              controller.client_head_name + "'s member", 15),
                           Divider(
                             endIndent: 20,
                             indent: 20,
                           ),
-                          userDetailShow("phone", "9383967893",
+                          userDetailShow("phone", controller.client_phone,
                               Ionicons.phone_portrait_outline),
-                          userDetailShow("email", "arinagrawal07128@gmail.com",
-                              Ionicons.mail),
+                          userDetailShow(
+                              "email", controller.client_email, Ionicons.mail),
                           userDetailShow(
                               "Birthday",
-                              dateTimetoText(DateTime.now()),
+                              dateTimetoText(controller.client_dob.toDate()),
                               Ionicons.medical_outline),
                           userDetailShow(
                               "Gender",
-                              true ? "Male" : "Female",
-                              true
+                              controller.client_isMale ? "Male" : "Female",
+                              controller.client_isMale
                                   ? Ionicons.man_outline
                                   : Ionicons.woman_outline),
-                          userDetailShow("Address", "Borewali mumbai",
+                          userDetailShow("Address", controller.client_address,
                               Ionicons.home_outline),
                         ],
                       ),
@@ -206,7 +207,7 @@ class EnterFdDetails extends StatelessWidget {
                                           child: AbsorbPointer(
                                             absorbing: controller
                                                         .isCummulative ==
-                                                    Cummulative.isNonCummulative
+                                                    Cummulative.isCummulative
                                                 ? true
                                                 : false,
                                             child: genericPicker(
@@ -278,6 +279,14 @@ class EnterFdDetails extends StatelessWidget {
                                           ),
                                         ),
                                         Expanded(
+                                            flex: 1,
+                                            child: formTextField(
+                                              controller.bankDate,
+                                              "Date:DD/MM/YYYY",
+                                              "Enter Date",
+                                              isCompulsory: false,
+                                            )),
+                                        Expanded(
                                           flex: 1,
                                           child: formTextField(
                                             controller.bankName,
@@ -286,14 +295,6 @@ class EnterFdDetails extends StatelessWidget {
                                             isCompulsory: false,
                                           ),
                                         ),
-                                        Expanded(
-                                            flex: 1,
-                                            child: formTextField(
-                                              controller.bankDate,
-                                              "Date:DD/MM/YYYY",
-                                              "Enter Date",
-                                              isCompulsory: false,
-                                            )),
                                       ],
                                     )
                                   : SizedBox(),
@@ -314,7 +315,13 @@ class EnterFdDetails extends StatelessWidget {
                                   //         provider.companyID);
                                   //     updateCompanyPlans(
                                   //         provider.companyID, "policy_count");
-                                  controller.addFd(docId);
+                                  controller.addFd(docId).then((value) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  });
                                   //     print("Take 2");
                                   // addCommision(
                                   //     controller.client_member_name,

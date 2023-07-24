@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
 import 'package:health_model/hive/hive_model/user_hive_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/user_model.dart';
@@ -159,6 +160,11 @@ class _AddUserPageState extends State<AddUserPage> {
                           provider.genderSelected == "Male" ? true : false,
                       "timestamp": Timestamp.now(),
                       "members_count": memberCount,
+                    }).then((value) {
+                      if (widget.model != null) {
+                        UserHiveHelper.updateSpecifiUser(
+                            documentID: widget.userid);
+                      }
                     });
 
                     if (widget.model == null) {

@@ -2,18 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:flutter_flip_card/flipcard/flip_card.dart';
 import 'package:flutter_flip_card/modal/flip_side.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:health_model/shared/colors.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
-import '../providers/health_stats_provider.dart';
+import 'exports.dart';
 
 Widget policyCountCircularChart(
-    String dashName, BuildContext context, TooltipBehavior? tooltipBehavior) {
-  final statsProvider = Provider.of<HealthStatsProvider>(context, listen: true);
+    String d, BuildContext context, TooltipBehavior? tooltipBehavior) {
+  final statsProvider = Get.find<HealthStatsProvider>();
 
   return Container(
     decoration: dashBoxDex(context),
@@ -21,9 +14,7 @@ Widget policyCountCircularChart(
     // height: 250,
     margin: const EdgeInsets.symmetric(vertical: 5),
     child: SfCircularChart(
-      title: ChartTitle(
-          text: '${getWord(dashName)} Distribution',
-          textStyle: GoogleFonts.nunito()),
+      title: ChartTitle(text: 'Distribution', textStyle: GoogleFonts.nunito()),
       legend:
           Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
       tooltipBehavior: tooltipBehavior,
@@ -44,7 +35,8 @@ Widget policyCountCircularChart(
 
 Widget policyCircularChart(
     String dashName, BuildContext context, TooltipBehavior? tooltipBehavior) {
-  final statsProvider = Provider.of<HealthStatsProvider>(context, listen: true);
+  final statsProvider = Get.find<HealthStatsProvider>();
+  ;
 
   return Container(
     decoration: dashBoxDex(context),
@@ -95,7 +87,8 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
     elevation: 1,
   );
   // List<_ChartData> data
-  final statsProvider = Provider.of<HealthStatsProvider>(context, listen: true);
+  final statsProvider = Get.find<HealthStatsProvider>();
+  ;
   return FlipCard(
       rotateSide: RotateSide.left,
       onTapFlipping: true,

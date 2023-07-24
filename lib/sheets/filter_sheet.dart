@@ -28,35 +28,29 @@ void filterSheet(BuildContext context, FilterProvider provider) {
                   customButton("By Week", () {
                     provider.filterByWeek();
                     Navigator.pop(context);
-                    provider.clearSum();
                   }, context, isExpanded: false),
                   customButton("By Month", () {
                     provider.filterByMonth();
-                    provider.clearSum();
 
                     Navigator.pop(context);
                   }, context, isExpanded: false),
                   customButton("By 3 Months", () {
                     provider.filterByThreeMonths();
-                    provider.clearSum();
 
                     Navigator.pop(context);
                   }, context, isExpanded: false),
                   customButton("By 6 Months", () {
                     provider.filterBySixMonths();
-                    provider.clearSum();
 
                     Navigator.pop(context);
                   }, context, isExpanded: false),
                   customButton("By Year", () {
                     provider.filterByYear();
-                    provider.clearSum();
 
                     Navigator.pop(context);
                   }, context, isExpanded: false),
                   customButton("Till Now", () {
                     provider.filterByTillNow();
-                    provider.clearSum();
 
                     Navigator.pop(context);
                   }, context, isExpanded: false),
@@ -79,7 +73,6 @@ void filterSheet(BuildContext context, FilterProvider provider) {
                   customButton("Filter", () {
                     provider.filterByManual(textToDateTime(fromDate.text),
                         textToDateTime(toDate.text));
-                    provider.clearSum();
 
                     Navigator.pop(context);
                   }, context, isExpanded: false),

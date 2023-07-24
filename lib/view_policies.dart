@@ -1,3 +1,4 @@
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/models/policy_model.dart';
 
 import 'hive/hive_model/policy_models/generic_investment_data.dart';
@@ -28,14 +29,14 @@ class _PoliciesPageState extends State<PoliciesPage> {
   Widget build(BuildContext context) {
     // final filterProvider = Provider.of<FilterProvider>(context, listen: true);
     final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
-    final dashProvider = Provider.of<DashProvider>(context, listen: false);
+    final dashProvider = Get.find<DashProvider>();
     final searchController = Get.put(PolicySearchController(type: widget.type),
         tag: widget.type.name);
     return Scaffold(
         // backgroundColor: scaffoldColor,
-        appBar:
-            customAppbar("Clients ${getWord(dashProvider.dashName)}", context),
+        appBar: customAppbar("Clients Data", context),
         body: RawKeyboardListener(
+          includeSemantics: true,
           autofocus: true,
           focusNode: _focusNode,
           onKey: (rawKeyEvent) {
@@ -68,16 +69,18 @@ class _PoliciesPageState extends State<PoliciesPage> {
                       searchController.getCurrentStatusList[0],
                       "Status",
                       (value) {
-                        // controller.changeStatus(healthStatus: HealthStatus.allStatus);
+                        searchController.changeStatus(value);
                       },
                       context,
                     ),
-                    customButton("Add ${dashProvider.dashName}", () async {
+                    customButton("Add ${dashProvider.currentDashBoard.name}",
+                        () async {
                       policyProvider.clearPort();
                       // UserHiveHelper.fetchUsersFromFirebase();
+                      // PolicyHiveHelper.init();
 
                       navigate(
-                        ChooseUser(),
+                        const ChooseUser(),
                         context,
                       );
                     }, context, isExpanded: false),
@@ -87,6 +90,16 @@ class _PoliciesPageState extends State<PoliciesPage> {
               Expanded(
                 child: GetBuilder<PolicySearchController>(
                     init: searchController,
+                    didChangeDependencies: (state) {
+                      print('RRRR didChangeDependencies called');
+                    },
+                    didUpdateWidget: (oldWidget, state) {
+                      print('RRRR didUpdateWidget called');
+                    },
+                    initState: (state) {
+                      print('RRRR initState called');
+                      // searchController.filterpolicies();
+                    },
                     builder: (controller) {
                       return ListView.builder(
                           controller: scrollController,

@@ -1,4 +1,5 @@
 import 'package:health_model/fd_detail.dart';
+import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
 
@@ -268,12 +269,12 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
   final provider = Provider.of<PolicyProvider>(context, listen: false);
   final fdprovider = Provider.of<FDProvider>(context, listen: false);
 
-  final dashProvider = Provider.of<DashProvider>(context, listen: false);
+  // final dashProvider = Provider.of<DashProvider>(context, listen: false);
 
   return InkWell(
     onTap: isChoosing
         ? () {
-            if (dashProvider.dashName == AppConsts.health) {
+            if (dashName == EnumUtils.convertTypeToKey(ProductType.health)) {
               provider.setCompany(
                   model.name, model.companyID, model.companyImg);
               navigate(
@@ -327,7 +328,7 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                   ? Container()
                   : Row(
                       children: [
-                        dashName == AppConsts.health
+                        dashName == ProductType.health
                             ? customButton("View Plans", () async {
                                 navigate(
                                     PlansPage(
@@ -409,7 +410,7 @@ Widget fdTile(BuildContext context, FdHiveModel model) {
                 children: [
                   heading("Company", 16),
                   productTileText(
-                      getFirstWord(model.companyName.toString()), 14),
+                      AppUtils.getFirstWord(model.companyName.toString()), 14),
                 ],
               ),
               Column(
@@ -496,7 +497,7 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
                 children: [
                   heading("Company", 16),
                   productTileText(
-                      getFirstWord(model.companyName.toString()), 14),
+                      AppUtils.getFirstWord(model.companyName.toString()), 14),
                 ],
               ),
               Column(
@@ -538,10 +539,12 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
   );
 }
 
-Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
+Widget renewalTile(
+    bool isPast, BuildContext context, PolicyDataHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
   // Duration diff = model.renewalDate.toDate().difference(DateTime.now());
   // Timestamp time = model["d;
+  PolicyHiveModel thisModel = model.data as PolicyHiveModel;
   return InkWell(
     onTap: null,
     child: Container(
@@ -563,11 +566,13 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor:
-                          model.isMale! ? Colors.blueAccent : Colors.pinkAccent,
+                      backgroundColor: model.data!.isMale
+                          ? Colors.blueAccent
+                          : Colors.pinkAccent,
                       child: Center(
-                        child: Icon(
-                            model.isMale! ? Ionicons.male : Ionicons.female),
+                        child: Icon(model.data!.isMale
+                            ? Ionicons.male
+                            : Ionicons.female),
                       ),
                     ),
                     const SizedBox(
@@ -576,8 +581,8 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        heading(model.name, 16),
-                        productTileText(model.email, 14),
+                        heading(model.data!.name, 16),
+                        productTileText(model.data!.email, 14),
                       ],
                     ),
                   ],
@@ -587,25 +592,26 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
                 children: [
                   heading("Company", 16),
                   productTileText(
-                      getFirstWord(model.companyName.toString()), 14),
+                      AppUtils.getFirstWord(thisModel.companyName.toString()),
+                      14),
                 ],
               ),
               Column(
                 children: [
                   heading("Sum Assured", 16),
-                  productTileText(model.sumAssured.toString(), 14),
+                  productTileText(thisModel.sumAssured.toString(), 14),
                 ],
               ),
               Column(
                 children: [
                   heading("Renewal Date", 16),
-                  productTileText(dateTimetoText(model.renewalDate), 14),
+                  productTileText(dateTimetoText(thisModel.renewalDate), 14),
                 ],
               ),
               Column(
                 children: [
                   heading("Basic Premium", 16),
-                  productTileText(model.premuimAmt.toString(), 14),
+                  productTileText(thisModel.premuimAmt.toString(), 14),
                 ],
               ),
               isPast
@@ -613,7 +619,7 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
                       children: [
                         heading("Graced", 16),
                         productTileText(
-                            "${DateTime.now().difference(model.renewalDate).inDays} days",
+                            "${30 - (DateTime.now().difference(thisModel.renewalDate).inDays)} days",
                             14),
                       ],
                     )
@@ -621,14 +627,14 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
                       children: [
                         heading("Days to go", 16),
                         productTileText(
-                            "${model.renewalDate.difference(DateTime.now()).inDays} days",
+                            "${thisModel.renewalDate.difference(DateTime.now()).inDays} days",
                             14),
                       ],
                     ),
-              isGraced(model.renewalDate)
+              isGraced(thisModel.renewalDate)
                   ? customButton("Renew", () async {
                       navigate(
-                        RenewPolicyPage(model: model),
+                        RenewPolicyPage(model: thisModel),
                         context,
                       );
                       // addMemberSheet(context, widget.userid, docId);
@@ -636,7 +642,8 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
                   : customButton("Laps", () async {
                       navigate(
                         ChooseMember(
-                            headUserid: model.userid, headName: model.name),
+                            headUserid: model.data!.userid,
+                            headName: model.data!.name),
                         context,
                       );
                       // addMemberSheet(context, widget.userid, docId);
@@ -651,7 +658,7 @@ Widget renewalTile(bool isPast, BuildContext context, PolicyHiveModel model) {
 
 Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
-  // Duration diff = model.renewalDate .difference(DateTime.now());
+  // Duration diff = model.data!.renewalDate .difference(DateTime.now());
   // Timestamp time = model["d;
   DateTime addedDate;
   if (model.terms >= 6) {
@@ -676,7 +683,7 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
             productTileText(dateTimetoText(model.beginsDate.toDate()), 16),
             productTileText(dateTimetoText(addedDate), 16),
             productTileText("${model.premuimAmt} Rs", 16),
-            productTileText(dateTimetoText(model.timestamp.toDate()), 16),
+            productTileText(model.membersCount.toString(), 16),
           ],
         ),
       ),

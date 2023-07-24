@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_model/add_user.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/providers/dash_provider.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/user_model.dart';
 import 'package:health_model/providers/user_provider.dart';
@@ -68,7 +69,6 @@ class _UserDetailPageState extends State<UserDetailPage> {
   Widget build(BuildContext context) {
     //var uploadImage = Provider.of<UploadImage>(context);
     final userProvider = Provider.of<UserProvider>(context, listen: true);
-    final dashProvider = Provider.of<DashProvider>(context, listen: true);
 
     UserHiveModel model = widget.model;
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
@@ -160,12 +160,12 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                   Ionicons.mail, Colors.yellowAccent.shade100,
                                   () {
                                 launchURL(
-                                    "mailto:${model.email}?subject=This is Regarding your policy&body=Hello${getFirstWord(model.name)}");
+                                    "mailto:${model.email}?subject=This is Regarding your policy&body=Hello${AppUtils.getFirstWord(model.name)}");
                               }, context),
                               customDeleteButton(Ionicons.logo_whatsapp,
                                   Colors.greenAccent.shade100, () {
                                 launchURL(
-                                    "https://wa.me/${model.phone}?text=Hi ${getFirstWord(model.name)},");
+                                    "https://wa.me/${model.phone}?text=Hi ${AppUtils.getFirstWord(model.name)},");
                               }, context),
                             ],
                           ),
@@ -175,17 +175,20 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    // ListView.builder(
-                    //   itemCount: initialSnapshot.length,
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   shrinkWrap: true,
-                    //   itemBuilder: (context, index) {
-                    //     return policyTile(
-                    //         context,
-                    //         PolicyModel.fromMap(
-                    //             initialSnapshot[index].data() as Map));
-                    //   },
-                    // ),
+                    ListView.builder(
+                      itemCount: userProvider
+                          .getPoliciesByUser(widget.model.userid)
+                          .length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return policyTile(
+                            context,
+                            userProvider
+                                .getPoliciesByUser(widget.model.userid)[index]
+                                .data as PolicyHiveModel);
+                      },
+                    ),
                   ],
                 ),
               ),

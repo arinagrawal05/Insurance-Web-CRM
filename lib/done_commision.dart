@@ -24,23 +24,23 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
   Widget build(BuildContext context) {
     // final provider = Provider.of<FilterProvider>(context, listen: true);
     // final statsProvider = Provider.of<StatsProvider>(context, listen: true);
-    // final dashProvider = Provider.of<DashProvider>(context, listen: true);
+    final dashProvider = Get.find<DashProvider>();
 
     // TextEditingController controller = TextEditingController();
-    return Scaffold(
-      // backgroundColor: scaffoldColor,
-      appBar: customAppbar("recieved Commission", context),
-      body: RawKeyboardListener(
-          autofocus: true,
-          focusNode: _focusNode,
-          onKey: (rawKeyEvent) {
-            handleKeyEvent(rawKeyEvent, scrollController);
-            // throw Exception('No return value');
-          },
-          child: GetBuilder<CommissionSearchController>(
-              init: CommissionSearchController(type: widget.type),
-              builder: (controller) {
-                return Column(
+    return GetBuilder<CommissionSearchController>(
+        init: CommissionSearchController(type: widget.type),
+        builder: (controller) {
+          return Scaffold(
+            // backgroundColor: scaffoldColor,
+            appBar: customAppbar("recieved Commission", context),
+            body: RawKeyboardListener(
+                autofocus: true,
+                focusNode: _focusNode,
+                onKey: (rawKeyEvent) {
+                  handleKeyEvent(rawKeyEvent, scrollController);
+                  // throw Exception('No return value');
+                },
+                child: Column(
                   children: [
                     SizedBox(
                       width: double.infinity,
@@ -76,18 +76,22 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
                           // physics: const NeverScrollableScrollPhysics(),
                           itemCount: controller.commissions.length,
                           itemBuilder: (context, index) {
-                            return CommissionTile(
-                                model: controller.commissions[index]);
+                            if (EnumUtils.convertTypeToKey(
+                                    dashProvider.currentDashBoard) ==
+                                controller.commissions[index].commissionType) {
+                              if (controller.commissions[index].isPending ==
+                                  false) {
+                                return CommissionTile(
+                                    model: controller.commissions[index]);
+                              }
+                              return Container();
+                            }
                           }),
                     )
                   ],
-                );
-              })),
-      // bottomNavigationBar: totalWidget(context, () {
-      //   provider.sumCommission(false, dashProvider.dashName).then((value) {
-      //     setState(() {});
-      //   });
-      // }, provider),
-    );
+                )),
+            bottomNavigationBar: totalWidget(controller.currentSum),
+          );
+        });
   }
 }

@@ -13,8 +13,7 @@ class CommissionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statsProvider =
-        Provider.of<HealthStatsProvider>(context, listen: false);
+    // final statsProvider = Get.find<HealthStatsProvider>();
     return InkWell(
       onTap: null,
       child: Container(
@@ -30,61 +29,82 @@ class CommissionTile extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  // color: Colors.amber,
-                  width: 250,
-                  child: Row(
+                Expanded(
+                  flex: 3,
+                  child: SizedBox(
+                    // color: Colors.amber,
+                    // width: 250,
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            heading(model.name, 16),
+                            productTileText(model.policyNo, 14),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
                     children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          heading(model.name, 16),
-                          productTileText(model.policyNo, 14),
-                        ],
-                      ),
+                      heading("Company", 16),
+                      productTileText(model.companyName.toString(), 14),
                     ],
                   ),
                 ),
-                Column(
-                  children: [
-                    heading("Company", 16),
-                    productTileText(model.companyName.toString(), 14),
-                  ],
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      heading("Premium", 16),
+                      productTileText(model.premiumAmt.toString(), 14),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    heading("Premium", 16),
-                    productTileText(model.premiumAmt.toString(), 14),
-                  ],
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      heading("Commission", 16),
+                      productTileText(model.commissionAmt.toString(), 14),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    heading("Commission", 16),
-                    productTileText(model.commissionAmt.toString(), 14),
-                  ],
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      heading("Prem. Depo Date", 16),
+                      productTileText(dateTimetoText(model.commissionDate), 14),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    heading("Prem. Depo Date", 16),
-                    productTileText(dateTimetoText(model.commissionDate), 14),
-                  ],
-                ),
-                Column(
-                  children: [
-                    heading("Received", 16),
-                    productTileText(
-                        model.issuedDate == model.commissionDate
-                            ? "NA"
-                            : dateTimetoText(model.commissionDate),
-                        14),
-                  ],
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      heading("Received", 16),
+                      productTileText(
+                          model.issuedDate == model.commissionDate
+                              ? "NA"
+                              : dateTimetoText(model.commissionDate),
+                          14),
+                    ],
+                  ),
                 ),
                 model.isPending
                     ? customButton("Receive", () async {
-                        confirmCommission(context, model, statsProvider);
+                        confirmCommission(
+                          context,
+                          model,
+                        );
                       }, context, isExpanded: false)
                     : customButton(
                         "Received",

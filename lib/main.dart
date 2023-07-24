@@ -1,3 +1,6 @@
+import 'package:health_model/app_binding.dart';
+import 'package:health_model/shared/loading.dart';
+
 import '../../shared/exports.dart';
 
 void main() async {
@@ -12,7 +15,6 @@ void main() async {
     }
   };
   WidgetsFlutterBinding.ensureInitialized();
-  HiveHelper.init();
 
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -22,6 +24,7 @@ void main() async {
       projectId: "health-model-e0171",
     ),
   );
+  HiveHelper.init();
   runApp(const MyApp());
 }
 
@@ -38,21 +41,19 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => PolicyProvider(),
             ),
-            ChangeNotifierProvider(
-              create: (context) => HealthStatsProvider(),
-            ),
+            // ChangeNotifierProvider(
+            //   create: (context) => HealthStatsProvider(),
+            // ),
             ChangeNotifierProvider(
               create: (context) => UserProvider(),
             ),
-            ChangeNotifierProvider(
-              create: (context) => FilterProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => DashProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => FDStatsProvider(),
-            ),
+            // ChangeNotifierProvider(
+            //   create: (context) => FilterProvider(),
+            // ),
+
+            // ChangeNotifierProvider(
+            //   create: (context) => FDStatsProvider(),
+            // ),
             ChangeNotifierProvider(
               create: (context) => FDProvider(),
             ),
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
           builder: (context, _) {
             final themeProvider = Provider.of<ThemeProvider>(context);
             return GetMaterialApp(
+              // initialBinding: AppBinding(),
               title: 'Health App',
               themeMode: themeProvider.themeMode,
               theme: MyThemes.lightTheme,

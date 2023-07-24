@@ -66,7 +66,7 @@ class CommissionSearchController extends GetxController {
     ];
     FirebaseFirestore.instance
         .collection("Companies")
-        .where("company_type", isEqualTo: EnumUtils().convertTypeToKey(type))
+        .where("company_type", isEqualTo: EnumUtils.convertTypeToKey(type))
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {

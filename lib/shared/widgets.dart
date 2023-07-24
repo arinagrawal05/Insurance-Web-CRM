@@ -79,7 +79,7 @@ Widget customTextfield(
     height: hgt,
     // padding: const EdgeInsets.all(6),
     child: TextField(
-      style: const TextStyle(
+      style: GoogleFonts.nunito(
         fontWeight: FontWeight.w300,
       ),
       onChanged: onChange,
@@ -144,8 +144,9 @@ AppBar genericAppbar({List<Widget>? actions}) {
 }
 
 AppBar customAppbar(String title, BuildContext context) {
-  final statsProvider = Provider.of<HealthStatsProvider>(context, listen: true);
-  final provider = Provider.of<FilterProvider>(context, listen: true);
+  // final statsProvider = Get.find<HealthStatsProvider>();
+  ;
+  final provider = Get.find<FilterProvider>();
 
   return AppBar(
     title: Text(title),
@@ -155,8 +156,8 @@ AppBar customAppbar(String title, BuildContext context) {
     actions: [
       InkWell(
         onTap: () {
-          statsProvider.getStats(AppConsts.health);
-          statsProvider.getCompaniesChartData(AppConsts.health);
+          // statsProvider.getStats("Health");
+          // statsProvider.getCompaniesChartData(ProductType.health);
           checkGraced();
           // updateTemp();
         },
@@ -341,7 +342,7 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
                             flex: 1,
                             child: customButton("By Month", () {
                               provider.filterByMonth();
-                              provider.clearSum();
+                              // provider.clearSum();
                               provider.closeToolTip();
                             }, context, isExpanded: false),
                           ),
@@ -349,14 +350,14 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
                             flex: 1,
                             child: customButton("By Year", () {
                               provider.filterByYear();
-                              provider.clearSum();
+                              // provider.clearSum();
                             }, context, isExpanded: false),
                           ),
                         ],
                       ),
                       customButton("Till Now", () {
                         provider.filterByTillNow();
-                        provider.clearSum();
+                        // provider.clearSum();
                       }, context, isExpanded: true),
                     ],
                   ),
@@ -398,7 +399,7 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
                   customButton("Filter", () {
                     provider.filterByManual(textToDateTime(fromDate.text),
                         textToDateTime(toDate.text));
-                    provider.clearSum();
+                    // provider.clearSum();
 
                     // Navigator.pop(context);
                   }, context, isExpanded: true),
@@ -432,7 +433,8 @@ Widget chooseHeader(String stepName, int stepNumber) {
   );
 }
 
-Widget sideBarTile(String title, Icon icon, onTap, int val, int dashIndex) {
+Widget sideBarTile(
+    String title, Icon icon, onTap, CurrentPage val, CurrentPage dashIndex) {
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -694,7 +696,7 @@ Widget healthTransactionHeader() {
       heading("From", 18),
       heading("To", 18),
       heading("Premium", 18),
-      heading("Renew Date", 18),
+      heading("Members", 18),
     ],
   );
 }
@@ -708,7 +710,7 @@ Widget fDTransactionHeader() {
       heading("Invested Date", 18),
       heading("Maturated Date", 18),
       heading("Investment", 18),
-      heading("Renew Date", 18),
+      heading("Maturated Amt", 18),
     ],
   );
 }

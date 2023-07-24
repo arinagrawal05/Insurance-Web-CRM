@@ -59,6 +59,13 @@ class FdHiveModel extends GenericInvestmentHiveData {
   @HiveField(30)
   DateTime nomineeDob;
 
+  @HiveField(31)
+  DateTime statusDate;
+  @HiveField(32)
+  String headName;
+
+  @HiveField(33)
+  bool isFresh;
   FdHiveModel({
     required String type,
     required String name,
@@ -91,6 +98,9 @@ class FdHiveModel extends GenericInvestmentHiveData {
     required this.cummulativeTerm,
     required this.nomineeDob,
     required this.nomineeRelation,
+    required this.headName,
+    required this.statusDate,
+    required this.isFresh,
   }) : super(
           type: type,
           address: address,
@@ -134,7 +144,10 @@ class FdHiveModel extends GenericInvestmentHiveData {
       "payMode": payMode,
       "isCummulative": isCummulative,
       "fd_no": fdNo,
-      "cummulative_term": cummulativeTerm
+      "cummulative_term": cummulativeTerm,
+      "status_date": cummulativeTerm,
+      "head_name": headName,
+      "isFresh": isFresh,
     };
   }
 
@@ -145,6 +158,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       email: map['email'] ?? "NA",
       address: map['address'] ?? "NA",
       userid: map['uid'] ?? "NA",
+      headName: map['head_name'] ?? "NA",
       isMale: map['isMale'] ?? "NA",
       dob: map['dob'].toDate() ?? DateTime.now(),
       type: map['type'] ?? "NA",
@@ -162,6 +176,9 @@ class FdHiveModel extends GenericInvestmentHiveData {
       nomineeDob: map['nominee_dob'].toDate() ?? DateTime.now(),
       certificateTakenDate: map['fd_taken_date'].toDate() ?? DateTime.now(),
       certificateGivenDate: map['fd_given_date'].toDate() ?? DateTime.now(),
+      statusDate:
+          // map['status_date'].toDate() ??
+          DateTime.now(),
       portCompanyName: map['port_company_name'] ?? "NA",
       portFdNo: map['port_fd_no'] ?? "NA",
       portMaturityDate: map['port_maturity_date'].toDate() ?? DateTime.now(),
@@ -171,6 +188,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       fdNo: map['fd_no'] ?? "NA",
       cummulativeTerm: map['cummulative_term'] ?? "NA",
       bankDetails: map['bank_details'] ?? "NA",
+      isFresh: map['isFresh'] ?? true,
     );
   }
 }

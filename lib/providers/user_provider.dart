@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
+import 'package:health_model/shared/exports.dart';
 
 class UserProvider extends ChangeNotifier {
   bool memberIsMAle = true;
@@ -7,6 +10,11 @@ class UserProvider extends ChangeNotifier {
   List<String> genderList = ["Male", "Female"];
   int memberCount = 0;
   String relationSelected = "Son";
+  List<PolicyDataHiveModel> policyList = [];
+
+  List<PolicyDataHiveModel> getPoliciesByUser(String uid) {
+    return PolicyHiveHelper.getPolicyByUser(userId: uid);
+  }
 
   List<String> relationList = [
     "Son",

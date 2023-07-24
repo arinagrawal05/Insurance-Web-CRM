@@ -27,10 +27,10 @@ class _CommissionsPageState extends State<CommissionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<FilterProvider>(context, listen: true);
-    final statsProvider =
-        Provider.of<HealthStatsProvider>(context, listen: true);
-    final dashProvider = Provider.of<DashProvider>(context, listen: false);
+    // final provider = Get.find<FilterProvider>();
+    // final provider = Get.find<HealthStatsProvider>();
+
+    final dashProvider = Get.find<DashProvider>();
 
     // TextEditingController controller = TextEditingController();
     return GetBuilder<CommissionSearchController>(
@@ -89,8 +89,17 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                 // physics: const NeverScrollableScrollPhysics(),
                                 itemCount: controller.commissions.length,
                                 itemBuilder: (context, index) {
-                                  return CommissionTile(
-                                      model: controller.commissions[index]);
+                                  if (EnumUtils.convertTypeToKey(widget.type) ==
+                                      controller
+                                          .commissions[index].commissionType) {
+                                    if (controller
+                                            .commissions[index].isPending ==
+                                        true) {
+                                      return CommissionTile(
+                                          model: controller.commissions[index]);
+                                    }
+                                  }
+                                  return Container();
                                 }),
                           )
                         ],
@@ -118,14 +127,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                           kType: TextInputType.number),
                                     ),
                                     customButton("Unlock", () {
-                                      if (pinController.text ==
-                                          statsProvider.adminPin) {
-                                        provider
-                                            .sumCommission(
-                                                true, dashProvider.dashName)
-                                            .then((value) {
-                                          setState(() {});
-                                        });
+                                      if (pinController.text == "1234") {
                                         // _focusNode.nextFocus();
                                         setState(() {
                                           isUnlocked = true;
