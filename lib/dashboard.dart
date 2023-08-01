@@ -22,7 +22,11 @@ class HealthDashboardPage extends StatelessWidget {
     // final dashProvider = Get.find<DashProvider>();
 
     return GetBuilder<GeneralStatsProvider>(
-        init: GeneralStatsProvider(type: type),
+        // init: GeneralStatsProvider(
+        //   type: type,
+        // ),/
+        // init: AppUtils.getStatsController(),
+        tag: AppUtils.getStatsControllerTag(),
         builder: (statsProvider) {
           return renderScaffold(
               EnumUtils.convertTypeToKey(type), context, statsProvider);
@@ -185,14 +189,14 @@ class HealthDashboardPage extends StatelessWidget {
 Widget greetBox(BuildContext context) {
   return Container(
     width: double.infinity,
-    padding: EdgeInsets.all(15),
+    padding: const EdgeInsets.all(15),
     decoration: dashBoxDex(context),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         heading("Good Morning", 20),
         simpleText("“Always remember that you are absolutely unique.”", 15),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         // Row(

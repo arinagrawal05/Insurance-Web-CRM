@@ -6,40 +6,44 @@ import 'exports.dart';
 
 Widget policyCountCircularChart(
     String d, BuildContext context, TooltipBehavior? tooltipBehavior) {
-  return GetBuilder<GeneralStatsProvider>(builder: (statsProvider) {
-    if (statsProvider.policyDistributionChartData.isEmpty) {
-      return Container();
-    }
-    return Container(
-      decoration: dashBoxDex(context),
-      // width: 400,
-      // height: 250,
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      child: SfCircularChart(
-        title:
-            ChartTitle(text: 'Distribution', textStyle: GoogleFonts.nunito()),
-        legend:
-            Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-        tooltipBehavior: tooltipBehavior,
-        series: <CircularSeries>[
-          PieSeries<PolicyDistributionChartData, String>(
-            dataSource: statsProvider.policyDistributionChartData,
-            xValueMapper: (PolicyDistributionChartData data, _) => data.x,
-            yValueMapper: (PolicyDistributionChartData data, _) => data.y,
-            // innerRadius: "50",
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
-            enableTooltip: true,
-            // maximumValue: 40000
-          )
-        ],
-      ),
-    );
-  });
+  return GetBuilder<GeneralStatsProvider>(
+      tag: AppUtils.getStatsControllerTag(),
+      builder: (statsProvider) {
+        if (statsProvider.policyDistributionChartData.isEmpty) {
+          return Container();
+        }
+        return Container(
+          decoration: dashBoxDex(context),
+          // width: 400,
+          // height: 250,
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          child: SfCircularChart(
+            title: ChartTitle(
+                text: 'Distribution', textStyle: GoogleFonts.nunito()),
+            legend: Legend(
+                isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+            tooltipBehavior: tooltipBehavior,
+            series: <CircularSeries>[
+              PieSeries<PolicyDistributionChartData, String>(
+                dataSource: statsProvider.policyDistributionChartData,
+                xValueMapper: (PolicyDistributionChartData data, _) => data.x,
+                yValueMapper: (PolicyDistributionChartData data, _) => data.y,
+                // innerRadius: "50",
+                dataLabelSettings: const DataLabelSettings(isVisible: true),
+                enableTooltip: true,
+                // maximumValue: 40000
+              )
+            ],
+          ),
+        );
+      });
 }
 
 Widget policyCircularChart(
     String dashName, BuildContext context, TooltipBehavior? tooltipBehavior) {
-  final statsProvider = Get.find<GeneralStatsProvider>();
+  final statsProvider = Get.find<GeneralStatsProvider>(
+    tag: AppUtils.getStatsControllerTag(),
+  );
 
   return Container(
     decoration: dashBoxDex(context),
@@ -90,7 +94,9 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
     elevation: 1,
   );
   // List<_ChartData> data
-  final statsProvider = Get.find<GeneralStatsProvider>();
+  final statsProvider = Get.find<GeneralStatsProvider>(
+    tag: AppUtils.getStatsControllerTag(),
+  );
 
   return FlipCard(
       rotateSide: RotateSide.left,

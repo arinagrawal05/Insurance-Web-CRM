@@ -403,6 +403,7 @@ class RenewFdPage extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class CummulativeToggle extends StatelessWidget {
   FDProvider controller;
   Cummulative value;

@@ -1,22 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:health_model/add_user.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/providers/dash_provider.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/models/user_model.dart';
-import 'package:health_model/providers/user_provider.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/tiles.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/sheets/confirm_sheet.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
-import 'hive/hive_model/user_hive_model.dart';
 
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {

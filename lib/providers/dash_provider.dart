@@ -1,8 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:health_model/models/commission_model.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/models/user_model.dart';
 import 'package:health_model/shared/exports.dart';
 
 enum CurrentPage { dashboard, clients, company, policy, commision }

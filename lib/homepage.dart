@@ -1,4 +1,3 @@
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import '../../shared/exports.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,8 +16,6 @@ class _HomePageState extends State<HomePage> {
     // final policyProvider = Provider.of<PolicyProvider>(context, listen: true);
     // final userProvider = Provider.of<UserProvider>(context, listen: true);
     // final fdProvider = Provider.of<FDProvider>(context, listen: true);
-
-    // final dashProvider = Get.find<DashProvider>();
 
     return Scaffold(
       body: GetBuilder<FilterProvider>(
@@ -238,7 +235,7 @@ class _HomePageState extends State<HomePage> {
 
                 decoration: dashBoxDex(context).copyWith(
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                         spreadRadius: 2,
                         offset: Offset(0.2, 0.2),
                         blurRadius: 1.0,

@@ -4,7 +4,7 @@ import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class EnterFdDetails extends StatelessWidget {
-  EnterFdDetails({super.key});
+  const EnterFdDetails({super.key});
 
   // @override
   Widget build(BuildContext context) {
@@ -43,18 +43,18 @@ class EnterFdDetails extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 45),
+                            padding: const EdgeInsets.symmetric(vertical: 45),
                             // height: 200,
                             // width: 150,
-                            child: Icon(
+                            child: const Icon(
                               Ionicons.person_outline,
                               size: 80,
                             ),
                           ),
                           heading(controller.client_member_name, 22),
                           heading1(
-                              controller.client_head_name + "'s member", 15),
-                          Divider(
+                              "${controller.client_head_name}'s member", 15),
+                          const Divider(
                             endIndent: 20,
                             indent: 20,
                           ),
@@ -99,7 +99,7 @@ class EnterFdDetails extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   heading("Fill Details", 22),
-                                  Container(
+                                  SizedBox(
                                     width: 160,
                                     child: noBorderTextField(
                                         controller.initialDate,
@@ -188,7 +188,7 @@ class EnterFdDetails extends StatelessWidget {
                                             heading("Cummulative", 20),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 50,
                                         ),
                                         Row(
@@ -200,7 +200,7 @@ class EnterFdDetails extends StatelessWidget {
                                             heading("Non Cummulative", 20),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 40,
                                         ),
                                         Expanded(
@@ -297,7 +297,7 @@ class EnterFdDetails extends StatelessWidget {
                                         ),
                                       ],
                                     )
-                                  : SizedBox(),
+                                  : const SizedBox(),
 
                               const Spacer(),
                               customButton("Add to Database", () async {
@@ -411,6 +411,7 @@ class EnterFdDetails extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class CummulativeToggle extends StatelessWidget {
   FDProvider controller;
   Cummulative value;

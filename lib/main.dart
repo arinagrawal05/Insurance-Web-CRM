@@ -1,6 +1,3 @@
-import 'package:health_model/app_binding.dart';
-import 'package:health_model/shared/loading.dart';
-
 import '../../shared/exports.dart';
 
 void main() async {

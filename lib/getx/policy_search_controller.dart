@@ -1,17 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/commission_models/commission_hive_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/shared/enum_utils.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:hive/hive.dart';
 
 import '../hive/hive_model/policy_models/generic_investment_data.dart';
-import '../shared/functions.dart';
 
 class PolicySearchController extends GetxController {
   List<PolicyDataHiveModel> policies = <PolicyDataHiveModel>[];

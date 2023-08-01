@@ -1,3 +1,4 @@
+import 'package:health_model/add_company.dart';
 import 'package:health_model/fd_detail.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -251,6 +252,7 @@ Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
                               .collection("Plans")
                               .doc(model.planID)
                               .delete(); // addMemberSheet(context, widget.userid, docId);
+                          Navigator.pop(context);
                         });
                       },
                       context,
@@ -266,7 +268,7 @@ Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
 Widget companyTile(bool isChoosing, String dashName, BuildContext context,
     CompanyModel model) {
   // Timestamp time = model["d;
-  final provider = Provider.of<PolicyProvider>(context, listen: false);
+  final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
   final fdprovider = Provider.of<FDProvider>(context, listen: false);
 
   // final dashProvider = Provider.of<DashProvider>(context, listen: false);
@@ -275,7 +277,7 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
     onTap: isChoosing
         ? () {
             if (dashName == EnumUtils.convertTypeToKey(ProductType.health)) {
-              provider.setCompany(
+              policyProvider.setCompany(
                   model.name, model.companyID, model.companyImg);
               navigate(
                   ChoosePlan(
@@ -288,7 +290,14 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
               navigate(ChooseExisting(), context);
             }
           }
-        : null,
+        : () {
+            navigate(
+                AddCompanyPage(
+                  companyid: model.companyID,
+                  model: model,
+                ),
+                context);
+          },
     child: Container(
       decoration: dashBoxDex(context),
       padding: const EdgeInsets.all(8),
@@ -419,7 +428,9 @@ Widget fdTile(BuildContext context, FdHiveModel model) {
               Column(
                 children: [
                   heading("Sum Invested", 16),
-                  productTileText(model.investedAmt.toString(), 14),
+                  productTileText(
+                      "${AppUtils.formatAmount(addWithGST(model.investedAmt))} Rs",
+                      14),
                 ],
               ),
               Column(
@@ -518,7 +529,9 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
               Column(
                 children: [
                   heading("Premium", 16),
-                  productTileText(addWithGST(model.premuimAmt).toString(), 14),
+                  productTileText(
+                      "${AppUtils.formatAmount(addWithGST(model.premuimAmt))} Rs",
+                      14),
                 ],
               ),
               Column(
@@ -802,8 +815,11 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
             productTileText(model.policyNo, 16),
             productTileText(dateTimetoText(model.beginsDate.toDate()), 16),
             productTileText(dateTimetoText(addedDate), 16),
-            productTileText("${model.premuimAmt} Rs", 16),
-            productTileText(model.membersCount.toString(), 16),
+            productTileText(
+                "${AppUtils.formatAmount(addWithGST(model.premuimAmt))} Rs",
+                16),
+            productTileText(
+                AppUtils.formatAmount(addWithGST(model.membersCount)), 16),
           ],
         ),
       ),

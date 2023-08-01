@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_model/getx/user_search_controller.dart';
-import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/keyboard_listener.dart';
-import 'package:health_model/shared/local_streams.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/user_provider.dart';
-import 'package:health_model/shared/tiles.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:health_model/widgets/tiles/user_tile_widget.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class ChooseUser extends StatefulWidget {
   const ChooseUser({super.key});

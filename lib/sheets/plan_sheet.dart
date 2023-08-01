@@ -14,7 +14,9 @@ void addPlanSheet(
   //  int count
 ) {
   final name = TextEditingController();
-  final provider = Get.find<GeneralStatsProvider>();
+  final provider = Get.find<GeneralStatsProvider>(
+    tag: AppUtils.getStatsControllerTag(),
+  );
 
   showModalBottomSheet(
       backgroundColor: Colors.transparent,

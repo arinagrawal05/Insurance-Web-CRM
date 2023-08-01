@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:health_model/hive/hive_helpers/commission_hive_helper.dart';
 import 'package:health_model/models/policy_model.dart';
+import 'package:health_model/providers/dash_provider.dart';
+import 'package:health_model/providers/health_stats_provider.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/enum_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +18,15 @@ class AppUtils {
   static String getFirstWord(String fullName) {
     List local = fullName.split(" ");
     return local[0];
+  }
+
+  static String getStatsControllerTag() {
+    ProductType type = Get.find<DashProvider>().currentDashBoard;
+
+    // GeneralStatsProvider statsController =
+    //     Get.find<GeneralStatsProvider>(tag: 'statsFor${type.name}');
+
+    return 'statsFor${type.name}';
   }
 
   static String formatAmount(int number) {

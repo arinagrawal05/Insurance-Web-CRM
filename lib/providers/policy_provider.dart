@@ -194,7 +194,7 @@ class PolicyProvider extends ChangeNotifier {
       "status_date": Timestamp.now(),
       "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
-      "type": ProductType.health,
+      "type": EnumUtils.convertTypeToKey(ProductType.health),
     });
   }
 

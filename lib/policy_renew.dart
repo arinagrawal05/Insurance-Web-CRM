@@ -15,26 +15,6 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
   final issuedDate = TextEditingController(text: todayTextFormat());
 
   final _policyFormKey = GlobalKey<FormState>();
-  List genderdropDownData = [
-    {"title": "1 year", "value": "1"},
-    {"title": "2 years", "value": "2"},
-    {"title": "3 years", "value": "3"},
-  ];
-  String defaultTerm = "";
-
-  List paymentdropDownData = [
-    {"title": "net Banking", "value": "net Banking"},
-    {"title": "credit/debit", "value": "credit/debit"},
-    {"title": "UPI", "value": "UPI"},
-  ];
-
-  // List paymentdropDownData = [
-  //   {"title": "net Banking", "value": "net Banking"},
-  //   {"title": "credit/debit", "value": "credit/debit"},
-  //   {"title": "UPI", "value": "UPI"},
-  // ];
-
-  String defaultpaymode = "";
 
   int withGST = 0;
 
@@ -47,6 +27,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
   Widget build(BuildContext context) {
     PolicyHiveModel model = widget.model;
     final statsProvider = Get.find<GeneralStatsProvider>();
+    final provider = Provider.of<PolicyProvider>(context, listen: true);
 
     DateTime startingDate = textToDateTime(issuedDate.text);
     if (model.renewalDate.isAfter(textToDateTime(issuedDate.text))) {
@@ -97,13 +78,16 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                       color: Colors.redAccent),
                 ),
 
-                fdropdown("Select Term Period", defaultTerm, genderdropDownData,
-                    (value) {
-                  print("selected Value $value");
-                  setState(() {
-                    defaultTerm = value!;
-                  });
-                }),
+                genericPicker(
+                    radius: 10,
+                    prefixIcon: Ionicons.hourglass_outline,
+                    height: 70,
+                    width: MediaQuery.of(context).size.width,
+                    provider.termList,
+                    provider.termSelected,
+                    "Choose Terms", (value) {
+                  provider.selectTerm(value);
+                }, context),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -112,39 +96,71 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                           dateTimetoText(startingDate) +
                           " to " +
                           dateTimetoText(startingDate.add(Duration(
-                              days: (defaultTerm == ""
-                                      ? 1
-                                      : int.parse(defaultTerm)) *
+                              days: (int.parse(AppUtils.getFirstWord(
+                                      provider.termSelected))) *
                                   365))),
                       14,
                       color: Colors.greenAccent),
                 ),
-                fdropdown(
-                    "Select Payment Mode", defaultpaymode, paymentdropDownData,
-                    (value) {
-                  print("selected Value $value");
-                  setState(() {
-                    defaultpaymode = value!;
-                  });
-                }),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     heading("Members", 20),
-                //     customButton("Add Member", () async {
-                //       var uuid = Uuid();
-                //       String docId = uuid.v4();
-                //       addMemberSheet(context, widget.userid, docId);
-                //     }, context, isExpanded: false),
-                //   ],
-                // ),
+                genericPicker(
+                    radius: 10,
+                    prefixIcon: Ionicons.card_outline,
+                    height: 70,
+                    width: MediaQuery.of(context).size.width,
+                    provider.payModeList,
+                    provider.payModeSelected,
+                    "Choose Payment Mode", (value) {
+                  provider.selectpayMode(value);
+                }, context),
+                provider.payModeSelected == "Cheque"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: formTextField(
+                              provider.bankName,
+                              "Bank Name",
+                              "Enter Bank Name",
+                              isCompulsory: false,
+                            ),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: formTextField(
+                                provider.bankDate,
+                                "Date:DD/MM/YYYY",
+                                "Enter Date",
+                                isCompulsory: false,
+                              )),
+                          Expanded(
+                            flex: 1,
+                            child: formTextField(
+                              provider.chequeNo,
+                              "Cheque No",
+                              "Enter Cheque",
+                              isCompulsory: false,
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
+                // fdropdown(
+                //     "Select Payment Mode", defaultpaymode, paymentdropDownData,
+                //     (value) {
+                //   print("selected Value $value");
+                //   setState(() {
+                //     defaultpaymode = value!;
+                //   });
+                // }),
 
                 SizedBox(
                   height: 100,
                 ),
                 customButton("Renew", () async {
                   print(startingDate);
-                  int term = defaultTerm == "" ? 1 : int.parse(defaultTerm);
+                  int term =
+                      int.parse(AppUtils.getFirstWord(provider.termSelected));
 
                   // var uuid = Uuid();
                   // String docId = uuid.v4();

@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/charts.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:hive/hive.dart';
 
@@ -36,7 +33,7 @@ class GeneralStatsProvider extends GetxController {
   int premiumAmtSum = 0;
   int healthPercent = 15;
   DateTime validityDate = DateTime.now();
-  List<String> advisorList = [];
+  List<dynamic> advisorList = [];
   String adminPin = "1234";
   int plans_count = 0;
   Box<PolicyDataHiveModel>? policyBox;
@@ -48,6 +45,8 @@ class GeneralStatsProvider extends GetxController {
   @override
   onInit() {
     super.onInit();
+    print("object GeneralStatsProvider $type init called");
+    getStats();
     if (type == ProductType.health) {
       labels = ItemLabeling(
           label1: 'Active', label2: 'Ported', label3: 'lapsed', label4: '_');
@@ -121,7 +120,7 @@ class GeneralStatsProvider extends GetxController {
 
         if (policy.data is PolicyHiveModel) {
           PolicyHiveModel data = policy.data as PolicyHiveModel;
-          print("take 2a ${data.policyStatus}");
+          // print("take 2a ${data.policyStatus}");
           switch (data.policyStatus) {
             case 'active':
               labels!.value1 += 1;
@@ -155,7 +154,7 @@ class GeneralStatsProvider extends GetxController {
           }
         }
       }
-      print("Stats computed");
+      // print("Stats computed");
       // print('${labels!.label1} ${labels!.value1}');
 
       // print('${labels!.label2} ${labels!.value2}');
@@ -184,7 +183,7 @@ class GeneralStatsProvider extends GetxController {
     }).toList();
   }
 
-  Future<void> getStats(String companyType) async {
+  Future<void> getStats() async {
     policyDistributionChartData = [];
     policyStatusChartData = [];
     FirebaseFirestore.instance
@@ -198,6 +197,7 @@ class GeneralStatsProvider extends GetxController {
       advisorList = value["advisor_list"];
       healthPercent = value["health_commission_percent"];
       validityDate = value["validity_date"].toDate();
+      print(advisorList);
     });
 
     // await FirebaseFirestore.instance
@@ -244,7 +244,7 @@ class GeneralStatsProvider extends GetxController {
     //     });
     await FirebaseFirestore.instance
         .collection("Companies")
-        .where("company_type", isEqualTo: companyType)
+        .where("company_type", isEqualTo: "Health")
         .get()
         .then((value) => {
               companies_count = value.docs.length,

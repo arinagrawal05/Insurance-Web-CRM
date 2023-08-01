@@ -87,6 +87,7 @@ class _DoneCommissionsPageState extends State<DoneCommissionsPage> {
                               }
                               return Container();
                             }
+                            return Container();
                           }),
                     )
                   ],

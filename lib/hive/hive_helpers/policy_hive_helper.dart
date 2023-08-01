@@ -1,13 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_model/hive/hive_model/policy_models/fd_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/generic_investment_data.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../hive_model/user_hive_model.dart';
 
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';
@@ -26,6 +21,17 @@ class PolicyHiveHelper {
     policyBox = await Hive.openBox<PolicyDataHiveModel>(_policyBoxName);
     fDBox = await Hive.openBox<PolicyDataHiveModel>(_fDBoxName);
 
+    Get.put(
+        GeneralStatsProvider(
+          type: ProductType.health,
+        ),
+        tag: 'statsFor${ProductType.health.name}');
+    Get.put(
+        GeneralStatsProvider(
+          type: ProductType.fd,
+        ),
+        tag: 'statsFor${ProductType.fd.name}');
+
     fetchPoliciesFromFirebase();
   }
 
@@ -34,7 +40,7 @@ class PolicyHiveHelper {
         .collection('Policies')
         .where("type", isEqualTo: "Health")
         .orderBy("renewal_date");
-    ;
+
     final fDCollection = FirebaseFirestore.instance
         .collection('Policies')
         .where("type", isEqualTo: "FD")
@@ -116,7 +122,7 @@ class PolicyHiveHelper {
         PolicyHiveModel data = policy.data as PolicyHiveModel;
         if (data.renewalDate.isBefore(DateTime.now()) &&
             data.renewalDate
-                .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
+                .isAfter(DateTime.now().subtract(const Duration(days: 30)))) {
           return true;
         }
       }
@@ -137,7 +143,8 @@ class PolicyHiveHelper {
       if (policy.data is PolicyHiveModel) {
         PolicyHiveModel data = policy.data as PolicyHiveModel;
         if (data.renewalDate.isAfter(DateTime.now()) &&
-            data.renewalDate.isBefore(DateTime.now().add(Duration(days: 30)))) {
+            data.renewalDate
+                .isBefore(DateTime.now().add(const Duration(days: 30)))) {
           return true;
         }
       }
@@ -159,7 +166,7 @@ class PolicyHiveHelper {
         FdHiveModel data = fd.data as FdHiveModel;
         if (data.maturityDate.isBefore(DateTime.now()) &&
             data.maturityDate
-                .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
+                .isAfter(DateTime.now().subtract(const Duration(days: 30)))) {
           return true;
         }
       }
@@ -181,7 +188,7 @@ class PolicyHiveHelper {
         FdHiveModel data = fd.data as FdHiveModel;
         if (data.maturityDate.isAfter(DateTime.now()) &&
             data.maturityDate
-                .isBefore(DateTime.now().add(Duration(days: 30)))) {
+                .isBefore(DateTime.now().add(const Duration(days: 30)))) {
           return true;
         }
       }

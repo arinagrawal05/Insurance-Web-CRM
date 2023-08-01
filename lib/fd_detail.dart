@@ -1,28 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:health_model/dialogs/admin_dialog.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
-import 'package:health_model/shared/drafted_msgs.dart';
-import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/policy_flow/choose_user.dart';
-import 'package:health_model/policy_flow/edit_policy.dart';
-import 'package:health_model/policy_renew.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/sheets/confirm_sheet.dart';
 import 'package:health_model/stepper.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
-import 'hive/hive_model/policy_models/fd_model.dart';
 
 // ignore: must_be_immutable
 class FdDetailPage extends StatelessWidget {
@@ -35,7 +14,7 @@ class FdDetailPage extends StatelessWidget {
     //var uploadImage = Provider.of<UploadImage>(context);
     // final provider = Provider.of<StatsProvider>(context, listen: true);
     // PolicyModel model = model;
-    final provider = Provider.of<PolicyProvider>(context, listen: false);
+    // final provider = Provider.of<PolicyProvider>(context, listen: false);
 
     return Scaffold(
       appBar: genericAppbar(),
@@ -58,10 +37,10 @@ class FdDetailPage extends StatelessWidget {
                       child: heading(" Client Profile", 18),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 45),
+                      padding: const EdgeInsets.symmetric(vertical: 45),
                       // height: 200,
                       // width: 150,
-                      child: Icon(
+                      child: const Icon(
                         Ionicons.person_outline,
                         size: 80,
                       ),
@@ -72,7 +51,7 @@ class FdDetailPage extends StatelessWidget {
                       ],
                     ),
                     heading1("${model.headName}'s member", 15),
-                    Divider(
+                    const Divider(
                       endIndent: 20,
                       indent: 20,
                     ),
@@ -264,14 +243,14 @@ class FdDetailPage extends StatelessWidget {
                             ),
                             (model.isCummulative)
                                 ? Container(
-                                    padding: EdgeInsets.all(12),
+                                    padding: const EdgeInsets.all(12),
                                     child: Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Ionicons.information_circle_outline,
                                           size: 45,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Container(
@@ -307,7 +286,7 @@ class FdDetailPage extends StatelessWidget {
                       Row(
                         children: [
                           Padding(
-                              padding: EdgeInsets.all(30),
+                              padding: const EdgeInsets.all(30),
                               child: StepperWidget(
                                 currentStep: stepNumber(
                                     EnumUtils.convertNameToFdStatus(

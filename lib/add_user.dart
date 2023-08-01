@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
 import 'package:health_model/hive/hive_model/user_hive_model.dart';
 import 'package:health_model/shared/functions.dart';
-import 'package:health_model/models/user_model.dart';
 import 'package:health_model/providers/user_provider.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
@@ -21,6 +20,7 @@ class AddUserPage extends StatefulWidget {
   String userid;
   AddUserPage({super.key, required this.userid, required this.model});
   @override
+  // ignore: library_private_types_in_public_api
   _AddUserPageState createState() => _AddUserPageState();
 }
 

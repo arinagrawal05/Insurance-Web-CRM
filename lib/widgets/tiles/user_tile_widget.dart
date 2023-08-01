@@ -1,6 +1,7 @@
 import '../../shared/exports.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+// ignore: must_be_immutable
 class UserTile extends StatelessWidget {
   UserHiveModel model;
   bool isChoosing;
@@ -132,7 +133,6 @@ class UserTile extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
 

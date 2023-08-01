@@ -28,7 +28,12 @@ class _CompaniesPageState extends State<CompaniesPage> {
                   customButton("Add Company", () async {
                     var uuid = const Uuid();
                     String docId = uuid.v4();
-                    navigate(AddCompanyPage(companyid: docId), context);
+                    navigate(
+                        AddCompanyPage(
+                          companyid: docId,
+                          model: null,
+                        ),
+                        context);
                   }, context, isExpanded: false),
                 ],
               ),

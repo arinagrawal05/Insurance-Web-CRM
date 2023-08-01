@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/drafted_msgs.dart';
-import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/policy_flow/choose_user.dart';
 import 'package:health_model/policy_flow/edit_policy.dart';
@@ -113,7 +112,7 @@ class PolicyDetailPage extends StatelessWidget {
                                           model.sumAssured.toString(),
                                           model.policyID,
                                           model.issuedDate);
-                                      navigate(ChooseUser(), context);
+                                      navigate(const ChooseUser(), context);
                                     }, context, isExpanded: false),
                                     customButton("Edit", () {
                                       navigate(EditDetailsPage(model: model),
@@ -189,7 +188,7 @@ class PolicyDetailPage extends StatelessWidget {
                                 22,
                               ),
                               Text(
-                                "RS ${model.sumAssured}",
+                                "${AppUtils.formatAmount(addWithGST(model.sumAssured))} Rs",
                                 style: GoogleFonts.nunito(
                                     fontSize: 22,
                                     color: Colors.green.shade300,
@@ -211,14 +210,14 @@ class PolicyDetailPage extends StatelessWidget {
                           ),
                           !(model.isFresh)
                               ? Container(
-                                  padding: EdgeInsets.all(12),
+                                  padding: const EdgeInsets.all(12),
                                   child: Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Ionicons.information_circle_outline,
                                         size: 45,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Container(

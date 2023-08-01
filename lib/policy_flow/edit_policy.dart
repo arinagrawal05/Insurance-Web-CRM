@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/providers/policy_provider.dart';
@@ -43,20 +44,6 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
   final advisorName = TextEditingController();
 
   final _policyFormKey = GlobalKey<FormState>();
-  List genderdropDownData = [
-    {"title": "1 year", "value": "1"},
-    {"title": "2 years", "value": "2"},
-    {"title": "3 years", "value": "3"},
-  ];
-  String defaultTerm = "";
-
-  List paymentdropDownData = [
-    {"title": "net Banking", "value": "net Banking"},
-    {"title": "credit/debit", "value": "credit/debit"},
-    {"title": "UPI", "value": "UPI"},
-  ];
-
-  String defaultpaymode = "";
 
   int withGST = 0;
 
@@ -80,7 +67,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
   }
 
   Widget build(BuildContext context) {
-    final provider = Provider.of<PolicyProvider>(context, listen: false);
+    final provider = Provider.of<PolicyProvider>(context, listen: true);
     final statsProvider = Get.find<GeneralStatsProvider>();
 
     return Scaffold(
@@ -144,28 +131,66 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                 formTextField(
                     advisorName, "advisor Name", "Enter Nominee Name"),
                 renderAdvisor(statsProvider.advisorList, context, advisorName),
-                fdropdown("Select Term Period", defaultTerm, genderdropDownData,
-                    (value) {
-                  print("selected Value $value");
-                  setState(() {
-                    defaultTerm = value!;
-                  });
-                }),
+                genericPicker(
+                    radius: 10,
+                    prefixIcon: Ionicons.hourglass_outline,
+                    height: 70,
+                    width: MediaQuery.of(context).size.width,
+                    provider.termList,
+                    provider.termSelected,
+                    "Choose Terms", (value) {
+                  provider.selectTerm(value);
+                }, context),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: buttonText(
-                      "Your policy will be issued from ${issuedDate.text} to ${dateTimetoText(textToDateTime(issuedDate.text).add(Duration(days: (defaultTerm == "" ? 1 : int.parse(defaultTerm)) * 365)))}",
+                      "Your policy will be issued from ${issuedDate.text} to ${dateTimetoText(textToDateTime(issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(provider.termSelected)) * 365)))}",
                       14,
                       color: Colors.greenAccent),
                 ),
-                fdropdown(
-                    "Select Payment Mode", defaultpaymode, paymentdropDownData,
-                    (value) {
-                  print("selected Value $value");
-                  setState(() {
-                    defaultpaymode = value!;
-                  });
-                }),
+                genericPicker(
+                    radius: 10,
+                    prefixIcon: Ionicons.card_outline,
+                    height: 70,
+                    width: MediaQuery.of(context).size.width,
+                    provider.payModeList,
+                    provider.payModeSelected,
+                    "Choose Payment Mode", (value) {
+                  provider.selectpayMode(value);
+                }, context),
+                provider.payModeSelected == "Cheque"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: formTextField(
+                              provider.bankName,
+                              "Bank Name",
+                              "Enter Bank Name",
+                              isCompulsory: false,
+                            ),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: formTextField(
+                                provider.bankDate,
+                                "Date:DD/MM/YYYY",
+                                "Enter Date",
+                                isCompulsory: false,
+                              )),
+                          Expanded(
+                            flex: 1,
+                            child: formTextField(
+                              provider.chequeNo,
+                              "Cheque No",
+                              "Enter Cheque",
+                              isCompulsory: false,
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
                 SizedBox(
                   height: 20,
                 ),
@@ -177,19 +202,17 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                         "sum_premium_amt",
                         statsProvider.premiumAmtSum +
                             int.parse(premiumAmt.text));
-                    print("Fine till here 1");
 
                     updateCompanybussiness(
                         widget.model.premuimAmt, provider.companyID,
                         negative: true);
                     updateCompanybussiness(
                         int.parse(premiumAmt.text), provider.companyID);
-                    print("Fine till here 2");
                     updatePolicy(
                         textToDateTime(issuedDate.text),
                         textToDateTime(inceptionDate.text),
-                        widget.model.policyID);
-                    print("Fine till here 3");
+                        widget.model.policyID,
+                        provider.termSelected);
 
                     Navigator.pop(context);
                     Navigator.pop(context);
@@ -203,8 +226,9 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
     );
   }
 
-  void updatePolicy(DateTime issuedDate, DateTime inceptionDate, String docId) {
-    int term = defaultTerm == "" ? 1 : int.parse(defaultTerm);
+  void updatePolicy(DateTime issuedDate, DateTime inceptionDate, String docId,
+      String termSelected) {
+    int term = int.parse(AppUtils.getFirstWord(termSelected));
     FirebaseFirestore.instance.collection("Policies").doc(docId).update({
       "renewal_date": issuedDate.add(Duration(days: 365 * term)),
       "policy_no": policyNumber.text,
