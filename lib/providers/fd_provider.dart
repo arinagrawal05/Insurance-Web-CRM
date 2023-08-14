@@ -57,6 +57,7 @@ class FDProvider extends ChangeNotifier {
     "36 Months",
     "42 Months",
     "48 Months",
+    "50 Months",
     "54 Months",
     "60 Months",
   ];

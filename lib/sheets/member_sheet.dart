@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/regex.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/member_model.dart';
 import 'package:health_model/providers/user_provider.dart';
@@ -32,8 +33,18 @@ void addMemberSheet(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heading("Add Member", 25),
-              formTextField(name, "Member Name", "Enter Client member Name"),
-              formTextField(dob, "DD/MM/YYYY", "Enter Client member dob"),
+              formTextField(
+                name,
+                "Member Name",
+                "Enter Client member Name          ",
+                FieldRegex.nameRegExp,
+              ),
+              formTextField(
+                dob,
+                "DD/MM/YYYY",
+                "Enter Client member dob          ",
+                FieldRegex.dateRegExp,
+              ),
               genericPicker(
                   radius: 10,
                   prefixIcon: Ionicons.happy_outline,

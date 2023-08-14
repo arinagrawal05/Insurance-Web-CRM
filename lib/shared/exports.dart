@@ -14,7 +14,7 @@ export 'package:ionicons/ionicons.dart';
 export 'package:provider/provider.dart';
 export 'package:health_model/providers/fd_provider.dart';
 export 'package:health_model/models/commission_model.dart';
-export 'package:health_model/providers/health_stats_provider.dart';
+export 'package:health_model/providers/general_stats_provider.dart';
 export 'package:health_model/shared/colors.dart';
 export 'package:health_model/sheets/commission_sheet.dart';
 // export 'package:timeago/timeago.dart' as timeago;

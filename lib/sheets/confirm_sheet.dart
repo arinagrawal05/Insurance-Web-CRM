@@ -28,7 +28,11 @@ void confirmRemoveSheet(
                   customButton("Back", () {
                     Navigator.pop(context);
                   }, context, isExpanded: true, color: tabColor),
-                  customButton("Remove", ontap, context, isExpanded: true),
+                  customButton(
+                      type != "handover" ? "Remove" : "Handover to Customer",
+                      ontap,
+                      context,
+                      isExpanded: true),
                 ],
               ),
             ],

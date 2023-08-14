@@ -1,3 +1,5 @@
+import 'package:health_model/regex.dart';
+
 import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
@@ -21,13 +23,13 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PolicyProvider>(context, listen: false);
-    final statsProvider = Get.find<GeneralStatsProvider>(
+    final statsProvider = Get.find<DashProvider>(
       tag: 'statsFor${ProductType.health.name}',
     );
 
     return Scaffold(
-      body: GetBuilder<GeneralStatsProvider>(
-          init: GeneralStatsProvider(type: ProductType.health),
+      body: GetBuilder<DashProvider>(
+          init: DashProvider(),
           builder: (context) {
             return Consumer<PolicyProvider>(
                 builder: (context, controller, child) {
@@ -45,19 +47,28 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                           children: [
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.3,
-                              child: formTextField(controller.policyNumber,
-                                  "Policy Number", "Enter Policy Number"),
+                              child: formTextField(
+                                controller.policyNumber,
+                                "Policy Number",
+                                "Enter Policy Number",
+                                FieldRegex.defaultRegExp,
+                              ),
                             ),
                             SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.3,
-                                child: formTextField(controller.sumAssured,
-                                    "Sum Assured", "Enter Sum Assured")),
+                                child: formTextField(
+                                  controller.sumAssured,
+                                  "Sum Assured",
+                                  "Enter Sum Assured",
+                                  FieldRegex.integerRegExp,
+                                )),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.3,
                               child: formTextField(
                                 controller.issuedDate,
                                 "Issued Date:DD/MM/YYYY",
                                 "Enter Issued Date",
+                                FieldRegex.dateRegExp,
                               ),
                             ),
                           ],
@@ -68,6 +79,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                             inceptionDate,
                             "Inception Date:DD/MM/YYYY",
                             "Enter Inception Date",
+                            FieldRegex.dateRegExp,
                           ),
                         ),
                         TextFormField(
@@ -103,12 +115,20 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                             // }
                           },
                         ),
-                        formTextField(controller.nomineeName, "Nominee Name",
-                            "Enter Nominee Name"),
+                        formTextField(
+                          controller.nomineeName,
+                          "Nominee Name",
+                          "Enter Nominee Name",
+                          FieldRegex.nameRegExp,
+                        ),
                         streamNominees(provider.client_uid, context,
                             controller.nomineeName),
-                        formTextField(controller.advisorName, "advisor Name",
-                            "Enter Nominee Name"),
+                        formTextField(
+                          controller.advisorName,
+                          "advisor Name",
+                          "Enter Nominee Name",
+                          FieldRegex.defaultRegExp,
+                        ),
                         renderAdvisor(statsProvider.advisorList, context,
                             controller.advisorName),
                         genericPicker(
@@ -149,6 +169,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                                       controller.bankName,
                                       "Bank Name",
                                       "Enter Bank Name",
+                                      FieldRegex.nameRegExp,
                                       isCompulsory: false,
                                     ),
                                   ),
@@ -158,6 +179,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                                         controller.bankDate,
                                         "Date:DD/MM/YYYY",
                                         "Enter Date",
+                                        FieldRegex.dateRegExp,
                                         isCompulsory: false,
                                       )),
                                   Expanded(
@@ -166,6 +188,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                                       controller.chequeNo,
                                       "Cheque No",
                                       "Enter Cheque",
+                                      FieldRegex.integerRegExp,
                                       isCompulsory: false,
                                     ),
                                   ),

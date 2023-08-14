@@ -15,6 +15,9 @@ class UserTile extends StatelessWidget {
     final dashProvider = Get.find<DashProvider>();
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return InkWell(
+      onLongPress: () {
+        AppUtils.showSnackMessage(model.userid, "This is userid");
+      },
       onTap: isChoosing
           ? () {
               if (dashProvider.currentDashBoard == ProductType.health) {

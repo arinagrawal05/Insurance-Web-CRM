@@ -427,10 +427,15 @@ Widget fdTile(BuildContext context, FdHiveModel model) {
               ),
               Column(
                 children: [
+                  heading("Invested Date", 16),
+                  productTileText(dateTimetoText(model.initialDate), 14),
+                ],
+              ),
+              Column(
+                children: [
                   heading("Sum Invested", 16),
                   productTileText(
-                      "${AppUtils.formatAmount(addWithGST(model.investedAmt))} Rs",
-                      14),
+                      "${AppUtils.formatAmount(model.investedAmt)} Rs", 14),
                 ],
               ),
               Column(
@@ -794,14 +799,24 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   // Duration diff = model.data!.renewalDate .difference(DateTime.now());
   // Timestamp time = model["d;
   DateTime addedDate;
+  int premiumAmt = model.premuimAmt;
+  bool isFd = false;
   if (model.terms >= 6) {
-    addedDate = model.beginsDate.toDate().add(Duration(days: model.terms * 30));
+    isFd = true;
+  }
+
+  if (isFd) {
+    addedDate = model.timestamp.toDate();
   } else {
+    premiumAmt = addWithGST(model.premuimAmt);
     addedDate =
         model.beginsDate.toDate().add(Duration(days: model.terms * 365));
   }
-  return InkWell(
-    onTap: null,
+  return GestureDetector(
+    onLongPress: () {
+      AppUtils.showSnackMessage(
+          model.transactionId, "This is $isFd transaction ID");
+    },
     child: Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       padding: const EdgeInsets.all(8),
@@ -815,11 +830,8 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
             productTileText(model.policyNo, 16),
             productTileText(dateTimetoText(model.beginsDate.toDate()), 16),
             productTileText(dateTimetoText(addedDate), 16),
-            productTileText(
-                "${AppUtils.formatAmount(addWithGST(model.premuimAmt))} Rs",
-                16),
-            productTileText(
-                AppUtils.formatAmount(addWithGST(model.membersCount)), 16),
+            productTileText("${AppUtils.formatAmount(premiumAmt)} Rs", 16),
+            productTileText(AppUtils.formatAmount(model.membersCount), 16),
           ],
         ),
       ),

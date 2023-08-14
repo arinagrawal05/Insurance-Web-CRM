@@ -1,3 +1,5 @@
+import 'package:health_model/splash.dart';
+
 import '../../shared/exports.dart';
 
 void main() async {

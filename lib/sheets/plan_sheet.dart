@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_model/regex.dart';
 import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
+import 'package:health_model/providers/general_stats_provider.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,12 @@ void addPlanSheet(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heading("Add Plan", 25),
-              formTextField(name, "Plan Name", "Enter Plan Name"),
+              formTextField(
+                name,
+                "Plan Name",
+                "Enter Plan Name",
+                FieldRegex.nameRegExp,
+              ),
               const SizedBox(
                 height: 40,
               ),

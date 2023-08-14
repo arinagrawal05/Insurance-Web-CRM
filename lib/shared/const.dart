@@ -26,6 +26,7 @@ class AppConsts {
     "all status",
     "applied",
     "inHand",
+    "handover",
     "redeemed",
   ];
 

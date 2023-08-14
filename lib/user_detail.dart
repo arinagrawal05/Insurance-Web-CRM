@@ -12,40 +12,14 @@ class UserDetailPage extends StatefulWidget {
 class _UserDetailPageState extends State<UserDetailPage> {
   late TooltipBehavior tooltip = TooltipBehavior();
   // AsyncSnapshot<QuerySnapshot<Object?>>? snap;
-  late Stream<DocumentSnapshot<Object?>> documentStream;
-  late List<DocumentSnapshot<Object?>> initialSnapshot = [];
-  bool isTherePolicy = false;
+  // late Stream<DocumentSnapshot<Object?>> documentStream;
+  // late List<DocumentSnapshot<Object?>> initialSnapshot = [];
+  // bool isTherePolicy = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    // getPolicy("c598584a-3f3d-4bf0-a208-bfb6ba61a406");
-    FirebaseFirestore.instance
-        .collection("Policies")
-        .where("uid", isEqualTo: userProvider.userid)
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        for (var i = 0; i < value.docs.length; i++) {
-          DocumentReference documentRef = FirebaseFirestore.instance
-              .collection('Policies') // Replace with your collection name
-              .doc(value.docs[i]["policy_id"]);
-
-          documentStream = documentRef.snapshots();
-
-          documentRef.get().then((snapshot) {
-            setState(() {
-              isTherePolicy = true;
-              initialSnapshot.add(snapshot);
-              ;
-            });
-          });
-        }
-      }
-      // print("Success");
-    });
   }
 
   @override
@@ -55,6 +29,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
 
     UserHiveModel model = widget.model;
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
+    final dashProvider = Get.find<DashProvider>();
 
     return Scaffold(
       appBar: genericAppbar(actions: [
@@ -165,11 +140,34 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return policyTile(
-                            context,
-                            userProvider
-                                .getPoliciesByUser(widget.model.userid)[index]
-                                .data as PolicyHiveModel);
+                        if (userProvider
+                                    .getPoliciesByUser(
+                                        widget.model.userid)[index]
+                                    .data!
+                                    .type ==
+                                EnumUtils.convertTypeToKey(
+                                    dashProvider.currentDashBoard) ||
+                            dashProvider.currentDashBoard == ProductType.cms) {
+                          if (userProvider
+                                  .getPoliciesByUser(widget.model.userid)[index]
+                                  .data!
+                                  .type ==
+                              EnumUtils.convertTypeToKey(ProductType.health)) {
+                            return policyTile(
+                                context,
+                                userProvider
+                                    .getPoliciesByUser(
+                                        widget.model.userid)[index]
+                                    .data as PolicyHiveModel);
+                          } else {
+                            return fdTile(
+                                context,
+                                userProvider
+                                    .getPoliciesByUser(
+                                        widget.model.userid)[index]
+                                    .data as FdHiveModel);
+                          }
+                        }
                       },
                     ),
                   ],

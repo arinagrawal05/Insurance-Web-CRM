@@ -19,7 +19,7 @@ class StepperWidget extends StatelessWidget {
 
           alignment: Alignment.center,
           direction: Axis.horizontal,
-          activeStep: 1,
+          activeStep: currentStep,
           maxReachedStep: currentStep,
           lineLength: 175,
           lineSpace: 1,
@@ -35,6 +35,7 @@ class StepperWidget extends StatelessWidget {
 
           activeStepIconColor: primaryColor,
           activeStepTextColor: primaryColor,
+
           // activeLineColor: Colors.grey.withOpacity(0.5),
           // activeStepBackgroundColor: Colors.white,
           // unreachedStepBackgroundColor: Colors.grey.withOpacity(0.5),
@@ -49,6 +50,7 @@ class StepperWidget extends StatelessWidget {
           // finishedLineColor: Colors.deepOrange,
           borderThickness: 10,
           internalPadding: 5,
+
           showLoadingAnimation: false,
           activeStepBorderType: BorderType.dotted,
           fitWidth: true,
@@ -58,12 +60,14 @@ class StepperWidget extends StatelessWidget {
             EasyStep(
               icon: Icon(Ionicons.document_outline),
               title: 'Applied',
+
               // lineText: 'Add Address Info',
               // enabled: true,
             ),
             EasyStep(
               icon: const Icon(Ionicons.document_text_outline),
               title: 'in Hand',
+
               // lineText: 'Confirm Order Items',
               enabled: false,
             ),

@@ -1,4 +1,5 @@
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/regex.dart';
 import 'package:health_model/shared/exports.dart';
 
 void adminDialog(
@@ -7,7 +8,7 @@ void adminDialog(
   String planId,
   //  int count
 ) {
-  final statsProvider = Get.find<GeneralStatsProvider>();
+  final statsProvider = Get.find<DashProvider>();
 
   TextEditingController advisorListField =
       TextEditingController(text: statsProvider.advisorList.join(","));
@@ -75,11 +76,13 @@ void showCertificateDialog(FdHiveModel model) {
                     folioController,
                     "Folio number",
                     "Enter Folio number",
+                    FieldRegex.defaultRegExp,
                   ),
                   formTextField(
                     fdNoController,
                     "FD number",
                     "Enter FD number",
+                    FieldRegex.integerRegExp,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -87,10 +90,15 @@ void showCertificateDialog(FdHiveModel model) {
                       maturityAmt,
                       "Maturity Value",
                       "Enter Maturity Value",
+                      FieldRegex.integerRegExp,
                     ),
                   ),
                   formTextField(
-                      maturityDate, "Maturity Date", "Enter Maturity Date"),
+                    maturityDate,
+                    "Maturity Date",
+                    "Enter Maturity Date",
+                    FieldRegex.dateRegExp,
+                  ),
 
                   // textFormField(fdNoController, "FD number", Get.context!,
                   //     isExpanded: true),

@@ -1,3 +1,5 @@
+import 'package:health_model/regex.dart';
+
 import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
@@ -26,7 +28,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
 
   Widget build(BuildContext context) {
     PolicyHiveModel model = widget.model;
-    final statsProvider = Get.find<GeneralStatsProvider>();
+    final statsProvider = Get.find<DashProvider>();
     final provider = Provider.of<PolicyProvider>(context, listen: true);
 
     DateTime startingDate = textToDateTime(issuedDate.text);
@@ -50,8 +52,12 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      child: formTextField(policyNumber, "New Policy Number",
-                          "Enter New Policy Number"),
+                      child: formTextField(
+                        policyNumber,
+                        "New Policy Number",
+                        "Enter New Policy Number",
+                        FieldRegex.integerRegExp,
+                      ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
@@ -59,13 +65,14 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                         issuedDate,
                         "Renewal Date:DD/MM/YYYY",
                         "Enter Renewal Date",
+                        FieldRegex.dateRegExp,
                       ),
                     ),
                   ],
                 ),
 
-                formTextField(
-                    premiumAmt, "premium Amount", "Enter premium Amount",
+                formTextField(premiumAmt, "premium Amount",
+                    "Enter premium Amount", FieldRegex.integerRegExp,
                     isCompulsory: true, onChange: (val) {
                   setState(() {
                     withGST = int.parse(val);
@@ -122,6 +129,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                               provider.bankName,
                               "Bank Name",
                               "Enter Bank Name",
+                              FieldRegex.nameRegExp,
                               isCompulsory: false,
                             ),
                           ),
@@ -131,6 +139,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                                 provider.bankDate,
                                 "Date:DD/MM/YYYY",
                                 "Enter Date",
+                                FieldRegex.dateRegExp,
                                 isCompulsory: false,
                               )),
                           Expanded(
@@ -139,6 +148,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                               provider.chequeNo,
                               "Cheque No",
                               "Enter Cheque",
+                              FieldRegex.integerRegExp,
                               isCompulsory: false,
                             ),
                           ),

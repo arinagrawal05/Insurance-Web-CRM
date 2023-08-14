@@ -1,3 +1,5 @@
+import 'package:health_model/regex.dart';
+
 import '../../shared/exports.dart';
 
 class ChooseExisting extends StatelessWidget {
@@ -25,23 +27,38 @@ class ChooseExisting extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
-                      child: formTextField(provider.portCompanyNameController,
-                          "Company Name", "Enter Company Name"),
+                      child: formTextField(
+                        provider.portCompanyNameController,
+                        "Company Name",
+                        "Enter Company Name          ",
+                        FieldRegex.nameRegExp,
+                      ),
                     ),
                     SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: formTextField(
-                            provider.portFdNo, "FD No", "Enter FD No")),
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: formTextField(
+                        provider.portFdNo,
+                        "FD No",
+                        "Enter FD No          ",
+                        FieldRegex.integerRegExp,
+                      ),
+                    ),
                     SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: formTextField(provider.portMaturityAmt,
-                            "maturity Amount", "Enter maturity Amount")),
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: formTextField(
+                        provider.portMaturityAmt,
+                        "maturity Amount",
+                        "Enter maturity Amount          ",
+                        FieldRegex.integerRegExp,
+                      ),
+                    ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
                       child: formTextField(
                         provider.portMaturityDate,
                         "Maturity Date:DD/MM/YYYY",
                         "Enter Maturity Date",
+                        FieldRegex.dateRegExp,
                       ),
                     ),
                   ],

@@ -8,18 +8,25 @@ Widget heading(
 ) {
   return Text(
     text,
-    style: GoogleFonts.nunito(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w600,
-        decoration: TextDecoration.none),
+    style: fontStyle(fontSize),
   );
 }
 
-Widget heading1(String text, double fontSize) {
+TextStyle fontStyle(double fontSize) {
+  return GoogleFonts.nunito(
+      fontSize: fontSize,
+      fontWeight: FontWeight.w600,
+      decoration: TextDecoration.none);
+}
+
+Widget heading1(String text, double fontSize,
+    {TextOverflow overF = TextOverflow.ellipsis, bool center = false}) {
   return Text(
     text,
     style: GoogleFonts.nunito(
         color: Colors.grey, fontSize: fontSize, fontWeight: FontWeight.w500),
+    overflow: overF,
+    textAlign: center ? TextAlign.center : TextAlign.justify,
   );
 }
 
@@ -29,11 +36,11 @@ Widget productTileText(String text, double fontSize,
     text,
     softWrap: true,
     overflow: overF,
+    textAlign: center ? TextAlign.center : TextAlign.justify,
     style: GoogleFonts.nunito(
       fontSize: fontSize,
       fontWeight: FontWeight.w500,
     ),
-    textAlign: center ? TextAlign.center : TextAlign.left,
   );
 }
 
@@ -72,5 +79,5 @@ BoxDecoration dashBoxDex(BuildContext context, {bool isContrast = false}) {
       borderRadius: BorderRadius.circular(10),
       color: isContrast
           ? Colors.blueGrey
-          : Theme.of(Get.context!).dialogBackgroundColor);
+          : Theme.of(context).dialogBackgroundColor);
 }

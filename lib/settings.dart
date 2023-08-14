@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/login.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
@@ -42,6 +44,17 @@ class SettingsPage extends StatelessWidget {
               }, context, isExpanded: false)
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              heading("Log Out", 20),
+              customButton("Exit", () {
+                navigate(LoginPage(), context);
+                setLoginPref(false);
+              }, context, isExpanded: false)
+            ],
+          ),
+
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
           //   children: [

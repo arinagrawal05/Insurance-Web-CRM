@@ -1,8 +1,8 @@
-enum ProductType { health, fd }
+enum ProductType { health, fd, cms }
 
 enum HealthStatus { allStatus, active, ported, lapsed }
 
-enum FDStatus { allStatus, applied, inHand, redeemed }
+enum FDStatus { allStatus, applied, inHand, handover, redeemed }
 
 class EnumUtils {
   static String convertTypeToKey(ProductType type) {
@@ -11,6 +11,9 @@ class EnumUtils {
         return 'Health';
       case ProductType.fd:
         return 'FD';
+
+      case ProductType.cms:
+        return 'Cms';
     }
   }
 
@@ -40,6 +43,9 @@ class EnumUtils {
         return FDStatus.applied;
       case "inHand":
         return FDStatus.inHand;
+      case "handover":
+        return FDStatus.handover;
+
       case "redeemed":
         return FDStatus.redeemed;
       default:

@@ -73,6 +73,7 @@ dependencies:
   hive:
   get:  
   easy_stepper: ^0.7.2
+  shared_preferences: 
      
 dev_dependencies:
   flutter_test:
@@ -106,6 +107,8 @@ flutter:
     - assets/lotties/loading_lottie.json
     - assets/lotties/error_lotties.json
     - assets/lotties/nodata_lotties.json
+    - assets/lotties/locked_lottie.json
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/enum_utils.dart';
+import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
+import 'package:health_model/providers/general_stats_provider.dart';
 
 class PolicyProvider extends ChangeNotifier {
   String client_name = "";
@@ -121,7 +122,7 @@ class PolicyProvider extends ChangeNotifier {
 
   void performPolicyFunctions(
     String docId,
-    GeneralStatsProvider statsProvider,
+    DashProvider statsProvider,
     String inceptionDate,
   ) {
     addPolicy(

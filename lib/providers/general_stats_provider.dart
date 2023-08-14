@@ -26,16 +26,9 @@ class GeneralStatsProvider extends GetxController {
   // int users_count = 0;
   // int policies_count = 0;
   ItemLabeling? labels;
-  int companies_count = 0;
-  int active_policies_count = 0;
-  int lapped_policies_count = 0;
-  int ported_policies_count = 0;
-  int premiumAmtSum = 0;
-  int healthPercent = 15;
-  DateTime validityDate = DateTime.now();
-  List<dynamic> advisorList = [];
-  String adminPin = "1234";
+
   int plans_count = 0;
+  int companies_count = 0;
   Box<PolicyDataHiveModel>? policyBox;
 
   List<CompanyChartData> chartCompanyData = [];
@@ -46,7 +39,6 @@ class GeneralStatsProvider extends GetxController {
   onInit() {
     super.onInit();
     print("object GeneralStatsProvider $type init called");
-    getStats();
     if (type == ProductType.health) {
       labels = ItemLabeling(
           label1: 'Active', label2: 'Ported', label3: 'lapsed', label4: '_');
@@ -73,7 +65,6 @@ class GeneralStatsProvider extends GetxController {
   }
 
   GeneralStatsProvider({required this.type});
-
   void getCompaniesChartData(companyType) {
     chartCompanyData = [];
     FirebaseFirestore.instance
@@ -82,6 +73,7 @@ class GeneralStatsProvider extends GetxController {
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
+        companies_count = value.docs.length;
         for (var i = 0; i < value.docs.length; i++) {
           chartCompanyData.add(CompanyChartData(
               AppUtils.getFirstWord(value.docs[i]["name"]),
@@ -181,76 +173,6 @@ class GeneralStatsProvider extends GetxController {
       update();
       return false;
     }).toList();
-  }
-
-  Future<void> getStats() async {
-    policyDistributionChartData = [];
-    policyStatusChartData = [];
-    FirebaseFirestore.instance
-        .collection("Statistics")
-        .doc("KdMlwAoBwwkdREqX3hIe")
-        .get()
-        .then((value) {
-      premiumAmtSum = value["sum_premium_amt"];
-      plans_count = value["plans_count"];
-      adminPin = value["admin_pin"];
-      advisorList = value["advisor_list"];
-      healthPercent = value["health_commission_percent"];
-      validityDate = value["validity_date"].toDate();
-      print(advisorList);
-    });
-
-    // await FirebaseFirestore.instance
-    //     .collection("Policies")
-    //     .where("type", isEqualTo: companyType)
-    //     .get()
-    //     .then((value) => {
-    //           policies_count = value.docs.length,
-    //         });  // await FirebaseFirestore.instance
-    //     .collection("Policies")
-    //     .where("policy_status", isEqualTo: "active")
-    //     .get()
-    //     .then((value) => {
-    //           print("Active Policies${value.docs.length}"),
-    //           policyStatusChartData.add(
-    //             PolicyStatusChartData("Active", value.docs.length),
-    //           ),
-    //           active_policies_count = value.docs.length,
-    //         });
-
-    // await FirebaseFirestore.instance
-    //     .collection("Policies")
-    //     .where("policy_status", isEqualTo: "lapsed")
-    //     .get()
-    //     .then((value) => {
-    //           policyStatusChartData.add(
-    //             PolicyStatusChartData("lapsed", value.docs.length),
-    //           ),
-    //           lapped_policies_count = value.docs.length,
-    //         });
-    // await FirebaseFirestore.instance
-    //     .collection("Policies")
-    //     .where("policy_status", isEqualTo: "ported")
-    //     .get()
-    //     .then((value) => {
-    //           policyStatusChartData.add(
-    //             PolicyStatusChartData("Ported", value.docs.length),
-    //           ),
-    //           ported_policies_count = value.docs.length,
-    //         });
-
-    // await FirebaseFirestore.instance.collection("Users").get().then((value) => {
-    //       users_count = value.docs.length,
-    //     });
-    await FirebaseFirestore.instance
-        .collection("Companies")
-        .where("company_type", isEqualTo: "Health")
-        .get()
-        .then((value) => {
-              companies_count = value.docs.length,
-            });
-
-    update();
   }
 
   // ThemeMode getCurrentThemes() {

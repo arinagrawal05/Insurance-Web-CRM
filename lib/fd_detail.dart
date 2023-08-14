@@ -89,7 +89,12 @@ class FdDetailPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            heading("About FD", 18),
+                            GestureDetector(
+                                onLongPress: () {
+                                  AppUtils.showSnackMessage(
+                                      model.fdId, "This is Fd Id");
+                                },
+                                child: heading("About FD", 18)),
 
                             Row(
                               children: [
@@ -107,22 +112,25 @@ class FdDetailPage extends StatelessWidget {
                                             // navigate(RenewPolicyPage(model: model),
                                             // context);
                                           }, context, isExpanded: false)
-                                        : customButton("handover to customer",
-                                            () {
-                                            print("object");
-                                            confirmRemoveSheet(
-                                                context, "handover", () {
-                                              FirebaseFirestore.instance
-                                                  .collection("Policies")
-                                                  .doc(model.fdId)
-                                                  .update({
-                                                "fd_given_date": DateTime.now(),
-                                                "fd_status": "handover"
-                                              });
-                                            });
-                                            // navigate(
-                                            //     RenewPolicyPage(model: model), context);
-                                          }, context, isExpanded: false)
+                                        : model.fdStatus == "inHand"
+                                            ? customButton(
+                                                "handover to customer", () {
+                                                print("object");
+                                                confirmRemoveSheet(
+                                                    context, "handover", () {
+                                                  FirebaseFirestore.instance
+                                                      .collection("Policies")
+                                                      .doc(model.fdId)
+                                                      .update({
+                                                    "fd_given_date":
+                                                        DateTime.now(),
+                                                    "fd_status": "handover"
+                                                  });
+                                                });
+                                                // navigate(
+                                                //     RenewPolicyPage(model: model), context);
+                                              }, context, isExpanded: false)
+                                            : Container()
                                     : Row(
                                         children: [
                                           customButton("Redeem", () {
@@ -168,8 +176,8 @@ class FdDetailPage extends StatelessWidget {
                                         .doc(model.fdId)
                                         .delete()
                                         .then((value) {
-                                      PolicyHiveHelper.deleteSpecificPolicy(
-                                          documentID: model.fdId);
+                                      // PolicyHiveHelper.deleteSpecificPolicy(
+                                      //     documentID: model.fdId);
                                       Navigator.pop(context);
 
                                       Navigator.pop(context);
@@ -335,10 +343,13 @@ int stepNumber(FDStatus status) {
       return 0;
     case FDStatus.inHand:
       return 1;
+
+    case FDStatus.handover:
+      return 2;
     case FDStatus.redeemed:
       return 3;
     default:
-      return 2;
+      return 0;
   }
 }
 

@@ -6,9 +6,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:health_model/hive/hive_helpers/commission_hive_helper.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
+import 'package:health_model/providers/general_stats_provider.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/enum_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:to_csv/to_csv.dart' as exportCSV;
@@ -35,11 +36,10 @@ class AppUtils {
   }
 
   static void showSnackMessage(String title, String subtitle) {
-    Get.snackbar(
-      title,
-      subtitle,
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    Get.snackbar(title, subtitle,
+        snackPosition: SnackPosition.BOTTOM,
+        barBlur: 3,
+        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20));
   }
 }
 
@@ -569,4 +569,14 @@ double getFdCommission(
       }
   }
   return ans;
+}
+
+setLoginPref(bool isLogged) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool("isLogged", isLogged);
+}
+
+setThemePref(ThemeMode mode) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("ThemeSettings", mode.name);
 }

@@ -1,3 +1,5 @@
+import 'package:health_model/regex.dart';
+
 import '../../shared/exports.dart';
 
 class CommissionsPage extends StatefulWidget {
@@ -123,8 +125,11 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                     heading("Enter Admin Pin", 30),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: formTextField(pinController,
-                                          "Enter Pin", "Wrong Pin",
+                                      child: formTextField(
+                                          pinController,
+                                          "Enter Pin",
+                                          "Wrong Pin",
+                                          FieldRegex.integerRegExp,
                                           kType: TextInputType.number),
                                     ),
                                     customButton("Unlock", () {

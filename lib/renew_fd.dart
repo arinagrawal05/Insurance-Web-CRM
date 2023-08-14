@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:health_model/regex.dart';
 
 import '../../shared/exports.dart';
 
@@ -114,6 +115,7 @@ class RenewFdPage extends StatelessWidget {
                                   controller.investedAmt,
                                   "Invested Amount",
                                   "Enter Invested Amount",
+                                  FieldRegex.integerRegExp,
                                 ),
                               ),
                               // Container(
@@ -230,22 +232,31 @@ class RenewFdPage extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 1,
-                                    child: formTextField(controller.nomineeName,
-                                        "Nominee Name", "Enter Nominee Name"),
+                                    child: formTextField(
+                                      controller.nomineeName,
+                                      "Nominee Name",
+                                      "Enter Nominee Name",
+                                      FieldRegex.nameRegExp,
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 1,
                                     child: formTextField(
-                                        controller.nomineeRelation,
-                                        "Nominee Relation",
-                                        "Enter Nominee Relation"),
+                                      controller.nomineeRelation,
+                                      "Nominee Relation",
+                                      "Enter Nominee Relation          ",
+                                      FieldRegex.nameRegExp,
+                                    ),
                                   ),
                                   Expanded(
-                                      flex: 1,
-                                      child: formTextField(
-                                          controller.nomineeDob,
-                                          "Nominee DOB",
-                                          "Enter Nominee DOB")),
+                                    flex: 1,
+                                    child: formTextField(
+                                      controller.nomineeDob,
+                                      "Nominee DOB",
+                                      "Enter Nominee DOB          ",
+                                      FieldRegex.dateRegExp,
+                                    ),
+                                  ),
                                 ],
                               ),
 
@@ -273,6 +284,7 @@ class RenewFdPage extends StatelessWidget {
                                             controller.chequeNo,
                                             "Cheque No",
                                             "Enter Cheque",
+                                            FieldRegex.integerRegExp,
                                             isCompulsory: false,
                                           ),
                                         ),
@@ -282,6 +294,7 @@ class RenewFdPage extends StatelessWidget {
                                             controller.bankName,
                                             "Bank Name",
                                             "Enter Bank Name",
+                                            FieldRegex.nameRegExp,
                                             isCompulsory: false,
                                           ),
                                         ),
@@ -291,6 +304,7 @@ class RenewFdPage extends StatelessWidget {
                                               controller.bankDate,
                                               "Date:DD/MM/YYYY",
                                               "Enter Date",
+                                              FieldRegex.dateRegExp,
                                               isCompulsory: false,
                                             )),
                                       ],

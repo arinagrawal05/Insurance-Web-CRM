@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_model/regex.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/policy_flow/enter_policy.dart';
 import 'package:health_model/providers/policy_provider.dart';
@@ -30,23 +31,36 @@ class ChooseFresh extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
-                      child: formTextField(provider.portCompanyNameController,
-                          "Company Name", "Enter Policy Number"),
+                      child: formTextField(
+                        provider.portCompanyNameController,
+                        "Company Name",
+                        "Enter Company Namr",
+                        FieldRegex.nameRegExp,
+                      ),
                     ),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
-                        child: formTextField(provider.portPolicyNoController,
-                            "Policy No", "Enter Sum Assured")),
+                        child: formTextField(
+                          provider.portPolicyNoController,
+                          "Policy No",
+                          "Enter Policy No",
+                          FieldRegex.defaultRegExp,
+                        )),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
-                        child: formTextField(provider.portSumAssuredController,
-                            "Sum Assured", "Enter Sum Assured")),
+                        child: formTextField(
+                          provider.portSumAssuredController,
+                          "Sum Assured",
+                          "Enter Sum Assured",
+                          FieldRegex.integerRegExp,
+                        )),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
                       child: formTextField(
                         provider.postIssuedDate,
                         "Ported Issued Date:DD/MM/YYYY",
                         "Enter Issued Date",
+                        FieldRegex.dateRegExp,
                       ),
                     ),
                   ],

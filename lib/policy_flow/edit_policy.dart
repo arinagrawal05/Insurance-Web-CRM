@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
+import 'package:health_model/regex.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/models/policy_model.dart';
 import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/providers/health_stats_provider.dart';
+import 'package:health_model/providers/general_stats_provider.dart';
 import 'package:health_model/shared/streams.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
@@ -68,7 +69,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
 
   Widget build(BuildContext context) {
     final provider = Provider.of<PolicyProvider>(context, listen: true);
-    final statsProvider = Get.find<GeneralStatsProvider>();
+    final statsProvider = Get.find<DashProvider>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -89,18 +90,27 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: formTextField(
-                          policyNumber, "Policy Number", "Enter Policy Number"),
+                        policyNumber,
+                        "Policy Number",
+                        "Enter Policy Number",
+                        FieldRegex.defaultRegExp,
+                      ),
                     ),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: formTextField(
-                            sumAssured, "Sum Assured", "Enter Sum Assured")),
+                          sumAssured,
+                          "Sum Assured",
+                          "Enter Sum Assured",
+                          FieldRegex.integerRegExp,
+                        )),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: formTextField(
                         issuedDate,
                         "Issued Date:DD/MM/YYYY",
                         "Enter Issued Date",
+                        FieldRegex.dateRegExp,
                       ),
                     ),
                   ],
@@ -111,10 +121,11 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                     inceptionDate,
                     "Inception Date:DD/MM/YYYY",
                     "Enter Inception Date",
+                    FieldRegex.dateRegExp,
                   ),
                 ),
-                formTextField(
-                    premiumAmt, "premium Amount", "Enter premium Amount",
+                formTextField(premiumAmt, "premium Amount",
+                    "Enter premium Amount", FieldRegex.integerRegExp,
                     isCompulsory: true, onChange: (val) {
                   setState(() {
                     withGST = int.parse(val);
@@ -126,10 +137,18 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                       color: Colors.redAccent),
                 ),
                 formTextField(
-                    nomineeName, "Nominee Name", "Enter Nominee Name"),
+                  nomineeName,
+                  "Nominee Name",
+                  "Enter Nominee Name",
+                  FieldRegex.nameRegExp,
+                ),
                 streamNominees(widget.model.userid!, context, nomineeName),
                 formTextField(
-                    advisorName, "advisor Name", "Enter Nominee Name"),
+                  advisorName,
+                  "advisor Name",
+                  "Enter Nominee Name",
+                  FieldRegex.defaultRegExp,
+                ),
                 renderAdvisor(statsProvider.advisorList, context, advisorName),
                 genericPicker(
                     radius: 10,
@@ -168,6 +187,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                               provider.bankName,
                               "Bank Name",
                               "Enter Bank Name",
+                              FieldRegex.nameRegExp,
                               isCompulsory: false,
                             ),
                           ),
@@ -177,6 +197,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                                 provider.bankDate,
                                 "Date:DD/MM/YYYY",
                                 "Enter Date",
+                                FieldRegex.dateRegExp,
                                 isCompulsory: false,
                               )),
                           Expanded(
@@ -185,6 +206,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                               provider.chequeNo,
                               "Cheque No",
                               "Enter Cheque",
+                              FieldRegex.defaultRegExp,
                               isCompulsory: false,
                             ),
                           ),

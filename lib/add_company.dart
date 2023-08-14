@@ -1,3 +1,4 @@
+import 'package:health_model/regex.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/sheets/plan_sheet.dart';
 
@@ -46,8 +47,19 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                formTextField(imageUrl, "Company Image Url", "Enter Image Url"),
-                formTextField(name, "Company Name", "Enter Company Name"),
+                formTextField(
+                  imageUrl,
+                  "Company Image Url",
+                  "Enter Image Url          ",
+                  FieldRegex.defaultRegExp,
+                ),
+
+                formTextField(
+                  name,
+                  "Company Name",
+                  "Enter Company Name          ",
+                  FieldRegex.nameRegExp,
+                ),
 
                 dashProvider.currentDashBoard == ProductType.health
                     ? Row(

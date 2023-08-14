@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../shared/exports.dart';
 
 Widget cachedImage(String companyImg) {
@@ -95,21 +97,18 @@ Widget customTextfield(
   );
 }
 
-Widget formTextField(
-    TextEditingController controller, String labelText, String errorText,
+Widget formTextField(TextEditingController controller, String labelText,
+    String errorText, RegExp alphabetRegExp,
     {bool isCompulsory = true,
     Function(String)? onChange,
     bool isAbsorbed = false,
     TextInputType? kType = TextInputType.text}) {
   return Padding(
-    padding: const EdgeInsets.all(6),
+    padding: EdgeInsets.all(6),
     child: AbsorbPointer(
       absorbing: isAbsorbed,
       child: Container(
         child: TextFormField(
-          // autofillHints: ["hello,bye ,goodnight"],
-          // enableSuggestions: true,
-          // enabled: false,
           onChanged: onChange,
           keyboardType: kType,
           controller: controller,
@@ -129,6 +128,9 @@ Widget formTextField(
               }
               return null;
             }
+            // if (!alphabetRegExp.hasMatch(value!)) {
+            //   return labelText + ' does not match the criteria';
+            // }
           },
         ),
       ),
@@ -233,13 +235,7 @@ Widget homepageAppbar(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Container(
-        height: 70,
-        // width: 100,
-        margin: const EdgeInsets.all(5),
-        child: cachedImage(
-            "https://png.pngtree.com/png-vector/20220706/ourmid/pngtree-project-management-png-image_5687733.png"),
-      ),
+      Container(),
       InkWell(
         onTap: () {
           navigate(SettingsPage(), context);
@@ -513,9 +509,9 @@ Widget genericPicker(
       items: itemsList,
       initialValue: initialValue,
       title: title,
-      textColor: themeProvider.getCurrentThemes() == ThemeMode.dark
-          ? Colors.white
-          : Colors.black,
+      // textColor: themeProvider.getCurrentThemes() == ThemeMode.dark
+      //     ? Colors.white
+      //     : Colors.black,
       onSelectionDone: onSelectionDone,
       itemAsString: (item) => item,
     ),
