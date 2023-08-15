@@ -20,6 +20,13 @@ class UserSearchController extends GetxController {
     super.onInit();
   }
 
+  reset() {
+    users.clear();
+    userBox = UserHiveHelper.userBox;
+    users.addAll(userBox!.values.toList());
+    update();
+  }
+
   void filterUsers(String query) {
     print(query);
     users.clear();

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../getx/user_search_controller.dart';
 import '../hive_model/user_hive_model.dart';
 
 class UserHiveHelper {
@@ -28,7 +30,15 @@ class UserHiveHelper {
       final user = UserHiveModel.fromFirestore(doc);
       // userBox.add(user);
       userBox.put(doc.id, user);
-      // print('Adding ${user.name}');
+      print('Adding ${user.name}');
+    }
+    try {
+      UserSearchController searchController = Get.find<UserSearchController>();
+      if (searchController.initialized) {
+        searchController.reset();
+      }
+    } catch (e) {
+      print('Error caught by handler $e');
     }
   }
 

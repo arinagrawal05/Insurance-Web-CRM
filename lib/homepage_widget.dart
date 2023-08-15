@@ -181,7 +181,7 @@ Widget perkTile(String text) {
   );
 }
 
-Widget perkWidget(DateTime validityDate) {
+Widget perkWidget(DateTime? validityDate) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
@@ -203,7 +203,7 @@ Widget perkWidget(DateTime validityDate) {
         perkTile("Supports Dark theme"),
         perkTile("Pin secured Admin Panel"),
         perkTile("Full 24/7 Support"),
-        premiumWidget(validityDate)
+        if (validityDate != null) premiumWidget(validityDate)
       ],
     ),
   );

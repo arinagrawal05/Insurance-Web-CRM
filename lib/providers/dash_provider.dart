@@ -43,7 +43,7 @@ class DashProvider extends GetxController {
   int premiumAmtSum = 0;
   int healthPercent = 15;
   int plans_count = 0;
-  DateTime validityDate = DateTime.now();
+  DateTime? validityDate;
   List<dynamic> advisorList = [];
   String adminPin = "1234";
 
@@ -60,7 +60,7 @@ class DashProvider extends GetxController {
       healthPercent = value["health_commission_percent"];
       validityDate = value["validity_date"].toDate();
       print(value["validity_date"].toDate().toString());
+      update();
     });
-    update();
   }
 }

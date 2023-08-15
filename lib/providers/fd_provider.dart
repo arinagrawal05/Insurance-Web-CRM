@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 
@@ -192,7 +193,9 @@ class FDProvider extends ChangeNotifier {
         .collection("Policies")
         .doc(docId)
         .set(body)
-        .then((value) {});
+        .then((value) {
+      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+    });
   }
 
   final TextEditingController portCompanyNameController =

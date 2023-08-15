@@ -36,15 +36,17 @@ class PolicyHiveHelper {
   }
 
   static Future<void> fetchPoliciesFromFirebase() async {
+    fetchFDPoliciesFromFirebase();
+    fetchHealthPoliciesFromFirebase();
+
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+  }
+
+  static Future<void> fetchHealthPoliciesFromFirebase() async {
     final policiesCollection = FirebaseFirestore.instance
         .collection('Policies')
         .where("type", isEqualTo: "Health")
         .orderBy("renewal_date");
-
-    final fDCollection = FirebaseFirestore.instance
-        .collection('Policies')
-        .where("type", isEqualTo: "FD")
-        .orderBy("maturity_date");
 
     policiesCollection.get().then((snapshot) async {
       // print("LLLLL Firebase data policy ${snapshot.docs.length}");
@@ -65,11 +67,28 @@ class PolicyHiveHelper {
           // print('Adding ${policy.data!.name}');
         }
       }
+      try {
+        PolicySearchController searchController =
+            Get.find<PolicySearchController>(tag: ProductType.health.name);
+        if (searchController.initialized) {
+          searchController.reset();
+        }
+      } catch (e) {
+        print('Error caught by handler $e');
+      }
     });
 
-    fDCollection.get().then((snapshot) async {
-      // print("LLLLL Firebase data FD ${snapshot.docs.length}");
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+  }
 
+  static Future<void> fetchFDPoliciesFromFirebase() async {
+    final fDCollection = FirebaseFirestore.instance
+        .collection('Policies')
+        .where("type", isEqualTo: "FD")
+        .orderBy("maturity_date");
+    print("LLLLL alert Firebase data FD");
+
+    fDCollection.get().then((snapshot) async {
       await fDBox.clear(); // Clear existing data before adding new users
       print('Policy Hive cleared');
       for (var doc in snapshot.docs) {
@@ -81,10 +100,20 @@ class PolicyHiveHelper {
           fDBox.put(doc.id, policy);
 
           // print('Adding ${policy.data!.name}');
-          FdHiveModel kk = policy.data as FdHiveModel;
+          // FdHiveModel kk = policy.data as FdHiveModel;
           // print(
           //     "LLLLL Adding data fd in hive ${kk.name} ${kk.maturityDate} ${kk.fDterm}");
         }
+      }
+
+      try {
+        PolicySearchController searchController =
+            Get.find<PolicySearchController>(tag: ProductType.fd.name);
+        if (searchController.initialized) {
+          searchController.reset();
+        }
+      } catch (e) {
+        print('Error caught by handler $e');
       }
 
       // print("LLLLL Hive data FD ${fDBox.length}");
@@ -94,9 +123,9 @@ class PolicyHiveHelper {
   }
 
   static List<PolicyDataHiveModel> getPolicyByUser({required String userId}) {
-    List<PolicyDataHiveModel>? policies;
+    List<PolicyDataHiveModel>? healthPolicies;
 
-    policies = policyBox.values.where((policy) {
+    healthPolicies = policyBox.values.where((policy) {
       if (policy.data == null) {
         return false;
       }
@@ -108,7 +137,23 @@ class PolicyHiveHelper {
       return false;
     }).toList();
 
-    return policies;
+    List<PolicyDataHiveModel>? fdPolicies;
+
+    fdPolicies = fDBox.values.where((policy) {
+      if (policy.data == null) {
+        return false;
+      }
+
+      if (policy.data!.userid == userId) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+
+    healthPolicies.addAll(fdPolicies);
+
+    return healthPolicies;
   }
 
   static List<PolicyDataHiveModel> getGracedPolicies() {
@@ -215,7 +260,7 @@ class PolicyHiveHelper {
       // print('Adding ${policy.data!.name}');
     }
 
-    updatePolicyInSearhController();
+    // updatePolicyInSearhController();
   }
 
   static void updatePolicyInSearhController() {

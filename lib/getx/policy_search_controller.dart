@@ -33,6 +33,18 @@ class PolicySearchController extends GetxController {
     super.onInit();
   }
 
+  reset() {
+    print('Calling PolicySearchController reset function for $type');
+    if (type == ProductType.health) {
+      policyBox = PolicyHiveHelper.policyBox;
+    } else {
+      policyBox = PolicyHiveHelper.fDBox;
+    }
+    policies.addAll(policyBox!.values.toList());
+    filterpolicies();
+    update();
+  }
+
   void filterpolicies() {
     print('filterpolicies called with $type');
     String query = searchController.text;
