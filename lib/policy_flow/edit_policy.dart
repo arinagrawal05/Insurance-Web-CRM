@@ -16,19 +16,10 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class EditDetailsPage extends StatefulWidget {
   PolicyHiveModel model;
-  // String portCompanyName, portPolicyNo, portSumAssured;
-  // DateTime portIssueDate;
-  // bool isFress;
 
   EditDetailsPage({
     super.key,
     required this.model,
-
-    // required this.portCompanyName,
-    // required this.portPolicyNo,
-    // required this.portIssueDate,
-    // required this.portSumAssured,
-    // required this.isFress
   });
   @override
   _EditDetailsPageState createState() => _EditDetailsPageState();
@@ -64,6 +55,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
     nomineeName.text = widget.model.nomineeName;
     advisorName.text = widget.model.advisorName;
     withGST = widget.model.premuimAmt;
+
     // defaultTerm = widget.model.advisorName;
   }
 
@@ -142,7 +134,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                   "Enter Nominee Name",
                   FieldRegex.nameRegExp,
                 ),
-                streamNominees(widget.model.userid!, context, nomineeName),
+                streamNominees(widget.model.userid, context, nomineeName),
                 formTextField(
                   advisorName,
                   "advisor Name",
@@ -220,16 +212,17 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                   if (_policyFormKey.currentState?.validate() == true) {
                     updateStats("sum_premium_amt",
                         statsProvider.premiumAmtSum - widget.model.premuimAmt);
-                    updateStats(
-                        "sum_premium_amt",
-                        statsProvider.premiumAmtSum +
-                            int.parse(premiumAmt.text));
+                    // updateStats(
+                    //     "sum_premium_amt",
+                    //     statsProvider.premiumAmtSum +
+                    //         int.parse(premiumAmt.text));
 
+                    // updateCompanybussiness(
+                    //     widget.model.premuimAmt, provider.companyID,
+                    //     negative: true);
                     updateCompanybussiness(
-                        widget.model.premuimAmt, provider.companyID,
-                        negative: true);
-                    updateCompanybussiness(
-                        int.parse(premiumAmt.text), provider.companyID);
+                        int.parse(premiumAmt.text) - widget.model.premuimAmt,
+                        provider.companyID);
                     updatePolicy(
                         textToDateTime(issuedDate.text),
                         textToDateTime(inceptionDate.text),

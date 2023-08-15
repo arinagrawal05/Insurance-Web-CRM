@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        locked(),
+                        // locked(),
                         homepageAppbar(context),
                         dashWidget(dashProvider, context),
                         const SizedBox(

@@ -40,7 +40,17 @@ class SettingsPage extends StatelessWidget {
             children: [
               heading("Backup Policies", 20),
               customButton("Download Excel", () {
-                downloadPolicyExcel();
+                downloadHealthExcel();
+              }, context, isExpanded: false)
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              heading("Backup FDs", 20),
+              customButton("Download Excel", () {
+                downloadFDExcel();
               }, context, isExpanded: false)
             ],
           ),

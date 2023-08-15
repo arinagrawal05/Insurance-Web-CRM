@@ -49,7 +49,12 @@ class _UserDetailPageState extends State<UserDetailPage> {
             FirebaseFirestore.instance
                 .collection("Users")
                 .doc(model.userid)
-                .delete();
+                .delete()
+                .then((value) {
+              Navigator.pop(context);
+
+              Navigator.pop(context);
+            });
           });
         }, context),
       ]),

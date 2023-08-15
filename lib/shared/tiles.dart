@@ -440,7 +440,7 @@ Widget fdTile(BuildContext context, FdHiveModel model) {
               ),
               Column(
                 children: [
-                  heading("Maturated Date", 16),
+                  heading("Maturity Date", 16),
                   productTileText(dateTimetoText(model.maturityDate), 14),
                 ],
               ),
@@ -473,6 +473,9 @@ Widget fdTile(BuildContext context, FdHiveModel model) {
 
 Widget policyTile(BuildContext context, PolicyHiveModel model) {
   return InkWell(
+    onLongPress: () {
+      AppUtils.showSnackMessage(model.policyID, "This is PolicyID");
+    },
     onTap: () {
       navigate(
         PolicyDetailPage(model: model),
@@ -506,7 +509,7 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         heading(model.name, 16),
-                        productTileText(model.policyNo, 14),
+                        productTileText(model.payMode, 14),
                       ],
                     ),
                   ],

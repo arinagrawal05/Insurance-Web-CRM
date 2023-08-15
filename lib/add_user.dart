@@ -170,75 +170,75 @@ class _AddUserPageState extends State<AddUserPage> {
                 customButton("Add to Database", () async {
                   int memberCount;
                   if (_addBrandKey.currentState?.validate() == true) {
-                    AppUtils.showSnackMessage("Qualified", "subtitle");
+                    // AppUtils.showSnackMessage("Qualified", "subtitle");
                     if (widget.model == null) {
                       memberCount = provider.memberCount + 1;
                     } else {
                       memberCount = provider.memberCount;
                     }
-                    // FirebaseFirestore.instance
-                    //     .collection("Users")
-                    //     .doc(widget.userid)
-                    //     .set({
-                    //   "userid": widget.userid,
-                    //   "name": name.text,
-                    //   "dob": textToDateTime(dob.text),
-                    //   "email": email.text,
-                    //   "phone": phone.text,
-                    //   "address": address.text,
-                    //   "isMale":
-                    //       provider.genderSelected == "Male" ? true : false,
-                    //   "timestamp": Timestamp.now(),
-                    //   "members_count": memberCount,
-                    // }).then((value) {
-                    //   if (widget.model != null) {
-                    //     UserHiveHelper.fetchUsersFromFirebase();
-                    //   }
-                    // });
+                    FirebaseFirestore.instance
+                        .collection("Users")
+                        .doc(widget.userid)
+                        .set({
+                      "userid": widget.userid,
+                      "name": name.text,
+                      "dob": textToDateTime(dob.text),
+                      "email": email.text,
+                      "phone": phone.text,
+                      "address": address.text,
+                      "isMale":
+                          provider.genderSelected == "Male" ? true : false,
+                      "timestamp": Timestamp.now(),
+                      "members_count": memberCount,
+                    }).then((value) {
+                      if (widget.model != null) {
+                        UserHiveHelper.fetchUsersFromFirebase();
+                      }
+                    });
 
-                    // if (widget.model == null) {
-                    //   FirebaseFirestore.instance
-                    //       .collection("Users")
-                    //       .doc(widget.userid)
-                    //       .collection("Members")
-                    //       .doc(widget.userid)
-                    //       .set({
-                    //     "head_userid": widget.userid,
-                    //     "userid": widget.userid,
-                    //     "relation": "Head",
-                    //     "name": name.text,
-                    //     "dob": textToDateTime(dob.text),
-                    //     "isMale":
-                    //         provider.genderSelected == "Male" ? true : false,
-                    //   });
-                    // }
-                    // if (widget.model != null) {
-                    //   FirebaseFirestore.instance
-                    //       .collection("Policies")
-                    //       .where("uid", isEqualTo: widget.userid)
-                    //       .get()
-                    //       .then((value) {
-                    //     if (value.docs.isNotEmpty) {
-                    //       for (var i = 0; i < value.docs.length; i++) {
-                    //         FirebaseFirestore.instance
-                    //             .collection("Policies")
-                    //             .doc(value.docs[i]["policy_id"])
-                    //             .update({
-                    //           "name": name.text,
-                    //           "dob": textToDateTime(dob.text),
-                    //           "email": email.text,
-                    //           "phone": phone.text,
-                    //           "isMale": provider.genderSelected == "Male"
-                    //               ? true
-                    //               : false,
-                    //           "members_count": memberCount
-                    //         });
-                    //       }
-                    //       print("Successfully User Added");
-                    //     }
-                    //   });
-                    // }
-                    // Navigator.pop(context);
+                    if (widget.model == null) {
+                      FirebaseFirestore.instance
+                          .collection("Users")
+                          .doc(widget.userid)
+                          .collection("Members")
+                          .doc(widget.userid)
+                          .set({
+                        "head_userid": widget.userid,
+                        "userid": widget.userid,
+                        "relation": "Head",
+                        "name": name.text,
+                        "dob": textToDateTime(dob.text),
+                        "isMale":
+                            provider.genderSelected == "Male" ? true : false,
+                      });
+                    }
+                    if (widget.model != null) {
+                      FirebaseFirestore.instance
+                          .collection("Policies")
+                          .where("uid", isEqualTo: widget.userid)
+                          .get()
+                          .then((value) {
+                        if (value.docs.isNotEmpty) {
+                          for (var i = 0; i < value.docs.length; i++) {
+                            FirebaseFirestore.instance
+                                .collection("Policies")
+                                .doc(value.docs[i]["policy_id"])
+                                .update({
+                              "name": name.text,
+                              "dob": textToDateTime(dob.text),
+                              "email": email.text,
+                              "phone": phone.text,
+                              "isMale": provider.genderSelected == "Male"
+                                  ? true
+                                  : false,
+                              "members_count": memberCount
+                            });
+                          }
+                          print("Successfully User Added");
+                        }
+                      });
+                    }
+                    Navigator.pop(context);
                   }
                 }, context),
               ],

@@ -115,6 +115,20 @@ class PolicyDetailPage extends StatelessWidget {
                                       navigate(const ChooseUser(), context);
                                     }, context, isExpanded: false),
                                     customButton("Edit", () {
+                                      provider.selectpayMode(model.payMode);
+                                      provider.chequeNo.text =
+                                          bankDetailsConverter(
+                                              model.bankDetails)[0];
+
+                                      provider.bankName.text =
+                                          bankDetailsConverter(
+                                              model.bankDetails)[1];
+                                      provider.bankDate.text =
+                                          bankDetailsConverter(
+                                              model.bankDetails)[2];
+                                      // if (condition) {
+
+                                      // }
                                       navigate(EditDetailsPage(model: model),
                                           context);
                                     }, context, isExpanded: false),
@@ -170,15 +184,32 @@ class PolicyDetailPage extends StatelessWidget {
                               //       color: Colors.green.shade300,
                               //       fontWeight: FontWeight.w500),
                               // ),
-                              GestureDetector(
-                                  onTap: () {
-                                    launchURL(
-                                        "https://wa.me/${model.phone}?text=${healthRenewalDraftMsg(model)}");
-                                  },
-                                  child: Icon(
-                                    Ionicons.logo_whatsapp,
-                                    color: Colors.green.shade300,
-                                  ))
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                      onTap: () {
+                                        launchURL(
+                                            "https://wa.me/${model.phone}?text=${healthRenewalDraftMsg(model)}");
+                                      },
+                                      child: Icon(
+                                        Ionicons.logo_whatsapp,
+                                        color: Colors.green.shade300,
+                                      )),
+                                  GestureDetector(
+                                      onTap: () {
+                                        AppUtils.showSnackMessage(
+                                            "This is paid by " + model.payMode,
+                                            model.payMode == "Cheque"
+                                                ? "bank Details: " +
+                                                    model.bankDetails
+                                                : "");
+                                      },
+                                      child: const Icon(
+                                        Ionicons.information_circle_outline,
+                                        size: 30,
+                                      ))
+                                ],
+                              ),
                             ],
                           ),
                           Row(

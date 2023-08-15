@@ -104,7 +104,7 @@ Widget formTextField(TextEditingController controller, String labelText,
     bool isAbsorbed = false,
     TextInputType? kType = TextInputType.text}) {
   return Padding(
-    padding: EdgeInsets.all(6),
+    padding: const EdgeInsets.all(6),
     child: AbsorbPointer(
       absorbing: isAbsorbed,
       child: Container(
@@ -407,7 +407,50 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
   );
 }
 
-Widget tag(String s, TextEditingController controller, BuildContext context) {
+Widget infoTooltip(PolicyHiveModel model, BuildContext context) {
+  return Center(
+    child: ElTooltip(
+      timeout: 3,
+      // timeout: ,
+      color: Theme.of(context).canvasColor,
+      padding: 10,
+      distance: 0,
+      showModal: false,
+      child: const Icon(
+        Ionicons.information_circle_outline,
+        size: 20,
+      ),
+      content: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              productTileText("This is paid by ${model.payMode}", 20),
+              model.payMode == "Cheque"
+                  ? Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          productTileText(
+                              "Cheque no: ${bankDetailsConverter(model.bankDetails)[0]}",
+                              20),
+                          productTileText(
+                              "Bank: ${bankDetailsConverter(model.bankDetails)[1]}",
+                              20),
+                          productTileText(
+                              "Cheque Date ${bankDetailsConverter(model.bankDetails)[2]}",
+                              20),
+                        ],
+                      ),
+                    )
+                  : Container()
+            ],
+          )),
+    ),
+  );
+}
+
+Widget singleTappableTag(
+    String s, TextEditingController controller, BuildContext context) {
   return InkWell(
       onTap: () {
         controller.text = s;
@@ -417,6 +460,25 @@ Widget tag(String s, TextEditingController controller, BuildContext context) {
           padding: const EdgeInsets.all(7),
           decoration: dashBoxDex(context),
           child: simpleText(s, 12)));
+}
+
+Widget multiTappablesTag(
+    MemberModel model,
+    TextEditingController controller1,
+    TextEditingController controller2,
+    TextEditingController controller3,
+    BuildContext context) {
+  return InkWell(
+      onTap: () {
+        controller1.text = model.name;
+        controller2.text = model.relation;
+        controller3.text = dateTimetoText(model.dob.toDate());
+      },
+      child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.all(7),
+          decoration: dashBoxDex(context),
+          child: simpleText(model.name, 12)));
 }
 
 Widget chooseHeader(String stepName, int stepNumber) {
@@ -591,37 +653,37 @@ isGraced(DateTime renewalDate) {
   return false;
 }
 
-Widget fdropdown(String placeholder, String defaultValue,
-    List<dynamic> dropDownData, void Function(String?)? onChanged) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: InputDecorator(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-        contentPadding: const EdgeInsets.all(10),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-            isDense: false,
-            value: defaultValue,
-            // isExpanded: true,
-            menuMaxHeight: 350,
-            items: [
-              DropdownMenuItem(child: Text(placeholder), value: ""),
-              ...dropDownData.map<DropdownMenuItem<String>>((data) {
-                return DropdownMenuItem(
-                    child: Text(
-                      data['title'],
-                      style: GoogleFonts.nunito(color: Colors.grey),
-                    ),
-                    value: data['value']);
-              }).toList(),
-            ],
-            onChanged: onChanged),
-      ),
-    ),
-  );
-}
+// Widget fdropdown(String placeholder, String defaultValue,
+//     List<dynamic> dropDownData, void Function(String?)? onChanged) {
+//   return Padding(
+//     padding: const EdgeInsets.all(8.0),
+//     child: InputDecorator(
+//       decoration: InputDecoration(
+//         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+//         contentPadding: const EdgeInsets.all(10),
+//       ),
+//       child: DropdownButtonHideUnderline(
+//         child: DropdownButton<String>(
+//             isDense: false,
+//             value: defaultValue,
+//             // isExpanded: true,
+//             menuMaxHeight: 350,
+//             items: [
+//               DropdownMenuItem(child: Text(placeholder), value: ""),
+//               ...dropDownData.map<DropdownMenuItem<String>>((data) {
+//                 return DropdownMenuItem(
+//                     child: Text(
+//                       data['title'],
+//                       style: GoogleFonts.nunito(color: Colors.grey),
+//                     ),
+//                     value: data['value']);
+//               }).toList(),
+//             ],
+//             onChanged: onChanged),
+//       ),
+//     ),
+//   );
+// }
 
 Widget userCardShow(String label, String value) {
   return Container(

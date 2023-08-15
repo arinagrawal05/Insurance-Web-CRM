@@ -237,7 +237,7 @@ class EnterFdDetails extends StatelessWidget {
                                     child: formTextField(
                                       controller.nomineeName,
                                       "Nominee Name",
-                                      "Enter Nominee Name          ",
+                                      "Enter Nominee Name",
                                       FieldRegex.nameRegExp,
                                     ),
                                   ),
@@ -246,7 +246,7 @@ class EnterFdDetails extends StatelessWidget {
                                     child: formTextField(
                                       controller.nomineeRelation,
                                       "Nominee Relation",
-                                      "Enter Nominee Relation          ",
+                                      "Enter Nominee Relation",
                                       FieldRegex.nameRegExp,
                                     ),
                                   ),
@@ -255,13 +255,18 @@ class EnterFdDetails extends StatelessWidget {
                                     child: formTextField(
                                       controller.nomineeDob,
                                       "Nominee DOB",
-                                      "Enter Nominee DOB          ",
+                                      "Enter Nominee DOB",
                                       FieldRegex.dateRegExp,
                                     ),
                                   ),
                                 ],
                               ),
 
+                              streamNominees(controller.client_uid, context,
+                                  controller.nomineeName,
+                                  isSingle: false,
+                                  nomineeDate: controller.nomineeDob,
+                                  nomineeRelation: controller.nomineeRelation),
                               // streamNominees(provider.client_uid, context, nomineeName),
 
                               genericPicker(

@@ -416,7 +416,13 @@ Widget streamTransactions(String filterKey, String filterValue) {
 }
 
 Widget streamNominees(
-    String headID, BuildContext context, TextEditingController nomineeName) {
+  String headID,
+  BuildContext context,
+  TextEditingController nomineeName, {
+  TextEditingController? nomineeRelation,
+  TextEditingController? nomineeDate,
+  bool isSingle = true,
+}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
     width: MediaQuery.of(context).size.width,
@@ -440,11 +446,20 @@ Widget streamNominees(
               itemBuilder: (context, index) {
                 // MemberModel.fromFirestore(snapshot.data!.docs[index])
                 // return Text("erfdfv");
-
-                return tag(
-                    MemberModel.fromFirestore(snapshot.data!.docs[index]).name,
-                    nomineeName,
-                    context);
+                if (isSingle) {
+                  return singleTappableTag(
+                      MemberModel.fromFirestore(snapshot.data!.docs[index])
+                          .name,
+                      nomineeName,
+                      context);
+                } else {
+                  return multiTappablesTag(
+                      MemberModel.fromFirestore(snapshot.data!.docs[index]),
+                      nomineeName,
+                      nomineeRelation!,
+                      nomineeDate!,
+                      context);
+                }
               });
         }
       },
@@ -467,7 +482,7 @@ Widget renderAdvisor(
           // MemberModel.fromFirestore(snapshot.data!.docs[index])
           // return Text("erfdfv");
 
-          return tag(advisorList[index], advisorName, context);
+          return singleTappableTag(advisorList[index], advisorName, context);
         }),
   );
 }
