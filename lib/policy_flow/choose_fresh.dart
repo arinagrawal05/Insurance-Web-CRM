@@ -17,6 +17,7 @@ class ChooseFresh extends StatelessWidget {
     //     Provider.of<HealthStatsProvider>(context, listen: false);
 
     return Scaffold(
+      appBar: genericAppbar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

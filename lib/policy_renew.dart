@@ -1,3 +1,4 @@
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/regex.dart';
 
 import '../../shared/exports.dart';
@@ -204,6 +205,8 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                       model.membersCount,
                       textToDateTime(issuedDate.text),
                     );
+
+                    PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
 
                     // print(widget);
                     Navigator.pop(context);

@@ -50,14 +50,14 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                 formTextField(
                   imageUrl,
                   "Company Image Url",
-                  "Enter Image Url          ",
+                  "Enter Image Url",
                   FieldRegex.defaultRegExp,
                 ),
 
                 formTextField(
                   name,
                   "Company Name",
-                  "Enter Company Name          ",
+                  "Enter Company Name",
                   FieldRegex.nameRegExp,
                 ),
 

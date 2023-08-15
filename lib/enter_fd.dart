@@ -101,7 +101,7 @@ class EnterFdDetails extends StatelessWidget {
                                 children: [
                                   heading("Fill Details", 22),
                                   SizedBox(
-                                    width: 160,
+                                    width: 200,
                                     child: noBorderTextField(
                                         controller.initialDate,
                                         "Initial Date",

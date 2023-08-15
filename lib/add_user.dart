@@ -178,9 +178,9 @@ class _AddUserPageState extends State<AddUserPage> {
                       "timestamp": Timestamp.now(),
                       "members_count": memberCount,
                     }).then((value) {
-                      if (widget.model != null) {
-                        UserHiveHelper.fetchUsersFromFirebase();
-                      }
+                      // if (widget.model != null) {
+                      //   UserHiveHelper.fetchUsersFromFirebase();
+                      // }
                     });
 
                     if (widget.model == null) {
@@ -225,6 +225,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         }
                       });
                     }
+                    UserHiveHelper.fetchUsersFromFirebase();
+
                     Navigator.pop(context);
                   }
                 }, context),

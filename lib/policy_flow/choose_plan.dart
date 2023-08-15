@@ -10,6 +10,8 @@ class ChoosePlan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: genericAppbar(),
+
       // backgroundColor: scaffoldColor,
       body: Padding(
         padding: const EdgeInsets.all(25.0),

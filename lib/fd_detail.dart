@@ -67,7 +67,7 @@ class FdDetailPage extends StatelessWidget {
                             ? Ionicons.man_outline
                             : Ionicons.woman_outline),
                     userDetailShow(
-                        "Address", "Borewali mumbai", Ionicons.home_outline),
+                        "Address", model.address, Ionicons.home_outline),
                   ],
                 ),
               ),
@@ -125,6 +125,11 @@ class FdDetailPage extends StatelessWidget {
                                                     "fd_given_date":
                                                         DateTime.now(),
                                                     "fd_status": "handover"
+                                                  }).then((value) {
+                                                    PolicyHiveHelper
+                                                        .fetchFDPoliciesFromFirebase();
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
                                                   });
                                                 });
                                                 // navigate(
@@ -133,21 +138,6 @@ class FdDetailPage extends StatelessWidget {
                                             : Container()
                                     : Row(
                                         children: [
-                                          customButton("Redeem", () {
-                                            print("object");
-                                            confirmRemoveSheet(
-                                                context, "Redeem", () {
-                                              FirebaseFirestore.instance
-                                                  .collection("Policies")
-                                                  .doc(model.fdId)
-                                                  .update({
-                                                "status_date": DateTime.now(),
-                                                "fd_status": "redeemed"
-                                              });
-                                            });
-                                            // navigate(
-                                            //     RenewPolicyPage(model: model), context);
-                                          }, context, isExpanded: false),
                                           customButton("Renew", () {
                                             AppUtils.showSnackMessage(
                                                 "FD Redeemed Successfuly",
@@ -158,6 +148,31 @@ class FdDetailPage extends StatelessWidget {
                                           }, context, isExpanded: false)
                                         ],
                                       ),
+                                model.fdStatus == "handover"
+                                    ? customButton("Redeem", () {
+                                        print("object");
+                                        confirmRemoveSheet(context, "Redeem",
+                                            () {
+                                          FirebaseFirestore.instance
+                                              .collection("Policies")
+                                              .doc(model.fdId)
+                                              .update({
+                                            "status_date": DateTime.now(),
+                                            "fd_status": "redeemed"
+                                          }).then((value) {
+                                            AppUtils.showSnackMessage(
+                                                "This FD is Successfully Redeemed",
+                                                "");
+                                            PolicyHiveHelper
+                                                .fetchFDPoliciesFromFirebase();
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          });
+                                        });
+                                        // navigate(
+                                        //     RenewPolicyPage(model: model), context);
+                                      }, context, isExpanded: false)
+                                    : Container(),
                                 // customButton(
                                 //   "Edit FD",
                                 //   () {
@@ -176,6 +191,8 @@ class FdDetailPage extends StatelessWidget {
                                         .doc(model.fdId)
                                         .delete()
                                         .then((value) {
+                                      PolicyHiveHelper
+                                          .fetchFDPoliciesFromFirebase();
                                       // PolicyHiveHelper.deleteSpecificPolicy(
                                       //     documentID: model.fdId);
                                       Navigator.pop(context);

@@ -51,6 +51,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
                 .doc(model.userid)
                 .delete()
                 .then((value) {
+              UserHiveHelper.fetchUsersFromFirebase();
+
               Navigator.pop(context);
 
               Navigator.pop(context);

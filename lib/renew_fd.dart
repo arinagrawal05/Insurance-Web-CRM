@@ -71,8 +71,8 @@ class RenewFdPage extends StatelessWidget {
                               model.isMale
                                   ? Ionicons.man_outline
                                   : Ionicons.woman_outline),
-                          userDetailShow("Address", "Borewali mumbai",
-                              Ionicons.home_outline),
+                          userDetailShow(
+                              "Address", model.address, Ionicons.home_outline),
                         ],
                       ),
                     ),
@@ -244,7 +244,7 @@ class RenewFdPage extends StatelessWidget {
                                     child: formTextField(
                                       controller.nomineeRelation,
                                       "Nominee Relation",
-                                      "Enter Nominee Relation          ",
+                                      "Enter Nominee Relation",
                                       FieldRegex.nameRegExp,
                                     ),
                                   ),
@@ -253,7 +253,7 @@ class RenewFdPage extends StatelessWidget {
                                     child: formTextField(
                                       controller.nomineeDob,
                                       "Nominee DOB",
-                                      "Enter Nominee DOB          ",
+                                      "Enter Nominee DOB",
                                       FieldRegex.dateRegExp,
                                     ),
                                   ),

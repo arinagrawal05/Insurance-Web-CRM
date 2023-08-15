@@ -135,8 +135,7 @@ void showCertificateDialog(FdHiveModel model) {
                       "fd_status": FDStatus.inHand.name,
                       "folio_no": folioController.text,
                     }).then((value) {
-                      PolicyHiveHelper.updateSpecificPolicy(
-                          documentID: model.fdId);
+                      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
                       Navigator.pop(Get.context!);
                       Navigator.pop(Get.context!);
                     });

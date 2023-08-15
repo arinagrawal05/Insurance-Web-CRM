@@ -11,7 +11,7 @@ class ChooseCompany extends StatelessWidget {
     // TextEditingController controller = TextEditingController();
     return Scaffold(
       // backgroundColor: scaffoldColor,
-
+      appBar: genericAppbar(),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(

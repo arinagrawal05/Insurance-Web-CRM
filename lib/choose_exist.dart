@@ -13,6 +13,7 @@ class ChooseExisting extends StatelessWidget {
     //     Provider.of<HealthStatsProvider>(context, listen: false);
 
     return Scaffold(
+      appBar: genericAppbar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -30,7 +31,7 @@ class ChooseExisting extends StatelessWidget {
                       child: formTextField(
                         provider.portCompanyNameController,
                         "Company Name",
-                        "Enter Company Name          ",
+                        "Enter Company Name",
                         FieldRegex.nameRegExp,
                       ),
                     ),
@@ -39,7 +40,7 @@ class ChooseExisting extends StatelessWidget {
                       child: formTextField(
                         provider.portFdNo,
                         "FD No",
-                        "Enter FD No          ",
+                        "Enter FD No",
                         FieldRegex.integerRegExp,
                       ),
                     ),
@@ -48,7 +49,7 @@ class ChooseExisting extends StatelessWidget {
                       child: formTextField(
                         provider.portMaturityAmt,
                         "maturity Amount",
-                        "Enter maturity Amount          ",
+                        "Enter maturity Amount",
                         FieldRegex.integerRegExp,
                       ),
                     ),

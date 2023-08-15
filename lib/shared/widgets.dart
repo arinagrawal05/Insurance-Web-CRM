@@ -138,8 +138,11 @@ Widget formTextField(TextEditingController controller, String labelText,
   );
 }
 
-AppBar genericAppbar({List<Widget>? actions}) {
+AppBar genericAppbar(
+    {List<Widget>? actions, String? title, bool? centerTitle}) {
   return AppBar(
+    title: Text(title ?? ""),
+    centerTitle: centerTitle,
     backgroundColor: Colors.transparent,
     actions: actions,
   );

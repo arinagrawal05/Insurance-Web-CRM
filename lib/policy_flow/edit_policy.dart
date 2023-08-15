@@ -1,17 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/regex.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/providers/general_stats_provider.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class EditDetailsPage extends StatefulWidget {
@@ -255,6 +244,8 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
       "premium_term": term,
       "nominee_name": nomineeName.text,
       "advisor_name": advisorName.text,
+    }).then((value) {
+      PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
     });
   }
 }

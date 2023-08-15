@@ -509,7 +509,7 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         heading(model.name, 16),
-                        productTileText(model.payMode, 14),
+                        productTileText(model.policyNo, 14),
                       ],
                     ),
                   ],

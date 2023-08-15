@@ -36,13 +36,13 @@ void addMemberSheet(
               formTextField(
                 name,
                 "Member Name",
-                "Enter Client member Name          ",
+                "Enter Client member Name",
                 FieldRegex.nameRegExp,
               ),
               formTextField(
                 dob,
                 "DD/MM/YYYY",
-                "Enter Client member dob          ",
+                "Enter Client member dob",
                 FieldRegex.dateRegExp,
               ),
               genericPicker(

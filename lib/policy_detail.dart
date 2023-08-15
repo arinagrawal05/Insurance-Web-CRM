@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/drafted_msgs.dart';
 import 'package:health_model/shared/functions.dart';
@@ -126,6 +127,7 @@ class PolicyDetailPage extends StatelessWidget {
                                       provider.bankDate.text =
                                           bankDetailsConverter(
                                               model.bankDetails)[2];
+
                                       // if (condition) {
 
                                       // }
@@ -138,7 +140,14 @@ class PolicyDetailPage extends StatelessWidget {
                                         FirebaseFirestore.instance
                                             .collection("Policies")
                                             .doc(model.policyID)
-                                            .delete();
+                                            .delete()
+                                            .then((value) {
+                                          PolicyHiveHelper
+                                              .fetchHealthPoliciesFromFirebase();
+
+                                          Navigator.of(context);
+                                          Navigator.of(context);
+                                        });
                                       });
                                     }, context),
                                   ],

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/enum_utils.dart';
 import 'package:health_model/shared/exports.dart';
@@ -127,14 +128,15 @@ class PolicyProvider extends ChangeNotifier {
   ) {
     addPolicy(
         textToDateTime(issuedDate.text), textToDateTime(inceptionDate), docId);
-    clearFields();
 
-    clearPort();
-
+    print("take 1");
     updateStats("sum_premium_amt",
         statsProvider.premiumAmtSum + int.parse(premiumAmt.text));
+    print("take 2");
     updateCompanybussiness(int.parse(premiumAmt.text), companyID);
+    print("take 3");
     updateCompanyPlans(companyID, "policy_count");
+    print("take 4");
     addCommision(
         client_name,
         policyNumber.text,
@@ -143,6 +145,7 @@ class PolicyProvider extends ChangeNotifier {
         AppUtils.getFirstWord(companyName),
         statsProvider.healthPercent.toDouble(),
         "Health");
+    print("take 5");
     makeATransaction(
         client_uid,
         docId,
@@ -153,6 +156,10 @@ class PolicyProvider extends ChangeNotifier {
         int.parse(premiumAmt.text),
         membersCount,
         textToDateTime(issuedDate.text));
+    print("take 6");
+    clearFields();
+    print("take 0");
+    clearPort();
   }
 
   void addPolicy(
@@ -196,6 +203,8 @@ class PolicyProvider extends ChangeNotifier {
       "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
       "type": EnumUtils.convertTypeToKey(ProductType.health),
+    }).then((value) {
+      PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
     });
   }
 

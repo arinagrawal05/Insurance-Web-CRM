@@ -171,7 +171,6 @@ class FDProvider extends ChangeNotifier {
       "nominee_dob": textToDateTime(nomineeDob.text),
       "fd_taken_date": Timestamp.now(),
       "fd_given_date": Timestamp.now(),
-      "port_maturity_date": Timestamp.now(),
       "port_company_name": portCompanyNameController.text,
       "port_fd_no": portFdNo.text,
       "port_maturity_date": textToDateTime(portMaturityDate.text),
