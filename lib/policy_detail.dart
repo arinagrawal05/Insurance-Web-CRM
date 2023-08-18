@@ -98,7 +98,12 @@ class PolicyDetailPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          heading("About Policy", 18),
+                          GestureDetector(
+                              onLongPress: () {
+                                AppUtils.showSnackMessage(
+                                    model.policyID, "This is policyId");
+                              },
+                              child: heading("About Policy", 18)),
                           model.policyStatus == "active"
                               ? Row(
                                   children: [
@@ -114,25 +119,6 @@ class PolicyDetailPage extends StatelessWidget {
                                           model.policyID,
                                           model.issuedDate);
                                       navigate(const ChooseUser(), context);
-                                    }, context, isExpanded: false),
-                                    customButton("Edit", () {
-                                      provider.selectpayMode(model.payMode);
-                                      provider.chequeNo.text =
-                                          bankDetailsConverter(
-                                              model.bankDetails)[0];
-
-                                      provider.bankName.text =
-                                          bankDetailsConverter(
-                                              model.bankDetails)[1];
-                                      provider.bankDate.text =
-                                          bankDetailsConverter(
-                                              model.bankDetails)[2];
-
-                                      // if (condition) {
-
-                                      // }
-                                      navigate(EditDetailsPage(model: model),
-                                          context);
                                     }, context, isExpanded: false),
                                     customDeleteButton(Ionicons.trash_outline,
                                         Colors.red.shade500, () async {
@@ -156,6 +142,25 @@ class PolicyDetailPage extends StatelessWidget {
                                   children: [
                                     customButton("Grant Renew", () {
                                       navigate(RenewPolicyPage(model: model),
+                                          context);
+                                    }, context, isExpanded: false),
+                                    customButton("Edit", () {
+                                      provider.selectpayMode(model.payMode);
+                                      provider.chequeNo.text =
+                                          bankDetailsConverter(
+                                              model.bankDetails)[0];
+
+                                      provider.bankName.text =
+                                          bankDetailsConverter(
+                                              model.bankDetails)[1];
+                                      provider.bankDate.text =
+                                          bankDetailsConverter(
+                                              model.bankDetails)[2];
+
+                                      // if (condition) {
+
+                                      // }
+                                      navigate(EditDetailsPage(model: model),
                                           context);
                                     }, context, isExpanded: false),
                                     customDeleteButton(Ionicons.trash_outline,

@@ -341,36 +341,6 @@ class EnterFdDetails extends StatelessWidget {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                   });
-                                  //     print("Take 2");
-                                  // addCommision(
-                                  //     controller.client_member_name,
-                                  //     "Na",
-                                  //     int.parse(controller.investedAmt.text),
-                                  //     textToDateTime(
-                                  //         controller.initialDate.text),
-                                  //     getFirstWord(controller.companyName),
-                                  //     getFdCommission(int.parse(getFirstWord(
-                                  //         controller.termSelected))),
-                                  //     AppConsts.fd);
-                                  // makeATransaction(
-                                  //     controller.client_uid,
-                                  //     docId,
-                                  //     "NA",
-                                  //     controller.companyName,
-                                  //     textToDateTime(
-                                  //         controller.initialDate.text),
-                                  //     int.parse(getFirstWord(
-                                  //         controller.termSelected)),
-                                  //     int.parse(controller.investedAmt.text),
-                                  //     0,
-                                  //     DateTime.now());
-                                  //     print("Take 3");
-                                  //     sumAssured.text = "hello";
-                                  //     Navigator.pop(context);
-                                  //     Navigator.pop(context);
-                                  //     Navigator.pop(context);
-                                  //     Navigator.pop(context);
-                                  //     Navigator.pop(context);
                                 }
                               }, context),
                             ],

@@ -52,6 +52,8 @@ void adminDialog(
 }
 
 void showCertificateDialog(FdHiveModel model) {
+  final statsProvider = Get.find<DashProvider>();
+
   TextEditingController fdNoController = TextEditingController();
   TextEditingController folioController = TextEditingController();
 
@@ -59,6 +61,21 @@ void showCertificateDialog(FdHiveModel model) {
 
   TextEditingController maturityDate =
       TextEditingController(text: dateTimetoText(model.maturityDate));
+  void getCertificate() {
+    FirebaseFirestore.instance.collection("Policies").doc(model.fdId).update({
+      "maturity_date": textToDateTime(maturityDate.text),
+      "maturity_amt": int.parse(maturityAmt.text),
+      "fd_taken_date": Timestamp.now(),
+      "fd_no": fdNoController.text,
+      "fd_status": FDStatus.inHand.name,
+      "folio_no": folioController.text,
+    }).then((value) {
+      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+      Navigator.pop(Get.context!);
+      Navigator.pop(Get.context!);
+    });
+  }
+
   showDialog(
       context: Get.context!,
       builder: (BuildContext context) => Dialog(
@@ -105,40 +122,32 @@ void showCertificateDialog(FdHiveModel model) {
 
                   const Spacer(),
                   customButton("Get Certificate", () {
-                    addCommision(
-                        model.name,
-                        model.fdNo,
-                        model.investedAmt,
-                        DateTime.now(),
-                        model.companyName,
-                        getFdCommission(model.fDterm),
-                        AppConsts.fd);
-                    makeATransaction(
-                        model.userid,
-                        model.fdId,
-                        fdNoController.text,
-                        model.companyName,
-                        model.initialDate,
-                        model.fDterm,
-                        model.investedAmt,
-                        int.parse(maturityAmt.text),
-                        textToDateTime(maturityDate.text));
+                    if (AppConsts.isProductionMode) {
+                      print("Take 1");
+                      updateCompanybussiness(
+                          model.investedAmt, model.companyID);
+                      updateCompanyPlans(model.companyID, "policy_count");
+                      addCommision(
+                          model.name,
+                          model.fdNo,
+                          model.investedAmt,
+                          DateTime.now(),
+                          model.companyName,
+                          getFdCommission(model.fDterm),
+                          AppConsts.fd);
+                      makeATransaction(
+                          model.userid,
+                          model.fdId,
+                          fdNoController.text,
+                          model.companyName,
+                          model.initialDate,
+                          model.fDterm,
+                          model.investedAmt,
+                          int.parse(maturityAmt.text),
+                          textToDateTime(maturityDate.text));
+                    }
+                    getCertificate();
                     // List list = advisorListField.text.split(",");
-                    FirebaseFirestore.instance
-                        .collection("Policies")
-                        .doc(model.fdId)
-                        .update({
-                      "maturity_date": textToDateTime(maturityDate.text),
-                      "maturity_amt": int.parse(maturityAmt.text),
-                      "fd_taken_date": Timestamp.now(),
-                      "fd_no": fdNoController.text,
-                      "fd_status": FDStatus.inHand.name,
-                      "folio_no": folioController.text,
-                    }).then((value) {
-                      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
-                      Navigator.pop(Get.context!);
-                      Navigator.pop(Get.context!);
-                    });
                   }, Get.context!)
                 ],
               ),

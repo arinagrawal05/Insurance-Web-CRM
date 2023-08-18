@@ -208,6 +208,8 @@ class FDProvider extends ChangeNotifier {
       TextEditingController(text: todayTextFormat());
 
   final freshFormKey = GlobalKey<FormState>();
+  // final TextEditingController investedAmt = TextEditingController();
+
   final TextEditingController investedAmt = TextEditingController();
   final TextEditingController nomineeName = TextEditingController();
   final TextEditingController nomineeRelation = TextEditingController();

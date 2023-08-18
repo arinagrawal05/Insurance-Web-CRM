@@ -15,7 +15,19 @@ class CommissionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // final statsProvider = Get.find<HealthStatsProvider>();
     return InkWell(
-      onTap: null,
+      onLongPress: () {
+        AppUtils.showSnackMessage(model.commissionId + " is presented", "");
+      },
+      onDoubleTap: () {
+        // AppUtils.showSnackMessage(model.commissionId + " is deleted", "");
+        FirebaseFirestore.instance
+            .collection("Commission")
+            .doc(model.commissionId)
+            .delete()
+            .then((value) {
+          AppUtils.showSnackMessage(model.commissionId + " is deleted", "");
+        });
+      },
       child: Container(
         // height: 120,
         // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),

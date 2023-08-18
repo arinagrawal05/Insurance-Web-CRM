@@ -33,6 +33,7 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       fdId: fields[13] as String,
       fdStatus: fields[14] as String,
       maturityDate: fields[15] as DateTime,
+      maturityAmt: fields[34] as int,
       fdNomineeName: fields[21] as String,
       initialDate: fields[16] as DateTime,
       investedAmt: fields[20] as int,
@@ -51,13 +52,14 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       headName: fields[32] as String,
       statusDate: fields[31] as DateTime,
       isFresh: fields[33] as bool,
+      folioNo: fields[35] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, FdHiveModel obj) {
     writer
-      ..writeByte(34)
+      ..writeByte(36)
       ..writeByte(13)
       ..write(obj.fdId)
       ..writeByte(14)
@@ -100,6 +102,10 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       ..write(obj.headName)
       ..writeByte(33)
       ..write(obj.isFresh)
+      ..writeByte(34)
+      ..write(obj.maturityAmt)
+      ..writeByte(35)
+      ..write(obj.folioNo)
       ..writeByte(0)
       ..write(obj.type)
       ..writeByte(1)

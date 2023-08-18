@@ -66,6 +66,12 @@ class FdHiveModel extends GenericInvestmentHiveData {
 
   @HiveField(33)
   bool isFresh;
+
+  @HiveField(34)
+  int maturityAmt;
+
+  @HiveField(35)
+  String folioNo;
   FdHiveModel({
     required String type,
     required String name,
@@ -83,6 +89,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
     required this.fdId,
     required this.fdStatus,
     required this.maturityDate,
+    required this.maturityAmt,
     required this.fdNomineeName,
     required this.initialDate,
     required this.investedAmt,
@@ -101,6 +108,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
     required this.headName,
     required this.statusDate,
     required this.isFresh,
+    required this.folioNo,
   }) : super(
           type: type,
           address: address,
@@ -129,6 +137,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       "fd_id": fdId,
       "fd_status": fdStatus,
       "maturity_date": maturityDate,
+      "maturity_amt": maturityAmt,
       "initial_date": initialDate,
       "invested_amt": investedAmt,
       "premium_term": fDterm,
@@ -148,6 +157,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       "status_date": cummulativeTerm,
       "head_name": headName,
       "isFresh": isFresh,
+      "folio_no": folioNo,
     };
   }
 
@@ -168,6 +178,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       companyLogo: map['company_logo'] ?? "NA",
       fdStatus: map['fd_status'] ?? 'NA',
       maturityDate: map['maturity_date'].toDate() ?? DateTime.now(),
+      maturityAmt: map['maturity_amt'] ?? 0,
       initialDate: map['initial_date'].toDate() ?? DateTime.now(),
       fDterm: map['premium_term'] ?? 0,
       investedAmt: map['invested_amt'] ?? 0,
@@ -176,9 +187,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       nomineeDob: map['nominee_dob'].toDate() ?? DateTime.now(),
       certificateTakenDate: map['fd_taken_date'].toDate() ?? DateTime.now(),
       certificateGivenDate: map['fd_given_date'].toDate() ?? DateTime.now(),
-      statusDate:
-          // map['status_date'].toDate() ??
-          DateTime.now(),
+      statusDate: DateTime.now(),
       portCompanyName: map['port_company_name'] ?? "NA",
       portFdNo: map['port_fd_no'] ?? "NA",
       portMaturityDate: map['port_maturity_date'].toDate() ?? DateTime.now(),
@@ -189,6 +198,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       cummulativeTerm: map['cummulative_term'] ?? "NA",
       bankDetails: map['bank_details'] ?? "NA",
       isFresh: map['isFresh'] ?? true,
+      folioNo: map['folio_no'] ?? "NA",
     );
   }
 }

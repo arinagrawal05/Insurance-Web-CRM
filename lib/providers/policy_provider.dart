@@ -130,33 +130,35 @@ class PolicyProvider extends ChangeNotifier {
         textToDateTime(issuedDate.text), textToDateTime(inceptionDate), docId);
 
     print("take 1");
-    updateStats("sum_premium_amt",
-        statsProvider.premiumAmtSum + int.parse(premiumAmt.text));
-    print("take 2");
-    updateCompanybussiness(int.parse(premiumAmt.text), companyID);
-    print("take 3");
-    updateCompanyPlans(companyID, "policy_count");
-    print("take 4");
-    addCommision(
-        client_name,
-        policyNumber.text,
-        int.parse(premiumAmt.text),
-        textToDateTime(issuedDate.text),
-        AppUtils.getFirstWord(companyName),
-        statsProvider.healthPercent.toDouble(),
-        "Health");
-    print("take 5");
-    makeATransaction(
-        client_uid,
-        docId,
-        policyNumber.text,
-        companyName,
-        textToDateTime(issuedDate.text),
-        int.parse(AppUtils.getFirstWord(termSelected)),
-        int.parse(premiumAmt.text),
-        membersCount,
-        textToDateTime(issuedDate.text));
-    print("take 6");
+    if (AppConsts.isProductionMode) {
+      updateStats("sum_premium_amt",
+          statsProvider.premiumAmtSum + int.parse(premiumAmt.text));
+      print("take 2");
+      updateCompanybussiness(int.parse(premiumAmt.text), companyID);
+      print("take 3");
+      updateCompanyPlans(companyID, "policy_count");
+      print("take 4");
+      addCommision(
+          client_name,
+          policyNumber.text,
+          int.parse(premiumAmt.text),
+          textToDateTime(issuedDate.text),
+          AppUtils.getFirstWord(companyName),
+          statsProvider.healthPercent.toDouble(),
+          "Health");
+      print("take 5");
+      makeATransaction(
+          client_uid,
+          docId,
+          policyNumber.text,
+          companyName,
+          textToDateTime(issuedDate.text),
+          int.parse(AppUtils.getFirstWord(termSelected)),
+          int.parse(premiumAmt.text),
+          membersCount,
+          textToDateTime(issuedDate.text));
+      print("take 6");
+    }
     clearFields();
     print("take 0");
     clearPort();

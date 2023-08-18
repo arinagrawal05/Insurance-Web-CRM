@@ -176,41 +176,44 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                   // var uuid = Uuid();
                   // String docId = uuid.v4();
                   if (_policyFormKey.currentState?.validate() == true) {
-                    updateStats(
-                        "sum_premium_amt",
-                        statsProvider.premiumAmtSum +
-                            int.parse(premiumAmt.text));
-                    updateCompanybussiness(
-                        int.parse(premiumAmt.text), model.companyID);
                     makeARenewal(
                       startingDate.add(Duration(days: term * 365)),
                       model.policyID,
                     );
-                    addCommision(
-                        model.name,
+                    if (AppConsts.isProductionMode) {
+                      updateStats(
+                          "sum_premium_amt",
+                          statsProvider.premiumAmtSum +
+                              int.parse(premiumAmt.text) -
+                              model.premuimAmt);
+                      updateCompanybussiness(
+                          int.parse(premiumAmt.text), model.companyID);
+                      addCommision(
+                          model.name,
+                          policyNumber.text,
+                          int.parse(premiumAmt.text),
+                          textToDateTime(issuedDate.text),
+                          AppUtils.getFirstWord(model.companyName),
+                          statsProvider.healthPercent.toDouble(),
+                          "Health");
+                      makeATransaction(
+                        model.userid,
+                        model.policyID,
                         policyNumber.text,
+                        model.companyName,
+                        startingDate,
+                        term,
                         int.parse(premiumAmt.text),
+                        model.membersCount,
                         textToDateTime(issuedDate.text),
-                        AppUtils.getFirstWord(model.companyName),
-                        statsProvider.healthPercent.toDouble(),
-                        "Health");
-                    makeATransaction(
-                      model.userid,
-                      model.policyID,
-                      policyNumber.text,
-                      model.companyName,
-                      startingDate,
-                      term,
-                      int.parse(premiumAmt.text),
-                      model.membersCount,
-                      textToDateTime(issuedDate.text),
-                    );
+                      );
 
-                    PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
+                      PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
 
-                    // print(widget);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+                      // print(widget);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
                   }
                 }, context),
               ],

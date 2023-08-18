@@ -282,15 +282,22 @@ updatePolicyStatus(String policyID, String status, DateTime statusDate) {
 
 void updateTemp() async {
   print("object");
-  FirebaseFirestore.instance.collection("Commission").get().then((value) {
+  num sum = 0;
+  FirebaseFirestore.instance
+      .collection("Policies")
+      .where("company_name", isEqualTo: "HDFC Ergo Health Insurance Co")
+      .get()
+      .then((value) {
     if (value.docs.isNotEmpty) {
       for (var i = 0; i < value.docs.length; i++) {
-        FirebaseFirestore.instance
-            .collection("Commission")
-            .doc(value.docs[i]["commission_id"])
-            .update({"commission_type": AppConsts.health});
+        sum += value.docs[i]["premium_amt"];
+        //   FirebaseFirestore.instance
+        //       .collection("Commission")
+        //       .doc(value.docs[i]["commission_id"])
+        //       .update({"commission_type": AppConsts.health});
+        // }
+        print("Successfully Temp Updated " + sum.toString());
       }
-      print("Successfully Temp Updated");
     }
   });
   // FirebaseFirestore.instance

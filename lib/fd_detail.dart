@@ -1,5 +1,6 @@
 import 'package:health_model/dialogs/admin_dialog.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/policy_flow/edit_fd.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/stepper.dart';
 
@@ -183,6 +184,12 @@ class FdDetailPage extends StatelessWidget {
                                 //   isExpanded: false,
                                 // ),
                                 customDeleteButton(
+                                    Ionicons.pencil_outline, Colors.blue,
+                                    () async {
+                                  navigate(
+                                      EditFdDetails(model: model), context);
+                                }, context),
+                                customDeleteButton(
                                     Ionicons.trash_outline, Colors.red.shade500,
                                     () async {
                                   confirmRemoveSheet(context, "FD", () {
@@ -331,6 +338,7 @@ class FdDetailPage extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.all(30),
                               child: StepperWidget(
+                                model: model,
                                 currentStep: stepNumber(
                                     EnumUtils.convertNameToFdStatus(
                                         model.fdStatus)),

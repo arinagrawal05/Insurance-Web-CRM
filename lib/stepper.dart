@@ -5,8 +5,9 @@ import 'package:health_model/shared/exports.dart';
 
 class StepperWidget extends StatelessWidget {
   final int currentStep;
-
-  const StepperWidget({super.key, required this.currentStep});
+  final FdHiveModel model;
+  const StepperWidget(
+      {super.key, required this.currentStep, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -56,30 +57,38 @@ class StepperWidget extends StatelessWidget {
           fitWidth: true,
           disableScroll: false,
           lineThickness: 0.5,
-          steps: const [
+          steps: [
             EasyStep(
               icon: Icon(Ionicons.document_outline),
-              title: 'Applied',
+              // title: 'Applied',
+              customTitle:
+                  customTitle("Applied", model.initialDate, currentStep, 0),
 
               // lineText: 'Add Address Info',
               // enabled: true,
             ),
             EasyStep(
               icon: const Icon(Ionicons.document_text_outline),
-              title: 'in Hand',
+              // title: 'in Hand',
 
               // lineText: 'Confirm Order Items',
               enabled: false,
+              customTitle: customTitle(
+                  "in Hand", model.certificateTakenDate, currentStep, 1),
             ),
             EasyStep(
-              icon: const Icon(Ionicons.pricetags_sharp),
-              title: 'Given',
+              icon: Icon(Ionicons.pricetags_sharp),
+              // title: 'Given',
               enabled: false,
+              customTitle: customTitle(
+                  "Given", model.certificateGivenDate, currentStep, 2),
             ),
             EasyStep(
               icon: const Icon(Ionicons.checkmark),
-              title: 'Redeemed',
+              // title: 'Redeemed',
               enabled: false,
+              customTitle:
+                  customTitle("Redeemed", model.maturityDate, currentStep, 3),
             ),
           ],
           // onStepReached: (index) => setState(() {
@@ -90,4 +99,22 @@ class StepperWidget extends StatelessWidget {
       ],
     );
   }
+
+  Widget customTitle(
+      String label, DateTime date, int currentStep, int thisStep) {
+    if (checkShow(currentStep, thisStep)) {
+      return Column(
+        children: [heading(label, 22), heading1(dateTimetoText(date), 18)],
+      );
+    }
+    return Container();
+  }
+}
+
+bool checkShow(int currentStep, int thisStep) {
+  if (currentStep >= thisStep) {
+    return true;
+  }
+
+  return false;
 }

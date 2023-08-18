@@ -5,6 +5,7 @@ import '../hive/hive_model/user_hive_model.dart';
 class AppConsts {
   static String health = "Health";
   static String fd = "FD";
+  static bool isProductionMode = true;
   static UserHiveModel userModel = UserHiveModel(
     name: "Arin Agrawal",
     address: "Choubey Colony",
