@@ -4,10 +4,31 @@ import 'package:health_model/regex.dart';
 import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
-class RenewFdPage extends StatelessWidget {
+class RenewFdPage extends StatefulWidget {
   final FdHiveModel model;
 
   const RenewFdPage({super.key, required this.model});
+
+  @override
+  State<RenewFdPage> createState() => _RenewFdPageState();
+}
+
+final policyNumber = TextEditingController();
+
+final investedAmt = TextEditingController();
+final issuedDate = TextEditingController(text: todayTextFormat());
+
+class _RenewFdPageState extends State<RenewFdPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    investedAmt.text = widget.model.maturityAmt != 0
+        ? widget.model.maturityAmt.toString()
+        : widget.model.investedAmt.toString();
+
+    // setLoginPref(true);
+  }
 
   // @override
   Widget build(BuildContext context) {
@@ -54,25 +75,28 @@ class RenewFdPage extends StatelessWidget {
                               size: 80,
                             ),
                           ),
-                          heading(model.name, 22),
-                          heading1("Arin Agrawals" + "'s member", 15),
+                          heading(widget.model.name, 22),
+                          heading1(widget.model.headName + "'s member", 15),
                           Divider(
                             endIndent: 20,
                             indent: 20,
                           ),
-                          userDetailShow("phone", model.phone,
+                          userDetailShow("phone", widget.model.phone,
                               Ionicons.phone_portrait_outline),
-                          userDetailShow("email", model.email, Ionicons.mail),
-                          userDetailShow("Birthday", dateTimetoText(model.dob),
+                          userDetailShow(
+                              "email", widget.model.email, Ionicons.mail),
+                          userDetailShow(
+                              "Birthday",
+                              dateTimetoText(widget.model.dob),
                               Ionicons.medical_outline),
                           userDetailShow(
                               "Gender",
-                              model.isMale ? "Male" : "Female",
-                              model.isMale
+                              widget.model.isMale ? "Male" : "Female",
+                              widget.model.isMale
                                   ? Ionicons.man_outline
                                   : Ionicons.woman_outline),
-                          userDetailShow(
-                              "Address", model.address, Ionicons.home_outline),
+                          userDetailShow("Address", widget.model.address,
+                              Ionicons.home_outline),
                         ],
                       ),
                     ),
@@ -97,7 +121,7 @@ class RenewFdPage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  heading("Fill Details", 22),
+                                  heading("Fill Renewal Details", 22),
                                   Container(
                                     width: 160,
                                     child: noBorderTextField(
@@ -112,7 +136,7 @@ class RenewFdPage extends StatelessWidget {
                                 // width:
                                 // MediaQuery.of(context).size.width * 0.3,
                                 child: formTextField(
-                                  controller.investedAmt,
+                                  investedAmt,
                                   "Invested Amount",
                                   "Enter Invested Amount",
                                   FieldRegex.integerRegExp,
@@ -166,99 +190,99 @@ class RenewFdPage extends StatelessWidget {
                                 controller.selectTerm(value);
                               }, context),
 
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5)),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      // mainAxisAlignment:
-                                      //     MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            // heading("Cummulative", 20),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(5)),
+                              //   padding:
+                              //       const EdgeInsets.symmetric(horizontal: 12),
+                              //   child: Column(
+                              //     children: [
+                              //       Row(
+                              //         // mainAxisAlignment:
+                              //         //     MainAxisAlignment.spaceBetween,
+                              //         children: [
+                              //           Row(
+                              //             children: [
+                              //               // heading("Cummulative", 20),
 
-                                            CummulativeToggle(
-                                                controller: controller,
-                                                value:
-                                                    Cummulative.isCummulative),
-                                            heading("Cummulative", 20),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 50,
-                                        ),
-                                        Row(
-                                          children: [
-                                            CummulativeToggle(
-                                                controller: controller,
-                                                value: Cummulative
-                                                    .isNonCummulative),
-                                            heading("Non Cummulative", 20),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 40,
-                                        ),
-                                        Expanded(
-                                          child: AbsorbPointer(
-                                            absorbing: controller
-                                                        .isCummulative ==
-                                                    Cummulative.isNonCummulative
-                                                ? true
-                                                : false,
-                                            child: genericPicker(
-                                              controller.cTermList,
-                                              controller.cTermSelected,
-                                              "Cummulative Term",
-                                              (p0) {
-                                                controller.selectCterm(p0);
-                                              },
-                                              context,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: formTextField(
-                                      controller.nomineeName,
-                                      "Nominee Name",
-                                      "Enter Nominee Name",
-                                      FieldRegex.nameRegExp,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: formTextField(
-                                      controller.nomineeRelation,
-                                      "Nominee Relation",
-                                      "Enter Nominee Relation",
-                                      FieldRegex.nameRegExp,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: formTextField(
-                                      controller.nomineeDob,
-                                      "Nominee DOB",
-                                      "Enter Nominee DOB",
-                                      FieldRegex.dateRegExp,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              //               CummulativeToggle(
+                              //                   controller: controller,
+                              //                   value:
+                              //                       Cummulative.isCummulative),
+                              //               heading("Cummulative", 20),
+                              //             ],
+                              //           ),
+                              //           SizedBox(
+                              //             width: 50,
+                              //           ),
+                              //           Row(
+                              //             children: [
+                              //               CummulativeToggle(
+                              //                   controller: controller,
+                              //                   value: Cummulative
+                              //                       .isNonCummulative),
+                              //               heading("Non Cummulative", 20),
+                              //             ],
+                              //           ),
+                              //           SizedBox(
+                              //             width: 40,
+                              //           ),
+                              //           Expanded(
+                              //             child: AbsorbPointer(
+                              //               absorbing: controller
+                              //                           .isCummulative ==
+                              //                       Cummulative.isNonCummulative
+                              //                   ? true
+                              //                   : false,
+                              //               child: genericPicker(
+                              //                 controller.cTermList,
+                              //                 controller.cTermSelected,
+                              //                 "Cummulative Term",
+                              //                 (p0) {
+                              //                   controller.selectCterm(p0);
+                              //                 },
+                              //                 context,
+                              //               ),
+                              //             ),
+                              //           )
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Expanded(
+                              //       flex: 1,
+                              //       child: formTextField(
+                              //         controller.nomineeName,
+                              //         "Nominee Name",
+                              //         "Enter Nominee Name",
+                              //         FieldRegex.nameRegExp,
+                              //       ),
+                              //     ),
+                              //     Expanded(
+                              //       flex: 1,
+                              //       child: formTextField(
+                              //         controller.nomineeRelation,
+                              //         "Nominee Relation",
+                              //         "Enter Nominee Relation",
+                              //         FieldRegex.nameRegExp,
+                              //       ),
+                              //     ),
+                              //     Expanded(
+                              //       flex: 1,
+                              //       child: formTextField(
+                              //         controller.nomineeDob,
+                              //         "Nominee DOB",
+                              //         "Enter Nominee DOB",
+                              //         FieldRegex.dateRegExp,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
 
                               // streamNominees(provider.client_uid, context, nomineeName),
 
@@ -312,9 +336,7 @@ class RenewFdPage extends StatelessWidget {
                                   : SizedBox(),
 
                               const Spacer(),
-                              customButton("Add to Database", () async {
-                                var uuid = const Uuid();
-                                String docId = uuid.v4();
+                              customButton("Renew this FD", () async {
                                 if (controller.fdFormKey.currentState
                                         ?.validate() ==
                                     true) {
@@ -327,7 +349,9 @@ class RenewFdPage extends StatelessWidget {
                                   //         provider.companyID);
                                   //     updateCompanyPlans(
                                   //         provider.companyID, "policy_count");
-                                  controller.addFd(docId);
+                                  controller.renewFd(widget.model.fdId,
+                                      int.parse(investedAmt.text));
+
                                   //     print("Take 2");
                                   // addCommision(
                                   //     controller.client_member_name,

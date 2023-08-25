@@ -52,7 +52,7 @@ void adminDialog(
 }
 
 void showCertificateDialog(FdHiveModel model) {
-  final statsProvider = Get.find<DashProvider>();
+  // final statsProvider = Get.find<DashProvider>();
 
   TextEditingController fdNoController = TextEditingController();
   TextEditingController folioController = TextEditingController();

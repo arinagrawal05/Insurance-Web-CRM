@@ -9,6 +9,7 @@ import 'package:health_model/policy_flow/choose_user.dart';
 import 'package:health_model/policy_flow/edit_policy.dart';
 import 'package:health_model/policy_renew.dart';
 import 'package:health_model/providers/policy_provider.dart';
+import 'package:health_model/shared/statements.dart';
 import 'package:health_model/shared/streams.dart';
 import 'package:health_model/shared/style.dart';
 import 'package:health_model/shared/widgets.dart';
@@ -122,7 +123,10 @@ class PolicyDetailPage extends StatelessWidget {
                                     }, context, isExpanded: false),
                                     customDeleteButton(Ionicons.trash_outline,
                                         Colors.red.shade500, () async {
-                                      confirmRemoveSheet(context, "Policy", () {
+                                      genericConfirmSheet(
+                                          context,
+                                          Statements.removeHealth,
+                                          "Policy", () {
                                         FirebaseFirestore.instance
                                             .collection("Policies")
                                             .doc(model.policyID)
@@ -165,7 +169,10 @@ class PolicyDetailPage extends StatelessWidget {
                                     }, context, isExpanded: false),
                                     customDeleteButton(Ionicons.trash_outline,
                                         Colors.red.shade500, () async {
-                                      confirmRemoveSheet(context, "Policy", () {
+                                      genericConfirmSheet(
+                                          context,
+                                          Statements.removeHealth,
+                                          "Policy", () {
                                         FirebaseFirestore.instance
                                             .collection("Policies")
                                             .doc(model.policyID)

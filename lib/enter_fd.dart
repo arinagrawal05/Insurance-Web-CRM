@@ -96,19 +96,28 @@ class EnterFdDetails extends StatelessWidget {
                             children: [
                               // chooseHeader("Fill Fd Details", 5),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   heading("Fill Details", 22),
-                                  SizedBox(
-                                    width: 200,
-                                    child: noBorderTextField(
-                                        controller.initialDate,
-                                        "Initial Date",
-                                        "Enter initial Date",
-                                        Ionicons.calendar),
-                                  )
+                                  // SizedBox(
+                                  //   width: 200,
+                                  //   child: noBorderTextField(
+                                  //       controller.initialDate,
+                                  //       "Initial Date",
+                                  //       "Enter initial Date",
+                                  //       Ionicons.calendar),
+                                  // )
                                 ],
+                              ),
+                              Container(
+                                // width:
+                                // MediaQuery.of(context).size.width * 0.3,
+                                child: formTextField(
+                                  controller.initialDate,
+                                  "Invested Date",
+                                  "Enter Invested Date",
+                                  FieldRegex.integerRegExp,
+                                ),
                               ),
                               Container(
                                 // width:

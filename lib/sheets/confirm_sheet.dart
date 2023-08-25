@@ -1,7 +1,8 @@
 import '../../shared/exports.dart';
 
-void confirmRemoveSheet(
+void genericConfirmSheet(
   BuildContext context,
+  String statement,
   String type,
   void Function()? ontap,
   //  int count
@@ -21,7 +22,7 @@ void confirmRemoveSheet(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heading("Do You Really Want to Remove this $type", 25),
+              heading(statement, 25),
               Spacer(),
               Column(
                 children: [
@@ -32,7 +33,10 @@ void confirmRemoveSheet(
                       type != "handover" ? "Remove" : "Handover to Customer",
                       ontap,
                       context,
-                      isExpanded: true),
+                      isExpanded: true,
+                      color: type != "handover"
+                          ? Colors.red
+                          : const Color(0xFF346eeb)),
                 ],
               ),
             ],

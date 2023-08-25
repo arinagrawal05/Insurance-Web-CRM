@@ -1,6 +1,8 @@
 import 'package:health_model/add_company.dart';
 import 'package:health_model/fd_detail.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
+import 'package:health_model/renew_fd.dart';
+import 'package:health_model/shared/statements.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
 
@@ -133,7 +135,8 @@ Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
                           () async {
                             //       addMemberSheet(context, widget.userid, docId, provider,
                             // model: null);
-                            confirmRemoveSheet(context, "Member", () {
+                            genericConfirmSheet(
+                                context, Statements.removeMember, "Member", () {
                               provider.decreaseMemberCount();
                               updateMembers(model.headUserid, toRemove: true);
                               FirebaseFirestore.instance
@@ -243,7 +246,8 @@ Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
                       Ionicons.trash_outline,
                       Colors.red.shade500,
                       () async {
-                        confirmRemoveSheet(context, "Plan", () {
+                        genericConfirmSheet(
+                            context, Statements.removePlan, "Plan", () {
                           updateCompanyPlans(model.companyID, "plans_count",
                               toRemove: true);
                           FirebaseFirestore.instance
@@ -354,7 +358,9 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                           Ionicons.trash_outline,
                           Colors.red.shade500,
                           () async {
-                            confirmRemoveSheet(context, "Company", () {
+                            genericConfirmSheet(
+                                context, Statements.removeCompany, "Company",
+                                () {
                               FirebaseFirestore.instance
                                   .collection("Companies")
                                   .doc(model.companyID)
@@ -774,10 +780,10 @@ Widget fDRenewalTile(
                     ),
               isGraced(thisModel.maturityDate)
                   ? customButton("Renew", () async {
-                      // navigate(
-                      //   RenewPolicyPage(model: thisModel),
-                      //   context,
-                      // );
+                      navigate(
+                        RenewFdPage(model: thisModel),
+                        context,
+                      );
                       // addMemberSheet(context, widget.userid, docId);
                     }, context, isExpanded: false)
                   : customButton("Laps", () async {

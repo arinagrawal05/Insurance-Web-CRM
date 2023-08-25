@@ -1,5 +1,6 @@
 import 'package:health_model/add_user.dart';
 import 'package:health_model/shared/exports.dart';
+import 'package:health_model/shared/statements.dart';
 
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {
@@ -45,7 +46,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
         }, context, isExpanded: false),
         customDeleteButton(Ionicons.trash_outline, Colors.red.shade500,
             () async {
-          confirmRemoveSheet(context, "Client", () {
+          genericConfirmSheet(context, Statements.removeClient, "Client", () {
             FirebaseFirestore.instance
                 .collection("Users")
                 .doc(model.userid)

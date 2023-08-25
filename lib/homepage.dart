@@ -1,4 +1,5 @@
 import 'package:health_model/homepage_widget.dart';
+import 'package:health_model/renew_fd.dart';
 
 import '../../shared/exports.dart';
 
@@ -94,10 +95,9 @@ class _HomePageState extends State<HomePage> {
                   Colors.cyanAccent.shade100,
                   Ionicons.nuclear, () {
                 // print("objectttt");
-
+                navigate(RenewFdPage(model: AppConsts.fdModel), context);
                 AppUtils.showSnackMessage(
                     "This Feature is not deployed yet", "");
-                // updateTemp();
               }),
               productBoxWidget(
                 "General",
@@ -105,6 +105,8 @@ class _HomePageState extends State<HomePage> {
                 Colors.blueAccent.shade100,
                 Ionicons.car,
                 () {
+                  updateTemp();
+                  // navigate(EnterFdDetails(), context);
                   AppUtils.showSnackMessage(
                       "This Feature is not deployed yet", "");
                   // deleteTemp();

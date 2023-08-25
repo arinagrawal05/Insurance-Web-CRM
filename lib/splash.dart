@@ -34,7 +34,7 @@ class _SplashscreenState extends State<Splashscreen>
 
   navigateToDestiny() {
     Timer(
-        Duration(seconds: 4),
+        Duration(seconds: 2),
         () => islogged == true
             ? navigate(HomePage(), context)
             : navigate(LoginPage(), context));
@@ -44,7 +44,7 @@ class _SplashscreenState extends State<Splashscreen>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (mounted) {
       setState(() {
-        islogged = prefs.getBool("isLogged")!;
+        islogged = prefs.getBool("isLogged") ?? false;
         theme = prefs.getString("ThemeSettings")!;
       });
     }

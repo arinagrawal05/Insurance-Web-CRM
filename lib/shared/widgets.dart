@@ -283,10 +283,10 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
   // int sas = 0;
   return Center(
     child: ElTooltip(
-      timeout: provider.tooltime,
+      timeout: Duration(seconds: provider.tooltime),
       // timeout: ,
       color: Theme.of(context).canvasColor,
-      padding: 10,
+      padding: EdgeInsets.all(10),
       distance: 0,
       showModal: false,
       child: Container(
@@ -413,10 +413,10 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
 Widget infoTooltip(PolicyHiveModel model, BuildContext context) {
   return Center(
     child: ElTooltip(
-      timeout: 3,
+      timeout: Duration(seconds: 3),
       // timeout: ,
       color: Theme.of(context).canvasColor,
-      padding: 10,
+      padding: EdgeInsets.all(10),
       distance: 0,
       showModal: false,
       child: const Icon(

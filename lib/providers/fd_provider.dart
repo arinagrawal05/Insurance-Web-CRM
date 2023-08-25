@@ -197,6 +197,59 @@ class FDProvider extends ChangeNotifier {
     });
   }
 
+  Future<void> editFd(String docId, String initialDate, String maturityDate,
+      int investedAmt, int maturityAmt, String fdNo, String folioNo) async {
+    var body = {
+      "initial_date": textToDateTime(initialDate),
+      "invested_amt": investedAmt,
+      "maturity_date": textToDateTime(maturityDate),
+      "maturity_amt": maturityAmt,
+      "fd_no": fdNo,
+      "folio_no": folioNo,
+    };
+
+    print('Sending ' + body.toString());
+    // AppUtils.showSnackMessage("FD Successfully Edited", "");
+    await FirebaseFirestore.instance
+        .collection("Policies")
+        .doc(docId)
+        .update(body)
+        .then((value) {
+      AppUtils.showSnackMessage("FD Successfully Edited", "");
+
+      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+    });
+  }
+
+  Future<void> renewFd(String docId, int investedAmt) async {
+    var body = {
+      "initial_date": textToDateTime(initialDate.text),
+      "maturity_date": textToDateTime(initialDate.text).add(
+          Duration(days: 30 * int.parse(AppUtils.getFirstWord(termSelected)))),
+      "fd_status": "applied",
+      "invested_amt": investedAmt,
+      "type": AppConsts.fd,
+      "premium_term": int.parse(AppUtils.getFirstWord(termSelected)),
+      "fd_taken_date": Timestamp.now(),
+      "fd_given_date": Timestamp.now(),
+      "payMode": payModeSelected,
+      "bank_details":
+          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
+      "fd_no": "NA",
+      "status_date": DateTime.now(),
+    };
+
+    print('Sending ' + body.toString());
+    AppUtils.showSnackMessage("FD Successfully Added", "");
+    await FirebaseFirestore.instance
+        .collection("Policies")
+        .doc(docId)
+        .update(body)
+        .then((value) {
+      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+    });
+  }
+
   final TextEditingController portCompanyNameController =
       TextEditingController();
 

@@ -285,12 +285,13 @@ void updateTemp() async {
   num sum = 0;
   FirebaseFirestore.instance
       .collection("Policies")
-      .where("company_name", isEqualTo: "HDFC Ergo Health Insurance Co")
+      .where("invested_amt", isEqualTo: "426381")
       .get()
       .then((value) {
     if (value.docs.isNotEmpty) {
       for (var i = 0; i < value.docs.length; i++) {
-        sum += value.docs[i]["premium_amt"];
+        print(value.docs[i]["fd_id"]);
+        // sum += value.docs[i]["invested_amt"];
         //   FirebaseFirestore.instance
         //       .collection("Commission")
         //       .doc(value.docs[i]["commission_id"])

@@ -16,16 +16,16 @@ class EditFdDetails extends StatefulWidget {
 }
 
 class _EditFdDetailsState extends State<EditFdDetails> {
-  final TextEditingController investedAmt = TextEditingController();
-  final TextEditingController nomineeName = TextEditingController();
-  final TextEditingController nomineeRelation = TextEditingController();
-  final TextEditingController nomineeDob = TextEditingController();
+  // final TextEditingController investedAmt = TextEditingController();
+  // final TextEditingController nomineeName = TextEditingController();
+  // final TextEditingController nomineeRelation = TextEditingController();
+  // final TextEditingController nomineeDob = TextEditingController();
 
-  final TextEditingController chequeNo = TextEditingController();
-  final TextEditingController bankDate = TextEditingController();
-  final TextEditingController bankName = TextEditingController();
-  TextEditingController initialDate =
-      TextEditingController(text: todayTextFormat());
+  // final TextEditingController chequeNo = TextEditingController();
+  // final TextEditingController bankDate = TextEditingController();
+  // final TextEditingController bankName = TextEditingController();
+  // TextEditingController initialDate =
+  //     TextEditingController(text: todayTextFormat());
 
   // final TextEditingController fdNo = TextEditingController();
   // final TextEditingController maturityDate = TextEditingController();
@@ -33,6 +33,8 @@ class _EditFdDetailsState extends State<EditFdDetails> {
   // final TextEditingController maturityAmt = TextEditingController();
   final fdFormKey = GlobalKey<FormState>();
 
+  final TextEditingController investedAmt = TextEditingController();
+  final TextEditingController investedDate = TextEditingController();
   final TextEditingController fdNo = TextEditingController();
   final TextEditingController maturityDate = TextEditingController();
   final TextEditingController folioNo = TextEditingController();
@@ -45,12 +47,14 @@ class _EditFdDetailsState extends State<EditFdDetails> {
   }
 
   autofill() {
-    if (widget.model.fdStatus == "inHand") {
-      fdNo.text = widget.model.fdNo;
-      maturityAmt.text = widget.model.maturityAmt.toString();
-      maturityDate.text = dateTimetoText(widget.model.maturityDate);
-      folioNo.text = widget.model.folioNo;
-    }
+    investedAmt.text = widget.model.investedAmt.toString();
+    investedDate.text = dateTimetoText(widget.model.initialDate);
+    // if (widget.model.fdStatus == "inHand") {
+    fdNo.text = widget.model.fdNo;
+    maturityAmt.text = widget.model.maturityAmt.toString();
+    maturityDate.text = dateTimetoText(widget.model.maturityDate);
+    folioNo.text = widget.model.folioNo;
+    // }
 
     // f.text = widget.model.policyNo;
     // sumAssured.text = [widget.model.sumAssured.toString();
@@ -77,66 +81,11 @@ class _EditFdDetailsState extends State<EditFdDetails> {
         return Stack(
           alignment: Alignment.center,
           children: [
-            // Row(
-            //   children: [
-            //     Container(
-            //       width: MediaQuery.of(context).size.width * 0.4,
-            //       height: MediaQuery.of(context).size.height,
-            //       color: Theme.of(context).canvasColor,
-            //     )
-            //   ],
-            // ),
-
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Card(
-                  //   elevation: 12,
-                  //   child: Container(
-                  //     // margin: EdgeInsets.symmetric(horizontal: 30),
-                  //     height: 600,
-                  //     width: 300,
-                  //     color: Theme.of(context).canvasColor,
-                  //     child: Column(
-                  //       children: [
-                  //         Container(
-                  //           padding: const EdgeInsets.symmetric(vertical: 45),
-                  //           // height: 200,
-                  //           // width: 150,
-                  //           child: const Icon(
-                  //             Ionicons.person_outline,
-                  //             size: 80,
-                  //           ),
-                  //         ),
-                  //         heading(controller.client_member_name, 22),
-                  //         heading1("${model.headName}'s member", 15),
-                  //         const Divider(
-                  //           endIndent: 20,
-                  //           indent: 20,
-                  //         ),
-                  //         userDetailShow("phone", controller.client_phone,
-                  //             Ionicons.phone_portrait_outline),
-                  //         userDetailShow(
-                  //             "email", controller.client_email, Ionicons.mail),
-                  //         userDetailShow(
-                  //             "Birthday",
-                  //             dateTimetoText(controller.client_dob.toDate()),
-                  //             Ionicons.medical_outline),
-                  //         userDetailShow(
-                  //             "Gender",
-                  //             controller.client_isMale ? "Male" : "Female",
-                  //             controller.client_isMale
-                  //                 ? Ionicons.man_outline
-                  //                 : Ionicons.woman_outline),
-                  //         userDetailShow("Address", controller.client_address,
-                  //             Ionicons.home_outline),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Card(
@@ -148,7 +97,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                         width: 900,
                         padding: const EdgeInsets.all(16.0),
                         child: Form(
-                          // key: controller.fdFormKey,
+                          key: controller.fdFormKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -168,7 +117,25 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                   // )
                                 ],
                               ),
-                              if (model.fdStatus == "inHand") ...[
+                              Container(
+                                child: formTextField(
+                                  investedAmt,
+                                  "Invested Amount",
+                                  "Enter Invested Amount",
+                                  FieldRegex.integerRegExp,
+                                ),
+                              ),
+                              Container(
+                                child: formTextField(
+                                  investedDate,
+                                  "Invested Date",
+                                  "Enter Invested Date",
+                                  FieldRegex.integerRegExp,
+                                ),
+                              ),
+                              if (
+// model.fdStatus == "inHand"
+                                  true) ...[
                                 Container(
                                   child: formTextField(
                                     fdNo,
@@ -185,22 +152,22 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                     FieldRegex.integerRegExp,
                                   ),
                                 ),
-                                // Container(
-                                //   child: formTextField(
-                                //     maturityAmt,
-                                //     "Maturity Amount",
-                                //     "Enter Maturity Amount",
-                                //     FieldRegex.integerRegExp,
-                                //   ),
-                                // ),
-                                // Container(
-                                //   child: formTextField(
-                                //     maturityDate,
-                                //     "Maturity Date",
-                                //     "Enter Maturity Date",
-                                //     FieldRegex.integerRegExp,
-                                //   ),
-                                // ),
+                                Container(
+                                  child: formTextField(
+                                    maturityAmt,
+                                    "Maturity Amount",
+                                    "Enter Maturity Amount",
+                                    FieldRegex.integerRegExp,
+                                  ),
+                                ),
+                                Container(
+                                  child: formTextField(
+                                    maturityDate,
+                                    "Maturity Date",
+                                    "Enter Maturity Date",
+                                    FieldRegex.integerRegExp,
+                                  ),
+                                ),
                               ],
                               // Container(
                               //   child: formTextField(
@@ -410,9 +377,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                               //     : const SizedBox(),
 
                               const Spacer(),
-                              customButton("Add to Database", () async {
-                                var uuid = const Uuid();
-                                String docId = uuid.v4();
+                              customButton("update to Database", () async {
                                 if (controller.fdFormKey.currentState
                                         ?.validate() ==
                                     true) {
@@ -425,12 +390,21 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                   //         provider.companyID);
                                   //     updateCompanyPlans(
                                   //         provider.companyID, "policy_count");
-                                  controller.addFd(docId).then((value) {
+                                  controller
+                                      .editFd(
+                                          widget.model.fdId,
+                                          investedDate.text,
+                                          maturityDate.text,
+                                          int.parse(investedAmt.text),
+                                          int.parse(maturityAmt.text),
+                                          fdNo.text,
+                                          folioNo.text)
+                                      .then((value) {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                    // Navigator.pop(context);
                                   });
                                   //     print("Take 2");
                                   // addCommision(
@@ -476,47 +450,6 @@ class _EditFdDetailsState extends State<EditFdDetails> {
           ],
         );
       }),
-    );
-  }
-
-  Widget noBorderTextField(TextEditingController controller, String labelText,
-      String errorText, IconData icon,
-      {bool isCompulsory = true,
-      Function(String)? onChange,
-      bool isAbsorbed = false,
-      TextInputType? kType = TextInputType.text}) {
-    return Padding(
-      padding: const EdgeInsets.all(6),
-      child: AbsorbPointer(
-        absorbing: isAbsorbed,
-        child: Container(
-          child: TextFormField(
-            onChanged: onChange,
-            // keyboardType: kType,
-            controller: controller,
-            textAlign: TextAlign.right,
-            decoration: InputDecoration(
-              prefixIcon: Icon(
-                icon,
-                size: 24,
-              ),
-              border: InputBorder.none,
-              hintText: labelText,
-              isDense: true,
-              contentPadding: const EdgeInsets.only(top: 11),
-            ),
-            validator: (value) {
-              if (isCompulsory) {
-                if (value!.isEmpty) {
-                  return errorText;
-                }
-                return null;
-              }
-              return null;
-            },
-          ),
-        ),
-      ),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:health_model/dialogs/admin_dialog.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/policy_flow/edit_fd.dart';
+import 'package:health_model/renew_fd.dart';
 import 'package:health_model/shared/exports.dart';
+import 'package:health_model/shared/statements.dart';
 import 'package:health_model/stepper.dart';
 
 // ignore: must_be_immutable
@@ -117,8 +119,10 @@ class FdDetailPage extends StatelessWidget {
                                             ? customButton(
                                                 "handover to customer", () {
                                                 print("object");
-                                                confirmRemoveSheet(
-                                                    context, "handover", () {
+                                                genericConfirmSheet(
+                                                    context,
+                                                    Statements.handoverFD,
+                                                    "handover", () {
                                                   FirebaseFirestore.instance
                                                       .collection("Policies")
                                                       .doc(model.fdId)
@@ -140,20 +144,20 @@ class FdDetailPage extends StatelessWidget {
                                     : Row(
                                         children: [
                                           customButton("Renew", () {
-                                            AppUtils.showSnackMessage(
-                                                "FD Redeemed Successfuly",
-                                                "This amount is given to client");
-                                            print("object");
-                                            // navigate(
-                                            //     RenewPolicyPage(model: model), context);
+                                            // AppUtils.showSnackMessage(
+                                            // "FD Redeemed Successfuly",
+                                            // "This amount is given to client");
+                                            // print("object");
+                                            navigate(RenewFdPage(model: model),
+                                                context);
                                           }, context, isExpanded: false)
                                         ],
                                       ),
                                 model.fdStatus == "handover"
                                     ? customButton("Redeem", () {
                                         print("object");
-                                        confirmRemoveSheet(context, "Redeem",
-                                            () {
+                                        genericConfirmSheet(context,
+                                            Statements.redeemFD, "Redeem", () {
                                           FirebaseFirestore.instance
                                               .collection("Policies")
                                               .doc(model.fdId)
@@ -183,8 +187,7 @@ class FdDetailPage extends StatelessWidget {
                                 //   context,
                                 //   isExpanded: false,
                                 // ),
-                                customDeleteButton(
-                                    Ionicons.pencil_outline, Colors.blue,
+                                customDeleteButton(Icons.edit, Colors.blue,
                                     () async {
                                   navigate(
                                       EditFdDetails(model: model), context);
@@ -192,7 +195,8 @@ class FdDetailPage extends StatelessWidget {
                                 customDeleteButton(
                                     Ionicons.trash_outline, Colors.red.shade500,
                                     () async {
-                                  confirmRemoveSheet(context, "FD", () {
+                                  genericConfirmSheet(
+                                      context, Statements.removeFD, "FD", () {
                                     FirebaseFirestore.instance
                                         .collection("Policies")
                                         .doc(model.fdId)
