@@ -24,6 +24,8 @@ class CommissionSearchController extends GetxController {
     print('Hive user CommissionSearchController init called');
     if (type == ProductType.health) {
       commissionBox = CommissionHiveHelper.healthCommissionBox;
+    } else if (type == ProductType.life) {
+      commissionBox = CommissionHiveHelper.lifeCommissionBox;
     } else {
       commissionBox = CommissionHiveHelper.fDCommissionBox;
     }

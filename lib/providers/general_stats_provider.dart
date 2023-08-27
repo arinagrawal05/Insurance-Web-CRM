@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/const.dart';
@@ -42,6 +43,9 @@ class GeneralStatsProvider extends GetxController {
     if (type == ProductType.health) {
       labels = ItemLabeling(
           label1: 'Active', label2: 'Ported', label3: 'lapsed', label4: '_');
+    } else if (type == ProductType.life) {
+      labels = ItemLabeling(
+          label1: 'applied', label2: 'state2', label3: 'state3', label4: '_');
     } else if (type == ProductType.fd) {
       labels = ItemLabeling(
           label1: 'applied',
@@ -59,6 +63,8 @@ class GeneralStatsProvider extends GetxController {
 
     if (type == ProductType.health) {
       policyBox = PolicyHiveHelper.policyBox;
+    } else if (type == ProductType.life) {
+      policyBox = PolicyHiveHelper.lifeBox;
     } else {
       policyBox = PolicyHiveHelper.fDBox;
     }
@@ -126,6 +132,23 @@ class GeneralStatsProvider extends GetxController {
           }
         }
         // print("take 3");
+      } else if (type == ProductType.life) {
+        // print("take 4");
+
+        if (policy.data is LifeHiveModel) {
+          LifeHiveModel data = policy.data as LifeHiveModel;
+          switch (data.lifeStatus) {
+            case 'applied':
+              labels!.value1 += 1;
+            case 'state2':
+              labels!.value2 += 1;
+            case 'state3':
+              labels!.value3 += 1;
+
+              break;
+            default:
+          }
+        }
       } else if (type == ProductType.fd) {
         // print("take 4");
 

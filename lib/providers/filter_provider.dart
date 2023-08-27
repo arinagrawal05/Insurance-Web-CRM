@@ -18,7 +18,7 @@ final foreverMore = DateTime.now().add(const Duration(days: 30 * 365));
 class FilterProvider extends GetxController {
   DateTime toDate = foreverMore;
   DateTime fromDate = foreverAgo;
-  num commissionSuma = 0;
+  // num commissionSuma = 0;
   String companyFilter = "All Companies";
   String statusFilter = "active";
 

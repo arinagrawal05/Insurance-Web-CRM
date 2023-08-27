@@ -1,5 +1,6 @@
 import 'package:health_model/dialogs/dialog.dart';
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/policy_flow/edit_fd.dart';
 import 'package:health_model/renew_fd.dart';
 import 'package:health_model/shared/exports.dart';
@@ -7,9 +8,9 @@ import 'package:health_model/shared/statements.dart';
 import 'package:health_model/stepper.dart';
 
 // ignore: must_be_immutable
-class FdDetailPage extends StatelessWidget {
-  FdHiveModel model;
-  FdDetailPage({required this.model});
+class LifeDetailPage extends StatelessWidget {
+  LifeHiveModel model;
+  LifeDetailPage({required this.model});
   late TooltipBehavior tooltip = TooltipBehavior();
 
   @override
@@ -95,89 +96,90 @@ class FdDetailPage extends StatelessWidget {
                             GestureDetector(
                                 onLongPress: () {
                                   AppUtils.showSnackMessage(
-                                      model.fdId, "This is Fd Id");
+                                      model.lifeID, "This is Fd Id");
                                 },
                                 child: heading("About FD", 18)),
 
                             Row(
                               children: [
-                                model.maturityDate.isAfter(DateTime.now())
-                                    ? model.fdStatus == "applied"
-                                        ? customButton("Recieve Certificate",
-                                            () {
-                                            showCertificateDialog(model);
-                                            // Get.snackbar(
-                                            //   "hello",
-                                            //   "this is message",
-                                            //   snackPosition: SnackPosition.BOTTOM,
-                                            // );
-                                            // print("object");
-                                            // navigate(RenewPolicyPage(model: model),
-                                            // context);
-                                          }, context, isExpanded: false)
-                                        : model.fdStatus == "inHand"
-                                            ? customButton(
-                                                "handover to customer", () {
-                                                print("object");
-                                                genericConfirmSheet(
-                                                    context,
-                                                    Statements.handoverFD,
-                                                    "handover", () {
-                                                  FirebaseFirestore.instance
-                                                      .collection("Policies")
-                                                      .doc(model.fdId)
-                                                      .update({
-                                                    "fd_given_date":
-                                                        DateTime.now(),
-                                                    "fd_status": "handover"
-                                                  }).then((value) {
-                                                    PolicyHiveHelper
-                                                        .fetchFDPoliciesFromFirebase();
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  });
-                                                });
-                                                // navigate(
-                                                //     RenewPolicyPage(model: model), context);
-                                              }, context, isExpanded: false)
-                                            : Container()
-                                    : Row(
-                                        children: [
-                                          customButton("Renew", () {
-                                            // AppUtils.showSnackMessage(
-                                            // "FD Redeemed Successfuly",
-                                            // "This amount is given to client");
-                                            // print("object");
-                                            navigate(RenewFdPage(model: model),
-                                                context);
-                                          }, context, isExpanded: false)
-                                        ],
-                                      ),
-                                model.fdStatus == "handover"
-                                    ? customButton("Redeem", () {
-                                        print("object");
-                                        genericConfirmSheet(context,
-                                            Statements.redeemFD, "Redeem", () {
-                                          FirebaseFirestore.instance
-                                              .collection("Policies")
-                                              .doc(model.fdId)
-                                              .update({
-                                            "status_date": DateTime.now(),
-                                            "fd_status": "redeemed"
-                                          }).then((value) {
-                                            AppUtils.showSnackMessage(
-                                                "This FD is Successfully Redeemed",
-                                                "");
-                                            PolicyHiveHelper
-                                                .fetchFDPoliciesFromFirebase();
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                          });
-                                        });
-                                        // navigate(
-                                        //     RenewPolicyPage(model: model), context);
-                                      }, context, isExpanded: false)
-                                    : Container(),
+                                // model.maturityDate.isAfter(DateTime.now())
+                                //     ? model.lifeStatus == "applied"
+                                //         ?
+                                customButton("Recieve Certificate", () {
+                                  renewLiftDialog(model);
+                                  // Get.snackbar(
+                                  //   "hello",
+                                  //   "this is message",
+                                  //   snackPosition: SnackPosition.BOTTOM,
+                                  // );
+                                  // print("object");
+                                  // navigate(RenewPolicyPage(model: model),
+                                  // context);
+                                }, context, isExpanded: false)
+                                // :
+                                //  model.lifeStatus == "inHand"
+                                //             ? customButton(
+                                //                 "handover to customer", () {
+                                //                 print("object");
+                                //                 genericConfirmSheet(
+                                //                     context,
+                                //                     Statements.handoverFD,
+                                //                     "handover", () {
+                                //                   FirebaseFirestore.instance
+                                //                       .collection("Policies")
+                                //                       .doc(model.lifeID)
+                                //                       .update({
+                                //                     "fd_given_date":
+                                //                         DateTime.now(),
+                                //                     "fd_status": "handover"
+                                //                   }).then((value) {
+                                //                     PolicyHiveHelper
+                                //                         .fetchFDPoliciesFromFirebase();
+                                //                     Navigator.pop(context);
+                                //                     Navigator.pop(context);
+                                //                   });
+                                //                 });
+                                //                 // navigate(
+                                //                 //     RenewPolicyPage(model: model), context);
+                                //               }, context, isExpanded: false)
+                                //             : Container()
+                                //     : Row(
+                                //         children: [
+                                //           customButton("Renew", () {
+                                //             // AppUtils.showSnackMessage(
+                                //             // "FD Redeemed Successfuly",
+                                //             // "This amount is given to client");
+                                //             // print("object");
+                                //             navigate(RenewFdPage(model: model),
+                                //                 context);
+                                //           }, context, isExpanded: false)
+                                //         ],
+                                //       ),
+                                // model.fdStatus == "handover"
+                                //     ? customButton("Redeem", () {
+                                //         print("object");
+                                //         genericConfirmSheet(context,
+                                //             Statements.redeemFD, "Redeem", () {
+                                //           FirebaseFirestore.instance
+                                //               .collection("Policies")
+                                //               .doc(model.fdId)
+                                //               .update({
+                                //             "status_date": DateTime.now(),
+                                //             "fd_status": "redeemed"
+                                //           }).then((value) {
+                                //             AppUtils.showSnackMessage(
+                                //                 "This FD is Successfully Redeemed",
+                                //                 "");
+                                //             PolicyHiveHelper
+                                //                 .fetchFDPoliciesFromFirebase();
+                                //             Navigator.pop(context);
+                                //             Navigator.pop(context);
+                                //           });
+                                //         });
+                                //         // navigate(
+                                //         //     RenewPolicyPage(model: model), context);
+                                //       }, context, isExpanded: false)
+                                //     : Container(),
                                 // customButton(
                                 //   "Edit FD",
                                 //   () {
@@ -187,31 +189,31 @@ class FdDetailPage extends StatelessWidget {
                                 //   context,
                                 //   isExpanded: false,
                                 // ),
-                                customDeleteButton(Icons.edit, Colors.blue,
-                                    () async {
-                                  navigate(
-                                      EditFdDetails(model: model), context);
-                                }, context),
-                                customDeleteButton(
-                                    Ionicons.trash_outline, Colors.red.shade500,
-                                    () async {
-                                  genericConfirmSheet(
-                                      context, Statements.removeFD, "FD", () {
-                                    FirebaseFirestore.instance
-                                        .collection("Policies")
-                                        .doc(model.fdId)
-                                        .delete()
-                                        .then((value) {
-                                      PolicyHiveHelper
-                                          .fetchFDPoliciesFromFirebase();
-                                      // PolicyHiveHelper.deleteSpecificPolicy(
-                                      //     documentID: model.fdId);
-                                      Navigator.pop(context);
+                                // customDeleteButton(Icons.edit, Colors.blue,
+                                //     () async {
+                                //   navigate(
+                                //       EditFdDetails(model: model), context);
+                                // }, context),
+                                // customDeleteButton(
+                                //     Ionicons.trash_outline, Colors.red.shade500,
+                                //     () async {
+                                //   genericConfirmSheet(
+                                //       context, Statements.removeFD, "FD", () {
+                                //     FirebaseFirestore.instance
+                                //         .collection("Policies")
+                                //         .doc(model.fdId)
+                                //         .delete()
+                                //         .then((value) {
+                                //       PolicyHiveHelper
+                                //           .fetchFDPoliciesFromFirebase();
+                                //       // PolicyHiveHelper.deleteSpecificPolicy(
+                                //       //     documentID: model.fdId);
+                                //       Navigator.pop(context);
 
-                                      Navigator.pop(context);
-                                    });
-                                  });
-                                }, context),
+                                //       Navigator.pop(context);
+                                //     });
+                                //   });
+                                // }, context),
                               ],
                             )
                             // Container(),
@@ -229,7 +231,7 @@ class FdDetailPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 productTileText(
-                                  "FD No: ${model.fdNo}",
+                                  "Life No: ${model.lifeNo}",
                                   22,
                                 ),
                                 // Text(
@@ -243,8 +245,8 @@ class FdDetailPage extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                         onTap: () {
-                                          launchURL(
-                                              "https://wa.me/${model.phone}?text=${fDRenewalDraftMsg(model)}");
+                                          // launchURL(
+                                          // "https://wa.me/${model.phone}?text=${fDRenewalDraftMsg(model)}");
                                         },
                                         child: Icon(
                                           Ionicons.logo_whatsapp,
@@ -275,7 +277,7 @@ class FdDetailPage extends StatelessWidget {
                                   22,
                                 ),
                                 Text(
-                                  "RS ${model.investedAmt.toString()}",
+                                  "RS ${model.premuimAmt.toString()}",
                                   style: GoogleFonts.nunito(
                                       fontSize: 22,
                                       color: Colors.green.shade300,
@@ -288,14 +290,14 @@ class FdDetailPage extends StatelessWidget {
                               22,
                             ),
                             productTileText(
-                              "Deposit Date: ${dateTimetoText(model.initialDate)}",
+                              "Deposit Date: ${dateTimetoText(model.commitmentDate)}",
                               22,
                             ),
                             productTileText(
                               "Expected Maturity Date: ${dateTimetoText(model.maturityDate)}",
                               22,
                             ),
-                            (model.isCummulative)
+                            (model.isMale)
                                 ? Container(
                                     padding: const EdgeInsets.all(12),
                                     child: Row(
@@ -316,7 +318,7 @@ class FdDetailPage extends StatelessWidget {
                                                   "This FD is Non Cummulative",
                                                   20),
                                               heading1(
-                                                  "it is ${model.cummulativeTerm}",
+                                                  "it is ${model.payingTerm}",
                                                   16)
                                               // heading(
                                               //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",
@@ -337,18 +339,18 @@ class FdDetailPage extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: heading("Timeline", 18),
                       ),
-                      Row(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.all(30),
-                              child: StepperWidget(
-                                model: model,
-                                currentStep: stepNumber(
-                                    EnumUtils.convertNameToFdStatus(
-                                        model.fdStatus)),
-                              ))
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      // Padding(
+                      // padding: const EdgeInsets.all(30),
+                      // child: StepperWidget(
+                      //   model: model,
+                      //   currentStep: stepNumber(
+                      //       EnumUtils.convertNameToFdStatus(
+                      //           model.fdStatus)),
+                      // ))
+                      //   ],
+                      // ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: heading("Transactions", 18),
@@ -365,7 +367,7 @@ class FdDetailPage extends StatelessWidget {
                               // model.inceptionDate == model.issuedDate
                               //     ? Container()
                               //     : inceptionWidget(model.inceptionDate, context),
-                              streamTransactions("policy_id", model.fdId),
+                              streamTransactions("policy_id", model.lifeID),
                               // model.fdStatus == "applied"
                               //     ? Container()
                               //     : statusFooter(model.fdStatus,

@@ -93,10 +93,22 @@ bool getGender(
   return ans;
 }
 
-int addWithGST(int number) {
+int addHealthWithGST(int number) {
   int some = number;
   some += (number * 18 / 100).round();
   return some;
+}
+
+int addLifeWithGST(int number, int terms) {
+  int some = number;
+
+  if (terms < 2) {
+    some += (number * 4.5 / 100).round();
+    return some;
+  } else {
+    some += (number * 2.25 / 100).round();
+    return some;
+  }
 }
 
 String dateTimetoText(DateTime date) {

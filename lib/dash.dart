@@ -89,7 +89,7 @@ class Dash extends StatelessWidget {
   getPage(CurrentPage page, ProductType type) {
     switch (page) {
       case CurrentPage.dashboard:
-        return HealthDashboardPage(
+        return DashboardPage(
           type: type,
         );
 

@@ -6,9 +6,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 class CommissionHiveHelper {
   static const String _healthCommissionBoxName = 'healthCommissionBox';
   static const String _fDcommissionBoxName = 'fdCommissionBox';
+  static const String _lifecommissionBoxName = 'lifeCommissionBox';
 
   static late Box<CommissionHiveModel> healthCommissionBox;
   static late Box<CommissionHiveModel> fDCommissionBox;
+  static late Box<CommissionHiveModel> lifeCommissionBox;
 
   static Future<void> init() async {
     print("Hive initialized!!");
@@ -17,12 +19,14 @@ class CommissionHiveHelper {
         await Hive.openBox<CommissionHiveModel>(_healthCommissionBoxName);
     fDCommissionBox =
         await Hive.openBox<CommissionHiveModel>(_fDcommissionBoxName);
+    lifeCommissionBox =
+        await Hive.openBox<CommissionHiveModel>(_lifecommissionBoxName);
 
     fetchCommissionsFromFirebase();
   }
 
   static Future<void> fetchCommissionsFromFirebase() async {
-    final HealthCommissionsCollection = FirebaseFirestore.instance
+    final commissionsCollection = FirebaseFirestore.instance
         .collection('Commission')
         // .where("type", isEqualTo: "Health")
         .orderBy("commission_date")
@@ -34,7 +38,7 @@ class CommissionHiveHelper {
     //     .orderBy("commission_date")
     //     .get();
 
-    HealthCommissionsCollection.then((snapshot) async {
+    commissionsCollection.then((snapshot) async {
       await healthCommissionBox
           .clear(); // Clear existing data before adding new users
       // print('health commision snapshot ${snapshot.docs.length}');
@@ -43,6 +47,8 @@ class CommissionHiveHelper {
 
         if (doc.data()['commission_type'] == 'Health') {
           healthCommissionBox.add(commission);
+        } else if (doc.data()['commission_type'] == 'Life') {
+          fDCommissionBox.add(commission);
         } else if (doc.data()['commission_type'] == 'FD') {
           fDCommissionBox.add(commission);
         }
@@ -114,5 +120,6 @@ class CommissionHiveHelper {
     // final userBox = Hive.box<UserHiveModel>(_userBoxName);
     await healthCommissionBox.clear();
     await fDCommissionBox.clear();
+    await lifeCommissionBox.clear();
   }
 }

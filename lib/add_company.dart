@@ -61,7 +61,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                   FieldRegex.nameRegExp,
                 ),
 
-                dashProvider.currentDashBoard == ProductType.health
+                dashProvider.currentDashBoard != ProductType.fd
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

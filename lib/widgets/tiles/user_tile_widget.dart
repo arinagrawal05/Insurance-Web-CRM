@@ -1,3 +1,5 @@
+import 'package:health_model/providers/life_provider.dart';
+
 import '../../shared/exports.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -11,6 +13,7 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
     final fdProvider = Provider.of<FDProvider>(context, listen: false);
+    final lifeProvider = Provider.of<LifeProvider>(context, listen: false);
 
     final dashProvider = Get.find<DashProvider>();
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -31,6 +34,13 @@ class UserTile extends StatelessWidget {
                     model.isMale,
                     model.membersCount);
                 navigate(ChooseCompany(), context);
+              } else if (dashProvider.currentDashBoard == ProductType.life) {
+                lifeProvider.setHeadClient(model.userid, model.name,
+                    model.email, model.address, model.phone);
+                navigate(
+                    ChooseMember(
+                        headName: model.name, headUserid: model.userid),
+                    context);
               } else {
                 fdProvider.setHeadClient(model.userid, model.name, model.email,
                     model.address, model.phone);

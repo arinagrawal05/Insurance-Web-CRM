@@ -52,8 +52,7 @@ Widget policyCircularChart(
     margin: const EdgeInsets.symmetric(vertical: 10),
     child: SfCircularChart(
       title: ChartTitle(
-          text: '${getWord(dashName)} Distribution',
-          textStyle: GoogleFonts.nunito()),
+          text: '${dashName} Distribution', textStyle: GoogleFonts.nunito()),
       legend:
           Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
       tooltipBehavior: tooltipBehavior,

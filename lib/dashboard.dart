@@ -3,7 +3,7 @@ import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
-class HealthDashboardPage extends StatelessWidget {
+class DashboardPage extends StatelessWidget {
   final ProductType type;
   final ScrollController scrollController = ScrollController();
 
@@ -12,7 +12,7 @@ class HealthDashboardPage extends StatelessWidget {
 
   late TooltipBehavior tooltip = TooltipBehavior();
 
-  HealthDashboardPage({super.key, required this.type});
+  DashboardPage({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class HealthDashboardPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                type == ProductType.health
+                type == ProductType.life
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -152,33 +152,56 @@ class HealthDashboardPage extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: heading("Graced Renewal", 20),
                           ),
-                          streamRenewals(
-                              true, PolicyHiveHelper.getGracedPolicies()),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: heading("Upcoming Renewal", 20),
-                          ),
-                          streamRenewals(
-                              false, PolicyHiveHelper.getUpcomingPolicies())
+                          // streamRenewals(
+                          //     true, PolicyHiveHelper.getGracedPolicies()),
+                          // Padding(
+                          //   padding:
+                          //       const EdgeInsets.symmetric(vertical: 8),
+                          //   child: heading("Upcoming Renewal", 20),
+                          // ),
+                          // streamRenewals(
+                          //     false, PolicyHiveHelper.getUpcomingPolicies())
                         ],
                       )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: heading("Due for Renewal", 20),
-                          ),
-                          streamRenewals(
-                              true, PolicyHiveHelper.getMaturatedFDs()),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: heading("Upcoming Renewals", 20),
-                          ),
-                          streamRenewals(
-                              false, PolicyHiveHelper.getUpcomingFds())
-                        ],
-                      )
+                    : type == ProductType.health
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: heading("Graced Renewal", 20),
+                              ),
+                              streamRenewals(
+                                  true, PolicyHiveHelper.getGracedPolicies()),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: heading("Upcoming Renewal", 20),
+                              ),
+                              streamRenewals(
+                                  false, PolicyHiveHelper.getUpcomingPolicies())
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: heading("Due for Renewal", 20),
+                              ),
+                              streamRenewals(
+                                  true, PolicyHiveHelper.getMaturatedFDs()),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: heading("Upcoming Renewals", 20),
+                              ),
+                              streamRenewals(
+                                  false, PolicyHiveHelper.getUpcomingFds())
+                            ],
+                          )
               ]),
         ),
       ),

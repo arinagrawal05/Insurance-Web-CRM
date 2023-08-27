@@ -1,6 +1,10 @@
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:health_model/add_company.dart';
+import 'package:health_model/enter_life.dart';
 import 'package:health_model/fd_detail.dart';
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
+import 'package:health_model/providers/life_provider.dart';
 import 'package:health_model/renew_fd.dart';
 import 'package:health_model/shared/statements.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -60,13 +64,21 @@ Widget bDayuserTile(BuildContext context, UserHiveModel model) {
 Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
   final provider = Provider.of<UserProvider>(context, listen: true);
   final fdProvider = Provider.of<FDProvider>(context, listen: true);
+  final lifeProvider = Provider.of<LifeProvider>(context, listen: true);
+  final dashProvider = Get.find<DashProvider>();
 
   return InkWell(
     onTap: isChoosing
         ? () {
-            fdProvider.setMemberClient(model.userid, model.name, model.relation,
-                model.dob, model.isMale);
-            navigate(ChooseCompany(), context);
+            if (dashProvider.currentDashBoard == ProductType.life) {
+              lifeProvider.setMemberClient(model.userid, model.name,
+                  model.relation, model.dob, model.isMale);
+              navigate(ChooseCompany(), context);
+            } else {
+              fdProvider.setMemberClient(model.userid, model.name,
+                  model.relation, model.dob, model.isMale);
+              navigate(ChooseCompany(), context);
+            }
           }
         : () {},
     child: Container(
@@ -185,24 +197,33 @@ Widget memberMiniTile(BuildContext context, MemberModel model) {
 }
 
 Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
-  final provider = Provider.of<PolicyProvider>(context, listen: false);
+  final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
+  final lifeProvider = Provider.of<LifeProvider>(context, listen: false);
+  final dashProvider = Get.find<DashProvider>();
 
   // Timestamp time = model["d;
   return InkWell(
     onTap: isChoosing
-        ? provider.portCompanyName == ""
-            ? () {
-                provider.setPlan(model.name, model.planID);
-                navigate(ChooseFresh(), context);
-              }
-            : () {
-                provider.setPlan(model.name, model.planID);
-                navigate(
-                    EnterPolicyDetails(
-                      inceptionDate: todayTextFormat(),
-                    ),
-                    context);
-              }
+        ? () {
+            if (dashProvider.currentDashBoard == ProductType.health) {
+              policyProvider.portCompanyName == ""
+                  ? {
+                      policyProvider.setPlan(model.name, model.planID),
+                      navigate(ChooseFresh(), context),
+                    }
+                  : {
+                      policyProvider.setPlan(model.name, model.planID),
+                      navigate(
+                          EnterPolicyDetails(
+                            inceptionDate: todayTextFormat(),
+                          ),
+                          context),
+                    };
+            } else {
+              lifeProvider.setPlan(model.name, model.planID);
+              navigate(EnterLifeDetails(), context);
+            }
+          }
         : null,
     child: Container(
       decoration: dashBoxDex(context),
@@ -274,10 +295,14 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
   // Timestamp time = model["d;
   final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
   final fdprovider = Provider.of<FDProvider>(context, listen: false);
+  final lifeProvider = Provider.of<LifeProvider>(context, listen: false);
 
   // final dashProvider = Provider.of<DashProvider>(context, listen: false);
 
   return InkWell(
+    onLongPress: () {
+      AppUtils.showSnackMessage(model.companyID, "This is companyID");
+    },
     onTap: isChoosing
         ? () {
             if (dashName == EnumUtils.convertTypeToKey(ProductType.health)) {
@@ -285,7 +310,16 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                   model.name, model.companyID, model.companyImg);
               navigate(
                   ChoosePlan(
-                      companyName: model.name, companyUserid: model.companyID),
+                      companyName: model.name, companyId: model.companyID),
+                  context);
+            } else if (dashName ==
+                EnumUtils.convertTypeToKey(ProductType.life)) {
+              lifeProvider.setCompany(
+                  model.name, model.companyID, model.companyImg);
+
+              navigate(
+                  ChoosePlan(
+                      companyName: model.name, companyId: model.companyID),
                   context);
             } else {
               fdprovider.setCompany(
@@ -341,7 +375,8 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                   ? Container()
                   : Row(
                       children: [
-                        dashName == ProductType.health
+                        dashName ==
+                                EnumUtils.convertTypeToKey(ProductType.health)
                             ? customButton("View Plans", () async {
                                 navigate(
                                     PlansPage(
@@ -372,6 +407,103 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                         ),
                       ],
                     ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget lifeTile(BuildContext context, LifeHiveModel model) {
+  return InkWell(
+    onLongPress: () {
+      AppUtils.showSnackMessage(model.lifeNo, "This is Fd Id");
+    },
+    onTap: () {
+      // navigate(
+      //   FdDetailPage(model: model),
+      //   context,
+      // );
+      // addMemberSheet(context, widget.userid, docId);
+    },
+    child: Container(
+      // height: 120,
+      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+
+      decoration: dashBoxDex(context),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                // color: Colors.amber,
+                width: 300,
+                child: Row(
+                  children: [
+                    companyLogo(model.companyLogo),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heading(model.name, 16),
+                        productTileText(model.lifeNo, 14),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  heading("Company", 16),
+                  productTileText(
+                      AppUtils.getFirstWord(model.companyName.toString()), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Sum Assured", 16),
+                  productTileText(
+                      "${AppUtils.formatAmount(model.sumAssured)} Rs", 14),
+                ],
+              ),
+              // Column(
+              //   children: [
+              //     heading("Sum Invested", 16),
+              //     productTileText(
+              //         "${AppUtils.formatAmount(model.investedAmt)} Rs", 14),
+              //   ],
+              // ),
+              Column(
+                children: [
+                  heading("Maturity Date", 16),
+                  productTileText(dateTimetoText(model.maturityDate), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Term", 16),
+                  productTileText(model.payingTerm.toString(), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Status", 16),
+                  productTileText(model.lifeStatus.toString(), 14),
+                ],
+              ),
+              customButton("View FD", () async {
+                // navigate(
+                //   FdDetailPage(model: model),
+                //   context,
+                // );
+              }, context, isExpanded: false)
             ],
           ),
         ],
@@ -544,7 +676,7 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
                 children: [
                   heading("Premium", 16),
                   productTileText(
-                      "${AppUtils.formatAmount(addWithGST(model.premuimAmt))} Rs",
+                      "${AppUtils.formatAmount(addHealthWithGST(model.premuimAmt))} Rs",
                       14),
                 ],
               ),
@@ -817,7 +949,7 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   if (isFd) {
     addedDate = model.timestamp.toDate();
   } else {
-    premiumAmt = addWithGST(model.premuimAmt);
+    premiumAmt = addHealthWithGST(model.premuimAmt);
     addedDate =
         model.beginsDate.toDate().add(Duration(days: model.terms * 365));
   }

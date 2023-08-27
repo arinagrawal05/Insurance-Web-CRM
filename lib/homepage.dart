@@ -1,4 +1,5 @@
 import 'package:health_model/homepage_widget.dart';
+import 'package:health_model/life_detail.dart';
 import 'package:health_model/renew_fd.dart';
 
 import '../../shared/exports.dart';
@@ -95,9 +96,10 @@ class _HomePageState extends State<HomePage> {
                   Colors.cyanAccent.shade100,
                   Ionicons.nuclear, () {
                 // print("objectttt");
-                navigate(RenewFdPage(model: AppConsts.fdModel), context);
-                AppUtils.showSnackMessage(
-                    "This Feature is not deployed yet", "");
+                dashProvider.navigateToProduct(ProductType.life, context);
+
+                // AppUtils.showSnackMessage(
+                //     "This Feature is not deployed yet", "");
               }),
               productBoxWidget(
                 "General",
@@ -105,10 +107,11 @@ class _HomePageState extends State<HomePage> {
                 Colors.blueAccent.shade100,
                 Ionicons.car,
                 () {
-                  updateTemp();
+                  // updateTemp();
+                  navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
                   // navigate(EnterFdDetails(), context);
-                  AppUtils.showSnackMessage(
-                      "This Feature is not deployed yet", "");
+                  // AppUtils.showSnackMessage(
+                  //     "This Feature is not deployed yet", "");
                   // deleteTemp();
                   //   AppUtils.showSnackMessage(
                   //       "FD Redeemed Successfuly",

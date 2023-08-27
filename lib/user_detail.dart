@@ -2,6 +2,8 @@ import 'package:health_model/add_user.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/statements.dart';
 
+import 'hive/hive_model/policy_models/life_model.dart';
+
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {
   UserHiveModel model;
@@ -167,6 +169,17 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                     .getPoliciesByUser(
                                         widget.model.userid)[index]
                                     .data as PolicyHiveModel);
+                          } else if (userProvider
+                                  .getPoliciesByUser(widget.model.userid)[index]
+                                  .data!
+                                  .type ==
+                              EnumUtils.convertTypeToKey(ProductType.life)) {
+                            return lifeTile(
+                                context,
+                                userProvider
+                                    .getPoliciesByUser(
+                                        widget.model.userid)[index]
+                                    .data as LifeHiveModel);
                           } else {
                             return fdTile(
                                 context,
@@ -205,7 +218,9 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                 indent: 20,
                                 endIndent: 20,
                               ),
-                              streamMembers(model.userid),
+                              streamMembers(
+                                model.userid,
+                              ),
                             ],
                           ),
                         ),

@@ -1,3 +1,4 @@
+import 'package:health_model/providers/life_provider.dart';
 import 'package:health_model/splash.dart';
 
 import '../../shared/exports.dart';
@@ -56,9 +57,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => FDProvider(),
             ),
-            // ChangeNotifierProvider(
-            //   create: (context) => PictureProvider(),
-            // ),
+            ChangeNotifierProvider(
+              create: (context) => LifeProvider(),
+            ),
           ],
           builder: (context, _) {
             final themeProvider = Provider.of<ThemeProvider>(context);

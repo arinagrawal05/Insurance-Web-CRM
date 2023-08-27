@@ -5,6 +5,7 @@ import 'package:health_model/shared/const.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'generic_investment_data.dart';
+import 'life_model.dart';
 
 part 'policy_data_model.g.dart';
 
@@ -18,9 +19,10 @@ class PolicyDataHiveModel extends HiveObject {
 
     if (map['type'] == AppConsts.fd) {
       return PolicyDataHiveModel(data: FdHiveModel.fromMap(map));
-      // data = PolicyModel.fromMap(map);
     } else if (map['type'] == AppConsts.health) {
       return PolicyDataHiveModel(data: PolicyHiveModel.fromMap(map));
+    } else if (map['type'] == AppConsts.life) {
+      return PolicyDataHiveModel(data: LifeHiveModel.fromMap(map));
     } else {
       return PolicyDataHiveModel(data: null);
     }

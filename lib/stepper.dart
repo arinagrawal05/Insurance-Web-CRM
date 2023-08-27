@@ -51,7 +51,6 @@ class StepperWidget extends StatelessWidget {
           // finishedLineColor: Colors.deepOrange,
           borderThickness: 10,
           internalPadding: 5,
-
           showLoadingAnimation: false,
           activeStepBorderType: BorderType.dotted,
           fitWidth: true,

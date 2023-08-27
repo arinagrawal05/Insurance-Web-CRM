@@ -1,4 +1,6 @@
-enum ProductType { health, fd, cms }
+enum ProductType { health, fd, life, cms }
+
+enum LifeStatus { allStatus, applied, state2, state3 }
 
 enum HealthStatus { allStatus, active, ported, lapsed }
 
@@ -11,6 +13,8 @@ class EnumUtils {
         return 'Health';
       case ProductType.fd:
         return 'FD';
+      case ProductType.life:
+        return 'Life';
 
       case ProductType.cms:
         return 'Cms';
@@ -23,6 +27,21 @@ class EnumUtils {
         return 'All Status';
       default:
         return status.name;
+    }
+  }
+
+  static HealthStatus convertNameToHealthStatus(String status) {
+    switch (status) {
+      case "All Status":
+        return HealthStatus.allStatus;
+      case "active":
+        return HealthStatus.active;
+      case "ported":
+        return HealthStatus.ported;
+      case "lapsed":
+        return HealthStatus.lapsed;
+      default:
+        return HealthStatus.allStatus;
     }
   }
 
@@ -53,18 +72,27 @@ class EnumUtils {
     }
   }
 
-  static HealthStatus convertNameToHealthStatus(String status) {
+  static String convertLifeStatusToName(LifeStatus status) {
+    switch (status) {
+      case LifeStatus.allStatus:
+        return 'All Status';
+      default:
+        return status.name;
+    }
+  }
+
+  static LifeStatus convertNameToLifeStatus(String status) {
     switch (status) {
       case "All Status":
-        return HealthStatus.allStatus;
-      case "active":
-        return HealthStatus.active;
-      case "ported":
-        return HealthStatus.ported;
-      case "lapsed":
-        return HealthStatus.lapsed;
+        return LifeStatus.allStatus;
+      case "applied":
+        return LifeStatus.applied;
+      case "state2":
+        return LifeStatus.state2;
+      case "state3":
+        return LifeStatus.state3;
       default:
-        return HealthStatus.allStatus;
+        return LifeStatus.allStatus;
     }
   }
 }

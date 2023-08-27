@@ -82,7 +82,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: buttonText(
-                      "With GST:" + addWithGST(withGST).toString(), 14,
+                      "With GST:" + addHealthWithGST(withGST).toString(), 14,
                       color: Colors.redAccent),
                 ),
 

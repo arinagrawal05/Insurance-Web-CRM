@@ -240,7 +240,7 @@ class PolicyDetailPage extends StatelessWidget {
                                 22,
                               ),
                               Text(
-                                "${AppUtils.formatAmount(addWithGST(model.sumAssured))} Rs",
+                                "${AppUtils.formatAmount(addHealthWithGST(model.sumAssured))} Rs",
                                 style: GoogleFonts.nunito(
                                     fontSize: 22,
                                     color: Colors.green.shade300,

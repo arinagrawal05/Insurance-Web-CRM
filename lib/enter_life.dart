@@ -1,51 +1,53 @@
+import 'package:health_model/providers/life_provider.dart';
 import 'package:health_model/regex.dart';
 
 import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
-class EnterPolicyDetails extends StatefulWidget {
-  String inceptionDate;
-  EnterPolicyDetails({required this.inceptionDate});
+class EnterLifeDetails extends StatefulWidget {
+  // String inceptionDate;
+  // EnterLifeDetails({required this.inceptionDate});
   @override
   // ignore: library_private_types_in_public_api
-  _EnterPolicyDetailsState createState() => _EnterPolicyDetailsState();
+  _EnterLifeDetailsState createState() => _EnterLifeDetailsState();
 }
 
-class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
+class _EnterLifeDetailsState extends State<EnterLifeDetails> {
   int withGST = 0;
-  TextEditingController inceptionDate = TextEditingController();
+  TextEditingController payingTerm = TextEditingController();
   @override
   void initState() {
     super.initState();
-    inceptionDate.text = widget.inceptionDate;
+    payingTerm.text = "1";
+    // inceptionDate.text = widget.inceptionDate;
   }
 
   @override
   Widget build(BuildContext context) {
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
-    Get.put(DashProvider(), tag: 'statsFor${ProductType.health.name}');
+    Get.put(DashProvider(), tag: 'statsFor${ProductType.life.name}');
     final statsProvider = Get.find<DashProvider>(
-      tag: 'statsFor${ProductType.health.name}',
+      tag: 'statsFor${ProductType.life.name}',
     );
 
     return Scaffold(
-        body: Consumer<PolicyProvider>(builder: (context, controller, child) {
+        body: Consumer<LifeProvider>(builder: (context, controller, child) {
       return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: controller.policyFormKey,
+            key: controller.lifeFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                chooseHeader("Fill Details", 5),
+                chooseHeader("Fill Life Details", 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: formTextField(
-                        controller.policyNumber,
+                        controller.lifeNumber,
                         "Policy Number",
                         "Enter Policy Number",
                         FieldRegex.defaultRegExp,
@@ -73,9 +75,9 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: formTextField(
-                    inceptionDate,
-                    "Inception Date:DD/MM/YYYY",
-                    "Enter Inception Date",
+                    payingTerm,
+                    "Paying Term",
+                    "Enter Paying Term",
                     FieldRegex.dateRegExp,
                   ),
                 ),
@@ -85,13 +87,13 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                       withGST = int.parse(val);
                     });
                   },
-                  // keyboardType: kType,
                   controller: controller.premiumAmt,
                   decoration: InputDecoration(
                     suffix: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 21),
                       child: buttonText(
-                          "With GST:${addHealthWithGST(withGST)}", 14,
+                          "With GST:${addLifeWithGST(withGST, int.parse(payingTerm.text[0]))}",
+                          14,
                           color: Colors.redAccent),
                     ),
                     border: OutlineInputBorder(
@@ -111,14 +113,91 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                     // }
                   },
                 ),
-                formTextField(
-                  controller.nomineeName,
-                  "Nominee Name",
-                  "Enter Nominee Name",
-                  FieldRegex.nameRegExp,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: formTextField(
+                        controller.nomineeName,
+                        "Nominee Name",
+                        "Enter Nominee Name",
+                        FieldRegex.nameRegExp,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: formTextField(
+                        controller.nomineeRelation,
+                        "Nominee Relation",
+                        "Enter Nominee Relation",
+                        FieldRegex.nameRegExp,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: formTextField(
+                        controller.nomineeDob,
+                        "Nominee DOB",
+                        "Enter Nominee DOB",
+                        FieldRegex.dateRegExp,
+                      ),
+                    ),
+                  ],
                 ),
                 streamNominees(
-                    controller.client_uid, context, controller.nomineeName),
+                    controller.client_uid, context, controller.nomineeName,
+                    isSingle: false,
+                    nomineeDate: controller.nomineeDob,
+                    nomineeRelation: controller.nomineeRelation),
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    children: [
+                      Row(
+                        // mainAxisAlignment:
+                        //     MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              PaytermToggle(
+                                  controller: controller,
+                                  value: Payterm.quarterly),
+                              heading("Quarterly", 20),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          Row(
+                            children: [
+                              PaytermToggle(
+                                  controller: controller,
+                                  value: Payterm.halfYearly),
+                              heading("Half Yearly", 20),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          Row(
+                            children: [
+                              PaytermToggle(
+                                  controller: controller,
+                                  value: Payterm.yearly),
+                              heading("Yearly", 20),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 formTextField(
                   controller.advisorName,
                   "advisor Name",
@@ -140,7 +219,7 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: buttonText(
-                      "Your policy will be issued from ${controller.issuedDate.text} to ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.termSelected)) * 365)))}",
+                      "Your policy will be issued from ${controller.issuedDate.text} to ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(payingTerm.text)) * 365)))}",
                       14,
                       color: Colors.greenAccent),
                 ),
@@ -190,18 +269,17 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                         ],
                       )
                     : SizedBox(),
-                customButton("Add to Database", () async {
-                  if (
-                      // controller.policyFormKey.currentState?.validate() ==
-                      true) {
-                    var uuid = const Uuid();
-                    String docId = uuid.v4();
+                customButton("Add Life to Database", () async {
+                  if (controller.lifeFormKey.currentState?.validate() == true) {
+                    // var uuid = const Uuid();
+                    // String docId = uuid.v4();
 
-                    controller.performHealthPolicyFunctions(
-                        docId, statsProvider, inceptionDate.text);
+                    controller.performLifePolicyFunctions(
+                      "aello",
+                    );
                     Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    // Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
                   }
@@ -212,5 +290,22 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
         ),
       );
     }));
+  }
+}
+
+class PaytermToggle extends StatelessWidget {
+  LifeProvider controller;
+  Payterm value;
+  PaytermToggle({super.key, required this.controller, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Radio<Payterm>(
+        activeColor: primaryColor,
+        value: value,
+        groupValue: controller.payterm,
+        onChanged: (val) {
+          controller.togglePayterm(val!);
+        });
   }
 }

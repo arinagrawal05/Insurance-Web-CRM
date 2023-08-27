@@ -1,4 +1,5 @@
 import 'package:health_model/hive/hive_model/policy_models/generic_investment_data.dart';
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:hive/hive.dart';
@@ -7,9 +8,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';
   static const String _fDBoxName = 'fDBox';
+  static const String _lifeBoxName = 'fDBox';
 
   static late Box<PolicyDataHiveModel> policyBox;
   static late Box<PolicyDataHiveModel> fDBox;
+  static late Box<PolicyDataHiveModel> lifeBox;
 
   static Future<void> init() async {
     print("Hive initialized!!");
@@ -17,9 +20,11 @@ class PolicyHiveHelper {
     Hive.registerAdapter(GenericInvestmentHiveDataAdapter());
     Hive.registerAdapter(PolicyHiveModelAdapter());
     Hive.registerAdapter(FdHiveModelAdapter());
+    Hive.registerAdapter(LifeHiveModelAdapter());
 
     policyBox = await Hive.openBox<PolicyDataHiveModel>(_policyBoxName);
     fDBox = await Hive.openBox<PolicyDataHiveModel>(_fDBoxName);
+    lifeBox = await Hive.openBox<PolicyDataHiveModel>(_lifeBoxName);
 
     Get.put(
         GeneralStatsProvider(
@@ -31,13 +36,57 @@ class PolicyHiveHelper {
           type: ProductType.fd,
         ),
         tag: 'statsFor${ProductType.fd.name}');
-
+    Get.put(
+        GeneralStatsProvider(
+          type: ProductType.life,
+        ),
+        tag: 'statsFor${ProductType.life.name}');
     fetchPoliciesFromFirebase();
   }
 
   static Future<void> fetchPoliciesFromFirebase() async {
     fetchFDPoliciesFromFirebase();
     fetchHealthPoliciesFromFirebase();
+    fetchLifePoliciesFromFirebase();
+
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+  }
+
+  static Future<void> fetchLifePoliciesFromFirebase() async {
+    final lifeCollection = FirebaseFirestore.instance
+        .collection('Policies')
+        .where("type", isEqualTo: "Life")
+        .orderBy("renewal_date");
+
+    lifeCollection.get().then((snapshot) async {
+      // print("LLLLL Firebase data policy ${snapshot.docs.length}");
+      await lifeBox.clear(); // Clear existing data before adding new users
+      print('Policy Hive cleared');
+      for (var doc in snapshot.docs) {
+        // print('Adding before');
+        // print(doc.id);
+        final life = PolicyDataHiveModel.fromFirestore(doc);
+        // userBox.add(user);
+        if (life.data != null) {
+          // policyBox.put(doc.id, policy);
+          lifeBox.add(life);
+          // PolicyHiveModel kk = life.data as PolicyHiveModel;
+          // print(
+          //     "LLLLL Adding data policy in hive ${kk.name} ${kk.renewalDate}");
+
+          // print('Adding ${policy.data!.name}');
+        }
+      }
+      try {
+        PolicySearchController searchController =
+            Get.find<PolicySearchController>(tag: ProductType.life.name);
+        if (searchController.initialized) {
+          searchController.reset();
+        }
+      } catch (e) {
+        print('Error caught by handler $e');
+      }
+    });
 
     // final userBox = Hive.box<UserHiveModel>(_userBoxName);
   }
@@ -55,12 +104,12 @@ class PolicyHiveHelper {
       for (var doc in snapshot.docs) {
         // print('Adding before');
         // print(doc.id);
-        final policy = PolicyDataHiveModel.fromFirestore(doc);
+        final health = PolicyDataHiveModel.fromFirestore(doc);
         // userBox.add(user);
-        if (policy.data != null) {
+        if (health.data != null) {
           // policyBox.put(doc.id, policy);
-          policyBox.add(policy);
-          PolicyHiveModel kk = policy.data as PolicyHiveModel;
+          policyBox.add(health);
+          // PolicyHiveModel kk = policy.data as PolicyHiveModel;
           // print(
           //     "LLLLL Adding data policy in hive ${kk.name} ${kk.renewalDate}");
 
@@ -94,11 +143,10 @@ class PolicyHiveHelper {
       for (var doc in snapshot.docs) {
         // print('Adding before');
         // print(doc.id);
-        final policy = PolicyDataHiveModel.fromFirestore(doc);
+        final fd = PolicyDataHiveModel.fromFirestore(doc);
         // userBox.add(user);
-        if (policy.data != null) {
-          fDBox.put(doc.id, policy);
-
+        if (fd.data != null) {
+          fDBox.add(fd);
           // print('Adding ${policy.data!.name}');
           // FdHiveModel kk = policy.data as FdHiveModel;
           // print(
@@ -150,8 +198,22 @@ class PolicyHiveHelper {
 
       return false;
     }).toList();
+    List<PolicyDataHiveModel>? lifePolicies;
+
+    lifePolicies = fDBox.values.where((policy) {
+      if (policy.data == null) {
+        return false;
+      }
+
+      if (policy.data!.userid == userId) {
+        return true;
+      }
+
+      return false;
+    }).toList();
 
     healthPolicies.addAll(fdPolicies);
+    healthPolicies.addAll(lifePolicies);
 
     return healthPolicies;
   }
@@ -263,14 +325,14 @@ class PolicyHiveHelper {
     // updatePolicyInSearhController();
   }
 
-  static void updatePolicyInSearhController() {
+  static void updatePolicyInSearchController() {
     ProductType type = Get.find<DashProvider>().currentDashBoard;
     Get.find()<PolicySearchController>(tag: type.name).filterpolicies();
   }
 
   static void deleteSpecificPolicy({required String documentID}) {
     policyBox.delete(documentID);
-    updatePolicyInSearhController();
+    updatePolicyInSearchController();
 
     // print('Adding ${policy.data!.name}');
   }

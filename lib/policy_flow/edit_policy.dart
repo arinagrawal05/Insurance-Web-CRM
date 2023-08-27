@@ -114,7 +114,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                 }),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: buttonText("With GST:${addWithGST(withGST)}", 14,
+                  child: buttonText("With GST:${addHealthWithGST(withGST)}", 14,
                       color: Colors.redAccent),
                 ),
                 formTextField(

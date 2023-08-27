@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/widgets.dart';
+import 'package:health_model/shared/exports.dart';
 
 // ignore: must_be_immutable
 class ChooseMember extends StatefulWidget {
@@ -14,7 +12,7 @@ class ChooseMember extends StatefulWidget {
 class _ChooseMemberState extends State<ChooseMember> {
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<UserProvider>(context, listen: true);
+    // final dashProvider = Provider.of<DashProvider>(context, listen: true);
 
     return Scaffold(
 

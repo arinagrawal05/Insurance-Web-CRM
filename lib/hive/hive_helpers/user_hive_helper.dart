@@ -30,7 +30,7 @@ class UserHiveHelper {
       final user = UserHiveModel.fromFirestore(doc);
       // userBox.add(user);
       userBox.put(doc.id, user);
-      print('Adding ${user.name}');
+      print('Adding ${user.name} as a client');
     }
     try {
       UserSearchController searchController = Get.find<UserSearchController>();

@@ -1,4 +1,5 @@
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:hive/hive.dart';
@@ -14,6 +15,7 @@ class PolicySearchController extends GetxController {
   PolicySearchController({required this.type});
   String companyFilter = 'All Companies';
   HealthStatus healthStatusFilter = HealthStatus.active;
+  LifeStatus lifeStatusFilter = LifeStatus.allStatus;
   FDStatus fDStatusFilter = FDStatus.allStatus;
 
 // TextEDo
@@ -24,6 +26,8 @@ class PolicySearchController extends GetxController {
     print('Hive user PolicySearchController init called $type');
     if (type == ProductType.health) {
       policyBox = PolicyHiveHelper.policyBox;
+    } else if (type == ProductType.life) {
+      policyBox = PolicyHiveHelper.lifeBox;
     } else {
       policyBox = PolicyHiveHelper.fDBox;
     }
@@ -37,6 +41,8 @@ class PolicySearchController extends GetxController {
     print('Calling PolicySearchController reset function for $type');
     if (type == ProductType.health) {
       policyBox = PolicyHiveHelper.policyBox;
+    } else if (type == ProductType.life) {
+      policyBox = PolicyHiveHelper.lifeBox;
     } else {
       policyBox = PolicyHiveHelper.fDBox;
     }
@@ -59,7 +65,8 @@ class PolicySearchController extends GetxController {
       //  print(' case 1 ${policy.data!.name} ${policy.data!.type} $type');
 
       if (!((type == ProductType.health && policy.data is PolicyHiveModel) ||
-          (type == ProductType.fd && policy.data is FdHiveModel))) {
+          (type == ProductType.fd && policy.data is FdHiveModel) ||
+          (type == ProductType.life && policy.data is LifeHiveModel))) {
         // print(
         //     ' case 1a ${(type == ProductType.health && policy.data is PolicyHiveModel)} $type');
         // print(
@@ -109,9 +116,16 @@ class PolicySearchController extends GetxController {
     }
 
     if (type == ProductType.fd) {
-      FdHiveModel health = data as FdHiveModel;
-      if (health.fdStatus == fDStatusFilter.name ||
+      FdHiveModel fd = data as FdHiveModel;
+      if (fd.fdStatus == fDStatusFilter.name ||
           fDStatusFilter == FDStatus.allStatus) {
+        return true;
+      }
+    }
+    if (type == ProductType.life) {
+      LifeHiveModel life = data as LifeHiveModel;
+      if (life.lifeStatus == lifeStatusFilter.name ||
+          lifeStatusFilter == LifeStatus.allStatus) {
         return true;
       }
     }
@@ -126,6 +140,8 @@ class PolicySearchController extends GetxController {
   void changeStatus(String status) {
     if (type == ProductType.health) {
       healthStatusFilter = EnumUtils.convertNameToHealthStatus(status);
+    } else if (type == ProductType.life) {
+      lifeStatusFilter = EnumUtils.convertNameToLifeStatus(status);
     } else if (type == ProductType.fd) {
       fDStatusFilter = EnumUtils.convertNameToFdStatus(status);
     }

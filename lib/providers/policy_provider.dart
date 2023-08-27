@@ -121,7 +121,7 @@ class PolicyProvider extends ChangeNotifier {
   //   return themeMode;
   // }
 
-  void performPolicyFunctions(
+  void performHealthPolicyFunctions(
     String docId,
     DashProvider statsProvider,
     String inceptionDate,

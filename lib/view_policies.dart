@@ -1,3 +1,5 @@
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
+
 import 'hive/hive_model/policy_models/generic_investment_data.dart';
 
 import '../../shared/exports.dart';
@@ -126,7 +128,16 @@ class _PoliciesPageState extends State<PoliciesPage> {
                                   fdModel,
                                 );
                               } else {
-                                return Container();
+                                if (currentModel is LifeHiveModel) {
+                                  LifeHiveModel lifeModel = currentModel;
+
+                                  return lifeTile(
+                                    context,
+                                    lifeModel,
+                                  );
+                                } else {
+                                  return Container();
+                                }
                               }
                             }
                           });
