@@ -36,38 +36,45 @@ class _ChooseUserState extends State<ChooseUser> {
         child: GetBuilder<UserSearchController>(
             init: UserSearchController(),
             builder: (controller) {
-              return Column(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        customTextfield(
-                            controller.searchController, "Search", context,
-                            onChange: (value) {
-                          controller.filterUsers(value);
-                        }),
-                      ],
+              return Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          customTextfield(
+                              controller.searchController, "Search", context,
+                              onChange: (value) {
+                            controller.filterUsers(value);
+                          }, wid: 1200),
+                        ],
+                      ),
                     ),
-                  ),
-                  // streamUsers(false),
-                  // userStream(dashProvider, false)
+                    SizedBox(
+                      height: 20,
+                    ),
+                    // streamUsers(false),
+                    // userStream(dashProvider, false)
 
-                  Expanded(
-                    child: ListView.builder(
-                        controller: scrollController,
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        // shrinkWrap: true,
-                        // physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.users.length,
-                        itemBuilder: (context, index) {
-                          return UserTile(
-                              isChoosing: true, model: controller.users[index]);
-                        }),
-                  )
-                ],
+                    Expanded(
+                      child: ListView.builder(
+                          controller: scrollController,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          // shrinkWrap: true,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.users.length,
+                          itemBuilder: (context, index) {
+                            return UserTile(
+                                isChoosing: true,
+                                model: controller.users[index]);
+                          }),
+                    )
+                  ],
+                ),
               );
             }),
       ),

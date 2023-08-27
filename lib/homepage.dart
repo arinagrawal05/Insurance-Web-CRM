@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                 dashProvider.navigateToProduct(ProductType.life, context);
 
                 // AppUtils.showSnackMessage(
-                //     "This Feature is not deployed yet", "");
+                // "This Feature is not deployed yet", "");
               }),
               productBoxWidget(
                 "General",
@@ -109,9 +109,9 @@ class _HomePageState extends State<HomePage> {
                 () {
                   // updateTemp();
                   navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
-                  // navigate(EnterFdDetails(), context);
-                  // AppUtils.showSnackMessage(
-                  //     "This Feature is not deployed yet", "");
+                  // navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
+                  AppUtils.showSnackMessage(
+                      "This Feature is not deployed yet", "");
                   // deleteTemp();
                   //   AppUtils.showSnackMessage(
                   //       "FD Redeemed Successfuly",

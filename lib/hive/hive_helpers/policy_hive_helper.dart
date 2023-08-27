@@ -8,7 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';
   static const String _fDBoxName = 'fDBox';
-  static const String _lifeBoxName = 'fDBox';
+  static const String _lifeBoxName = 'lifeBox';
 
   static late Box<PolicyDataHiveModel> policyBox;
   static late Box<PolicyDataHiveModel> fDBox;
@@ -200,7 +200,7 @@ class PolicyHiveHelper {
     }).toList();
     List<PolicyDataHiveModel>? lifePolicies;
 
-    lifePolicies = fDBox.values.where((policy) {
+    lifePolicies = lifeBox.values.where((policy) {
       if (policy.data == null) {
         return false;
       }
@@ -296,6 +296,50 @@ class PolicyHiveHelper {
         if (data.maturityDate.isAfter(DateTime.now()) &&
             data.maturityDate
                 .isBefore(DateTime.now().add(const Duration(days: 30)))) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static List<PolicyDataHiveModel> getGracedLifes() {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = lifeBox.values.where((life) {
+      if (life.data == null) {
+        return false;
+      }
+      if (life.data is LifeHiveModel) {
+        LifeHiveModel data = life.data as LifeHiveModel;
+        if (data.renewalDate.isBefore(DateTime.now()) &&
+            data.renewalDate
+                .isAfter(DateTime.now().subtract(const Duration(days: 150)))) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    return policies;
+  }
+
+  static List<PolicyDataHiveModel> getUpcomingLifes() {
+    List<PolicyDataHiveModel>? policies;
+
+    policies = lifeBox.values.where((life) {
+      if (life.data == null) {
+        return false;
+      }
+      if (life.data is LifeHiveModel) {
+        LifeHiveModel data = life.data as LifeHiveModel;
+        if (data.renewalDate.isAfter(DateTime.now()) &&
+            data.renewalDate
+                .isAfter(DateTime.now().add(const Duration(days: 30)))) {
           return true;
         }
       }

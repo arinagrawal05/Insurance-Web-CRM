@@ -291,9 +291,9 @@ Widget stepWidget() {
         stepUnitWidget(
             "Onboard User", "Add user as you go", Ionicons.person_add),
         stepUnitWidget(
-            "Make Action", "Add user as you go", Ionicons.document_text),
+            "Make Action", "File his/her account", Ionicons.document_text),
         stepUnitWidget(
-            "Claim Commission", "Add user as you go", Ionicons.diamond),
+            "Claim Commission", "Get consolidated Profit", Ionicons.diamond),
       ],
     ),
   );

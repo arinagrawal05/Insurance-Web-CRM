@@ -1,6 +1,6 @@
 enum ProductType { health, fd, life, cms }
 
-enum LifeStatus { allStatus, applied, state2, state3 }
+enum LifeStatus { allStatus, enforced, lapsed, paid, matured }
 
 enum HealthStatus { allStatus, active, ported, lapsed }
 
@@ -85,12 +85,14 @@ class EnumUtils {
     switch (status) {
       case "All Status":
         return LifeStatus.allStatus;
-      case "applied":
-        return LifeStatus.applied;
-      case "state2":
-        return LifeStatus.state2;
-      case "state3":
-        return LifeStatus.state3;
+      case "enforced":
+        return LifeStatus.enforced;
+      case "lapsed":
+        return LifeStatus.lapsed;
+      case "paid":
+        return LifeStatus.paid;
+      case "matured":
+        return LifeStatus.matured;
       default:
         return LifeStatus.allStatus;
     }

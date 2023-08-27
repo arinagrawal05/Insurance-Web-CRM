@@ -21,7 +21,7 @@ class LifeProvider extends ChangeNotifier {
   Timestamp client_dob = Timestamp.now();
   String client_address = "";
   bool client_isMale = true;
-  Iterable<MapEntry<int, num>> slabList = {MapEntry(24, 0.8)};
+  Iterable<MapEntry<int, num>> slabList = {const MapEntry(24, 0.8)};
   // String companyName = "";
   String companyName = "";
   String companyLogo = "";
@@ -32,8 +32,8 @@ class LifeProvider extends ChangeNotifier {
   // String companyName = "";
   Payterm payterm = Payterm.quarterly;
   String payModeSelected = "Cheque";
-  String termSelected = "1 year";
-  String cTermSelected = "By Month";
+  String paidTermSelected = "1 year";
+  String maturedTermSelected = "By Month";
   bool isFresh = true;
 
   void toggleFresh(bool isfresh) {
@@ -77,13 +77,13 @@ class LifeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectTerm(String term) {
-    termSelected = term;
+  void selectPaidTerm(String term) {
+    paidTermSelected = term;
     notifyListeners();
   }
 
-  void selectCterm(String term) {
-    cTermSelected = term;
+  void selectMaturedterm(String term) {
+    maturedTermSelected = term;
     notifyListeners();
   }
 
@@ -186,7 +186,6 @@ class LifeProvider extends ChangeNotifier {
 
   Future<void> addLife(String docId) async {
     print("adding life");
-
     var body = {
       "company_logo": companyLogo,
       "company_name": companyName,
@@ -205,13 +204,20 @@ class LifeProvider extends ChangeNotifier {
       "isMale": client_isMale,
       "phone": client_phone,
       "email": client_email,
-      "commitment_date": textToDateTime(initialDate.text),
-      "maturity_date": textToDateTime(initialDate.text).add(
-          Duration(days: 30 * int.parse(AppUtils.getFirstWord(termSelected)))),
-      "life_status": "applied",
-      "premuim_amt": int.parse(premiumAmt.text),
+      "life_status": "enforced",
+      "premium_amt": addLifeWithGST(int.parse(premiumAmt.text), isFirst: true),
+      "payterm": payterm.name,
       "type": AppConsts.life,
-      "paying_term": int.parse(AppUtils.getFirstWord(termSelected)),
+
+      "commitment_date": textToDateTime(initialDate.text),
+      "maturity_date": textToDateTime(initialDate.text).add(Duration(
+          days: 365 * int.parse(AppUtils.getFirstWord(maturedTermSelected)))),
+      "pay_till_date": textToDateTime(initialDate.text).add(Duration(
+          days: 365 * int.parse(AppUtils.getFirstWord(paidTermSelected)))),
+      "renewal_date":
+          textToDateTime(initialDate.text).add(getLifeDuration(payterm)),
+      "last_renewed_date": textToDateTime(initialDate.text),
+
       "nominee_name": nomineeName.text,
       "nominee_relation": nomineeRelation.text,
       "nominee_dob": textToDateTime(nomineeDob.text),
@@ -230,7 +236,6 @@ class LifeProvider extends ChangeNotifier {
       "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
       // "isFresh": isFresh,
-      "status_date": DateTime.now(),
     };
 
     print('Sending ' + body.toString());
@@ -242,10 +247,21 @@ class LifeProvider extends ChangeNotifier {
         .then((value) {
       AppUtils.showSnackMessage("Life added", "yes");
 
-      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+      PolicyHiveHelper.fetchLifePoliciesFromFirebase();
     });
   }
 
+  Duration getLifeDuration(
+    Payterm term,
+  ) {
+    if (term == Payterm.quarterly) {
+      return const Duration(days: 91);
+    } else if (term == Payterm.halfYearly) {
+      return const Duration(days: 182);
+    } else {
+      return const Duration(days: 365);
+    }
+  }
   // Future<void> editLife(String docId, String initialDate, String maturityDate,
   //     int investedAmt, int maturityAmt, String fdNo, String folioNo) async {
   //   var body = {
@@ -328,7 +344,7 @@ class LifeProvider extends ChangeNotifier {
     chequeNo.text = "";
     bankDate.text = "";
     bankName.text = "";
-    termSelected = "1 Year";
+    paidTermSelected = "1 Year";
     payModeSelected = "Credit/Debit";
     ChangeNotifier();
   }

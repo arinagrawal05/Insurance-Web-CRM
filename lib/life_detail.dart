@@ -106,7 +106,7 @@ class LifeDetailPage extends StatelessWidget {
                                 //     ? model.lifeStatus == "applied"
                                 //         ?
                                 customButton("Recieve Certificate", () {
-                                  renewLiftDialog(model);
+                                  showRenewLifeDialog(model);
                                   // Get.snackbar(
                                   //   "hello",
                                   //   "this is message",
@@ -318,7 +318,7 @@ class LifeDetailPage extends StatelessWidget {
                                                   "This FD is Non Cummulative",
                                                   20),
                                               heading1(
-                                                  "it is ${model.payingTerm}",
+                                                  "it is ${model.payingTillDate}",
                                                   16)
                                               // heading(
                                               //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",

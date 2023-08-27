@@ -150,17 +150,16 @@ class DashboardPage extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: heading("Graced Renewal", 20),
+                            child: heading("Graced Life Renewal", 20),
                           ),
-                          // streamRenewals(
-                          //     true, PolicyHiveHelper.getGracedPolicies()),
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsets.symmetric(vertical: 8),
-                          //   child: heading("Upcoming Renewal", 20),
-                          // ),
-                          // streamRenewals(
-                          //     false, PolicyHiveHelper.getUpcomingPolicies())
+                          streamRenewals(
+                              true, PolicyHiveHelper.getGracedLifes()),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: heading("Upcoming Life Renewal", 20),
+                          ),
+                          streamRenewals(
+                              false, PolicyHiveHelper.getUpcomingLifes())
                         ],
                       )
                     : type == ProductType.health

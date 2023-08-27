@@ -99,10 +99,10 @@ int addHealthWithGST(int number) {
   return some;
 }
 
-int addLifeWithGST(int number, int terms) {
+int addLifeWithGST(int number, {bool isFirst = false}) {
   int some = number;
 
-  if (terms < 2) {
+  if (isFirst) {
     some += (number * 4.5 / 100).round();
     return some;
   } else {

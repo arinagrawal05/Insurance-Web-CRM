@@ -4,11 +4,13 @@ import 'package:health_model/enter_life.dart';
 import 'package:health_model/fd_detail.dart';
 import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
+import 'package:health_model/life_detail.dart';
 import 'package:health_model/providers/life_provider.dart';
 import 'package:health_model/renew_fd.dart';
 import 'package:health_model/shared/statements.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
+import '../dialogs/dialog.dart';
 
 Widget bDayuserTile(BuildContext context, UserHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
@@ -418,13 +420,13 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
 Widget lifeTile(BuildContext context, LifeHiveModel model) {
   return InkWell(
     onLongPress: () {
-      AppUtils.showSnackMessage(model.lifeNo, "This is Fd Id");
+      AppUtils.showSnackMessage(model.lifeNo, "This is Life Id");
     },
     onTap: () {
-      // navigate(
-      //   FdDetailPage(model: model),
-      //   context,
-      // );
+      navigate(
+        LifeDetailPage(model: model),
+        context,
+      );
       // addMemberSheet(context, widget.userid, docId);
     },
     child: Container(
@@ -442,7 +444,7 @@ Widget lifeTile(BuildContext context, LifeHiveModel model) {
             children: [
               SizedBox(
                 // color: Colors.amber,
-                width: 300,
+                width: 270,
                 child: Row(
                   children: [
                     companyLogo(model.companyLogo),
@@ -468,28 +470,27 @@ Widget lifeTile(BuildContext context, LifeHiveModel model) {
               ),
               Column(
                 children: [
-                  heading("Sum Assured", 16),
-                  productTileText(
-                      "${AppUtils.formatAmount(model.sumAssured)} Rs", 14),
-                ],
-              ),
-              // Column(
-              //   children: [
-              //     heading("Sum Invested", 16),
-              //     productTileText(
-              //         "${AppUtils.formatAmount(model.investedAmt)} Rs", 14),
-              //   ],
-              // ),
-              Column(
-                children: [
-                  heading("Maturity Date", 16),
-                  productTileText(dateTimetoText(model.maturityDate), 14),
-                ],
-              ),
-              Column(
-                children: [
                   heading("Term", 16),
-                  productTileText(model.payingTerm.toString(), 14),
+                  productTileText(model.payterm.toString(), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Premium", 16),
+                  productTileText(
+                      "${AppUtils.formatAmount(model.premuimAmt)} Rs", 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Last Renew Date", 16),
+                  productTileText(dateTimetoText(model.lastRenewedDate), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Renewal Date", 16),
+                  productTileText(dateTimetoText(model.renewalDate), 14),
                 ],
               ),
               Column(
@@ -498,11 +499,11 @@ Widget lifeTile(BuildContext context, LifeHiveModel model) {
                   productTileText(model.lifeStatus.toString(), 14),
                 ],
               ),
-              customButton("View FD", () async {
-                // navigate(
-                //   FdDetailPage(model: model),
-                //   context,
-                // );
+              customButton("View Life", () async {
+                navigate(
+                  LifeDetailPage(model: model),
+                  context,
+                );
               }, context, isExpanded: false)
             ],
           ),
@@ -693,6 +694,121 @@ Widget policyTile(BuildContext context, PolicyHiveModel model) {
                 );
                 // addMemberSheet(context, widget.userid, docId);
               }, context, isExpanded: false)
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget lifeRenewalTile(
+    bool isPast, BuildContext context, PolicyDataHiveModel model) {
+  // final provider = Provider.of<PolicyProvider>(context, listen: false);
+  // Duration diff = model.renewalDate.toDate().difference(DateTime.now());
+  // Timestamp time = model["d;
+  LifeHiveModel thisModel = model.data as LifeHiveModel;
+  return InkWell(
+    onTap: null,
+    child: Container(
+      // height: 120,
+      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+
+      decoration: dashBoxDex(context),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                // color: Colors.amber,
+                width: 270,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: model.data!.isMale
+                          ? Colors.blueAccent
+                          : Colors.pinkAccent,
+                      child: Center(
+                        child: Icon(model.data!.isMale
+                            ? Ionicons.male
+                            : Ionicons.female),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heading(model.data!.name, 16),
+                        productTileText(model.data!.email, 14),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  heading("Company", 16),
+                  productTileText(
+                      AppUtils.getFirstWord(thisModel.companyName.toString()),
+                      14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Sum Assured", 16),
+                  productTileText(thisModel.sumAssured.toString(), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Renewal Date", 16),
+                  productTileText(dateTimetoText(thisModel.renewalDate), 14),
+                ],
+              ),
+              Column(
+                children: [
+                  heading("Basic Premium", 16),
+                  productTileText(thisModel.premuimAmt.toString(), 14),
+                ],
+              ),
+              isPast
+                  ? Column(
+                      children: [
+                        heading("Graced", 16),
+                        productTileText(
+                            "${30 - (DateTime.now().difference(thisModel.renewalDate).inDays)} days",
+                            14),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        heading("Days to go", 16),
+                        productTileText(
+                            "${thisModel.renewalDate.difference(DateTime.now()).inDays} days",
+                            14),
+                      ],
+                    ),
+              isGraced(thisModel.renewalDate)
+                  ? customButton("Renew", () async {
+                      showRenewLifeDialog(thisModel);
+
+                      // addMemberSheet(context, widget.userid, docId);
+                    }, context, isExpanded: false)
+                  : customButton("Laps", () async {
+                      navigate(
+                        ChooseMember(
+                            headUserid: model.data!.userid,
+                            headName: model.data!.name),
+                        context,
+                      );
+                      // addMemberSheet(context, widget.userid, docId);
+                    }, context, isExpanded: false)
             ],
           ),
         ],

@@ -45,7 +45,10 @@ class GeneralStatsProvider extends GetxController {
           label1: 'Active', label2: 'Ported', label3: 'lapsed', label4: '_');
     } else if (type == ProductType.life) {
       labels = ItemLabeling(
-          label1: 'applied', label2: 'state2', label3: 'state3', label4: '_');
+          label1: 'enforced',
+          label2: 'lapsed',
+          label3: 'paid',
+          label4: 'matured');
     } else if (type == ProductType.fd) {
       labels = ItemLabeling(
           label1: 'applied',
@@ -73,6 +76,8 @@ class GeneralStatsProvider extends GetxController {
   GeneralStatsProvider({required this.type});
   void getCompaniesChartData(companyType) {
     chartCompanyData = [];
+    Map<String, int> companyBusiness = {};
+    Map<String, int> companyPolicies = {};
     FirebaseFirestore.instance
         .collection("Companies")
         .where("company_type", isEqualTo: companyType)
@@ -80,14 +85,67 @@ class GeneralStatsProvider extends GetxController {
         .then((value) {
       if (value.docs.isNotEmpty) {
         companies_count = value.docs.length;
+
         for (var i = 0; i < value.docs.length; i++) {
-          chartCompanyData.add(CompanyChartData(
-              AppUtils.getFirstWord(value.docs[i]["name"]),
-              value.docs[i]["total_bussiness"]));
+          if (type != ProductType.fd) {
+            FirebaseFirestore.instance
+                .collection("Companies")
+                .doc(value.docs[i]["company_id"])
+                .collection("Plans")
+                .get()
+                .then((value) {
+              plans_count += value.docs.length;
+            });
+          }
+
+          companyBusiness[value.docs[i]["name"]] = 0;
+          companyPolicies[value.docs[i]["name"]] = 0;
+          // chartCompanyData.add(CompanyChartData(
+          //     AppUtils.getFirstWord(value.docs[i]["name"]),
+          //     value.docs[i]["total_bussiness"]));
           // print(chartData[i].x.toString());
-          policyDistributionChartData.add(PolicyDistributionChartData(
-              value.docs[i]["name"], value.docs[i]["policy_count"]));
+          // policyDistributionChartData.add(PolicyDistributionChartData(
+          //     value.docs[i]["name"], value.docs[i]["policy_count"]));
         }
+
+        policyBox!.values.forEach((element) {
+          int amount = 0;
+          int policyCount = 0;
+
+          // print(type + element.data)
+          if (type == ProductType.health && element.data is PolicyHiveModel) {
+            var s = element.data as PolicyHiveModel;
+            amount = s.premuimAmt;
+            policyCount += 1;
+          } else if (type == ProductType.fd && element.data is FdHiveModel) {
+            var s = element.data as FdHiveModel;
+            amount = s.investedAmt;
+            policyCount += 1;
+          } else if (type == ProductType.life &&
+              element.data is LifeHiveModel) {
+            var s = element.data as LifeHiveModel;
+            amount = s.premuimAmt;
+            policyCount += 1;
+          }
+          if (companyBusiness.containsKey(element.data!.companyName)) {
+            companyBusiness[element.data!.companyName] =
+                (companyBusiness[element.data!.companyName] ?? 0) + amount;
+
+            companyPolicies[element.data!.companyName] =
+                (companyPolicies[element.data!.companyName] ?? 0) + policyCount;
+            // companyBusiness[element.data!.companyName] ;
+          }
+        });
+
+        companyBusiness.forEach((key, value) {
+          chartCompanyData
+              .add(CompanyChartData(AppUtils.getFirstWord(key), value));
+        });
+
+        companyPolicies.forEach((key, value) {
+          policyDistributionChartData
+              .add(PolicyDistributionChartData(key, value));
+        });
       }
       update();
     });
@@ -138,11 +196,13 @@ class GeneralStatsProvider extends GetxController {
         if (policy.data is LifeHiveModel) {
           LifeHiveModel data = policy.data as LifeHiveModel;
           switch (data.lifeStatus) {
-            case 'applied':
+            case 'enforced':
               labels!.value1 += 1;
-            case 'state2':
+            case 'lapsed':
               labels!.value2 += 1;
-            case 'state3':
+            case 'paid':
+              labels!.value3 += 1;
+            case 'matured':
               labels!.value3 += 1;
 
               break;

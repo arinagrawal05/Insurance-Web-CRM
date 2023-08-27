@@ -14,11 +14,10 @@ class EnterLifeDetails extends StatefulWidget {
 
 class _EnterLifeDetailsState extends State<EnterLifeDetails> {
   int withGST = 0;
-  TextEditingController payingTerm = TextEditingController();
+  // TextEditingController payingTerm = TextEditingController();
   @override
   void initState() {
     super.initState();
-    payingTerm.text = "1";
     // inceptionDate.text = widget.inceptionDate;
   }
 
@@ -65,22 +64,22 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: formTextField(
                         controller.issuedDate,
-                        "Issued Date:DD/MM/YYYY",
-                        "Enter Issued Date",
+                        "Commitment Date:DD/MM/YYYY",
+                        "Enter Commitment Date",
                         FieldRegex.dateRegExp,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: formTextField(
-                    payingTerm,
-                    "Paying Term",
-                    "Enter Paying Term",
-                    FieldRegex.dateRegExp,
-                  ),
-                ),
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width * 0.3,
+                //   child: formTextField(
+                //     payingTerm,
+                //     "Paying Term",
+                //     "Enter Paying Term",
+                //     FieldRegex.dateRegExp,
+                //   ),
+                // ),
                 TextFormField(
                   onChanged: (val) {
                     setState(() {
@@ -92,7 +91,7 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                     suffix: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 21),
                       child: buttonText(
-                          "With GST:${addLifeWithGST(withGST, int.parse(payingTerm.text[0]))}",
+                          "With GST:${addLifeWithGST(withGST, isFirst: true)}",
                           14,
                           color: Colors.redAccent),
                     ),
@@ -212,14 +211,24 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                     height: 70,
                     width: MediaQuery.of(context).size.width,
                     controller.termList,
-                    controller.termSelected,
-                    "Choose Terms", (value) {
-                  controller.selectTerm(value);
+                    controller.paidTermSelected,
+                    "Choose Paid Terms", (value) {
+                  controller.selectPaidTerm(value);
+                }, context),
+                genericPicker(
+                    radius: 10,
+                    prefixIcon: Ionicons.hourglass_outline,
+                    height: 70,
+                    width: MediaQuery.of(context).size.width,
+                    controller.termList,
+                    controller.maturedTermSelected,
+                    "Choose Matured Terms", (value) {
+                  controller.selectMaturedterm(value);
                 }, context),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: buttonText(
-                      "Your policy will be issued from ${controller.issuedDate.text} to ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(payingTerm.text)) * 365)))}",
+                      "Your policy will be issued from ${controller.issuedDate.text} to ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.paidTermSelected)) * 365)))}",
                       14,
                       color: Colors.greenAccent),
                 ),

@@ -1,3 +1,4 @@
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 
 import '../../shared/exports.dart';
@@ -372,6 +373,12 @@ Widget streamRenewals(bool isPast, List<PolicyDataHiveModel> data) {
         // return Text(data[index].data!.type);
         if (data[index].data is PolicyHiveModel) {
           return policyRenewalTile(
+            isPast,
+            context,
+            data[index],
+          );
+        } else if (data[index].data is LifeHiveModel) {
+          return lifeRenewalTile(
             isPast,
             context,
             data[index],

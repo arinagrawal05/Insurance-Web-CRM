@@ -156,7 +156,7 @@ void showCertificateDialog(FdHiveModel model) {
           ));
 }
 
-void renewLiftDialog(LifeHiveModel model) {
+void showRenewLifeDialog(LifeHiveModel model) {
   // final statsProvider = Get.find<DashProvider>();
 
   TextEditingController fdNoController = TextEditingController();

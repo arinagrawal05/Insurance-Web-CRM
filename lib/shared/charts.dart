@@ -9,9 +9,9 @@ Widget policyCountCircularChart(
   return GetBuilder<GeneralStatsProvider>(
       tag: AppUtils.getStatsControllerTag(),
       builder: (statsProvider) {
-        if (statsProvider.policyDistributionChartData.isEmpty) {
-          return Container();
-        }
+        // if (statsProvider.policyDistributionChartData.isEmpty) {
+        //   return Container();
+        // }
         return Container(
           decoration: dashBoxDex(context),
           // width: 400,

@@ -20,7 +20,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
   int sumAssured;
 
   @HiveField(19)
-  int payingTerm;
+  DateTime payingTillDate;
 
   @HiveField(20)
   DateTime commitmentDate;
@@ -50,8 +50,10 @@ class LifeHiveModel extends GenericInvestmentHiveData {
   @HiveField(29)
   String headName;
   @HiveField(30)
-  DateTime statusDate;
+  DateTime lastRenewedDate;
 
+  @HiveField(31)
+  String payterm;
   LifeHiveModel({
     required String type,
     required String name,
@@ -70,7 +72,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
     required this.lifeNo,
     required this.lifeStatus,
     required this.premuimAmt,
-    required this.payingTerm,
+    required this.payingTillDate,
     required this.sumAssured,
     required this.commitmentDate,
     required this.renewalDate,
@@ -80,9 +82,10 @@ class LifeHiveModel extends GenericInvestmentHiveData {
     required this.nomineeName,
     required this.nomineeDob,
     required this.nomineeRelation,
-    required this.statusDate,
+    required this.lastRenewedDate,
     required this.maturityDate,
     required this.headName,
+    required this.payterm,
   }) : super(
           type: type,
           address: address,
@@ -113,18 +116,19 @@ class LifeHiveModel extends GenericInvestmentHiveData {
       "isMale": isMale,
       "phone": phone,
       "email": email,
-      "renewal_date": renewalDate,
       "policy_no": lifeNo,
-      "issued_date": commitmentDate,
       "policy_status": lifeStatus,
       "sum_assured": sumAssured,
       "premium_amt": premuimAmt,
-      "paying_term": payingTerm,
+      "renewal_date": renewalDate,
+      "commitment_date": commitmentDate,
+      "pay_till_date": payingTillDate,
+      "maturity_date": maturityDate,
       "nominee_name": nomineeName,
       "advisor_name": advisorName,
       "payMode": payMode,
-      "status_date": statusDate,
-      "inception_date": maturityDate,
+      "last_renewed_date": lastRenewedDate,
+      "payterm": payterm,
     };
   }
 
@@ -138,28 +142,29 @@ class LifeHiveModel extends GenericInvestmentHiveData {
       headName: data['head_name'] ?? "NA",
       name: data['name'] ?? "NA",
       userid: data['uid'] ?? "NA",
-      dob: data['dob'].toDate(),
+      dob: data['dob'].toDate() ?? DateTime.now(),
       address: data['address'] ?? "NA",
       isMale: data['isMale'] ?? false,
       phone: data['phone'] ?? "NA",
       email: data['email'] ?? "NA",
-      commitmentDate: data['commitment_date'].toDate(),
-      maturityDate: data['maturity_date'].toDate(),
       lifeStatus: data['life_status'] ?? "NA",
-      premuimAmt: data['premuim_amt'] ?? 0,
+      premuimAmt: data['premium_amt'] ?? 0,
       type: data['type'] ?? "NA",
       advisorName: data['type'] ?? "NA",
       planID: data['type'] ?? "NA",
       planName: data['type'] ?? "NA",
+      commitmentDate: data['commitment_date'].toDate() ?? DateTime.now(),
+      maturityDate: data['maturity_date'].toDate() ?? DateTime.now(),
       renewalDate: data['renewal_date'].toDate() ?? DateTime.now(),
+      payingTillDate: data['pay_till_date'].toDate() ?? DateTime.now(),
+      lastRenewedDate: data['last_renewed_date'].toDate() ?? DateTime.now(),
       sumAssured: data['sum_assured'] ?? 0,
-      payingTerm: data['paying_term'] ?? "NA",
       nomineeName: data['nominee_name'] ?? "NA",
       nomineeRelation: data['nominee_relation'] ?? "NA",
-      nomineeDob: data['nominee_dob'].toDate(),
+      nomineeDob: data['nominee_dob'].toDate() ?? DateTime.now(),
       payMode: data['payMode'] ?? "NA",
+      payterm: data['payterm'] ?? "NA",
       bankDetails: data['bank_details'] ?? "NA",
-      statusDate: data['status_date'].toDate(),
     );
   }
 }
