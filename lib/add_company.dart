@@ -1,4 +1,4 @@
-import 'package:health_model/regex.dart';
+import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/sheets/plan_sheet.dart';
 

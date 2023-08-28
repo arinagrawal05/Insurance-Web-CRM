@@ -54,6 +54,9 @@ class LifeHiveModel extends GenericInvestmentHiveData {
 
   @HiveField(31)
   String payterm;
+
+  @HiveField(32)
+  int timesPaid;
   LifeHiveModel({
     required String type,
     required String name,
@@ -86,6 +89,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
     required this.maturityDate,
     required this.headName,
     required this.payterm,
+    required this.timesPaid,
   }) : super(
           type: type,
           address: address,
@@ -129,6 +133,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
       "payMode": payMode,
       "last_renewed_date": lastRenewedDate,
       "payterm": payterm,
+      "times_paid": timesPaid,
     };
   }
 
@@ -164,6 +169,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
       nomineeDob: data['nominee_dob'].toDate() ?? DateTime.now(),
       payMode: data['payMode'] ?? "NA",
       payterm: data['payterm'] ?? "NA",
+      timesPaid: data['times_paid'] ?? 1,
       bankDetails: data['bank_details'] ?? "NA",
     );
   }

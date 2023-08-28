@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_model/homepage.dart';
-import 'package:health_model/regex.dart';
+import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/widgets.dart';
 

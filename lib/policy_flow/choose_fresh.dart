@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:health_model/regex.dart';
+import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/functions.dart';
-import 'package:health_model/policy_flow/enter_policy.dart';
+import 'package:health_model/pages/health_module/enter_policy.dart';
 import 'package:health_model/providers/policy_provider.dart';
 import 'package:health_model/shared/widgets.dart';
 import 'package:provider/provider.dart';

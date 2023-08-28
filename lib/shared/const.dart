@@ -72,8 +72,9 @@ class AppConsts {
       lastRenewedDate: DateTime.now(),
       maturityDate: DateTime.now(),
       companyID: "",
-      companyLogo: "",
-      companyName: "Company name",
+      companyLogo:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEvO1qCs7nfgPEIMYArSjk_RElJTF5QDvJJA&usqp=CAU",
+      companyName: "Niva Health Insurance",
       type: "FD",
       advisorName: "anil kumar",
       payingTillDate: DateTime.now(),
@@ -89,7 +90,8 @@ class AppConsts {
       nomineeDob: DateTime.now(),
       nomineeRelation: "",
       payMode: "",
-      payterm: "");
+      timesPaid: 1,
+      payterm: "Quarterly");
   static List<String> healthPolicyStatusList = [
     "all status",
     "active",
@@ -110,7 +112,12 @@ class AppConsts {
     "handover",
     "redeemed",
   ];
-
+  static List<String> payModeList = [
+    "Cheque",
+    "Net banking",
+    "Credit/Debit",
+    "UPI",
+  ];
   static List<String> getStatusList(ProductType type) {
     if (type == ProductType.health) {
       return healthPolicyStatusList;

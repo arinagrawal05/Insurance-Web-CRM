@@ -453,10 +453,12 @@ Widget infoTooltip(PolicyHiveModel model, BuildContext context) {
 }
 
 Widget singleTappableTag(
-    String s, TextEditingController controller, BuildContext context) {
+    String s, TextEditingController? controller, BuildContext context) {
   return InkWell(
       onTap: () {
-        controller.text = s;
+        if (controller != null) {
+          controller.text = s;
+        }
       },
       child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -748,34 +750,6 @@ Widget membersShowcase(int membersCount, String headID) {
   );
 }
 
-Widget healthTransactionHeader() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      heading("S. No", 18),
-      heading("Policy No", 18),
-      heading("From", 18),
-      heading("To", 18),
-      heading("Premium", 18),
-      heading("Members", 18),
-    ],
-  );
-}
-
-Widget fDTransactionHeader() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      heading("S. No", 18),
-      heading("Fd No", 18),
-      heading("Invested Date", 18),
-      heading("Maturated Date", 18),
-      heading("Investment", 18),
-      heading("Maturated Amt", 18),
-    ],
-  );
-}
-
 Widget totalWidget(int amount) {
   return Container(
     margin: const EdgeInsets.all(5),
@@ -791,12 +765,12 @@ Widget totalWidget(int amount) {
   );
 }
 
-Widget companyLogo(String logo) {
+Widget companyLogo(String logo, {double size = 50}) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(5),
     child: SizedBox(
-      height: 50,
-      width: 50,
+      height: size,
+      width: size,
       child: cachedImage(logo),
     ),
   );

@@ -26,7 +26,10 @@ class _ChooseMemberState extends State<ChooseMember> {
         //   elevation: 0.2,
         // ),
         body: SingleChildScrollView(
-          child: streamMembers(widget.headUserid, isChoosing: true),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: streamMembers(widget.headUserid, isChoosing: true),
+          ),
         ));
   }
 }

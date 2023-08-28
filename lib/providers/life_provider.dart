@@ -6,7 +6,7 @@ import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/functions.dart';
 
-enum Payterm { quarterly, halfYearly, yearly }
+import '../shared/enum_utils.dart';
 
 class LifeProvider extends ChangeNotifier {
   String client_head_name = "";
@@ -33,7 +33,7 @@ class LifeProvider extends ChangeNotifier {
   Payterm payterm = Payterm.quarterly;
   String payModeSelected = "Cheque";
   String paidTermSelected = "1 year";
-  String maturedTermSelected = "By Month";
+  String maturedTermSelected = "1 year";
   bool isFresh = true;
 
   void toggleFresh(bool isfresh) {
@@ -41,11 +41,11 @@ class LifeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<String> cTermList = [
-    "By Month",
-    "By 6 months",
-    "By Year",
-  ];
+  // List<String> cTermList = [
+  //   "By Month",
+  //   "By 6 months",
+  //   "By Year",
+  // ];
   List<String> payModeList = [
     "Cheque",
     "Net banking",
@@ -70,6 +70,39 @@ class LifeProvider extends ChangeNotifier {
     "14 Years",
     "15 Years",
     "16 Years",
+    "17 Years",
+    "18 Years",
+    "19 Years",
+    "20 Years",
+    "21 Years",
+    "22 Years",
+    "23 Years",
+    "24 Years",
+    "25 Years",
+    "26 Years",
+    "27 Years",
+    "28 Years",
+    "29 Years",
+    "30 Years",
+    "31 Years",
+    "32 Years",
+    "33 Years",
+    "34 Years",
+    "35 Years",
+    "36 Years",
+    "37 Years",
+    "38 Years",
+    "39 Years",
+    "40 Years",
+    "41 Years",
+    "42 Years",
+    "43 Years",
+    "44 Years",
+    "45 Years",
+    "46 Years",
+    "47 Years",
+    "49 Years",
+    "50 Years",
   ];
 
   void selectpayMode(String mode) {
@@ -158,26 +191,27 @@ class LifeProvider extends ChangeNotifier {
     //   print("take 3");
     //   updateCompanyPlans(companyID, "policy_count");
     //   print("take 4");
-    //   addCommision(
-    //       client_member_name,
-    //       policyNumber.text,
-    //       int.parse(premiumAmt.text),
-    //       textToDateTime(issuedDate.text),
-    //       AppUtils.getFirstWord(companyName),
-    //       0,
-    //       "Life");
-    //   print("take 5");
-    //   makeATransaction(
-    //       client_uid,
-    //       docId,
-    //       policyNumber.text,
-    //       companyName,
-    //       textToDateTime(issuedDate.text),
-    //       int.parse(AppUtils.getFirstWord(termSelected)),
-    //       int.parse(premiumAmt.text),
-    //       0,
-    //       textToDateTime(issuedDate.text));
-    //   print("take 6");
+    addCommision(
+        client_member_name,
+        lifeNumber.text,
+        int.parse(premiumAmt.text),
+        textToDateTime(issuedDate.text),
+        AppUtils.getFirstWord(companyName),
+        0,
+        "Life");
+    print("take 5");
+    makeATransaction(
+        client_uid,
+        docId,
+        lifeNumber.text,
+        companyName,
+        textToDateTime(issuedDate.text),
+        getLifeTerm(payterm),
+        int.parse(premiumAmt.text),
+        1,
+        textToDateTime(issuedDate.text)
+            .add(Duration(days: getLifeTerm(payterm) * 30)));
+    print("take 6");
     // }
     // clearFields();
     print("take 0");
@@ -192,7 +226,6 @@ class LifeProvider extends ChangeNotifier {
       "company_id": companyID,
       "plan_id": planID,
       "plan_name": planName,
-
       "life_no": lifeNumber.text,
       "life_id": docId,
       "head_uid": client_uid,
@@ -222,7 +255,6 @@ class LifeProvider extends ChangeNotifier {
       "nominee_relation": nomineeRelation.text,
       "nominee_dob": textToDateTime(nomineeDob.text),
       "sum_assured": int.parse(sumAssured.text),
-
       // "fd_taken_date": Timestamp.now(),
       // "fd_given_date": Timestamp.now(),
       // "port_company_name": portCompanyNameController.text,
@@ -230,6 +262,8 @@ class LifeProvider extends ChangeNotifier {
       // "port_maturity_date": textToDateTime(portMaturityDate.text),
       // "port_maturity_amt": portMaturityAmt.text,
       "payMode": payModeSelected,
+      "times_paid": 1,
+
       // "isCummulative":
       //     isCummulative == Cummulative.isCummulative ? true : false,
       // "cummulative_term": cTermSelected,
@@ -251,17 +285,6 @@ class LifeProvider extends ChangeNotifier {
     });
   }
 
-  Duration getLifeDuration(
-    Payterm term,
-  ) {
-    if (term == Payterm.quarterly) {
-      return const Duration(days: 91);
-    } else if (term == Payterm.halfYearly) {
-      return const Duration(days: 182);
-    } else {
-      return const Duration(days: 365);
-    }
-  }
   // Future<void> editLife(String docId, String initialDate, String maturityDate,
   //     int investedAmt, int maturityAmt, String fdNo, String folioNo) async {
   //   var body = {

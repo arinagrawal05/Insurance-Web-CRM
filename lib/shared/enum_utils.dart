@@ -6,6 +6,8 @@ enum HealthStatus { allStatus, active, ported, lapsed }
 
 enum FDStatus { allStatus, applied, inHand, handover, redeemed }
 
+enum Payterm { quarterly, halfYearly, yearly }
+
 class EnumUtils {
   static String convertTypeToKey(ProductType type) {
     switch (type) {
@@ -95,6 +97,19 @@ class EnumUtils {
         return LifeStatus.matured;
       default:
         return LifeStatus.allStatus;
+    }
+  }
+
+  static Payterm convertNameToPayterm(String payterm) {
+    switch (payterm) {
+      case "quarterly":
+        return Payterm.quarterly;
+      case "halfYearly":
+        return Payterm.halfYearly;
+      case "yearly":
+        return Payterm.yearly;
+      default:
+        return Payterm.quarterly;
     }
   }
 }

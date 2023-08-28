@@ -1,6 +1,7 @@
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
 import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/regex.dart';
+import 'package:health_model/widgets/pay_system.dart';
+import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/exports.dart';
 
 void adminDialog(
@@ -158,22 +159,27 @@ void showCertificateDialog(FdHiveModel model) {
 
 void showRenewLifeDialog(LifeHiveModel model) {
   // final statsProvider = Get.find<DashProvider>();
+  DateTime newDate = model.renewalDate
+      .add(getLifeDuration(EnumUtils.convertNameToPayterm(model.payterm)));
+  final TextEditingController chequeNo = TextEditingController();
+  final TextEditingController bankDate = TextEditingController();
+  final TextEditingController bankName = TextEditingController();
+  String termSelected = "Cheque";
 
-  TextEditingController fdNoController = TextEditingController();
-  TextEditingController folioController = TextEditingController();
-
-  TextEditingController maturityAmt = TextEditingController();
-
-  TextEditingController maturityDate =
-      TextEditingController(text: dateTimetoText(model.maturityDate));
-  void getCertificate() {
+  void renewLife() {
     FirebaseFirestore.instance.collection("Policies").doc(model.lifeID).update({
-      "maturity_date": textToDateTime(maturityDate.text),
+      "last_renew_date": DateTime.now(),
+      "renewal_date": newDate,
+      "paymode": termSelected,
+      "bank_details":
+          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
+      "times_paid": model.timesPaid + 1,
+      // "a"
       // "maturity_amt": int.parse(maturityAmt.text),
       // "fd_taken_date": Timestamp.now(),
       // "fd_no": fdNoController.text,
       // "fd_status": FDStatus.inHand.name,
-      "folio_no": folioController.text,
+      // "folio_no": folioController.text,
     }).then((value) {
       PolicyHiveHelper.fetchFDPoliciesFromFirebase();
       Navigator.pop(Get.context!);
@@ -189,39 +195,105 @@ void showRenewLifeDialog(LifeHiveModel model) {
             child: Container(
               padding: const EdgeInsets.all(25.0),
               height: 550.0,
-              width: 900.0,
+              width: 700.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  heading("Certificate Submission", 22),
-                  formTextField(
-                    folioController,
-                    "Folio number",
-                    "Enter Folio number",
-                    FieldRegex.defaultRegExp,
+                  // heading("${model.companyName}'s Renewal", 22),
+                  Row(
+                    children: [
+                      companyLogo(model.companyLogo, size: 60),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          heading(model.companyName, 20),
+                          heading1(
+                              "payable till " +
+                                  dateTimetoText(model.payingTillDate),
+                              12),
+                        ],
+                      ),
+                      Spacer(),
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          padding: const EdgeInsets.all(7),
+                          decoration: dashBoxDex(context)
+                              .copyWith(color: Colors.black26),
+                          child: simpleText(
+                              (model.timesPaid + 1).toString() + "th Premuim",
+                              12)),
+                    ],
                   ),
-                  formTextField(
-                    fdNoController,
-                    "FD number",
-                    "Enter FD number",
-                    FieldRegex.integerRegExp,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: formTextField(
-                      maturityAmt,
-                      "Maturity Value",
-                      "Enter Maturity Value",
-                      FieldRegex.integerRegExp,
-                    ),
-                  ),
-                  formTextField(
-                    maturityDate,
-                    "Maturity Date",
-                    "Enter Maturity Date",
-                    FieldRegex.dateRegExp,
-                  ),
-
+                  Row(
+                    children: [
+                      productTileText(
+                        "${dateTimetoText(model.renewalDate)}",
+                        24,
+                      ),
+                      Expanded(
+                          child: Divider(
+                        endIndent: 10,
+                        indent: 10,
+                      )),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          children: [
+                            Icon(Ionicons.cash_outline),
+                            buttonText(model.payterm, 15, color: Colors.black45)
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          child: Divider(
+                        endIndent: 10,
+                        indent: 10,
+                      )),
+                      productTileText(
+                        "${dateTimetoText(newDate)}",
+                        24,
+                      ),
+                    ],
+                  )
+                  // formTextField(
+                  //   folioController,
+                  //   "Folio number",
+                  //   "Enter Folio number",
+                  //   FieldRegex.defaultRegExp,
+                  // ),
+                  // formTextField(
+                  //   fdNoController,
+                  //   "FD number",
+                  //   "Enter FD number",
+                  //   FieldRegex.integerRegExp,
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 8),
+                  //   child: formTextField(
+                  //     maturityAmt,
+                  //     "Maturity Value",
+                  //     "Enter Maturity Value",
+                  //     FieldRegex.integerRegExp,
+                  //   ),
+                  // ),
+                  // formTextField(
+                  //   maturityDate,
+                  //   "Maturity Date",
+                  //   "Enter Maturity Date",
+                  //   FieldRegex.dateRegExp,
+                  // ),
+                  ,
+                  PaymodeSystem(
+                      bankDate: bankDate,
+                      chequeNo: chequeNo,
+                      bankName: bankName,
+                      onSelectionDone: (val) {
+                        termSelected = val;
+                      },
+                      termSelected: termSelected),
                   // textFormField(fdNoController, "FD number", Get.context!,
                   //     isExpanded: true),
 
@@ -232,26 +304,21 @@ void showRenewLifeDialog(LifeHiveModel model) {
                     //   updateCompanybussiness(
                     //       model.investedAmt, model.companyID);
                     //   updateCompanyPlans(model.companyID, "policy_count");
-                    //   addCommision(
-                    //       model.name,
-                    //       model.fdNo,
-                    //       model.investedAmt,
-                    //       DateTime.now(),
-                    //       model.companyName,
-                    //       getFdCommission(model.fDterm),
-                    //       AppConsts.fd);
-                    //   makeATransaction(
-                    //       model.userid,
-                    //       model.lifeID,
-                    //       fdNoController.text,
-                    //       model.companyName,
-                    //       model.initialDate,
-                    //       model.fDterm,
-                    //       model.investedAmt,
-                    //       int.parse(maturityAmt.text),
-                    //       textToDateTime(maturityDate.text));
+                    addCommision(model.name, model.lifeNo, model.premuimAmt,
+                        DateTime.now(), model.companyName, 0, AppConsts.fd);
+                    makeATransaction(
+                        model.userid,
+                        model.lifeID,
+                        model.lifeNo,
+                        model.companyName,
+                        model.renewalDate,
+                        getLifeTerm(
+                            EnumUtils.convertNameToPayterm(model.payterm)),
+                        model.premuimAmt,
+                        model.timesPaid + 1,
+                        newDate);
                     // }
-                    getCertificate();
+                    renewLife();
                     // List list = advisorListField.text.split(",");
                   }, Get.context!)
                 ],

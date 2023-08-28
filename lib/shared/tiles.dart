@@ -1,12 +1,12 @@
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:health_model/add_company.dart';
-import 'package:health_model/enter_life.dart';
-import 'package:health_model/fd_detail.dart';
+import 'package:health_model/pages/life_module/enter_life.dart';
+import 'package:health_model/pages/fd_module/fd_detail.dart';
 import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
-import 'package:health_model/life_detail.dart';
+import 'package:health_model/pages/life_module/life_detail.dart';
 import 'package:health_model/providers/life_provider.dart';
-import 'package:health_model/renew_fd.dart';
+import 'package:health_model/pages/fd_module/renew_fd.dart';
 import 'package:health_model/shared/statements.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
@@ -1057,12 +1057,16 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   // Timestamp time = model["d;
   DateTime addedDate;
   int premiumAmt = model.premuimAmt;
-  bool isFd = false;
+  String type = "Health";
   if (model.terms >= 6) {
-    isFd = true;
+    type = "FD";
+  } else if (model.membersCount == index && model.terms >= 3) {
+    type = "Life";
   }
 
-  if (isFd) {
+  if (type == "FD") {
+    addedDate = model.timestamp.toDate();
+  } else if (type == "Life") {
     addedDate = model.timestamp.toDate();
   } else {
     premiumAmt = addHealthWithGST(model.premuimAmt);
@@ -1071,8 +1075,7 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   }
   return GestureDetector(
     onLongPress: () {
-      AppUtils.showSnackMessage(
-          model.transactionId, "This is $isFd transaction ID");
+      AppUtils.showSnackMessage(model.transactionId, "This is transaction ID");
     },
     child: Container(
       color: Theme.of(context).scaffoldBackgroundColor,

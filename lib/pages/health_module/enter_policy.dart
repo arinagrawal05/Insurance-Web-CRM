@@ -1,6 +1,8 @@
-import 'package:health_model/regex.dart';
+import 'package:health_model/widgets/pay_system.dart';
+import 'package:health_model/shared/regex.dart';
+import 'package:health_model/pages/fd_module/renew_fd.dart';
 
-import '../../shared/exports.dart';
+import '../../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class EnterPolicyDetails extends StatefulWidget {
@@ -144,52 +146,14 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                       14,
                       color: Colors.greenAccent),
                 ),
-                genericPicker(
-                    radius: 10,
-                    prefixIcon: Ionicons.card_outline,
-                    height: 70,
-                    width: MediaQuery.of(context).size.width,
-                    controller.payModeList,
-                    controller.payModeSelected,
-                    "Choose Payment Mode", (value) {
-                  controller.selectpayMode(value);
-                }, context),
-                controller.payModeSelected == "Cheque"
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: formTextField(
-                              controller.bankName,
-                              "Bank Name",
-                              "Enter Bank Name",
-                              FieldRegex.nameRegExp,
-                              isCompulsory: false,
-                            ),
-                          ),
-                          Expanded(
-                              flex: 1,
-                              child: formTextField(
-                                controller.bankDate,
-                                "Date:DD/MM/YYYY",
-                                "Enter Date",
-                                FieldRegex.dateRegExp,
-                                isCompulsory: false,
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: formTextField(
-                              controller.chequeNo,
-                              "Cheque No",
-                              "Enter Cheque",
-                              FieldRegex.integerRegExp,
-                              isCompulsory: false,
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox(),
+                PaymodeSystem(
+                    bankDate: controller.bankDate,
+                    chequeNo: controller.chequeNo,
+                    bankName: controller.bankName,
+                    onSelectionDone: (value) {
+                      controller.selectpayMode(value);
+                    },
+                    termSelected: controller.payModeSelected),
                 customButton("Add to Database", () async {
                   if (
                       // controller.policyFormKey.currentState?.validate() ==

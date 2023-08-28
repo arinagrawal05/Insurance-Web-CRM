@@ -1,8 +1,10 @@
-import 'package:health_model/homepage_widget.dart';
-import 'package:health_model/life_detail.dart';
-import 'package:health_model/renew_fd.dart';
+import 'package:health_model/widgets/homepage_widget.dart';
+import 'package:health_model/pages/life_module/life_detail.dart';
+import 'package:health_model/pages/fd_module/renew_fd.dart';
 
 import '../../shared/exports.dart';
+import 'widgets/custom_letter.dart';
+import 'dialogs/dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -33,6 +35,12 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         // locked(),
                         homepageAppbar(context),
+                        // AnimCard(
+                        //   Color(0xffFF6594),
+                        //   '50',
+                        //   'twenty',
+                        //   'Hello',
+                        // ),
                         dashWidget(dashProvider, context),
                         const SizedBox(
                           height: 20,
@@ -107,8 +115,9 @@ class _HomePageState extends State<HomePage> {
                 Colors.blueAccent.shade100,
                 Ionicons.car,
                 () {
+                  showRenewLifeDialog(AppConsts.lifeModel);
                   // updateTemp();
-                  navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
+                  // navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
                   // navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
                   AppUtils.showSnackMessage(
                       "This Feature is not deployed yet", "");

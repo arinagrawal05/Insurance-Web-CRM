@@ -43,12 +43,6 @@ class FDProvider extends ChangeNotifier {
     "By 6 months",
     "By Year",
   ];
-  List<String> payModeList = [
-    "Cheque",
-    "Net banking",
-    "Credit/Debit",
-    "UPI",
-  ];
 
   List<String> termList = [
     "12 Months",

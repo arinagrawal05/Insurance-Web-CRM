@@ -1,7 +1,8 @@
 import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/regex.dart';
+import 'package:health_model/widgets/pay_system.dart';
+import 'package:health_model/shared/regex.dart';
 
-import '../../shared/exports.dart';
+import '../../../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class RenewPolicyPage extends StatefulWidget {
@@ -110,52 +111,14 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                       14,
                       color: Colors.greenAccent),
                 ),
-                genericPicker(
-                    radius: 10,
-                    prefixIcon: Ionicons.card_outline,
-                    height: 70,
-                    width: MediaQuery.of(context).size.width,
-                    provider.payModeList,
-                    provider.payModeSelected,
-                    "Choose Payment Mode", (value) {
-                  provider.selectpayMode(value);
-                }, context),
-                provider.payModeSelected == "Cheque"
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: formTextField(
-                              provider.bankName,
-                              "Bank Name",
-                              "Enter Bank Name",
-                              FieldRegex.nameRegExp,
-                              isCompulsory: false,
-                            ),
-                          ),
-                          Expanded(
-                              flex: 1,
-                              child: formTextField(
-                                provider.bankDate,
-                                "Date:DD/MM/YYYY",
-                                "Enter Date",
-                                FieldRegex.dateRegExp,
-                                isCompulsory: false,
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: formTextField(
-                              provider.chequeNo,
-                              "Cheque No",
-                              "Enter Cheque",
-                              FieldRegex.integerRegExp,
-                              isCompulsory: false,
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox(),
+                PaymodeSystem(
+                    bankDate: provider.bankDate,
+                    chequeNo: provider.chequeNo,
+                    bankName: provider.bankName,
+                    onSelectionDone: (value) {
+                      provider.selectpayMode(value);
+                    },
+                    termSelected: provider.payModeSelected),
                 // fdropdown(
                 //     "Select Payment Mode", defaultpaymode, paymentdropDownData,
                 //     (value) {

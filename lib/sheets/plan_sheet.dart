@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:health_model/regex.dart';
+import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/providers/general_stats_provider.dart';
 import 'package:health_model/shared/style.dart';

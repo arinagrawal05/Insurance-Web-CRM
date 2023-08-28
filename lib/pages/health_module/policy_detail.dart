@@ -6,9 +6,10 @@ import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
 import 'package:health_model/shared/drafted_msgs.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/policy_flow/choose_user.dart';
-import 'package:health_model/policy_flow/edit_policy.dart';
-import 'package:health_model/policy_renew.dart';
+import 'package:health_model/pages/health_module/edit_policy.dart';
+import 'package:health_model/pages/health_module/renew_policy.dart';
 import 'package:health_model/providers/policy_provider.dart';
+import 'package:health_model/shared/header.dart';
 import 'package:health_model/shared/statements.dart';
 import 'package:health_model/shared/streams.dart';
 import 'package:health_model/shared/style.dart';
@@ -304,7 +305,7 @@ class PolicyDetailPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            healthTransactionHeader(),
+                            TransactionHeaders.healthTransactionHeader(),
                             model.inceptionDate == model.issuedDate
                                 ? Container()
                                 : inceptionWidget(model.inceptionDate, context),

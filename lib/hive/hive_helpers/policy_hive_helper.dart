@@ -317,7 +317,7 @@ class PolicyHiveHelper {
         LifeHiveModel data = life.data as LifeHiveModel;
         if (data.renewalDate.isBefore(DateTime.now()) &&
             data.renewalDate
-                .isAfter(DateTime.now().subtract(const Duration(days: 150)))) {
+                .isAfter(DateTime.now().subtract(const Duration(days: 180)))) {
           return true;
         }
       }
@@ -339,7 +339,7 @@ class PolicyHiveHelper {
         LifeHiveModel data = life.data as LifeHiveModel;
         if (data.renewalDate.isAfter(DateTime.now()) &&
             data.renewalDate
-                .isAfter(DateTime.now().add(const Duration(days: 30)))) {
+                .isBefore(DateTime.now().add(const Duration(days: 30)))) {
           return true;
         }
       }

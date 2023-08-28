@@ -99,6 +99,18 @@ int addHealthWithGST(int number) {
   return some;
 }
 
+Duration getLifeDuration(
+  Payterm term,
+) {
+  if (term == Payterm.quarterly) {
+    return const Duration(days: 91);
+  } else if (term == Payterm.halfYearly) {
+    return const Duration(days: 182);
+  } else {
+    return const Duration(days: 365);
+  }
+}
+
 int addLifeWithGST(int number, {bool isFirst = false}) {
   int some = number;
 
@@ -642,6 +654,16 @@ double getFdCommission(
       }
   }
   return ans;
+}
+
+int getLifeTerm(Payterm term) {
+  if (term == Payterm.quarterly) {
+    return 3;
+  } else if (term == Payterm.halfYearly) {
+    return 6;
+  } else {
+    return 12;
+  }
 }
 
 setLoginPref(bool isLogged) async {

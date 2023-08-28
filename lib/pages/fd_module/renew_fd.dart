@@ -1,79 +1,42 @@
 import 'package:flutter/cupertino.dart';
-import 'package:health_model/regex.dart';
+import 'package:health_model/widgets/pay_system.dart';
+import 'package:health_model/shared/regex.dart';
 
-import '../../shared/exports.dart';
+import '../../../../shared/exports.dart';
 
 // ignore: must_be_immutable
-class EditFdDetails extends StatefulWidget {
-  FdHiveModel model;
+class RenewFdPage extends StatefulWidget {
+  final FdHiveModel model;
 
-  EditFdDetails({
-    super.key,
-    required this.model,
-  });
+  const RenewFdPage({super.key, required this.model});
+
   @override
-  State<EditFdDetails> createState() => _EditFdDetailsState();
+  State<RenewFdPage> createState() => _RenewFdPageState();
 }
 
-class _EditFdDetailsState extends State<EditFdDetails> {
-  // final TextEditingController investedAmt = TextEditingController();
-  // final TextEditingController nomineeName = TextEditingController();
-  // final TextEditingController nomineeRelation = TextEditingController();
-  // final TextEditingController nomineeDob = TextEditingController();
+final policyNumber = TextEditingController();
 
-  // final TextEditingController chequeNo = TextEditingController();
-  // final TextEditingController bankDate = TextEditingController();
-  // final TextEditingController bankName = TextEditingController();
-  // TextEditingController initialDate =
-  //     TextEditingController(text: todayTextFormat());
+final investedAmt = TextEditingController();
+final issuedDate = TextEditingController(text: todayTextFormat());
 
-  // final TextEditingController fdNo = TextEditingController();
-  // final TextEditingController maturityDate = TextEditingController();
-  // final TextEditingController folioNo = TextEditingController();
-  // final TextEditingController maturityAmt = TextEditingController();
-  final fdFormKey = GlobalKey<FormState>();
-
-  final TextEditingController investedAmt = TextEditingController();
-  final TextEditingController investedDate = TextEditingController();
-  final TextEditingController fdNo = TextEditingController();
-  final TextEditingController maturityDate = TextEditingController();
-  final TextEditingController folioNo = TextEditingController();
-  final TextEditingController maturityAmt = TextEditingController();
+class _RenewFdPageState extends State<RenewFdPage> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    autofill();
-  }
+    investedAmt.text = widget.model.maturityAmt != 0
+        ? widget.model.maturityAmt.toString()
+        : widget.model.investedAmt.toString();
 
-  autofill() {
-    investedAmt.text = widget.model.investedAmt.toString();
-    investedDate.text = dateTimetoText(widget.model.initialDate);
-    // if (widget.model.fdStatus == "inHand") {
-    fdNo.text = widget.model.fdNo;
-    maturityAmt.text = widget.model.maturityAmt.toString();
-    maturityDate.text = dateTimetoText(widget.model.maturityDate);
-    folioNo.text = widget.model.folioNo;
-    // }
-
-    // f.text = widget.model.policyNo;
-    // sumAssured.text = [widget.model.sumAssured.toString();
-    // premiumAmt.text = widget.model.premuimAmt.toString();
-    // issuedDate.text = dateTimetoText(widget.model.issuedDate);
-    // inceptionDate.text = dateTimetoText(widget.model.inceptionDate);
-    // nomineeName.text = widget.model.nomineeName;
-    // advisorName.text = widget.model.advisorName;
-
-    // defaultTerm = widget.model.advisorName;
+    // setLoginPref(true);
   }
 
   // @override
   Widget build(BuildContext context) {
-    FdHiveModel model = widget.model;
-
     // final provider = Provider.of<FDProvider>(context, listen: true);
     // final statsProvider =
     //     Provider.of<HealthStatsProvider>(context, listen: false);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: genericAppbar(),
@@ -81,11 +44,64 @@ class _EditFdDetailsState extends State<EditFdDetails> {
         return Stack(
           alignment: Alignment.center,
           children: [
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  height: MediaQuery.of(context).size.height,
+                  color: Theme.of(context).canvasColor,
+                )
+              ],
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Card(
+                    elevation: 12,
+                    child: Container(
+                      // margin: EdgeInsets.symmetric(horizontal: 30),
+                      height: 600,
+                      width: 300,
+                      color: Theme.of(context).canvasColor,
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 45),
+                            // height: 200,
+                            // width: 150,
+                            child: Icon(
+                              Ionicons.person_outline,
+                              size: 80,
+                            ),
+                          ),
+                          heading(widget.model.name, 22),
+                          heading1(widget.model.headName + "'s member", 15),
+                          Divider(
+                            endIndent: 20,
+                            indent: 20,
+                          ),
+                          userDetailShow("phone", widget.model.phone,
+                              Ionicons.phone_portrait_outline),
+                          userDetailShow(
+                              "email", widget.model.email, Ionicons.mail),
+                          userDetailShow(
+                              "Birthday",
+                              dateTimetoText(widget.model.dob),
+                              Ionicons.medical_outline),
+                          userDetailShow(
+                              "Gender",
+                              widget.model.isMale ? "Male" : "Female",
+                              widget.model.isMale
+                                  ? Ionicons.man_outline
+                                  : Ionicons.woman_outline),
+                          userDetailShow("Address", widget.model.address,
+                              Ionicons.home_outline),
+                        ],
+                      ),
+                    ),
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Card(
@@ -106,18 +122,20 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  heading("Fill Details", 22),
-                                  // SizedBox(
-                                  //   width: 160,
-                                  //   child: noBorderTextField(
-                                  //       controller.initialDate,
-                                  //       "Initial Date",
-                                  //       "Enter initial Date",
-                                  //       Ionicons.calendar),
-                                  // )
+                                  heading("Fill Renewal Details", 22),
+                                  Container(
+                                    width: 160,
+                                    child: noBorderTextField(
+                                        controller.initialDate,
+                                        "Initial Date",
+                                        "Enter initial Date",
+                                        Ionicons.calendar),
+                                  )
                                 ],
                               ),
                               Container(
+                                // width:
+                                // MediaQuery.of(context).size.width * 0.3,
                                 child: formTextField(
                                   investedAmt,
                                   "Invested Amount",
@@ -125,59 +143,6 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                   FieldRegex.integerRegExp,
                                 ),
                               ),
-                              Container(
-                                child: formTextField(
-                                  investedDate,
-                                  "Invested Date",
-                                  "Enter Invested Date",
-                                  FieldRegex.integerRegExp,
-                                ),
-                              ),
-                              if (
-// model.fdStatus == "inHand"
-                                  true) ...[
-                                Container(
-                                  child: formTextField(
-                                    fdNo,
-                                    "FD no",
-                                    "Enter FD no",
-                                    FieldRegex.integerRegExp,
-                                  ),
-                                ),
-                                Container(
-                                  child: formTextField(
-                                    folioNo,
-                                    "Folio no",
-                                    "Enter Folio no",
-                                    FieldRegex.integerRegExp,
-                                  ),
-                                ),
-                                Container(
-                                  child: formTextField(
-                                    maturityAmt,
-                                    "Maturity Amount",
-                                    "Enter Maturity Amount",
-                                    FieldRegex.integerRegExp,
-                                  ),
-                                ),
-                                Container(
-                                  child: formTextField(
-                                    maturityDate,
-                                    "Maturity Date",
-                                    "Enter Maturity Date",
-                                    FieldRegex.integerRegExp,
-                                  ),
-                                ),
-                              ],
-                              // Container(
-                              //   child: formTextField(
-                              //     controller.investedAmt,
-                              //     "Invested Amount",
-                              //     "Enter Invested Amount",
-                              //     FieldRegex.integerRegExp,
-                              //   ),
-                              // ),
-
                               // Container(
                               //   // width: MediaQuery.of(context).size.width * 0.3,
                               //   child: fdFormTextField(
@@ -190,7 +155,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                               //     "premium Amount", "Enter premium Amount",
                               //     isCompulsory: true, onChange: (val) {}),
                               // formTextField(
-                              //     advisorName, "advisor Name", "Enter Nominee Name          "  ,      FieldRegex.alphabetRegExp,),
+                              //     advisorName, "advisor Name", "Enter Nominee Name"),
                               // // renderAdvisor(statsProvider.advisorList, context, advisorName),
                               // fdropdown(
                               //     "Select Term Period", defaultTerm, genderdropDownData,
@@ -215,16 +180,16 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                               //       14,
                               //       color: Colors.greenAccent),
                               // ),
-                              // genericPicker(
-                              //     radius: 10,
-                              //     prefixIcon: Ionicons.hourglass_outline,
-                              //     height: 70,
-                              //     width: MediaQuery.of(context).size.width,
-                              //     controller.termList,
-                              //     controller.termSelected,
-                              //     "Choose Terms", (value) {
-                              //   controller.selectTerm(value);
-                              // }, context),
+                              genericPicker(
+                                  radius: 10,
+                                  prefixIcon: Ionicons.hourglass_outline,
+                                  height: 70,
+                                  width: MediaQuery.of(context).size.width,
+                                  controller.termList,
+                                  controller.termSelected,
+                                  "Choose Terms", (value) {
+                                controller.selectTerm(value);
+                              }, context),
 
                               // Container(
                               //   decoration: BoxDecoration(
@@ -248,7 +213,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                               //               heading("Cummulative", 20),
                               //             ],
                               //           ),
-                              //           const SizedBox(
+                              //           SizedBox(
                               //             width: 50,
                               //           ),
                               //           Row(
@@ -260,14 +225,14 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                               //               heading("Non Cummulative", 20),
                               //             ],
                               //           ),
-                              //           const SizedBox(
+                              //           SizedBox(
                               //             width: 40,
                               //           ),
                               //           Expanded(
                               //             child: AbsorbPointer(
                               //               absorbing: controller
                               //                           .isCummulative ==
-                              //                       Cummulative.isCummulative
+                              //                       Cummulative.isNonCummulative
                               //                   ? true
                               //                   : false,
                               //               child: genericPicker(
@@ -320,64 +285,17 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                               //   ],
                               // ),
 
-                              // streamNominees(controller.client_uid, context,
-                              //     controller.nomineeName,
-                              //     isSingle: false,
-                              //     nomineeDate: controller.nomineeDob,
-                              //     nomineeRelation: controller.nomineeRelation),
                               // streamNominees(provider.client_uid, context, nomineeName),
-
-                              // genericPicker(
-                              //     radius: 10,
-                              //     prefixIcon: Ionicons.card_outline,
-                              //     height: 70,
-                              //     width: MediaQuery.of(context).size.width,
-                              //     controller.payModeList,
-                              //     controller.payModeSelected,
-                              //     "Choose Payment Mode", (value) {
-                              //   controller.selectpayMode(value);
-                              // }, context),
-
-                              // controller.payModeSelected == "Cheque"
-                              //     ? Row(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.spaceBetween,
-                              //         children: [
-                              //           Expanded(
-                              //             flex: 1,
-                              //             child: formTextField(
-                              //               controller.chequeNo,
-                              //               "Cheque No",
-                              //               "Enter Cheque",
-                              //               FieldRegex.integerRegExp,
-                              //               isCompulsory: false,
-                              //             ),
-                              //           ),
-                              //           Expanded(
-                              //               flex: 1,
-                              //               child: formTextField(
-                              //                 controller.bankDate,
-                              //                 "Date:DD/MM/YYYY",
-                              //                 "Enter Date",
-                              //                 FieldRegex.dateRegExp,
-                              //                 isCompulsory: false,
-                              //               )),
-                              //           Expanded(
-                              //             flex: 1,
-                              //             child: formTextField(
-                              //               controller.bankName,
-                              //               "Bank Name",
-                              //               "Enter Bank Name",
-                              //               FieldRegex.nameRegExp,
-                              //               isCompulsory: false,
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       )
-                              //     : const SizedBox(),
-
+                              PaymodeSystem(
+                                  bankDate: controller.bankDate,
+                                  chequeNo: controller.chequeNo,
+                                  bankName: controller.bankName,
+                                  onSelectionDone: (value) {
+                                    controller.selectpayMode(value);
+                                  },
+                                  termSelected: controller.payModeSelected),
                               const Spacer(),
-                              customButton("update to Database", () async {
+                              customButton("Renew this FD", () async {
                                 if (controller.fdFormKey.currentState
                                         ?.validate() ==
                                     true) {
@@ -390,22 +308,9 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                   //         provider.companyID);
                                   //     updateCompanyPlans(
                                   //         provider.companyID, "policy_count");
-                                  controller
-                                      .editFd(
-                                          widget.model.fdId,
-                                          investedDate.text,
-                                          maturityDate.text,
-                                          int.parse(investedAmt.text),
-                                          int.parse(maturityAmt.text),
-                                          fdNo.text,
-                                          folioNo.text)
-                                      .then((value) {
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                  });
+                                  controller.renewFd(widget.model.fdId,
+                                      int.parse(investedAmt.text));
+
                                   //     print("Take 2");
                                   // addCommision(
                                   //     controller.client_member_name,
@@ -452,6 +357,47 @@ class _EditFdDetailsState extends State<EditFdDetails> {
       }),
     );
   }
+
+  Widget noBorderTextField(TextEditingController controller, String labelText,
+      String errorText, IconData icon,
+      {bool isCompulsory = true,
+      Function(String)? onChange,
+      bool isAbsorbed = false,
+      TextInputType? kType = TextInputType.text}) {
+    return Padding(
+      padding: const EdgeInsets.all(6),
+      child: AbsorbPointer(
+        absorbing: isAbsorbed,
+        child: Container(
+          child: TextFormField(
+            onChanged: onChange,
+            // keyboardType: kType,
+            controller: controller,
+            textAlign: TextAlign.right,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                icon,
+                size: 24,
+              ),
+              border: InputBorder.none,
+              hintText: labelText,
+              isDense: true,
+              contentPadding: const EdgeInsets.only(top: 11),
+            ),
+            validator: (value) {
+              if (isCompulsory) {
+                if (value!.isEmpty) {
+                  return errorText;
+                }
+                return null;
+              }
+              return null;
+            },
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 // ignore: must_be_immutable
@@ -471,3 +417,5 @@ class CummulativeToggle extends StatelessWidget {
         });
   }
 }
+
+// ignore: must_be_immutable
