@@ -23,7 +23,7 @@ class DashProvider extends GetxController {
     if (type != ProductType.cms) {
       navigate(Dash(), context);
     } else {
-      navigate(UsersPage(), context);
+      navigate(const UsersPage(), context);
     }
     print("Entered Again");
     // provider.getStats(EnumUtils.convertTypeToKey(ProductType.health));

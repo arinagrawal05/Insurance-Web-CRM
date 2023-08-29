@@ -1,5 +1,6 @@
-import 'package:hive/hive.dart';
 import 'generic_investment_data.dart';
+import 'package:health_model/shared/exports.dart';
+
 part 'life_model.g.dart';
 
 @HiveType(typeId: 6)

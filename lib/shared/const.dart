@@ -1,9 +1,4 @@
-import 'package:health_model/hive/hive_model/policy_models/fd_model.dart';
-import 'package:health_model/shared/enum_utils.dart';
 import 'package:health_model/shared/exports.dart';
-
-import '../hive/hive_model/policy_models/life_model.dart';
-import '../hive/hive_model/user_hive_model.dart';
 
 class AppConsts {
   static String health = "Health";
@@ -82,7 +77,7 @@ class AppConsts {
       lifeNo: "2345543",
       nomineeName: "nominee",
       planID: "",
-      planName: "",
+      planName: "Life Insurance Plan 1",
       premuimAmt: 3000,
       sumAssured: 900000,
       lifeStatus: "",

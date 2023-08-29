@@ -1,9 +1,5 @@
 import 'package:health_model/hive/hive_model/policy_models/generic_investment_data.dart';
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';

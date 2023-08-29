@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:health_model/widgets/pay_system.dart';
-import 'package:health_model/shared/regex.dart';
 
 import '../../../../shared/exports.dart';
 

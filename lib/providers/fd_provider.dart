@@ -180,7 +180,7 @@ class FDProvider extends ChangeNotifier {
       "status_date": DateTime.now(),
     };
 
-    print('Sending ' + body.toString());
+    print('Sending $body');
     AppUtils.showSnackMessage("FD Successfully Added", "");
     await FirebaseFirestore.instance
         .collection("Policies")
@@ -202,7 +202,7 @@ class FDProvider extends ChangeNotifier {
       "folio_no": folioNo,
     };
 
-    print('Sending ' + body.toString());
+    print('Sending $body');
     // AppUtils.showSnackMessage("FD Successfully Edited", "");
     await FirebaseFirestore.instance
         .collection("Policies")
@@ -233,7 +233,7 @@ class FDProvider extends ChangeNotifier {
       "status_date": DateTime.now(),
     };
 
-    print('Sending ' + body.toString());
+    print('Sending $body');
     AppUtils.showSnackMessage("FD Successfully Added", "");
     await FirebaseFirestore.instance
         .collection("Policies")

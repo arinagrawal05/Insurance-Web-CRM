@@ -1,10 +1,7 @@
 import 'package:health_model/widgets/homepage_widget.dart';
 import 'package:health_model/pages/life_module/life_detail.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
 
 import '../../shared/exports.dart';
-import 'widgets/custom_letter.dart';
-import 'dialogs/dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -115,8 +112,10 @@ class _HomePageState extends State<HomePage> {
                 Colors.blueAccent.shade100,
                 Ionicons.car,
                 () {
-                  showRenewLifeDialog(AppConsts.lifeModel);
+                  // showRenewLifeDialog(AppConsts.lifeModel);
                   // updateTemp();
+                  dashProvider.navigateToProduct(ProductType.general, context);
+
                   // navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
                   // navigate(LifeDetailPage(model: AppConsts.lifeModel), context);
                   AppUtils.showSnackMessage(

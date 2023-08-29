@@ -2,7 +2,7 @@
 
 import 'package:health_model/shared/exports.dart';
 
-class LifeProvider extends ChangeNotifier {
+class GeneralProvider extends ChangeNotifier {
   String client_head_name = "";
   String client_member_name = "";
 

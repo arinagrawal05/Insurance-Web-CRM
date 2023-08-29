@@ -1,6 +1,3 @@
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/widgets/pay_system.dart';
-import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/exports.dart';
 
 // ignore: must_be_immutable
@@ -162,8 +159,6 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                 ),
                 customButton("Update In Database", () async {
                   if (_policyFormKey.currentState?.validate() == true) {
-                    updateStats("sum_premium_amt",
-                        statsProvider.premiumAmtSum - widget.model.premuimAmt);
                     // updateStats(
                     //     "sum_premium_amt",
                     //     statsProvider.premiumAmtSum +
@@ -172,9 +167,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                     // updateCompanybussiness(
                     //     widget.model.premuimAmt, provider.companyID,
                     //     negative: true);
-                    updateCompanybussiness(
-                        int.parse(premiumAmt.text) - widget.model.premuimAmt,
-                        provider.companyID);
+
                     updatePolicy(
                         textToDateTime(issuedDate.text),
                         textToDateTime(inceptionDate.text),

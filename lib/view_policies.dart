@@ -1,8 +1,11 @@
 import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
+import 'package:health_model/widgets/tiles/health_tile_widget.dart';
 
 import 'hive/hive_model/policy_models/generic_investment_data.dart';
 
 import '../../shared/exports.dart';
+import 'widgets/tiles/fd_tile_widget.dart';
+import 'widgets/tiles/life_tile_widget.dart';
 
 class PoliciesPage extends StatefulWidget {
   final ProductType type;
@@ -115,26 +118,22 @@ class _PoliciesPageState extends State<PoliciesPage> {
                             if (currentModel is PolicyHiveModel) {
                               PolicyHiveModel policyModel = currentModel;
 
-                              return policyTile(
-                                context,
-                                policyModel,
-                              );
+                              return HealthTile(
+                                  context: context, model: policyModel);
                             } else {
                               if (currentModel is FdHiveModel) {
                                 FdHiveModel fdModel = currentModel;
 
-                                return fdTile(
-                                  context,
-                                  fdModel,
+                                return FDTile(
+                                  context: context,
+                                  model: fdModel,
                                 );
                               } else {
                                 if (currentModel is LifeHiveModel) {
                                   LifeHiveModel lifeModel = currentModel;
 
-                                  return lifeTile(
-                                    context,
-                                    lifeModel,
-                                  );
+                                  return LifeTile(
+                                      context: context, model: lifeModel);
                                 } else {
                                   return Container();
                                 }

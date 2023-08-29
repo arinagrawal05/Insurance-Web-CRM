@@ -1,10 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-import '../../getx/user_search_controller.dart';
-import '../hive_model/user_hive_model.dart';
+import 'package:health_model/shared/exports.dart';
 
 class UserHiveHelper {
   static const String _userBoxName = 'userBox';

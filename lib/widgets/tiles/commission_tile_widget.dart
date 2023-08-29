@@ -85,7 +85,11 @@ class CommissionTile extends StatelessWidget {
                   child: Column(
                     children: [
                       heading("Commission", 16),
-                      productTileText(model.commissionAmt.toString(), 14),
+                      productTileText(
+                          model.commissionAmt == 0
+                              ? "To be Entered"
+                              : model.commissionAmt.toString(),
+                          14),
                     ],
                   ),
                 ),

@@ -154,7 +154,9 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
                     productTileText(
                         statsProvider.chartCompanyData[index].x.toString(), 22),
                     productTileText(
-                        statsProvider.chartCompanyData[index].y.toString(), 22),
+                        AppUtils.formatAmount(
+                            statsProvider.chartCompanyData[index].y),
+                        22),
                   ],
                 ),
               );

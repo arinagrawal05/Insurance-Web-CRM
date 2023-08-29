@@ -1,19 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:health_model/hive/hive_helpers/commission_hive_helper.dart';
-import 'package:health_model/models/policy_model.dart';
-import 'package:health_model/providers/dash_provider.dart';
-import 'package:health_model/providers/general_stats_provider.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/enum_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:uuid/uuid.dart';
 import 'package:to_csv/to_csv.dart' as exportCSV;
 import 'package:intl/intl.dart';
+import 'package:health_model/shared/exports.dart';
 
 class AppUtils {
   static String getFirstWord(String fullName) {
@@ -97,30 +84,6 @@ int addHealthWithGST(int number) {
   int some = number;
   some += (number * 18 / 100).round();
   return some;
-}
-
-Duration getLifeDuration(
-  Payterm term,
-) {
-  if (term == Payterm.quarterly) {
-    return const Duration(days: 91);
-  } else if (term == Payterm.halfYearly) {
-    return const Duration(days: 182);
-  } else {
-    return const Duration(days: 365);
-  }
-}
-
-int addLifeWithGST(int number, {bool isFirst = false}) {
-  int some = number;
-
-  if (isFirst) {
-    some += (number * 4.5 / 100).round();
-    return some;
-  } else {
-    some += (number * 2.25 / 100).round();
-    return some;
-  }
 }
 
 String dateTimetoText(DateTime date) {
@@ -428,19 +391,19 @@ updateStats(String key, num value) {
       .update({key: value});
 }
 
-updatePin(String pin) {
-  FirebaseFirestore.instance
-      .collection("Statistics")
-      .doc("KdMlwAoBwwkdREqX3hIe")
-      .update({"admin_pin": pin});
-}
+// updatePin(String pin) {
+//   FirebaseFirestore.instance
+//       .collection("Statistics")
+//       .doc("KdMlwAoBwwkdREqX3hIe")
+//       .update({"admin_pin": pin});
+// }
 
-updateAdvisorList(List list) {
-  FirebaseFirestore.instance
-      .collection("Statistics")
-      .doc("KdMlwAoBwwkdREqX3hIe")
-      .update({"advisor_list": list});
-}
+// updateAdvisorList(List list) {
+//   FirebaseFirestore.instance
+//       .collection("Statistics")
+//       .doc("KdMlwAoBwwkdREqX3hIe")
+//       .update({"advisor_list": list});
+// }
 
 // updatePin(int pin) {
 //   FirebaseFirestore.instance
@@ -448,61 +411,6 @@ updateAdvisorList(List list) {
 //       .doc("5X1uBjP4Wqedj4SZspCg")
 //       .update({"admin_pin": pin});
 // }
-
-updateCompanybussiness(num number, String companyId, {negative = false}) {
-  int current = 0;
-
-  FirebaseFirestore.instance
-      .collection("Companies")
-      .where("company_id", isEqualTo: companyId)
-      .get()
-      .then((value) {
-    if (value.docs.isNotEmpty) {
-      current = value.docs[0]["total_bussiness"];
-      if (negative) {
-        FirebaseFirestore.instance
-            .collection("Companies")
-            .doc(companyId)
-            .update({
-          "total_bussiness": current - number,
-        });
-      } else {
-        FirebaseFirestore.instance
-            .collection("Companies")
-            .doc(companyId)
-            .update({
-          "total_bussiness": current + number,
-        });
-      }
-    }
-  });
-}
-
-updateCompanyPlans(String companyId, String keyTerm, {bool toRemove = false}) {
-  int plansCount = 0;
-  FirebaseFirestore.instance
-      .collection("Companies")
-      .where("company_id", isEqualTo: companyId)
-      .get()
-      .then((value) {
-    if (value.docs.isNotEmpty) {
-      plansCount = value.docs[0][keyTerm];
-      toRemove
-          ? FirebaseFirestore.instance
-              .collection("Companies")
-              .doc(companyId)
-              .update({
-              keyTerm: plansCount - 1,
-            })
-          : FirebaseFirestore.instance
-              .collection("Companies")
-              .doc(companyId)
-              .update({
-              keyTerm: plansCount + 1,
-            });
-    }
-  });
-}
 
 updateMembers(String userid, {bool toRemove = false}) {
   int membersCount = 0;
@@ -569,7 +477,8 @@ void makeATransaction(
     int terms,
     int premuimAmt,
     int memberCount,
-    DateTime timestamp) {
+    DateTime timestamp,
+    String type) {
   var uuid = const Uuid();
   String docId = uuid.v4();
   FirebaseFirestore.instance.collection("Transactions").doc(docId).set({
@@ -584,38 +493,8 @@ void makeATransaction(
     "members_count": memberCount,
     "timestamp": timestamp,
     "policy_status": "active",
+    "type": type,
   });
-}
-
-DocumentSnapshot<Object?>? getPolicy(String uid) {
-  // DocumentSnapshot<Object?> initialSnapshot;
-
-  FirebaseFirestore.instance
-      .collection("Policies")
-      .where("uid", isEqualTo: uid)
-      .get()
-      .then((value) {
-    // if (value.docs.length > 0) {
-    // for (var i = 0; i < value.docs.length; i++) {
-    DocumentReference documentRef = FirebaseFirestore.instance
-        .collection('Policies')
-        .doc(value.docs[0]["policy_id"]);
-
-    documentRef.get().then((snapshot) {
-      return snapshot;
-    });
-    // }
-    // }
-  });
-  return null;
-}
-
-String getWord(String dashName) {
-  if (dashName == ProductType.health) {
-    return "Policies";
-  } else {
-    return "Fds";
-  }
 }
 
 double getFdCommission(
@@ -656,6 +535,18 @@ double getFdCommission(
   return ans;
 }
 
+Duration getLifeDuration(
+  Payterm term,
+) {
+  if (term == Payterm.quarterly) {
+    return const Duration(days: 91);
+  } else if (term == Payterm.halfYearly) {
+    return const Duration(days: 182);
+  } else {
+    return const Duration(days: 365);
+  }
+}
+
 int getLifeTerm(Payterm term) {
   if (term == Payterm.quarterly) {
     return 3;
@@ -663,6 +554,18 @@ int getLifeTerm(Payterm term) {
     return 6;
   } else {
     return 12;
+  }
+}
+
+int addLifeWithGST(int number, {bool isFirst = false}) {
+  int some = number;
+
+  if (isFirst) {
+    some += (number * 4.5 / 100).round();
+    return some;
+  } else {
+    some += (number * 2.25 / 100).round();
+    return some;
   }
 }
 

@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:health_model/hive/hive_model/commission_models/commission_hive_model.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:health_model/shared/exports.dart';
 
 class CommissionHiveHelper {
   static const String _healthCommissionBoxName = 'healthCommissionBox';
@@ -48,7 +45,7 @@ class CommissionHiveHelper {
         if (doc.data()['commission_type'] == 'Health') {
           healthCommissionBox.add(commission);
         } else if (doc.data()['commission_type'] == 'Life') {
-          fDCommissionBox.add(commission);
+          lifeCommissionBox.add(commission);
         } else if (doc.data()['commission_type'] == 'FD') {
           fDCommissionBox.add(commission);
         }

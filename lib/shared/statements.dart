@@ -1,9 +1,3 @@
-import 'package:health_model/hive/hive_model/policy_models/fd_model.dart';
-import 'package:health_model/shared/enum_utils.dart';
-import 'package:health_model/shared/exports.dart';
-
-import '../hive/hive_model/user_hive_model.dart';
-
 class Statements {
   static String removeClient = "Do You Really Want to Remove this Client";
   static String removeHealth = "Do You Really Want to Remove this Policy";

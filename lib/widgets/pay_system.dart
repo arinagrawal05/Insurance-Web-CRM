@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/widgets.dart';
 
 class PaymodeSystem extends StatelessWidget {
   String termSelected;

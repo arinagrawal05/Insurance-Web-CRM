@@ -1,11 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:health_model/shared/enum_utils.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/providers/general_stats_provider.dart';
 
 class PolicyProvider extends ChangeNotifier {
   String client_name = "";
@@ -131,13 +124,8 @@ class PolicyProvider extends ChangeNotifier {
 
     print("take 1");
     if (AppConsts.isProductionMode) {
-      updateStats("sum_premium_amt",
-          statsProvider.premiumAmtSum + int.parse(premiumAmt.text));
       print("take 2");
-      updateCompanybussiness(int.parse(premiumAmt.text), companyID);
-      print("take 3");
-      updateCompanyPlans(companyID, "policy_count");
-      print("take 4");
+
       addCommision(
           client_name,
           policyNumber.text,
@@ -156,7 +144,8 @@ class PolicyProvider extends ChangeNotifier {
           int.parse(AppUtils.getFirstWord(termSelected)),
           int.parse(premiumAmt.text),
           membersCount,
-          textToDateTime(issuedDate.text));
+          textToDateTime(issuedDate.text),
+          AppConsts.health);
       print("take 6");
     }
     clearFields();

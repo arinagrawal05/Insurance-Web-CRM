@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:health_model/login.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/shared/toggle.dart';
 
 class SettingsPage extends StatelessWidget {
   @override

@@ -1,6 +1,3 @@
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
-
 import '../../shared/exports.dart';
 
 // Widget streamUsers(bool isChoosing, {bool isBirthday = false}) {
@@ -175,7 +172,7 @@ Widget streamPolicies(bool isChoosing, String companyFilter,
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
         } else {
-          return Text("some data here");
+          return const Text("some data here");
           // return ListView.builder(
           //     shrinkWrap: true,
           //     physics: const NeverScrollableScrollPhysics(),
@@ -271,7 +268,7 @@ Widget streamUserPolicies(bool isChoosing, String companyFilter,
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
         } else {
-          return Text("Some Data Here");
+          return const Text("Some Data Here");
 
           // return ListView.builder(
           //     shrinkWrap: true,

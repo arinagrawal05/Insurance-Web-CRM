@@ -66,12 +66,12 @@ class ChooseExisting extends StatelessWidget {
                 ),
                 customButton("Fresh", () {
                   provider.toggleFresh(true);
-                  navigate(EnterFdDetails(), context);
+                  navigate(const EnterFdDetails(), context);
                 }, context),
                 customButton("Renewal", () {
                   if (provider.freshFormKey.currentState?.validate() == true) {
                     provider.toggleFresh(false);
-                    navigate(EnterFdDetails(), context);
+                    navigate(const EnterFdDetails(), context);
                   }
                 }, context),
               ],

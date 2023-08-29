@@ -1,5 +1,3 @@
-import 'package:health_model/getx/user_search_controller.dart';
-import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/exports.dart';
 
 // ignore: must_be_immutable

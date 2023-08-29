@@ -18,7 +18,7 @@ class _ChooseMemberState extends State<ChooseMember> {
 
         // backgroundColor: scaffoldColor,
         appBar: genericAppbar(
-            title: widget.headName + "'s Members", centerTitle: true),
+            title: "${widget.headName}'s Members", centerTitle: true),
 
         // appBar: AppBar(
         //   title: Text(),

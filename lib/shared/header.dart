@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/style.dart';
+import 'package:health_model/shared/exports.dart';
 
 class TransactionHeaders {
   static Widget healthTransactionHeader() {

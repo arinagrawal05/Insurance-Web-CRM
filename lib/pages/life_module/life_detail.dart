@@ -1,12 +1,4 @@
-import 'package:health_model/dialogs/dialog.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/pages/fd_module/edit_fd.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/header.dart';
-import 'package:health_model/shared/statements.dart';
-import 'package:health_model/widgets/stepper.dart';
 
 // ignore: must_be_immutable
 class LifeDetailPage extends StatelessWidget {
@@ -22,7 +14,122 @@ class LifeDetailPage extends StatelessWidget {
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: genericAppbar(),
+      appBar: genericAppbar(actions: [
+        Row(
+          children: [
+            // model.maturityDate.isAfter(DateTime.now())
+            //     ? model.lifeStatus == "applied"
+            //         ?
+            customButton("Renew Life", () {
+              showRenewLifeDialog(model);
+              // Get.snackbar(
+              //   "hello",
+              //   "this is message",
+              //   snackPosition: SnackPosition.BOTTOM,
+              // );
+              // print("object");
+              // navigate(RenewPolicyPage(model: model),
+              // context);
+            }, context, isExpanded: false)
+            // :
+            //  model.lifeStatus == "inHand"
+            //             ? customButton(
+            //                 "handover to customer", () {
+            //                 print("object");
+            //                 genericConfirmSheet(
+            //                     context,
+            //                     Statements.handoverFD,
+            //                     "handover", () {
+            //                   FirebaseFirestore.instance
+            //                       .collection("Policies")
+            //                       .doc(model.lifeID)
+            //                       .update({
+            //                     "fd_given_date":
+            //                         DateTime.now(),
+            //                     "fd_status": "handover"
+            //                   }).then((value) {
+            //                     PolicyHiveHelper
+            //                         .fetchFDPoliciesFromFirebase();
+            //                     Navigator.pop(context);
+            //                     Navigator.pop(context);
+            //                   });
+            //                 });
+            //                 // navigate(
+            //                 //     RenewPolicyPage(model: model), context);
+            //               }, context, isExpanded: false)
+            //             : Container()
+            //     : Row(
+            //         children: [
+            //           customButton("Renew", () {
+            //             // AppUtils.showSnackMessage(
+            //             // "FD Redeemed Successfuly",
+            //             // "This amount is given to client");
+            //             // print("object");
+            //             navigate(RenewFdPage(model: model),
+            //                 context);
+            //           }, context, isExpanded: false)
+            //         ],
+            //       ),
+            // model.fdStatus == "handover"
+            //     ? customButton("Redeem", () {
+            //         print("object");
+            //         genericConfirmSheet(context,
+            //             Statements.redeemFD, "Redeem", () {
+            //           FirebaseFirestore.instance
+            //               .collection("Policies")
+            //               .doc(model.fdId)
+            //               .update({
+            //             "status_date": DateTime.now(),
+            //             "fd_status": "redeemed"
+            //           }).then((value) {
+            //             AppUtils.showSnackMessage(
+            //                 "This FD is Successfully Redeemed",
+            //                 "");
+            //             PolicyHiveHelper
+            //                 .fetchFDPoliciesFromFirebase();
+            //             Navigator.pop(context);
+            //             Navigator.pop(context);
+            //           });
+            //         });
+            //         // navigate(
+            //         //     RenewPolicyPage(model: model), context);
+            //       }, context, isExpanded: false)
+            //     : Container(),
+            // customButton(
+            //   "Edit FD",
+            //   () {
+            //     // navigate(EditDetailsPage(model: model),
+            //     // context);
+            //   },
+            //   context,
+            //   isExpanded: false,
+            // ),
+            // customDeleteButton(Icons.edit, Colors.blue,
+            //     () async {
+            //   navigate(
+            //       EditFdDetails(model: model), context);
+            // }, context),
+            ,
+            customDeleteButton(Ionicons.trash_outline, Colors.red.shade500,
+                () async {
+              genericConfirmSheet(context, Statements.removeFD, "FD", () {
+                FirebaseFirestore.instance
+                    .collection("Policies")
+                    .doc(model.lifeID)
+                    .delete()
+                    .then((value) {
+                  PolicyHiveHelper.fetchLifePoliciesFromFirebase();
+                  // PolicyHiveHelper.deleteSpecificPolicy(
+                  //     documentID: model.fdId);
+                  Navigator.pop(context);
+
+                  Navigator.pop(context);
+                });
+              });
+            }, context),
+          ],
+        )
+      ]),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -97,249 +204,179 @@ class LifeDetailPage extends StatelessWidget {
                             GestureDetector(
                                 onLongPress: () {
                                   AppUtils.showSnackMessage(
-                                      model.lifeID, "This is Fd Id");
+                                      model.lifeID, "This is Life Id");
                                 },
-                                child: heading("About FD", 18)),
-
-                            Row(
-                              children: [
-                                // model.maturityDate.isAfter(DateTime.now())
-                                //     ? model.lifeStatus == "applied"
-                                //         ?
-                                customButton("Recieve Certificate", () {
-                                  showRenewLifeDialog(model);
-                                  // Get.snackbar(
-                                  //   "hello",
-                                  //   "this is message",
-                                  //   snackPosition: SnackPosition.BOTTOM,
-                                  // );
-                                  // print("object");
-                                  // navigate(RenewPolicyPage(model: model),
-                                  // context);
-                                }, context, isExpanded: false)
-                                // :
-                                //  model.lifeStatus == "inHand"
-                                //             ? customButton(
-                                //                 "handover to customer", () {
-                                //                 print("object");
-                                //                 genericConfirmSheet(
-                                //                     context,
-                                //                     Statements.handoverFD,
-                                //                     "handover", () {
-                                //                   FirebaseFirestore.instance
-                                //                       .collection("Policies")
-                                //                       .doc(model.lifeID)
-                                //                       .update({
-                                //                     "fd_given_date":
-                                //                         DateTime.now(),
-                                //                     "fd_status": "handover"
-                                //                   }).then((value) {
-                                //                     PolicyHiveHelper
-                                //                         .fetchFDPoliciesFromFirebase();
-                                //                     Navigator.pop(context);
-                                //                     Navigator.pop(context);
-                                //                   });
-                                //                 });
-                                //                 // navigate(
-                                //                 //     RenewPolicyPage(model: model), context);
-                                //               }, context, isExpanded: false)
-                                //             : Container()
-                                //     : Row(
-                                //         children: [
-                                //           customButton("Renew", () {
-                                //             // AppUtils.showSnackMessage(
-                                //             // "FD Redeemed Successfuly",
-                                //             // "This amount is given to client");
-                                //             // print("object");
-                                //             navigate(RenewFdPage(model: model),
-                                //                 context);
-                                //           }, context, isExpanded: false)
-                                //         ],
-                                //       ),
-                                // model.fdStatus == "handover"
-                                //     ? customButton("Redeem", () {
-                                //         print("object");
-                                //         genericConfirmSheet(context,
-                                //             Statements.redeemFD, "Redeem", () {
-                                //           FirebaseFirestore.instance
-                                //               .collection("Policies")
-                                //               .doc(model.fdId)
-                                //               .update({
-                                //             "status_date": DateTime.now(),
-                                //             "fd_status": "redeemed"
-                                //           }).then((value) {
-                                //             AppUtils.showSnackMessage(
-                                //                 "This FD is Successfully Redeemed",
-                                //                 "");
-                                //             PolicyHiveHelper
-                                //                 .fetchFDPoliciesFromFirebase();
-                                //             Navigator.pop(context);
-                                //             Navigator.pop(context);
-                                //           });
-                                //         });
-                                //         // navigate(
-                                //         //     RenewPolicyPage(model: model), context);
-                                //       }, context, isExpanded: false)
-                                //     : Container(),
-                                // customButton(
-                                //   "Edit FD",
-                                //   () {
-                                //     // navigate(EditDetailsPage(model: model),
-                                //     // context);
-                                //   },
-                                //   context,
-                                //   isExpanded: false,
-                                // ),
-                                // customDeleteButton(Icons.edit, Colors.blue,
-                                //     () async {
-                                //   navigate(
-                                //       EditFdDetails(model: model), context);
-                                // }, context),
-                                // customDeleteButton(
-                                //     Ionicons.trash_outline, Colors.red.shade500,
-                                //     () async {
-                                //   genericConfirmSheet(
-                                //       context, Statements.removeFD, "FD", () {
-                                //     FirebaseFirestore.instance
-                                //         .collection("Policies")
-                                //         .doc(model.fdId)
-                                //         .delete()
-                                //         .then((value) {
-                                //       PolicyHiveHelper
-                                //           .fetchFDPoliciesFromFirebase();
-                                //       // PolicyHiveHelper.deleteSpecificPolicy(
-                                //       //     documentID: model.fdId);
-                                //       Navigator.pop(context);
-
-                                //       Navigator.pop(context);
-                                //     });
-                                //   });
-                                // }, context),
-                              ],
-                            )
-                            // Container(),
+                                child: heading("About Life", 18)),
+                            Container()
                           ],
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        decoration: dashBoxDex(context),
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Column(
                               children: [
-                                productTileText(
-                                  "Life No: ${model.lifeNo}",
-                                  22,
+                                Container(
+                                  padding: const EdgeInsets.all(9),
+                                  decoration: dashBoxDex(context),
+                                  child: companyShowcase(context,
+                                      imgUrl: model.companyLogo,
+                                      leadingText:
+                                          "${model.timesPaid} Premium Done",
+                                      title: model.companyName,
+                                      subtitle: model.planName),
                                 ),
-                                // Text(
-                                //   model.policyNo,
-                                //   style: GoogleFonts.nunito(
-                                //       fontSize: 22,
-                                //       color: Colors.green.shade300,
-                                //       fontWeight: FontWeight.w500),
-                                // ),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          // launchURL(
-                                          // "https://wa.me/${model.phone}?text=${fDRenewalDraftMsg(model)}");
-                                        },
-                                        child: Icon(
-                                          Ionicons.logo_whatsapp,
-                                          color: Colors.green.shade300,
-                                        )),
-                                    GestureDetector(
-                                        onTap: () {
-                                          AppUtils.showSnackMessage(
-                                              "This is paid by " +
-                                                  model.payMode,
-                                              model.payMode == "Cheque"
-                                                  ? "bank Details: " +
-                                                      model.bankDetails
-                                                  : "");
-                                        },
-                                        child: const Icon(
-                                          Ionicons.information_circle_outline,
-                                          size: 30,
-                                        ))
-                                  ],
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                productTileText(
-                                  "Invested Amount ",
-                                  22,
+                                const SizedBox(
+                                  height: 8,
                                 ),
-                                Text(
-                                  "RS ${model.premuimAmt.toString()}",
-                                  style: GoogleFonts.nunito(
-                                      fontSize: 22,
-                                      color: Colors.green.shade300,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                            productTileText(
-                              "Company: ${model.companyName}",
-                              22,
-                            ),
-                            productTileText(
-                              "Deposit Date: ${dateTimetoText(model.commitmentDate)}",
-                              22,
-                            ),
-                            productTileText(
-                              "Expected Maturity Date: ${dateTimetoText(model.maturityDate)}",
-                              22,
-                            ),
-                            (model.isMale)
-                                ? Container(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Ionicons.information_circle_outline,
-                                          size: 45,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              heading(
-                                                  "This FD is Non Cummulative",
-                                                  20),
-                                              heading1(
-                                                  "it is ${model.payingTillDate}",
-                                                  16)
-                                              // heading(
-                                              //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",
-                                              //     20),
-                                              // heading1(
-                                              //     "Ported FD no is ${model.portFdNo}",
-                                              //     16)
-                                            ],
+                                Container(
+                                  // height: double.infinity,
+                                  width: double.infinity,
+                                  decoration: dashBoxDex(context),
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          productTileText(
+                                            "Life No: ${model.lifeNo}",
+                                            22,
                                           ),
-                                        )
-                                      ],
-                                    ))
-                                : Container()
-                          ],
-                        ),
+                                          // Text(
+                                          //   model.policyNo,
+                                          //   style: GoogleFonts.nunito(
+                                          //       fontSize: 22,
+                                          //       color: Colors.green.shade300,
+                                          //       fontWeight: FontWeight.w500),
+                                          // ),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    // launchURL(
+                                                    // "https://wa.me/${model.phone}?text=${fDRenewalDraftMsg(model)}");
+                                                  },
+                                                  child: Icon(
+                                                    Ionicons.logo_whatsapp,
+                                                    color:
+                                                        Colors.green.shade300,
+                                                  )),
+                                              GestureDetector(
+                                                  onTap: () {
+                                                    AppUtils.showSnackMessage(
+                                                        "This is paid by ${model.payMode}",
+                                                        model.payMode ==
+                                                                "Cheque"
+                                                            ? "bank Details: ${model.bankDetails}"
+                                                            : "");
+                                                  },
+                                                  child: const Icon(
+                                                    Ionicons
+                                                        .information_circle_outline,
+                                                    size: 30,
+                                                  ))
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          productTileText(
+                                            "Amount ",
+                                            22,
+                                          ),
+                                          Text(
+                                            "RS ${model.sumAssured.toString()}",
+                                            style: GoogleFonts.nunito(
+                                                fontSize: 22,
+                                                color: Colors.green.shade300,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Ionicons
+                                                    .information_circle_outline,
+                                                size: 45,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Container(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    heading(
+                                                        "This Life Policy is on ${model.payterm} Basis",
+                                                        20),
+                                                    heading1(
+                                                        "${AppUtils.formatAmount(model.premuimAmt)} Rs per ${getLifeTerm(EnumUtils.convertNameToPayterm(model.payterm))} months",
+                                                        16)
+                                                    // heading(
+                                                    //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",
+                                                    //     20),
+                                                    // heading1(
+                                                    //     "Ported FD no is ${model.portFdNo}",
+                                                    //     16)
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              width: double.infinity,
+                              decoration: dashBoxDex(context),
+                              padding: const EdgeInsets.all(8),
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: heading("Dates", 18),
+                                  ),
+                                  userDetailShow(
+                                      "Commitment Date",
+                                      dateTimetoText(model.commitmentDate),
+                                      Ionicons.calendar),
+                                  userDetailShow(
+                                      "Renewal Date",
+                                      dateTimetoText(model.renewalDate),
+                                      Ionicons.calendar_number),
+                                  userDetailShow(
+                                      "payable Date",
+                                      dateTimetoText(model.payingTillDate),
+                                      Ionicons.calendar_clear),
+                                  userDetailShow(
+                                      "Maturity Date",
+                                      dateTimetoText(model.maturityDate),
+                                      Ionicons.calendar_outline),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: heading("Timeline", 18),
-                      ),
+
                       // Row(
                       //   children: [
                       // Padding(
@@ -387,7 +424,7 @@ class LifeDetailPage extends StatelessWidget {
   }
 }
 
-int stepNumber(FDStatus status) {
+int getTimelineStep(FDStatus status) {
   switch (status) {
     case FDStatus.applied:
       return 0;

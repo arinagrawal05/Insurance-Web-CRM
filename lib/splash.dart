@@ -1,12 +1,6 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:health_model/homepage.dart';
 import 'package:health_model/login.dart';
-import 'package:health_model/providers/theme_provider.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Splashscreen extends StatefulWidget {
   @override

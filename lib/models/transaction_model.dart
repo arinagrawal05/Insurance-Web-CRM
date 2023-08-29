@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TansactionModel {
   String transactionId;
   String policyID;
-
+  String type;
   String userid;
   String policyNo;
   String companyName;
@@ -26,6 +26,7 @@ class TansactionModel {
     required this.beginsDate,
     required this.companyName,
     required this.terms,
+    required this.type,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,6 +41,7 @@ class TansactionModel {
       "terms": terms,
       "members_count": membersCount,
       "timestamp": timestamp,
+      "type": type,
     };
   }
 
@@ -47,16 +49,17 @@ class TansactionModel {
     dynamic map = doc.data();
 
     return TansactionModel(
-      transactionId: map['transaction_id'],
-      userid: map['userid'],
-      premuimAmt: map['premium_amt'],
-      beginsDate: map['begins_date'],
-      policyID: map['policy_id'],
-      policyNo: map['policy_no'],
-      companyName: map['company_name'],
-      terms: map['terms'],
-      membersCount: map['members_count'],
-      timestamp: map['timestamp'],
+      transactionId: map['transaction_id'] ?? "NA",
+      userid: map['userid'] ?? "NA",
+      premuimAmt: map['premium_amt'] ?? 0,
+      beginsDate: map['begins_date'] ?? Timestamp.now(),
+      policyID: map['policy_id'] ?? "NA",
+      policyNo: map['policy_no'] ?? "NA",
+      companyName: map['company_name'] ?? "NA",
+      terms: map['terms'] ?? 0,
+      membersCount: map['members_count'] ?? 0,
+      timestamp: map['timestamp'] ?? Timestamp.now(),
+      type: map['type'] ?? "Generic",
 
       // address: map['address'],
     );

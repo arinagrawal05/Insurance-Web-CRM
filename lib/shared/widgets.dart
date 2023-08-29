@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-
 import '../../shared/exports.dart';
 
 Widget cachedImage(String companyImg) {
@@ -23,13 +21,14 @@ Widget customDeleteButton(
   IconData? icon,
   Color bgColor,
   void Function()? ontap,
-  BuildContext context,
-) {
+  BuildContext context, {
+  double? size = 60,
+}) {
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: MaterialButton(
-      height: 60,
-      minWidth: 60,
+      height: size,
+      minWidth: size,
       // minWidth: isExpanded ? MediaQuery.of(context).size.width : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -37,7 +36,7 @@ Widget customDeleteButton(
       color: bgColor,
       onPressed: ontap,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(size! / 5),
         child: Icon(
           icon,
           size: 16,
@@ -57,6 +56,7 @@ Widget customButton(
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: MaterialButton(
+      // height: ,
       // height: 40,
       minWidth: isExpanded ? MediaQuery.of(context).size.width : null,
       shape: RoundedRectangleBorder(
@@ -135,6 +135,36 @@ Widget formTextField(TextEditingController controller, String labelText,
         ),
       ),
     ),
+  );
+}
+
+Widget companyShowcase(
+  BuildContext context, {
+  required String imgUrl,
+  required String title,
+  required String subtitle,
+  required String leadingText,
+}) {
+  return Row(
+    children: [
+      companyLogo(imgUrl, size: 60),
+      const SizedBox(
+        width: 20,
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          heading(title, 20),
+          heading1(subtitle, 12),
+        ],
+      ),
+      const Spacer(),
+      Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.all(7),
+          decoration: dashBoxDex(context).copyWith(color: Colors.black26),
+          child: simpleText(leadingText, 12)),
+    ],
   );
 }
 
@@ -286,7 +316,7 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
       timeout: Duration(seconds: provider.tooltime),
       // timeout: ,
       color: Theme.of(context).canvasColor,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       distance: 0,
       showModal: false,
       child: Container(
@@ -413,10 +443,10 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
 Widget infoTooltip(PolicyHiveModel model, BuildContext context) {
   return Center(
     child: ElTooltip(
-      timeout: Duration(seconds: 3),
+      timeout: const Duration(seconds: 3),
       // timeout: ,
       color: Theme.of(context).canvasColor,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       distance: 0,
       showModal: false,
       child: const Icon(
@@ -424,7 +454,7 @@ Widget infoTooltip(PolicyHiveModel model, BuildContext context) {
         size: 20,
       ),
       content: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               productTileText("This is paid by ${model.payMode}", 20),
@@ -658,38 +688,6 @@ isGraced(DateTime renewalDate) {
   return false;
 }
 
-// Widget fdropdown(String placeholder, String defaultValue,
-//     List<dynamic> dropDownData, void Function(String?)? onChanged) {
-//   return Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: InputDecorator(
-//       decoration: InputDecoration(
-//         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-//         contentPadding: const EdgeInsets.all(10),
-//       ),
-//       child: DropdownButtonHideUnderline(
-//         child: DropdownButton<String>(
-//             isDense: false,
-//             value: defaultValue,
-//             // isExpanded: true,
-//             menuMaxHeight: 350,
-//             items: [
-//               DropdownMenuItem(child: Text(placeholder), value: ""),
-//               ...dropDownData.map<DropdownMenuItem<String>>((data) {
-//                 return DropdownMenuItem(
-//                     child: Text(
-//                       data['title'],
-//                       style: GoogleFonts.nunito(color: Colors.grey),
-//                     ),
-//                     value: data['value']);
-//               }).toList(),
-//             ],
-//             onChanged: onChanged),
-//       ),
-//     ),
-//   );
-// }
-
 Widget userCardShow(String label, String value) {
   return Container(
     padding: const EdgeInsets.all(12),
@@ -719,7 +717,9 @@ Widget userDetailShow(String label, String value, IconData icon) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heading1(label, 12),
-            productTileText(value, 16, overF: TextOverflow.clip)
+            Container(
+                width: 200,
+                child: productTileText(value, 16, overF: TextOverflow.clip))
           ],
         ),
       ],

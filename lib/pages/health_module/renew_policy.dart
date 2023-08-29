@@ -128,7 +128,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                 //   });
                 // }),
 
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 customButton("Renew", () async {
@@ -144,13 +144,6 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                       model.policyID,
                     );
                     if (AppConsts.isProductionMode) {
-                      updateStats(
-                          "sum_premium_amt",
-                          statsProvider.premiumAmtSum +
-                              int.parse(premiumAmt.text) -
-                              model.premuimAmt);
-                      updateCompanybussiness(
-                          int.parse(premiumAmt.text), model.companyID);
                       addCommision(
                           model.name,
                           policyNumber.text,
@@ -158,18 +151,18 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                           textToDateTime(issuedDate.text),
                           AppUtils.getFirstWord(model.companyName),
                           statsProvider.healthPercent.toDouble(),
-                          "Health");
+                          AppConsts.health);
                       makeATransaction(
-                        model.userid,
-                        model.policyID,
-                        policyNumber.text,
-                        model.companyName,
-                        startingDate,
-                        term,
-                        int.parse(premiumAmt.text),
-                        model.membersCount,
-                        textToDateTime(issuedDate.text),
-                      );
+                          model.userid,
+                          model.policyID,
+                          policyNumber.text,
+                          model.companyName,
+                          startingDate,
+                          term,
+                          int.parse(premiumAmt.text),
+                          model.membersCount,
+                          textToDateTime(issuedDate.text),
+                          AppConsts.health);
 
                       PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
 

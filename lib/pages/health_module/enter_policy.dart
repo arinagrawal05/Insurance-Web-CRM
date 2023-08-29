@@ -1,7 +1,3 @@
-import 'package:health_model/widgets/pay_system.dart';
-import 'package:health_model/shared/regex.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
-
 import '../../../shared/exports.dart';
 
 // ignore: must_be_immutable

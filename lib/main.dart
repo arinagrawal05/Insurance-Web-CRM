@@ -1,5 +1,4 @@
-import 'package:health_model/providers/life_provider.dart';
-import 'package:health_model/splash.dart';
+import 'package:health_model/providers/general_provider.dart';
 
 import '../../shared/exports.dart';
 
@@ -59,6 +58,9 @@ class MyApp extends StatelessWidget {
             ),
             ChangeNotifierProvider(
               create: (context) => LifeProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => GeneralProvider(),
             ),
           ],
           builder: (context, _) {

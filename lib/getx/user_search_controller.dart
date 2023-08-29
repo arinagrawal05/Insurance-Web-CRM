@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
-import 'package:health_model/hive/hive_model/user_hive_model.dart';
-import 'package:hive/hive.dart';
+import 'package:health_model/shared/exports.dart';
 
 class UserSearchController extends GetxController {
   List<UserHiveModel> users = <UserHiveModel>[];

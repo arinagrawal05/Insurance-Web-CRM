@@ -1,11 +1,7 @@
-import 'package:health_model/dialogs/dialog.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
+import 'package:health_model/shared/exports.dart';
+
 import 'package:health_model/pages/fd_module/edit_fd.dart';
 import 'package:health_model/pages/fd_module/renew_fd.dart';
-import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/header.dart';
-import 'package:health_model/shared/statements.dart';
-import 'package:health_model/widgets/stepper.dart';
 
 // ignore: must_be_immutable
 class FdDetailPage extends StatelessWidget {

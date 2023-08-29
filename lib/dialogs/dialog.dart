@@ -1,7 +1,3 @@
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/widgets/pay_system.dart';
-import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/exports.dart';
 
 void adminDialog(
@@ -126,9 +122,6 @@ void showCertificateDialog(FdHiveModel model) {
                   customButton("Get Certificate", () {
                     if (AppConsts.isProductionMode) {
                       print("Take 1");
-                      updateCompanybussiness(
-                          model.investedAmt, model.companyID);
-                      updateCompanyPlans(model.companyID, "policy_count");
                       addCommision(
                           model.name,
                           model.fdNo,
@@ -146,7 +139,8 @@ void showCertificateDialog(FdHiveModel model) {
                           model.fDterm,
                           model.investedAmt,
                           int.parse(maturityAmt.text),
-                          textToDateTime(maturityDate.text));
+                          textToDateTime(maturityDate.text),
+                          AppConsts.fd);
                     }
                     getCertificate();
                     // List list = advisorListField.text.split(",");
@@ -200,40 +194,43 @@ void showRenewLifeDialog(LifeHiveModel model) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   // heading("${model.companyName}'s Renewal", 22),
-                  Row(
-                    children: [
-                      companyLogo(model.companyLogo, size: 60),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          heading(model.companyName, 20),
-                          heading1(
-                              "payable till " +
-                                  dateTimetoText(model.payingTillDate),
-                              12),
-                        ],
-                      ),
-                      Spacer(),
-                      Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                          padding: const EdgeInsets.all(7),
-                          decoration: dashBoxDex(context)
-                              .copyWith(color: Colors.black26),
-                          child: simpleText(
-                              (model.timesPaid + 1).toString() + "th Premuim",
-                              12)),
-                    ],
+                  companyShowcase(context,
+                      imgUrl: model.companyLogo,
+                      leadingText: "${model.timesPaid + 1}th Premium",
+                      title: model.companyName,
+                      subtitle:
+                          "payable till ${dateTimetoText(model.payingTillDate)}"),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        productTileText(
+                          "Premium",
+                          24,
+                        ),
+                        productTileText(
+                          "${model.premuimAmt}",
+                          24,
+                        ),
+                        productTileText(
+                            "+${addLifeWithGST(model.premuimAmt) - model.premuimAmt}",
+                            24,
+                            color: Colors.green),
+                        productTileText(
+                          "${addLifeWithGST(model.premuimAmt)}",
+                          24,
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     children: [
                       productTileText(
-                        "${dateTimetoText(model.renewalDate)}",
+                        dateTimetoText(model.renewalDate),
                         24,
                       ),
-                      Expanded(
+                      const Expanded(
                           child: Divider(
                         endIndent: 10,
                         indent: 10,
@@ -242,18 +239,18 @@ void showRenewLifeDialog(LifeHiveModel model) {
                         padding: const EdgeInsets.all(4.0),
                         child: Column(
                           children: [
-                            Icon(Ionicons.cash_outline),
+                            const Icon(Ionicons.cash_outline),
                             buttonText(model.payterm, 15, color: Colors.black45)
                           ],
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                           child: Divider(
                         endIndent: 10,
                         indent: 10,
                       )),
                       productTileText(
-                        "${dateTimetoText(newDate)}",
+                        dateTimetoText(newDate),
                         24,
                       ),
                     ],
@@ -286,6 +283,7 @@ void showRenewLifeDialog(LifeHiveModel model) {
                   //   FieldRegex.dateRegExp,
                   // ),
                   ,
+                  const Spacer(),
                   PaymodeSystem(
                       bankDate: bankDate,
                       chequeNo: chequeNo,
@@ -300,12 +298,9 @@ void showRenewLifeDialog(LifeHiveModel model) {
                   const Spacer(),
                   customButton("Renew", () {
                     // if (AppConsts.isProductionMode) {
-                    //   print("Take 1");
-                    //   updateCompanybussiness(
-                    //       model.investedAmt, model.companyID);
-                    //   updateCompanyPlans(model.companyID, "policy_count");
+
                     addCommision(model.name, model.lifeNo, model.premuimAmt,
-                        DateTime.now(), model.companyName, 0, AppConsts.fd);
+                        DateTime.now(), model.companyName, 0, AppConsts.life);
                     makeATransaction(
                         model.userid,
                         model.lifeID,
@@ -314,9 +309,10 @@ void showRenewLifeDialog(LifeHiveModel model) {
                         model.renewalDate,
                         getLifeTerm(
                             EnumUtils.convertNameToPayterm(model.payterm)),
-                        model.premuimAmt,
+                        addLifeWithGST(model.premuimAmt, isFirst: false),
                         model.timesPaid + 1,
-                        newDate);
+                        newDate,
+                        AppConsts.life);
                     // }
                     renewLife();
                     // List list = advisorListField.text.split(",");

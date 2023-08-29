@@ -1,16 +1,7 @@
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:health_model/add_company.dart';
-import 'package:health_model/pages/life_module/enter_life.dart';
-import 'package:health_model/pages/fd_module/fd_detail.dart';
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
-import 'package:health_model/pages/life_module/life_detail.dart';
-import 'package:health_model/providers/life_provider.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
-import 'package:health_model/shared/statements.dart';
+import 'package:health_model/providers/general_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
-import '../dialogs/dialog.dart';
+import 'package:health_model/pages/fd_module/renew_fd.dart';
 
 Widget bDayuserTile(BuildContext context, UserHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
@@ -67,6 +58,7 @@ Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
   final provider = Provider.of<UserProvider>(context, listen: true);
   final fdProvider = Provider.of<FDProvider>(context, listen: true);
   final lifeProvider = Provider.of<LifeProvider>(context, listen: true);
+  final generalProvider = Provider.of<GeneralProvider>(context, listen: true);
   final dashProvider = Get.find<DashProvider>();
 
   return InkWell(
@@ -74,6 +66,10 @@ Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
         ? () {
             if (dashProvider.currentDashBoard == ProductType.life) {
               lifeProvider.setMemberClient(model.userid, model.name,
+                  model.relation, model.dob, model.isMale);
+              navigate(ChooseCompany(), context);
+            } else if (dashProvider.currentDashBoard == ProductType.general) {
+              generalProvider.setMemberClient(model.userid, model.name,
                   model.relation, model.dob, model.isMale);
               navigate(ChooseCompany(), context);
             } else {
@@ -271,8 +267,6 @@ Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
                       () async {
                         genericConfirmSheet(
                             context, Statements.removePlan, "Plan", () {
-                          updateCompanyPlans(model.companyID, "plans_count",
-                              toRemove: true);
                           FirebaseFirestore.instance
                               .collection("Companies")
                               .doc(model.companyID)
@@ -298,6 +292,7 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
   final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
   final fdprovider = Provider.of<FDProvider>(context, listen: false);
   final lifeProvider = Provider.of<LifeProvider>(context, listen: false);
+  final generalProvider = Provider.of<GeneralProvider>(context, listen: false);
 
   // final dashProvider = Provider.of<DashProvider>(context, listen: false);
 
@@ -323,6 +318,12 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                   ChoosePlan(
                       companyName: model.name, companyId: model.companyID),
                   context);
+            } else if (dashName ==
+                EnumUtils.convertTypeToKey(ProductType.general)) {
+              generalProvider.setCompany(
+                  model.name, model.companyID, model.companyImg);
+
+              navigate(ChooseExisting(), context);
             } else {
               fdprovider.setCompany(
                   model.name, model.companyID, model.companyImg);
@@ -409,291 +410,6 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                         ),
                       ],
                     ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget lifeTile(BuildContext context, LifeHiveModel model) {
-  return InkWell(
-    onLongPress: () {
-      AppUtils.showSnackMessage(model.lifeNo, "This is Life Id");
-    },
-    onTap: () {
-      navigate(
-        LifeDetailPage(model: model),
-        context,
-      );
-      // addMemberSheet(context, widget.userid, docId);
-    },
-    child: Container(
-      // height: 120,
-      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-
-      decoration: dashBoxDex(context),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                // color: Colors.amber,
-                width: 270,
-                child: Row(
-                  children: [
-                    companyLogo(model.companyLogo),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        heading(model.name, 16),
-                        productTileText(model.lifeNo, 14),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  heading("Company", 16),
-                  productTileText(
-                      AppUtils.getFirstWord(model.companyName.toString()), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Term", 16),
-                  productTileText(model.payterm.toString(), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Premium", 16),
-                  productTileText(
-                      "${AppUtils.formatAmount(model.premuimAmt)} Rs", 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Last Renew Date", 16),
-                  productTileText(dateTimetoText(model.lastRenewedDate), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Renewal Date", 16),
-                  productTileText(dateTimetoText(model.renewalDate), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Status", 16),
-                  productTileText(model.lifeStatus.toString(), 14),
-                ],
-              ),
-              customButton("View Life", () async {
-                navigate(
-                  LifeDetailPage(model: model),
-                  context,
-                );
-              }, context, isExpanded: false)
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget fdTile(BuildContext context, FdHiveModel model) {
-  return InkWell(
-    onLongPress: () {
-      AppUtils.showSnackMessage(model.fdId, "This is Fd Id");
-    },
-    onTap: () {
-      navigate(
-        FdDetailPage(model: model),
-        context,
-      );
-      // addMemberSheet(context, widget.userid, docId);
-    },
-    child: Container(
-      // height: 120,
-      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-
-      decoration: dashBoxDex(context),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                // color: Colors.amber,
-                width: 300,
-                child: Row(
-                  children: [
-                    companyLogo(model.companyLogo),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        heading(model.name, 16),
-                        productTileText(model.fdNo, 14),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  heading("Company", 16),
-                  productTileText(
-                      AppUtils.getFirstWord(model.companyName.toString()), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Invested Date", 16),
-                  productTileText(dateTimetoText(model.initialDate), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Sum Invested", 16),
-                  productTileText(
-                      "${AppUtils.formatAmount(model.investedAmt)} Rs", 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Maturity Date", 16),
-                  productTileText(dateTimetoText(model.maturityDate), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Term", 16),
-                  productTileText(model.fDterm.toString(), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Status", 16),
-                  productTileText(model.fdStatus.toString(), 14),
-                ],
-              ),
-              customButton("View FD", () async {
-                navigate(
-                  FdDetailPage(model: model),
-                  context,
-                );
-                // addMemberSheet(context, widget.userid, docId);
-              }, context, isExpanded: false)
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget policyTile(BuildContext context, PolicyHiveModel model) {
-  return InkWell(
-    onLongPress: () {
-      AppUtils.showSnackMessage(model.policyID, "This is PolicyID");
-    },
-    onTap: () {
-      navigate(
-        PolicyDetailPage(model: model),
-        context,
-      );
-      // addMemberSheet(context, widget.userid, docId);
-    },
-    child: Container(
-      // height: 120,
-      // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-
-      decoration: dashBoxDex(context),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                // color: Colors.amber,
-                width: 300,
-                child: Row(
-                  children: [
-                    companyLogo(model.companyLogo),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        heading(model.name, 16),
-                        productTileText(model.policyNo, 14),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  heading("Company", 16),
-                  productTileText(
-                      AppUtils.getFirstWord(model.companyName.toString()), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Sum Assured", 16),
-                  productTileText(model.sumAssured.toString(), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Renewal Date", 16),
-                  productTileText(dateTimetoText(model.renewalDate), 14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Premium", 16),
-                  productTileText(
-                      "${AppUtils.formatAmount(addHealthWithGST(model.premuimAmt))} Rs",
-                      14),
-                ],
-              ),
-              Column(
-                children: [
-                  heading("Status", 16),
-                  productTileText(model.policyStatus.toString(), 14),
-                ],
-              ),
-              customButton("View Policy", () async {
-                navigate(
-                  PolicyDetailPage(model: model),
-                  context,
-                );
-                // addMemberSheet(context, widget.userid, docId);
-              }, context, isExpanded: false)
             ],
           ),
         ],

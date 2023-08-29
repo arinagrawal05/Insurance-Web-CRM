@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget heading(
@@ -31,16 +30,16 @@ Widget heading1(String text, double fontSize,
 }
 
 Widget productTileText(String text, double fontSize,
-    {TextOverflow overF = TextOverflow.ellipsis, bool center = false}) {
+    {TextOverflow overF = TextOverflow.ellipsis,
+    bool center = false,
+    Color? color}) {
   return Text(
     text,
     softWrap: true,
     overflow: overF,
     textAlign: center ? TextAlign.center : TextAlign.justify,
     style: GoogleFonts.nunito(
-      fontSize: fontSize,
-      fontWeight: FontWeight.w500,
-    ),
+        fontSize: fontSize, fontWeight: FontWeight.w500, color: color),
   );
 }
 

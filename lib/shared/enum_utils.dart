@@ -1,4 +1,4 @@
-enum ProductType { health, fd, life, cms }
+enum ProductType { health, fd, life, general, cms }
 
 enum LifeStatus { allStatus, enforced, lapsed, paid, matured }
 
@@ -17,6 +17,8 @@ class EnumUtils {
         return 'FD';
       case ProductType.life:
         return 'Life';
+      case ProductType.general:
+        return 'General';
 
       case ProductType.cms:
         return 'Cms';

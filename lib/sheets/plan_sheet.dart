@@ -45,8 +45,6 @@ void addPlanSheet(
               ),
               customButton("Add Plan", () {
                 // if (_addBrandKey.currentState?.validate() == true) {
-                updateStats("plans_count", provider.plans_count + 1);
-                updateCompanyPlans(companyId, "plans_count");
                 FirebaseFirestore.instance
                     .collection("Companies")
                     .doc(companyId)

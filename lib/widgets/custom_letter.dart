@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // class MyCustomWidget extends StatefulWidget {
@@ -46,7 +43,7 @@ class _AnimCardState extends State<AnimCard> {
         children: [
           AnimatedPadding(
             padding: EdgeInsets.only(top: padding, bottom: bottomPadding),
-            duration: Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 1000),
             curve: Curves.fastLinearToSlowEaseIn,
             child: Container(
               child: CardItem(
@@ -66,7 +63,7 @@ class _AnimCardState extends State<AnimCard> {
           Align(
             alignment: Alignment.centerRight,
             child: Container(
-              margin: EdgeInsets.only(right: 20, left: 20, top: 200),
+              margin: const EdgeInsets.only(right: 20, left: 20, top: 200),
               height: 180,
               decoration: BoxDecoration(
                 boxShadow: [
@@ -75,11 +72,12 @@ class _AnimCardState extends State<AnimCard> {
                 ],
                 color: Colors.grey.shade200.withOpacity(1.0),
                 borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(30)),
+                    const BorderRadius.vertical(bottom: Radius.circular(30)),
               ),
               child: Center(
                   child: Icon(Icons.favorite,
-                      color: Color(0xffFF6594).withOpacity(1.0), size: 70)),
+                      color: const Color(0xffFF6594).withOpacity(1.0),
+                      size: 70)),
             ),
           ),
         ],
@@ -102,20 +100,21 @@ class CardItem extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 25),
+        margin: const EdgeInsets.symmetric(horizontal: 25),
         height: 220,
         width: width,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-                color: Color(0xffFF6594).withOpacity(0.2), blurRadius: 25),
+                color: const Color(0xffFF6594).withOpacity(0.2),
+                blurRadius: 25),
           ],
           color: color.withOpacity(1.0),
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(30),
           ),
         ),
-        child: Padding(
+        child: const Padding(
           padding: EdgeInsets.all(15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

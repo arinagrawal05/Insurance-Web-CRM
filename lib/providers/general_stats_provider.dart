@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/const.dart';
-import 'package:hive/hive.dart';
 
 class ItemLabeling {
   int value1 = 0;
@@ -57,7 +51,7 @@ class GeneralStatsProvider extends GetxController {
           label4: 'redeemed');
     }
     Future.delayed(
-      Duration(seconds: 2),
+      const Duration(seconds: 2),
       () {
         calculatePolicyStatsFromHive();
       },

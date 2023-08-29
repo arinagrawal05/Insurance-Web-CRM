@@ -1,8 +1,11 @@
 import 'package:health_model/add_user.dart';
 import 'package:health_model/shared/exports.dart';
 import 'package:health_model/shared/statements.dart';
+import 'package:health_model/widgets/tiles/health_tile_widget.dart';
+import 'package:health_model/widgets/tiles/life_tile_widget.dart';
 
 import 'hive/hive_model/policy_models/life_model.dart';
+import 'widgets/tiles/fd_tile_widget.dart';
 
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {
@@ -163,9 +166,9 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                   .data!
                                   .type ==
                               EnumUtils.convertTypeToKey(ProductType.health)) {
-                            return policyTile(
-                                context,
-                                userProvider
+                            return HealthTile(
+                                context: context,
+                                model: userProvider
                                     .getPoliciesByUser(
                                         widget.model.userid)[index]
                                     .data as PolicyHiveModel);
@@ -174,16 +177,16 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                   .data!
                                   .type ==
                               EnumUtils.convertTypeToKey(ProductType.life)) {
-                            return lifeTile(
-                                context,
-                                userProvider
+                            return LifeTile(
+                                context: context,
+                                model: userProvider
                                     .getPoliciesByUser(
                                         widget.model.userid)[index]
                                     .data as LifeHiveModel);
                           } else {
-                            return fdTile(
-                                context,
-                                userProvider
+                            return FDTile(
+                                context: context,
+                                model: userProvider
                                     .getPoliciesByUser(
                                         widget.model.userid)[index]
                                     .data as FdHiveModel);

@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
+import 'package:health_model/shared/exports.dart';
 
 part 'user_hive_model.g.dart';
 
