@@ -1,4 +1,5 @@
-import 'package:health_model/providers/general_provider.dart';
+import 'package:health_model/providers/motor_provider.dart';
+import 'package:health_model/splash.dart';
 
 import '../../shared/exports.dart';
 
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
               create: (context) => LifeProvider(),
             ),
             ChangeNotifierProvider(
-              create: (context) => GeneralProvider(),
+              create: (context) => MotorProvider(),
             ),
           ],
           builder: (context, _) {
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
               themeMode: themeProvider.themeMode,
               theme: MyThemes.lightTheme,
               darkTheme: MyThemes.darkTheme,
-              home: HomePage(),
+              home: Splashscreen(),
               debugShowCheckedModeBanner: false,
             );
           });

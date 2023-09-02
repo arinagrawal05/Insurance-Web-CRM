@@ -24,6 +24,8 @@ class CommissionSearchController extends GetxController {
       commissionBox = CommissionHiveHelper.healthCommissionBox;
     } else if (type == ProductType.life) {
       commissionBox = CommissionHiveHelper.lifeCommissionBox;
+    } else if (type == ProductType.motor) {
+      commissionBox = CommissionHiveHelper.motorCommissionBox;
     } else {
       commissionBox = CommissionHiveHelper.fDCommissionBox;
     }
@@ -31,6 +33,22 @@ class CommissionSearchController extends GetxController {
     commissions.addAll(commissionBox!.values.toList());
     getCompanies();
     super.onInit();
+  }
+
+  reset() {
+    print('Calling CommissionSearchController reset function for $type');
+    if (type == ProductType.health) {
+      commissionBox = CommissionHiveHelper.healthCommissionBox;
+    } else if (type == ProductType.life) {
+      commissionBox = CommissionHiveHelper.lifeCommissionBox;
+    } else if (type == ProductType.motor) {
+      commissionBox = CommissionHiveHelper.motorCommissionBox;
+    } else {
+      commissionBox = CommissionHiveHelper.fDCommissionBox;
+    }
+    commissions.addAll(commissionBox!.values.toList());
+    filterCommissions();
+    update();
   }
 
   void filterCommissions() {

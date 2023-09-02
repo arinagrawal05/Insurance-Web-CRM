@@ -22,7 +22,7 @@ class TransactionHeaders {
         heading("S. No", 18),
         heading("Fd No", 18),
         heading("Invested Date", 18),
-        heading("Maturaty Date", 18),
+        heading("Maturity Date", 18),
         heading("Investment", 18),
         heading("Maturated Amt", 18),
       ],
@@ -35,6 +35,20 @@ class TransactionHeaders {
       children: [
         heading("S. No", 18),
         heading("Life No", 18),
+        heading("Due Date", 18),
+        heading("Depo. Date", 18),
+        heading("Premium", 18),
+        heading("paid Term", 18),
+      ],
+    );
+  }
+
+  static Widget motorTransactionHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        heading("S. No", 18),
+        heading("General No", 18),
         heading("From", 18),
         heading("To", 18),
         heading("Premium", 18),

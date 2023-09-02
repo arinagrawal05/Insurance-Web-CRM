@@ -1,12 +1,20 @@
-enum ProductType { health, fd, life, general, cms }
+enum ProductType { health, fd, life, motor, cms }
 
 enum LifeStatus { allStatus, enforced, lapsed, paid, matured }
+
+enum MotorStatus {
+  allStatus,
+  active,
+  nonActive,
+}
 
 enum HealthStatus { allStatus, active, ported, lapsed }
 
 enum FDStatus { allStatus, applied, inHand, handover, redeemed }
 
-enum Payterm { quarterly, halfYearly, yearly }
+enum LifePayterm { monthly, quarterly, halfYearly, yearly }
+
+enum VehicleType { two, four }
 
 class EnumUtils {
   static String convertTypeToKey(ProductType type) {
@@ -17,8 +25,8 @@ class EnumUtils {
         return 'FD';
       case ProductType.life:
         return 'Life';
-      case ProductType.general:
-        return 'General';
+      case ProductType.motor:
+        return 'Motor';
 
       case ProductType.cms:
         return 'Cms';
@@ -102,16 +110,38 @@ class EnumUtils {
     }
   }
 
-  static Payterm convertNameToPayterm(String payterm) {
+  static String convertMotorStatusToName(MotorStatus status) {
+    switch (status) {
+      case MotorStatus.allStatus:
+        return 'All Status';
+      default:
+        return status.name;
+    }
+  }
+
+  static MotorStatus convertNameToMotorStatus(String status) {
+    switch (status) {
+      case "All Status":
+        return MotorStatus.allStatus;
+      case "active":
+        return MotorStatus.active;
+      case "nonActive":
+        return MotorStatus.nonActive;
+      default:
+        return MotorStatus.allStatus;
+    }
+  }
+
+  static LifePayterm convertNameToPayterm(String payterm) {
     switch (payterm) {
       case "quarterly":
-        return Payterm.quarterly;
+        return LifePayterm.quarterly;
       case "halfYearly":
-        return Payterm.halfYearly;
+        return LifePayterm.halfYearly;
       case "yearly":
-        return Payterm.yearly;
+        return LifePayterm.yearly;
       default:
-        return Payterm.quarterly;
+        return LifePayterm.quarterly;
     }
   }
 }

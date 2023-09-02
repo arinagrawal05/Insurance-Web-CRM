@@ -1,4 +1,3 @@
-import 'package:health_model/login.dart';
 import 'package:health_model/shared/exports.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -26,7 +25,7 @@ class SettingsPage extends StatelessWidget {
             children: [
               heading("Backup User", 20),
               customButton("Download Excel", () {
-                downloadClientsExcel();
+                ExcelFunctions.downloadClientsExcel();
               }, context, isExpanded: false)
             ],
           ),
@@ -35,17 +34,34 @@ class SettingsPage extends StatelessWidget {
             children: [
               heading("Backup Policies", 20),
               customButton("Download Excel", () {
-                downloadHealthExcel();
+                ExcelFunctions.downloadHealthExcel();
               }, context, isExpanded: false)
             ],
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               heading("Backup FDs", 20),
               customButton("Download Excel", () {
-                downloadFDExcel();
+                ExcelFunctions.downloadFDExcel();
+              }, context, isExpanded: false)
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              heading("Backup Lifes", 20),
+              customButton("Download Excel", () {
+                ExcelFunctions.downloadLifeExcel();
+              }, context, isExpanded: false)
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              heading("Backup Generals", 20),
+              customButton("Download Excel", () {
+                ExcelFunctions.downloadMotorExcel();
               }, context, isExpanded: false)
             ],
           ),
@@ -54,21 +70,21 @@ class SettingsPage extends StatelessWidget {
             children: [
               heading("Log Out", 20),
               customButton("Exit", () {
-                navigate(LoginPage(), context);
                 setLoginPref(false);
+
+                navigate(LoginPage(), context);
               }, context, isExpanded: false)
             ],
           ),
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     heading("Admin Settings", 20),
-          //     customButton("Open Settings", () {
-          //       adminDialog(context, "companyId", "planId");
-          //     }, context, isExpanded: false)
-          //   ],
-          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              heading("Admin Settings", 20),
+              customButton("Open Settings", () {
+                adminDialog(context, "companyId", "planId");
+              }, context, isExpanded: false)
+            ],
+          ),
         ]),
       ),
     );

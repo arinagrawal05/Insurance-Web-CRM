@@ -253,7 +253,7 @@ AppBar customAppbar(String title, BuildContext context) {
             const CircleAvatar(
               child: Icon(Ionicons.person),
             ),
-            heading("Bk Agrawal", 15)
+            heading(AppConsts.adminName, 15)
           ],
         ),
       )
@@ -295,7 +295,7 @@ Widget homepageAppbar(BuildContext context) {
             const CircleAvatar(
               child: Icon(Ionicons.person),
             ),
-            heading("Bk Agrawal", 15)
+            heading(AppConsts.adminName, 15)
           ],
         ),
       )

@@ -1,14 +1,17 @@
 import 'package:health_model/hive/hive_model/policy_models/generic_investment_data.dart';
+import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
 import 'package:health_model/shared/exports.dart';
 
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';
   static const String _fDBoxName = 'fDBox';
   static const String _lifeBoxName = 'lifeBox';
+  static const String _motorBoxName = 'motorBox';
 
   static late Box<PolicyDataHiveModel> policyBox;
   static late Box<PolicyDataHiveModel> fDBox;
   static late Box<PolicyDataHiveModel> lifeBox;
+  static late Box<PolicyDataHiveModel> motorBox;
 
   static Future<void> init() async {
     print("Hive initialized!!");
@@ -17,10 +20,12 @@ class PolicyHiveHelper {
     Hive.registerAdapter(PolicyHiveModelAdapter());
     Hive.registerAdapter(FdHiveModelAdapter());
     Hive.registerAdapter(LifeHiveModelAdapter());
+    Hive.registerAdapter(MotorHiveModelAdapter());
 
     policyBox = await Hive.openBox<PolicyDataHiveModel>(_policyBoxName);
     fDBox = await Hive.openBox<PolicyDataHiveModel>(_fDBoxName);
     lifeBox = await Hive.openBox<PolicyDataHiveModel>(_lifeBoxName);
+    motorBox = await Hive.openBox<PolicyDataHiveModel>(_motorBoxName);
 
     Get.put(
         GeneralStatsProvider(
@@ -37,6 +42,11 @@ class PolicyHiveHelper {
           type: ProductType.life,
         ),
         tag: 'statsFor${ProductType.life.name}');
+    Get.put(
+        GeneralStatsProvider(
+          type: ProductType.motor,
+        ),
+        tag: 'statsFor${ProductType.motor.name}');
     fetchPoliciesFromFirebase();
   }
 
@@ -44,6 +54,46 @@ class PolicyHiveHelper {
     fetchFDPoliciesFromFirebase();
     fetchHealthPoliciesFromFirebase();
     fetchLifePoliciesFromFirebase();
+    fetchMotorPoliciesFromFirebase();
+
+    // final userBox = Hive.box<UserHiveModel>(_userBoxName);
+  }
+
+  static Future<void> fetchMotorPoliciesFromFirebase() async {
+    final motorCollection = FirebaseFirestore.instance
+        .collection('Policies')
+        .where("type", isEqualTo: "Motor")
+        .orderBy("renewal_date");
+
+    motorCollection.get().then((snapshot) async {
+      // print("LLLLL Firebase data policy ${snapshot.docs.length}");
+      await motorBox.clear(); // Clear existing data before adding new users
+      print('Policy Hive cleared');
+      for (var doc in snapshot.docs) {
+        // print('Adding before');
+        // print(doc.id);
+        final life = PolicyDataHiveModel.fromFirestore(doc);
+        // userBox.add(user);
+        if (life.data != null) {
+          // policyBox.put(doc.id, policy);
+          motorBox.add(life);
+          // PolicyHiveModel kk = life.data as PolicyHiveModel;
+          // print(
+          //     "LLLLL Adding data policy in hive ${kk.name} ${kk.renewalDate}");
+
+          // print('Adding ${policy.data!.name}');
+        }
+      }
+      try {
+        PolicySearchController searchController =
+            Get.find<PolicySearchController>(tag: ProductType.motor.name);
+        if (searchController.initialized) {
+          searchController.reset();
+        }
+      } catch (e) {
+        print('Error caught by handler $e');
+      }
+    });
 
     // final userBox = Hive.box<UserHiveModel>(_userBoxName);
   }
@@ -207,9 +257,23 @@ class PolicyHiveHelper {
 
       return false;
     }).toList();
+    List<PolicyDataHiveModel>? motorPolicies;
+
+    motorPolicies = motorBox.values.where((policy) {
+      if (policy.data == null) {
+        return false;
+      }
+
+      if (policy.data!.userid == userId) {
+        return true;
+      }
+
+      return false;
+    }).toList();
 
     healthPolicies.addAll(fdPolicies);
     healthPolicies.addAll(lifePolicies);
+    healthPolicies.addAll(motorPolicies);
 
     return healthPolicies;
   }

@@ -1,4 +1,4 @@
-import 'package:health_model/providers/general_provider.dart';
+import 'package:health_model/providers/motor_provider.dart';
 import 'package:health_model/providers/life_provider.dart';
 
 import '../../shared/exports.dart';
@@ -15,8 +15,7 @@ class UserTile extends StatelessWidget {
     final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
     final fdProvider = Provider.of<FDProvider>(context, listen: false);
     final lifeProvider = Provider.of<LifeProvider>(context, listen: false);
-    final generalProvider =
-        Provider.of<GeneralProvider>(context, listen: false);
+    final generalProvider = Provider.of<MotorProvider>(context, listen: false);
 
     final dashProvider = Get.find<DashProvider>();
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -44,7 +43,7 @@ class UserTile extends StatelessWidget {
                     ChooseMember(
                         headName: model.name, headUserid: model.userid),
                     context);
-              } else if (dashProvider.currentDashBoard == ProductType.general) {
+              } else if (dashProvider.currentDashBoard == ProductType.motor) {
                 generalProvider.setHeadClient(model.userid, model.name,
                     model.email, model.address, model.phone);
                 navigate(

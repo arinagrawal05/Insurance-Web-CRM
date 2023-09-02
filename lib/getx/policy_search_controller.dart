@@ -1,6 +1,7 @@
 import 'package:health_model/shared/exports.dart';
 
 import '../hive/hive_model/policy_models/generic_investment_data.dart';
+import '../hive/hive_model/policy_models/motor_model.dart';
 
 class PolicySearchController extends GetxController {
   List<PolicyDataHiveModel> policies = <PolicyDataHiveModel>[];
@@ -13,6 +14,7 @@ class PolicySearchController extends GetxController {
   HealthStatus healthStatusFilter = HealthStatus.active;
   LifeStatus lifeStatusFilter = LifeStatus.allStatus;
   FDStatus fDStatusFilter = FDStatus.allStatus;
+  MotorStatus motorStatusFilter = MotorStatus.allStatus;
 
 // TextEDo
 
@@ -24,6 +26,8 @@ class PolicySearchController extends GetxController {
       policyBox = PolicyHiveHelper.policyBox;
     } else if (type == ProductType.life) {
       policyBox = PolicyHiveHelper.lifeBox;
+    } else if (type == ProductType.motor) {
+      policyBox = PolicyHiveHelper.motorBox;
     } else {
       policyBox = PolicyHiveHelper.fDBox;
     }
@@ -39,6 +43,8 @@ class PolicySearchController extends GetxController {
       policyBox = PolicyHiveHelper.policyBox;
     } else if (type == ProductType.life) {
       policyBox = PolicyHiveHelper.lifeBox;
+    } else if (type == ProductType.motor) {
+      policyBox = PolicyHiveHelper.motorBox;
     } else {
       policyBox = PolicyHiveHelper.fDBox;
     }
@@ -62,7 +68,8 @@ class PolicySearchController extends GetxController {
 
       if (!((type == ProductType.health && policy.data is PolicyHiveModel) ||
           (type == ProductType.fd && policy.data is FdHiveModel) ||
-          (type == ProductType.life && policy.data is LifeHiveModel))) {
+          (type == ProductType.life && policy.data is LifeHiveModel) ||
+          (type == ProductType.motor && policy.data is MotorHiveModel))) {
         // print(
         //     ' case 1a ${(type == ProductType.health && policy.data is PolicyHiveModel)} $type');
         // print(
@@ -125,6 +132,13 @@ class PolicySearchController extends GetxController {
         return true;
       }
     }
+    if (type == ProductType.motor) {
+      MotorHiveModel motor = data as MotorHiveModel;
+      if (motor.motorStatus == motorStatusFilter.name ||
+          motorStatusFilter == MotorStatus.allStatus) {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -138,6 +152,8 @@ class PolicySearchController extends GetxController {
       healthStatusFilter = EnumUtils.convertNameToHealthStatus(status);
     } else if (type == ProductType.life) {
       lifeStatusFilter = EnumUtils.convertNameToLifeStatus(status);
+    } else if (type == ProductType.motor) {
+      motorStatusFilter = EnumUtils.convertNameToMotorStatus(status);
     } else if (type == ProductType.fd) {
       fDStatusFilter = EnumUtils.convertNameToFdStatus(status);
     }

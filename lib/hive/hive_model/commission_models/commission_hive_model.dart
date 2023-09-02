@@ -71,17 +71,17 @@ class CommissionHiveModel extends HiveObject {
     dynamic map = doc.data();
 
     return CommissionHiveModel(
-      name: map['name'],
-      policyID: map['policy_id'],
-      issuedDate: map['issued_date'].toDate(),
-      policyNo: map['policy_no'],
-      isPending: map['isPending'],
-      premiumAmt: map['premium_amt'],
-      commissionDate: map['commission_date'].toDate(),
-      commissionAmt: map['commission_amt'],
-      companyName: map['company_name'],
-      commissionId: map['commission_id'],
-      commissionType: map['commission_type'],
+      name: map['name'] ?? "NA",
+      policyID: map['policy_id'] ?? "NA",
+      issuedDate: map['issued_date'].toDate() ?? DateTime.now(),
+      policyNo: map['policy_no'] ?? "NA",
+      isPending: map['isPending'] ?? false,
+      premiumAmt: map['premium_amt'] ?? 0,
+      commissionDate: map['commission_date'].toDate() ?? DateTime.now(),
+      commissionAmt: map['commission_amt'] ?? 0,
+      companyName: map['company_name'] ?? "NA",
+      commissionId: map['commission_id'] ?? "NA",
+      commissionType: map['commission_type'] ?? "NA",
     );
   }
 }

@@ -1,4 +1,6 @@
-import 'package:health_model/providers/general_provider.dart';
+import 'package:health_model/pages/motor_module/enter_motor.dart';
+import 'package:health_model/pages/motor_module/enter_vehicle.dart';
+import 'package:health_model/providers/motor_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
 import 'package:health_model/pages/fd_module/renew_fd.dart';
@@ -58,7 +60,7 @@ Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
   final provider = Provider.of<UserProvider>(context, listen: true);
   final fdProvider = Provider.of<FDProvider>(context, listen: true);
   final lifeProvider = Provider.of<LifeProvider>(context, listen: true);
-  final generalProvider = Provider.of<GeneralProvider>(context, listen: true);
+  final motorProvider = Provider.of<MotorProvider>(context, listen: true);
   final dashProvider = Get.find<DashProvider>();
 
   return InkWell(
@@ -68,8 +70,8 @@ Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
               lifeProvider.setMemberClient(model.userid, model.name,
                   model.relation, model.dob, model.isMale);
               navigate(ChooseCompany(), context);
-            } else if (dashProvider.currentDashBoard == ProductType.general) {
-              generalProvider.setMemberClient(model.userid, model.name,
+            } else if (dashProvider.currentDashBoard == ProductType.motor) {
+              motorProvider.setMemberClient(model.userid, model.name,
                   model.relation, model.dob, model.isMale);
               navigate(ChooseCompany(), context);
             } else {
@@ -292,7 +294,7 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
   final policyProvider = Provider.of<PolicyProvider>(context, listen: false);
   final fdprovider = Provider.of<FDProvider>(context, listen: false);
   final lifeProvider = Provider.of<LifeProvider>(context, listen: false);
-  final generalProvider = Provider.of<GeneralProvider>(context, listen: false);
+  final motorProvider = Provider.of<MotorProvider>(context, listen: false);
 
   // final dashProvider = Provider.of<DashProvider>(context, listen: false);
 
@@ -319,11 +321,11 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                       companyName: model.name, companyId: model.companyID),
                   context);
             } else if (dashName ==
-                EnumUtils.convertTypeToKey(ProductType.general)) {
-              generalProvider.setCompany(
+                EnumUtils.convertTypeToKey(ProductType.motor)) {
+              motorProvider.setCompany(
                   model.name, model.companyID, model.companyImg);
 
-              navigate(ChooseExisting(), context);
+              navigate(EntervehiclesDetails(), context);
             } else {
               fdprovider.setCompany(
                   model.name, model.companyID, model.companyImg);
@@ -776,7 +778,7 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   String type = "Health";
   if (model.terms >= 6) {
     type = "FD";
-  } else if (model.membersCount == index && model.terms >= 3) {
+  } else if (model.membersCount == index && model.terms >= 1) {
     type = "Life";
   }
 

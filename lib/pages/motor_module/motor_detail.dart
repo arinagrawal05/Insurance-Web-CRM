@@ -1,9 +1,12 @@
+import 'package:health_model/pages/motor_module/enter_motor.dart';
 import 'package:health_model/shared/exports.dart';
 
+import '../../hive/hive_model/policy_models/motor_model.dart';
+
 // ignore: must_be_immutable
-class LifeDetailPage extends StatelessWidget {
-  LifeHiveModel model;
-  LifeDetailPage({required this.model});
+class MotorDetailPage extends StatelessWidget {
+  MotorHiveModel model;
+  MotorDetailPage({required this.model});
   late TooltipBehavior tooltip = TooltipBehavior();
 
   @override
@@ -20,15 +23,15 @@ class LifeDetailPage extends StatelessWidget {
             // model.maturityDate.isAfter(DateTime.now())
             //     ? model.lifeStatus == "applied"
             //         ?
-            customButton("Renew", () {
-              showRenewLifeDialog(model);
+            customButton("Renew Motor", () {
+              // showRenewLifeDialog(model);
               // Get.snackbar(
               //   "hello",
               //   "this is message",
               //   snackPosition: SnackPosition.BOTTOM,
               // );
               // print("object");
-              // navigate(RenewPolicyPage(model: model),
+              navigate(EnterMotorDetails(motorID: model.motorID), context);
               // context);
             }, context, isExpanded: false)
             // :
@@ -112,10 +115,10 @@ class LifeDetailPage extends StatelessWidget {
             ,
             customDeleteButton(Ionicons.trash_outline, Colors.red.shade500,
                 () async {
-              genericConfirmSheet(context, Statements.removeLife, "Life", () {
+              genericConfirmSheet(context, Statements.removeMotor, "Motor", () {
                 FirebaseFirestore.instance
                     .collection("Policies")
-                    .doc(model.lifeID)
+                    .doc(model.motorID)
                     .delete()
                     .then((value) {
                   PolicyHiveHelper.fetchLifePoliciesFromFirebase();
@@ -162,7 +165,7 @@ class LifeDetailPage extends StatelessWidget {
                         heading(model.name, 22),
                       ],
                     ),
-                    heading1("${model.headName}'s member", 15),
+                    heading1("${model.name}'s member", 15),
                     const Divider(
                       endIndent: 20,
                       indent: 20,
@@ -204,9 +207,9 @@ class LifeDetailPage extends StatelessWidget {
                             GestureDetector(
                                 onLongPress: () {
                                   AppUtils.showSnackMessage(
-                                      model.lifeID, "This is Life Id");
+                                      model.motorID, "This is Motor Id");
                                 },
-                                child: heading("About Policy", 18)),
+                                child: heading("About General", 18)),
                             Container()
                           ],
                         ),
@@ -218,16 +221,16 @@ class LifeDetailPage extends StatelessWidget {
                             flex: 5,
                             child: Column(
                               children: [
-                                Container(
-                                  padding: const EdgeInsets.all(9),
-                                  decoration: dashBoxDex(context),
-                                  child: companyShowcase(context,
-                                      imgUrl: model.companyLogo,
-                                      leadingText:
-                                          "${model.timesPaid} Premium Paid",
-                                      title: model.companyName,
-                                      subtitle: model.planName),
-                                ),
+                                // Container(
+                                //   padding: const EdgeInsets.all(9),
+                                //   decoration: dashBoxDex(context),
+                                //   child: companyShowcase(context,
+                                //       imgUrl: model.companyLogo,
+                                //       leadingText:
+                                //           "${model.timesPaid} Premium Done",
+                                //       title: model.companyName,
+                                //       subtitle: model.planName),
+                                // ),
                                 const SizedBox(
                                   height: 8,
                                 ),
@@ -245,7 +248,7 @@ class LifeDetailPage extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           productTileText(
-                                            "Policy No: ${model.lifeNo}",
+                                            "Motor No: ${model.motorNo}",
                                             22,
                                           ),
                                           // Text(
@@ -259,8 +262,8 @@ class LifeDetailPage extends StatelessWidget {
                                             children: [
                                               GestureDetector(
                                                   onTap: () {
-                                                    launchURL(
-                                                        "https://wa.me/${model.phone}?text=${lifeRenewalDraftMsg(model)}");
+                                                    // launchURL(
+                                                    // "https://wa.me/${model.phone}?text=${fDRenewalDraftMsg(model)}");
                                                   },
                                                   child: Icon(
                                                     Ionicons.logo_whatsapp,
@@ -285,14 +288,26 @@ class LifeDetailPage extends StatelessWidget {
                                           )
                                         ],
                                       ),
+                                      productTileText(
+                                        "Premium: ${model.premiumAmt}",
+                                        22,
+                                      ),
+                                      productTileText(
+                                        "initial Date: ${dateTimetoText(model.initialDate)}",
+                                        22,
+                                      ),
+                                      productTileText(
+                                        "Renewal Date: ${dateTimetoText(model.renewalDate)}",
+                                        22,
+                                      ),
                                       Row(
                                         children: [
                                           productTileText(
-                                            "Sum Assured ",
+                                            "Amount ",
                                             22,
                                           ),
                                           Text(
-                                            "RS ${model.sumAssured.toString()}",
+                                            "RS ${AppUtils.formatAmount(model.sumAssured)}",
                                             style: GoogleFonts.nunito(
                                                 fontSize: 22,
                                                 color: Colors.green.shade300,
@@ -300,17 +315,14 @@ class LifeDetailPage extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      productTileText(
-                                        "Premuim Amt: ${AppUtils.formatAmount(model.premuimAmt)}",
-                                        22,
-                                      ),
                                       Container(
                                           padding: const EdgeInsets.all(12),
                                           child: Row(
                                             children: [
-                                              const Icon(
-                                                Ionicons
-                                                    .information_circle_outline,
+                                              Icon(
+                                                model.vType == "four"
+                                                    ? Ionicons.car_outline
+                                                    : Ionicons.bicycle_outline,
                                                 size: 45,
                                               ),
                                               const SizedBox(
@@ -322,10 +334,10 @@ class LifeDetailPage extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     heading(
-                                                        "Mśode: ${model.payterm}",
+                                                        "Vehicle is ${model.vCompanyName}'s ${model.vModel} ",
                                                         20),
                                                     heading1(
-                                                        "${AppUtils.formatAmount(model.premuimAmt)} Rs per ${getLifeTerm(EnumUtils.convertNameToPayterm(model.payterm))} months",
+                                                        "Registration no is${model.vRegistrationNo}",
                                                         16)
                                                     // heading(
                                                     //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",
@@ -356,24 +368,31 @@ class LifeDetailPage extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: heading("Policy Detail", 18),
+                                    child: heading("About Vehicle", 18),
                                   ),
-                                  userDetailShow(
-                                      "Commencement Date",
-                                      dateTimetoText(model.commitmentDate),
+                                  userDetailShow("Year of Make", model.vYOM,
                                       Ionicons.calendar),
-                                  userDetailShow(
-                                      "Renewal Date",
-                                      dateTimetoText(model.renewalDate),
-                                      Ionicons.calendar_number),
-                                  userDetailShow(
-                                      "payable Date",
-                                      dateTimetoText(model.payingTillDate),
-                                      Ionicons.calendar_clear),
-                                  userDetailShow(
-                                      "Maturity Date",
-                                      dateTimetoText(model.maturityDate),
-                                      Ionicons.calendar_outline),
+                                  userDetailShow("Vehicle CC", model.vCC,
+                                      Ionicons.timer_outline),
+                                  userDetailShow("Vehicle Chesis",
+                                      model.vChesis, Ionicons.flame_outline),
+                                  userDetailShow("Vehicle Engine",
+                                      model.vEngine, Ionicons.flash_outline),
+                                  userDetailShow("Vehicle Make", model.vMake,
+                                      Ionicons.speedometer_outline),
+
+                                  // userDetailShow(
+                                  //     "Renewal Date",
+                                  //     dateTimetoText(model.renewalDate),
+                                  //     Ionicons.calendar_number),
+                                  // userDetailShow(
+                                  //     "payable Date",
+                                  //     dateTimetoText(model.payingTillDate),
+                                  //     Ionicons.calendar_clear),
+                                  // userDetailShow(
+                                  //     "Maturity Date",
+                                  //     dateTimetoText(model.maturityDate),
+                                  //     Ionicons.calendar_outline),
                                 ],
                               ),
                             ),
@@ -405,11 +424,11 @@ class LifeDetailPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TransactionHeaders.lifeTransactionHeader(),
+                              TransactionHeaders.motorTransactionHeader(),
                               // model.inceptionDate == model.issuedDate
                               //     ? Container()
                               //     : inceptionWidget(model.inceptionDate, context),
-                              streamTransactions("policy_id", model.lifeID),
+                              streamTransactions("policy_id", model.motorID),
                               // model.fdStatus == "applied"
                               //     ? Container()
                               //     : statusFooter(model.fdStatus,

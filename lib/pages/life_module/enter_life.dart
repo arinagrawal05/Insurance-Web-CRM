@@ -1,5 +1,3 @@
-import 'package:health_model/providers/life_provider.dart';
-
 import '../../../../shared/exports.dart';
 
 // ignore: must_be_immutable
@@ -38,7 +36,7 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                chooseHeader("Fill Life Details", 5),
+                chooseHeader("Policy Details", 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -63,8 +61,8 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: formTextField(
                         controller.issuedDate,
-                        "Commitment Date:DD/MM/YYYY",
-                        "Enter Commitment Date",
+                        "Commencement Date:DD/MM/YYYY",
+                        "Enter Commencement Date",
                         FieldRegex.dateRegExp,
                       ),
                     ),
@@ -131,34 +129,42 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                                 children: [
                                   PaytermToggle(
                                       controller: controller,
-                                      value: Payterm.quarterly),
+                                      value: LifePayterm.monthly),
+                                  heading("Monthly", 20),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              Row(
+                                children: [
+                                  PaytermToggle(
+                                      controller: controller,
+                                      value: LifePayterm.quarterly),
                                   heading("Quarterly", 20),
                                 ],
                               ),
                               const SizedBox(
-                                width: 50,
+                                width: 30,
                               ),
                               Row(
                                 children: [
                                   PaytermToggle(
                                       controller: controller,
-                                      value: Payterm.halfYearly),
+                                      value: LifePayterm.halfYearly),
                                   heading("Half Yearly", 20),
                                 ],
                               ),
                               const SizedBox(
-                                width: 50,
+                                width: 30,
                               ),
                               Row(
                                 children: [
                                   PaytermToggle(
                                       controller: controller,
-                                      value: Payterm.yearly),
+                                      value: LifePayterm.yearly),
                                   heading("Yearly", 20),
                                 ],
-                              ),
-                              const SizedBox(
-                                width: 50,
                               ),
                             ],
                           ),
@@ -172,37 +178,12 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                   child: Row(
                     children: [
                       Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buttonText("Select Paid Terms", 14,
-                                color: Colors.black),
-                            genericPicker(
-                                radius: 10,
-                                prefixIcon: Ionicons.hourglass_outline,
-                                height: 70,
-                                width: MediaQuery.of(context).size.width,
-                                controller.termList,
-                                controller.paidTermSelected,
-                                "Choose Paid Terms", (value) {
-                              controller.selectPaidTerm(value);
-                            }, context),
-                            buttonText(
-                                "Your last Renewal will be paid on ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.paidTermSelected)) * 365)))}",
-                                14,
-                                color: Colors.greenAccent),
-                          ],
-                        ),
-                      )),
-                      Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              buttonText("Select Matured Terms", 14,
+                              buttonText("Select Policy Terms", 14,
                                   color: Colors.black),
                               genericPicker(
                                   radius: 10,
@@ -211,17 +192,42 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                                   width: MediaQuery.of(context).size.width,
                                   controller.termList,
                                   controller.maturedTermSelected,
-                                  "Choose Matured Terms", (value) {
+                                  "Choose Policy Terms", (value) {
                                 controller.selectMaturedterm(value);
                               }, context),
                               buttonText(
-                                  "Your policy will be matured on ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.maturedTermSelected)) * 365)))}",
+                                  "Maturity Date: ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.maturedTermSelected)) * 365)))}",
                                   14,
                                   color: Colors.redAccent),
                             ],
                           ),
                         ),
                       ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buttonText("Select Premium Paying Terms", 14,
+                                color: Colors.black),
+                            genericPicker(
+                                radius: 10,
+                                prefixIcon: Ionicons.hourglass_outline,
+                                height: 70,
+                                width: MediaQuery.of(context).size.width,
+                                controller.termList,
+                                controller.paidTermSelected,
+                                "Choose Premium Paying Terms", (value) {
+                              controller.selectPaidTerm(value);
+                            }, context),
+                            buttonText(
+                                "Last Renewal Date: ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.paidTermSelected)) * 365)))}",
+                                14,
+                                color: Colors.greenAccent),
+                          ],
+                        ),
+                      )),
                     ],
                   ),
                 ),
@@ -306,12 +312,12 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
 
 class PaytermToggle extends StatelessWidget {
   LifeProvider controller;
-  Payterm value;
+  LifePayterm value;
   PaytermToggle({super.key, required this.controller, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Radio<Payterm>(
+    return Radio<LifePayterm>(
         activeColor: primaryColor,
         value: value,
         groupValue: controller.payterm,

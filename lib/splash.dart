@@ -39,7 +39,7 @@ class _SplashscreenState extends State<Splashscreen>
     if (mounted) {
       setState(() {
         islogged = prefs.getBool("isLogged") ?? false;
-        theme = prefs.getString("ThemeSettings")!;
+        theme = prefs.getString("ThemeSettings") ?? "dark";
       });
     }
     if (theme == null || theme == "light") {

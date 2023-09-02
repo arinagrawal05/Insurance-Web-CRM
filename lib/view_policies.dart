@@ -1,5 +1,7 @@
 import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
+import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
 import 'package:health_model/widgets/tiles/health_tile_widget.dart';
+import 'package:health_model/widgets/tiles/motor_tile_widget.dart';
 
 import 'hive/hive_model/policy_models/generic_investment_data.dart';
 
@@ -135,7 +137,14 @@ class _PoliciesPageState extends State<PoliciesPage> {
                                   return LifeTile(
                                       context: context, model: lifeModel);
                                 } else {
-                                  return Container();
+                                  if (currentModel is MotorHiveModel) {
+                                    MotorHiveModel motorModel = currentModel;
+
+                                    return MotorTile(
+                                        context: context, model: motorModel);
+                                  } else {
+                                    return Container();
+                                  }
                                 }
                               }
                             }

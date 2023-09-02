@@ -1,3 +1,4 @@
+import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
 import 'package:health_model/shared/exports.dart';
 
 class ItemLabeling {
@@ -49,7 +50,11 @@ class GeneralStatsProvider extends GetxController {
           label2: 'inHand',
           label3: 'handover',
           label4: 'redeemed');
+    } else if (type == ProductType.motor) {
+      labels = ItemLabeling(
+          label1: 'active', label2: 'nonActive', label3: '_', label4: '_');
     }
+
     Future.delayed(
       const Duration(seconds: 2),
       () {
@@ -62,6 +67,8 @@ class GeneralStatsProvider extends GetxController {
       policyBox = PolicyHiveHelper.policyBox;
     } else if (type == ProductType.life) {
       policyBox = PolicyHiveHelper.lifeBox;
+    } else if (type == ProductType.motor) {
+      policyBox = PolicyHiveHelper.motorBox;
     } else {
       policyBox = PolicyHiveHelper.fDBox;
     }
@@ -119,6 +126,11 @@ class GeneralStatsProvider extends GetxController {
               element.data is LifeHiveModel) {
             var s = element.data as LifeHiveModel;
             amount = s.premuimAmt;
+            policyCount += 1;
+          } else if (type == ProductType.motor &&
+              element.data is MotorHiveModel) {
+            var s = element.data as MotorHiveModel;
+            amount = s.premiumAmt;
             policyCount += 1;
           }
           if (companyBusiness.containsKey(element.data!.companyName)) {
@@ -213,10 +225,25 @@ class GeneralStatsProvider extends GetxController {
               labels!.value1 += 1;
             case 'inHand':
               labels!.value2 += 1;
+
             case 'handover':
               labels!.value3 += 1;
             case 'redeemed':
               labels!.value4 += 1;
+              break;
+            default:
+          }
+        }
+      } else if (type == ProductType.motor) {
+        // print("take 4");
+
+        if (policy.data is MotorHiveModel) {
+          MotorHiveModel data = policy.data as MotorHiveModel;
+          switch (data.motorStatus) {
+            case 'active':
+              labels!.value1 += 1;
+            case 'nonActive':
+              labels!.value2 += 1;
 
               break;
             default:

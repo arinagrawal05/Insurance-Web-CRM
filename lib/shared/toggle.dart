@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:health_model/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'functions.dart';
+
 class ChangeThemeButtonWidget extends StatelessWidget {
   const ChangeThemeButtonWidget({super.key});
   @override
@@ -14,6 +16,7 @@ class ChangeThemeButtonWidget extends StatelessWidget {
       onChanged: (value) {
         final provider = Provider.of<ThemeProvider>(context, listen: false);
         provider.toggleTheme(value);
+        setThemePref(themeProvider.themeMode);
       },
     );
   }

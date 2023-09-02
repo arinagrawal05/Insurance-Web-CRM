@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/homepage.dart';
 import 'package:health_model/shared/regex.dart';
@@ -12,8 +13,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final email = TextEditingController();
-  final password = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    check();
+  }
+
+  String password = "";
+  String username = "";
+
+  check() {
+    FirebaseFirestore.instance
+        .collection("Statistics")
+        .doc("KdMlwAoBwwkdREqX3hIe")
+        .get()
+        .then((value) {
+      setState(() {
+        password = value["password"];
+        username = value["username"];
+      });
+    });
+  }
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   final _loginKey = GlobalKey<FormState>();
 
@@ -29,19 +53,28 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               // Column(children: [Text("Some dta")],)
               formTextField(
-                email,
+                emailController,
                 "Email",
                 "Enter Email",
                 FieldRegex.nameRegExp,
               ),
-              formTextField(password, "Password", "Enter Password",
+              formTextField(passwordController, "Password", "Enter Password",
                   FieldRegex.phoneRegExp,
                   kType: TextInputType.visiblePassword),
               customButton("Login", () async {
                 if (_loginKey.currentState?.validate() == true) {
-                  AppUtils.showSnackMessage("title", "subtitle");
-                  navigate(HomePage(), context);
-                  setLoginPref(true);
+                  print("object");
+                  print(username);
+                  print(password);
+                  // AppUtils.showSnackMessage("title", "subtitle");
+                  if (emailController.text == username &&
+                      passwordController.text == password) {
+                    navigate(HomePage(), context);
+                    setLoginPref(true);
+                  } else {
+                    AppUtils.showSnackMessage("Invalid Credentials",
+                        "Your email or password might be wrong");
+                  }
                 }
               }, context),
             ],

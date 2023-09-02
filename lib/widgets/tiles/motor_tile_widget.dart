@@ -1,22 +1,27 @@
+import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
+import 'package:health_model/pages/motor_module/motor_detail.dart';
+import 'package:health_model/providers/life_provider.dart';
+
+import '../../hive/hive_model/policy_models/motor_model.dart';
 import '../../pages/life_module/life_detail.dart';
 import '../../shared/exports.dart';
-// import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart' as timeago;
 
 // ignore: must_be_immutable
-class LifeTile extends StatelessWidget {
+class MotorTile extends StatelessWidget {
   BuildContext context;
-  LifeHiveModel model;
-  LifeTile({super.key, required this.model, required this.context});
+  MotorHiveModel model;
+  MotorTile({super.key, required this.model, required this.context});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onLongPress: () {
-        AppUtils.showSnackMessage(model.lifeNo, "This is Life Id");
+        AppUtils.showSnackMessage(model.motorNo, "This is Motor Id");
       },
       onTap: () {
         navigate(
-          LifeDetailPage(model: model),
+          MotorDetailPage(model: model),
           context,
         );
         // addMemberSheet(context, widget.userid, docId);
@@ -47,7 +52,7 @@ class LifeTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           heading(model.name, 16),
-                          productTileText(model.lifeNo, 14),
+                          productTileText(model.motorNo, 14),
                         ],
                       ),
                     ],
@@ -63,36 +68,31 @@ class LifeTile extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    heading("P/Mode", 16),
-                    productTileText(model.payterm.toString(), 14),
+                    heading("Registration no.", 16),
+                    productTileText(model.vRegistrationNo.toString(), 14),
                   ],
                 ),
                 Column(
                   children: [
                     heading("Premium", 16),
-                    productTileText(
-                        "${AppUtils.formatAmount(
-                          addLifeWithGST(model.premuimAmt,
-                              isFirst: model.timesPaid == 1 ? true : false),
-                        )} Rs",
-                        14),
+                    productTileText("${model.premiumAmt} Rs", 14),
                   ],
                 ),
                 Column(
                   children: [
-                    heading("Renewal Date", 16),
+                    heading("Expiry Date", 16),
                     productTileText(dateTimetoText(model.renewalDate), 14),
                   ],
                 ),
                 Column(
                   children: [
                     heading("Status", 16),
-                    productTileText(model.lifeStatus.toString(), 14),
+                    productTileText(model.motorStatus.toString(), 14),
                   ],
                 ),
-                customButton("View Policy", () async {
+                customButton("View Motor", () async {
                   navigate(
-                    LifeDetailPage(model: model),
+                    MotorDetailPage(model: model),
                     context,
                   );
                 }, context, isExpanded: false)

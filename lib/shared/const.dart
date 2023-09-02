@@ -1,9 +1,20 @@
 import 'package:health_model/shared/exports.dart';
 
+import '../hive/hive_model/policy_models/generic_investment_data.dart';
+
 class AppConsts {
+  static String careEmail1 = "arinagrawal07128@gmail.com";
+  static String careEmail2 = "ayushagr2000@gmail.com";
+  static String carePhone1 = "+91 7898291900";
+  static String carePhone2 = "+91 8319385853";
+  static String adminName = "Bk Agrawal";
+  static String adminPhone = "9425473737";
+  // static String health = "Health";
+
   static String health = "Health";
   static String fd = "FD";
   static String life = "Life";
+  static String motor = "Motor";
 
   static bool isProductionMode = true;
   static UserHiveModel userModel = UserHiveModel(
@@ -87,6 +98,23 @@ class AppConsts {
       payMode: "",
       timesPaid: 1,
       payterm: "Quarterly");
+  static GenericInvestmentHiveData generalData = GenericInvestmentHiveData(
+    name: "Arin Agrawal",
+    address: "Choubey Colony",
+    phone: "7898291900",
+    email: "arinagrawal07128@gmailcom",
+    userid: "06885b49-8870-40df-a27a-46326b409a10",
+    isMale: true,
+    dob: DateTime.now(),
+    bankDetails: "",
+    companyID: "",
+    companyLogo:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEvO1qCs7nfgPEIMYArSjk_RElJTF5QDvJJA&usqp=CAU",
+    companyName: "Niva Health Insurance",
+    type: "FD",
+    payMode: "",
+  );
+
   static List<String> healthPolicyStatusList = [
     "all status",
     "active",
@@ -107,6 +135,11 @@ class AppConsts {
     "handover",
     "redeemed",
   ];
+  static List<String> motorStatusList = [
+    "all status",
+    "active",
+    "nonActive",
+  ];
   static List<String> payModeList = [
     "Cheque",
     "Net banking",
@@ -116,9 +149,10 @@ class AppConsts {
   static List<String> getStatusList(ProductType type) {
     if (type == ProductType.health) {
       return healthPolicyStatusList;
-    }
-    if (type == ProductType.life) {
+    } else if (type == ProductType.life) {
       return lifePolicyStatusList;
+    } else if (type == ProductType.motor) {
+      return motorStatusList;
     } else {
       return fDStatusList;
     }

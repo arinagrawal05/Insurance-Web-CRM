@@ -9,7 +9,7 @@ import 'package:health_model/policy_flow/choose_user.dart';
 import 'package:health_model/pages/health_module/edit_policy.dart';
 import 'package:health_model/pages/health_module/renew_policy.dart';
 import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/shared/header.dart';
+import 'package:health_model/shared/transaction_headers.dart';
 import 'package:health_model/shared/statements.dart';
 import 'package:health_model/shared/streams.dart';
 import 'package:health_model/shared/style.dart';
@@ -33,7 +33,73 @@ class PolicyDetailPage extends StatelessWidget {
     final provider = Provider.of<PolicyProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: genericAppbar(),
+      appBar: genericAppbar(actions: [
+        model.policyStatus == "active"
+            ? Row(
+                children: [
+                  customButton("Renew", () {
+                    navigate(RenewPolicyPage(model: model), context);
+                  }, context, isExpanded: false),
+                  customButton("Port", () {
+                    provider.feedPort(
+                        model.companyName,
+                        model.policyNo,
+                        model.sumAssured.toString(),
+                        model.policyID,
+                        model.issuedDate);
+                    navigate(const ChooseUser(), context);
+                  }, context, isExpanded: false),
+                  customDeleteButton(
+                      Ionicons.trash_outline, Colors.red.shade500, () async {
+                    genericConfirmSheet(
+                        context, Statements.removeHealth, "Policy", () {
+                      FirebaseFirestore.instance
+                          .collection("Policies")
+                          .doc(model.policyID)
+                          .delete()
+                          .then((value) {
+                        PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
+
+                        Navigator.of(context);
+                        Navigator.of(context);
+                      });
+                    });
+                  }, context),
+                ],
+              )
+            : Row(
+                children: [
+                  customButton("Grant Renew", () {
+                    navigate(RenewPolicyPage(model: model), context);
+                  }, context, isExpanded: false),
+                  customButton("Edit", () {
+                    provider.selectpayMode(model.payMode);
+                    provider.chequeNo.text =
+                        bankDetailsConverter(model.bankDetails)[0];
+
+                    provider.bankName.text =
+                        bankDetailsConverter(model.bankDetails)[1];
+                    provider.bankDate.text =
+                        bankDetailsConverter(model.bankDetails)[2];
+
+                    // if (condition) {
+
+                    // }
+                    navigate(EditDetailsPage(model: model), context);
+                  }, context, isExpanded: false),
+                  customDeleteButton(
+                      Ionicons.trash_outline, Colors.red.shade500, () async {
+                    genericConfirmSheet(
+                        context, Statements.removeHealth, "Policy", () {
+                      FirebaseFirestore.instance
+                          .collection("Policies")
+                          .doc(model.policyID)
+                          .delete();
+                    });
+                  }, context),
+                ],
+              ),
+      ]),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -97,93 +163,12 @@ class PolicyDetailPage extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                              onLongPress: () {
-                                AppUtils.showSnackMessage(
-                                    model.policyID, "This is policyId");
-                              },
-                              child: heading("About Policy", 18)),
-                          model.policyStatus == "active"
-                              ? Row(
-                                  children: [
-                                    customButton("Renew", () {
-                                      navigate(RenewPolicyPage(model: model),
-                                          context);
-                                    }, context, isExpanded: false),
-                                    customButton("Port", () {
-                                      provider.feedPort(
-                                          model.companyName,
-                                          model.policyNo,
-                                          model.sumAssured.toString(),
-                                          model.policyID,
-                                          model.issuedDate);
-                                      navigate(const ChooseUser(), context);
-                                    }, context, isExpanded: false),
-                                    customDeleteButton(Ionicons.trash_outline,
-                                        Colors.red.shade500, () async {
-                                      genericConfirmSheet(
-                                          context,
-                                          Statements.removeHealth,
-                                          "Policy", () {
-                                        FirebaseFirestore.instance
-                                            .collection("Policies")
-                                            .doc(model.policyID)
-                                            .delete()
-                                            .then((value) {
-                                          PolicyHiveHelper
-                                              .fetchHealthPoliciesFromFirebase();
-
-                                          Navigator.of(context);
-                                          Navigator.of(context);
-                                        });
-                                      });
-                                    }, context),
-                                  ],
-                                )
-                              : Row(
-                                  children: [
-                                    customButton("Grant Renew", () {
-                                      navigate(RenewPolicyPage(model: model),
-                                          context);
-                                    }, context, isExpanded: false),
-                                    customButton("Edit", () {
-                                      provider.selectpayMode(model.payMode);
-                                      provider.chequeNo.text =
-                                          bankDetailsConverter(
-                                              model.bankDetails)[0];
-
-                                      provider.bankName.text =
-                                          bankDetailsConverter(
-                                              model.bankDetails)[1];
-                                      provider.bankDate.text =
-                                          bankDetailsConverter(
-                                              model.bankDetails)[2];
-
-                                      // if (condition) {
-
-                                      // }
-                                      navigate(EditDetailsPage(model: model),
-                                          context);
-                                    }, context, isExpanded: false),
-                                    customDeleteButton(Ionicons.trash_outline,
-                                        Colors.red.shade500, () async {
-                                      genericConfirmSheet(
-                                          context,
-                                          Statements.removeHealth,
-                                          "Policy", () {
-                                        FirebaseFirestore.instance
-                                            .collection("Policies")
-                                            .doc(model.policyID)
-                                            .delete();
-                                      });
-                                    }, context),
-                                  ],
-                                ),
-                        ],
-                      ),
+                      child: GestureDetector(
+                          onLongPress: () {
+                            AppUtils.showSnackMessage(
+                                model.policyID, "This is policyId");
+                          },
+                          child: heading("About Policy", 18)),
                     ),
                     Container(
                       width: double.infinity,

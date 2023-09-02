@@ -1,6 +1,8 @@
+import 'package:health_model/pages/privacy_policy.dart';
+
 import '../../../shared/exports.dart';
 
-Widget footerWidget() {
+Widget footerWidget(DashProvider provider, BuildContext context) {
   return Container(
     padding: EdgeInsets.all(40),
     color: Theme.of(Get.context!).dialogBackgroundColor,
@@ -10,7 +12,11 @@ Widget footerWidget() {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [aboutSection(), quickLinksSection(), contactSection()],
+          children: [
+            aboutSection(),
+            quickLinksSection(provider, context),
+            contactSection()
+          ],
         ),
         SizedBox(
           height: 50,
@@ -42,7 +48,7 @@ Widget aboutSection() {
   );
 }
 
-Widget quickLinksSection() {
+Widget quickLinksSection(DashProvider provider, BuildContext context) {
   return Container(
     width: 220,
     child: Column(
@@ -52,10 +58,21 @@ Widget quickLinksSection() {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: heading("Quick Links", 18),
         ),
-        link("Health", () {}),
-        link("FD", () {}),
-        link("Terms & Conditions", () {}),
-        link("Privacy Policies", () {}),
+        link("Health", () {
+          provider.navigateToProduct(ProductType.health, context);
+        }),
+        link("FD", () {
+          provider.navigateToProduct(ProductType.fd, context);
+        }),
+        link("General", () {
+          provider.navigateToProduct(ProductType.motor, context);
+        }),
+        link("Life", () {
+          provider.navigateToProduct(ProductType.life, context);
+        }),
+        link("Privacy Policy", () {
+          navigate(PrivacyPolicyPage(), context);
+        }),
         link("Refer a Friend", () {}),
         link("Rate Us", () {}),
         link("Contact", () {}),
@@ -96,8 +113,8 @@ Widget contactSection() {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heading1("+91 7898291900", 14),
-                heading1("+91 8319385853", 14),
+                heading1(AppConsts.carePhone1, 14),
+                heading1(AppConsts.carePhone2, 14),
               ],
             ),
           ],
@@ -119,8 +136,8 @@ Widget contactSection() {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heading1("ayushagr2000@gmail.com", 14),
-                heading1("arinagrawal07128@gmail.com", 14),
+                heading1(AppConsts.careEmail2, 14),
+                heading1(AppConsts.careEmail1, 14),
               ],
             ),
           ],
@@ -203,7 +220,7 @@ Widget perkWidget(DateTime? validityDate) {
         perkTile("Supports Dark theme"),
         perkTile("Pin secured Admin Panel"),
         perkTile("Full 24/7 Support"),
-        if (validityDate != null) premiumWidget(validityDate)
+        if (validityDate != DateTime.now()) premiumWidget(validityDate!)
       ],
     ),
   );
@@ -245,28 +262,41 @@ Widget premiumWidget(DateTime validityDate) {
                 color: Colors.white,
               ),
             ),
-            Text(
-              "Validity Till ${dateTimetoText(validityDate)}",
-              style: GoogleFonts.robotoSlab(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                decoration: TextDecoration.none,
-                color: Colors.white,
-              ),
-            ),
+            DateTime.now().difference(validityDate).inDays > 10
+                ? Text(
+                    "Validity Till ${dateTimetoText(validityDate)}",
+                    style: GoogleFonts.robotoSlab(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.none,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(
+                    "Your subscription will over in ${DateTime.now().difference(validityDate).inDays} days",
+                    style: GoogleFonts.robotoSlab(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.none,
+                      color: Colors.white,
+                    ),
+                  ),
           ],
         ),
-        const Opacity(
-          opacity: 0.5,
-          child: Icon(
-            Ionicons.checkmark_circle_outline,
-            fill: 0.3,
-            color: Colors.white,
-            grade: 4,
-            // opticalSize: 5,
-            size: 60,
-          ),
-        )
+        validityDate.isBefore(DateTime.now())
+            ? customButton("Contact Admin", () {}, Get.context!,
+                isExpanded: false)
+            : Opacity(
+                opacity: 0.5,
+                child: Icon(
+                  Ionicons.checkmark_circle_outline,
+                  fill: 0.3,
+                  color: Colors.white,
+                  grade: 4,
+                  // opticalSize: 5,
+                  size: 60,
+                ),
+              )
       ],
     ),
   );

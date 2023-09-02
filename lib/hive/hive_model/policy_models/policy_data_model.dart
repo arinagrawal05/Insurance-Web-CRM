@@ -1,3 +1,5 @@
+import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
+
 import 'generic_investment_data.dart';
 import 'package:health_model/shared/exports.dart';
 
@@ -17,6 +19,8 @@ class PolicyDataHiveModel extends HiveObject {
       return PolicyDataHiveModel(data: PolicyHiveModel.fromMap(map));
     } else if (map['type'] == AppConsts.life) {
       return PolicyDataHiveModel(data: LifeHiveModel.fromMap(map));
+    } else if (map['type'] == AppConsts.motor) {
+      return PolicyDataHiveModel(data: MotorHiveModel.fromMap(map));
     } else {
       return PolicyDataHiveModel(data: null);
     }

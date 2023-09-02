@@ -24,7 +24,7 @@ class LifeProvider extends ChangeNotifier {
   String planName = "";
   String planID = "";
   // String companyName = "";
-  Payterm payterm = Payterm.quarterly;
+  LifePayterm payterm = LifePayterm.quarterly;
   String payModeSelected = "Cheque";
   String paidTermSelected = "1 year";
   String maturedTermSelected = "1 year";
@@ -114,7 +114,7 @@ class LifeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void togglePayterm(Payterm isOn) {
+  void togglePayterm(LifePayterm isOn) {
     payterm = isOn;
     notifyListeners();
   }

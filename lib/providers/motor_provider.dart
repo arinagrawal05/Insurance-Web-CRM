@@ -1,8 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:health_model/pages/fd_module/renew_fd.dart';
 import 'package:health_model/shared/exports.dart';
 
-class GeneralProvider extends ChangeNotifier {
+class MotorProvider extends ChangeNotifier {
   String client_head_name = "";
   String client_member_name = "";
 
@@ -24,7 +25,7 @@ class GeneralProvider extends ChangeNotifier {
   String planName = "";
   String planID = "";
   // String companyName = "";
-  Payterm payterm = Payterm.quarterly;
+  VehicleType vehicleType = VehicleType.two;
   String payModeSelected = "Cheque";
   String paidTermSelected = "1 year";
   String maturedTermSelected = "1 year";
@@ -114,8 +115,8 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void togglePayterm(Payterm isOn) {
-    payterm = isOn;
+  void toggleVehicleType(VehicleType isOn) {
+    vehicleType = isOn;
     notifyListeners();
   }
 
@@ -173,56 +174,54 @@ class GeneralProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void performLifePolicyFunctions(
+  void performMotorPolicyFunctions(
     String docId,
   ) {
-    addLife(docId);
+    addMotor(docId);
 
-    print("take 1");
-    // if (AppConsts.isProductionMode) {
-    //   print("take 2");
-    //   updateCompanybussiness(int.parse(premiumAmt.text), companyID);
-    //   print("take 3");
-    //   updateCompanyPlans(companyID, "policy_count");
-    //   print("take 4");
-    addCommision(
-        client_member_name,
-        lifeNumber.text,
-        int.parse(premiumAmt.text),
-        textToDateTime(issuedDate.text),
-        AppUtils.getFirstWord(companyName),
-        0,
-        AppConsts.life);
-    print("take 5");
-    makeATransaction(
-        client_uid,
-        docId,
-        lifeNumber.text,
-        companyName,
-        textToDateTime(issuedDate.text),
-        getLifeTerm(payterm),
-        addLifeWithGST(int.parse(premiumAmt.text), isFirst: true),
-        1,
-        textToDateTime(issuedDate.text)
-            .add(Duration(days: getLifeTerm(payterm) * 30)),
-        AppConsts.life);
-    print("take 6");
-    // }
-    // clearFields();
-    print("take 0");
+    // print("take 1");
+    // // if (AppConsts.isProductionMode) {
+    // //   print("take 2");
+    // //   updateCompanybussiness(int.parse(premiumAmt.text), companyID);
+    // //   print("take 3");
+    // //   updateCompanyPlans(companyID, "policy_count");
+    // //   print("take 4");
+    // addCommision(
+    //     client_member_name,
+    //     lifeNumber.text,
+    //     int.parse(premiumAmt.text),
+    //     textToDateTime(issuedDate.text),
+    //     AppUtils.getFirstWord(companyName),
+    //     0,
+    //     AppConsts.life);
+    // print("take 5");
+    // makeATransaction(
+    //     client_uid,
+    //     docId,
+    //     lifeNumber.text,
+    //     companyName,
+    //     textToDateTime(issuedDate.text),
+    //     getLifeTerm(vehicleType),
+    //     addLifeWithGST(int.parse(premiumAmt.text), isFirst: true),
+    //     1,
+    //     textToDateTime(issuedDate.text)
+    //         .add(Duration(days: getLifeTerm(vehicleType) * 30)),
+    //     AppConsts.life);
+    // print("take 6");
+    // // }
+    // // clearFields();
+    // print("take 0");
     // clearPort();
   }
 
-  Future<void> addLife(String docId) async {
+  Future<void> addMotor(String docId) async {
     print("adding life");
     var body = {
       "company_logo": companyLogo,
       "company_name": companyName,
       "company_id": companyID,
-      "plan_id": planID,
-      "plan_name": planName,
-      "life_no": lifeNumber.text,
-      "life_id": docId,
+      "motor_no": vCompanyName.text,
+      "motor_id": docId,
       "head_uid": client_uid,
       "head_name": client_head_name,
       "name": client_member_name,
@@ -232,32 +231,30 @@ class GeneralProvider extends ChangeNotifier {
       "isMale": client_isMale,
       "phone": client_phone,
       "email": client_email,
-      "life_status": "enforced",
+      "motor_status": "active",
       "premium_amt": int.parse(premiumAmt.text),
-      "payterm": payterm.name,
-      "type": AppConsts.life,
-
-      "commitment_date": textToDateTime(initialDate.text),
-      "maturity_date": textToDateTime(initialDate.text).add(Duration(
-          days: 365 * int.parse(AppUtils.getFirstWord(maturedTermSelected)))),
-      "pay_till_date": textToDateTime(initialDate.text).add(Duration(
-          days: 365 * int.parse(AppUtils.getFirstWord(paidTermSelected)))),
-      "renewal_date":
-          textToDateTime(initialDate.text).add(getLifeDuration(payterm)),
-      "last_renewed_date": textToDateTime(initialDate.text),
-
+      "type": AppConsts.motor,
+      "initial_date": textToDateTime(issuedDate.text),
+      "renewal_date": textToDateTime(expiryDate.text).add(Duration(days: 365)),
       "nominee_name": nomineeName.text,
-      "nominee_relation": nomineeRelation.text,
       "nominee_dob": textToDateTime(nomineeDob.text),
       "sum_assured": int.parse(sumAssured.text),
       // "fd_taken_date": Timestamp.now(),
       // "fd_given_date": Timestamp.now(),
+      "v_company_name": vCompanyName.text,
+      "v_type": vehicleType.name,
+      "v_make": vMake.text,
+      "v_chesis": vChesis.text,
+      "v_cc": vCC.text,
+      "v_yom": vYOM.text,
+      "v_engine": vEngine.text,
+      "v_regstration_no": vRegistrationNo.text,
+      "v_model": vModel.text,
       // "port_company_name": portCompanyNameController.text,
       // "port_fd_no": portFdNo.text,
       // "port_maturity_date": textToDateTime(portMaturityDate.text),
       // "port_maturity_amt": portMaturityAmt.text,
       "payMode": payModeSelected,
-      "times_paid": 1,
 
       // "isCummulative":
       //     isCummulative == Cummulative.isCummulative ? true : false,
@@ -268,15 +265,45 @@ class GeneralProvider extends ChangeNotifier {
     };
 
     print('Sending ' + body.toString());
-    AppUtils.showSnackMessage("Life Successfully Added", "");
+    AppUtils.showSnackMessage("Motor Successfully Added", "");
     await FirebaseFirestore.instance
         .collection("Policies")
         .doc(docId)
         .set(body)
         .then((value) {
-      AppUtils.showSnackMessage("Life added", "yes");
+      AppUtils.showSnackMessage("Motor added", "yes");
 
-      PolicyHiveHelper.fetchLifePoliciesFromFirebase();
+      PolicyHiveHelper.fetchMotorPoliciesFromFirebase();
+    });
+  }
+
+  Future<void> renewMotor(String docId) async {
+    print("renew Motors");
+    var body = {
+      "motor_status": "active",
+      "premium_amt": int.parse(premiumAmt.text),
+      "initial_date": textToDateTime(issuedDate.text),
+      "renewal_date": textToDateTime(expiryDate.text).add(Duration(days: 365)),
+      "nominee_name": nomineeName.text,
+      "nominee_dob": textToDateTime(nomineeDob.text),
+      "sum_assured": int.parse(sumAssured.text),
+      "motor_no": policyNumber.text,
+      "payMode": payModeSelected,
+      "bank_details":
+          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
+      // "isFresh": isFresh,
+    };
+
+    print('Sending ' + body.toString());
+    AppUtils.showSnackMessage("Motor Successfully Added", "");
+    await FirebaseFirestore.instance
+        .collection("Policies")
+        .doc(docId)
+        .update(body)
+        .then((value) {
+      AppUtils.showSnackMessage("Motor added", "yes");
+
+      PolicyHiveHelper.fetchMotorPoliciesFromFirebase();
     });
   }
 
@@ -333,11 +360,23 @@ class GeneralProvider extends ChangeNotifier {
   //   });
   // }
 
-  final TextEditingController lifeNumber = TextEditingController();
+  final TextEditingController vCompanyName = TextEditingController();
+  final TextEditingController vMake = TextEditingController();
+  final TextEditingController vModel = TextEditingController();
+  final TextEditingController vRegistrationNo = TextEditingController();
+  final TextEditingController vChesis = TextEditingController();
+  final TextEditingController vEngine = TextEditingController();
+  final TextEditingController vCC = TextEditingController();
+  final TextEditingController vYOM = TextEditingController();
+  // final TextEditingController premiumAmt = TextEditingController();
+
+  final TextEditingController motorNumber = TextEditingController();
   final TextEditingController sumAssured = TextEditingController();
   final TextEditingController premiumAmt = TextEditingController();
   final TextEditingController issuedDate =
       TextEditingController(text: todayTextFormat());
+  final TextEditingController previousCompany = TextEditingController();
+
   // final TextEditingController inceptionDate =
   //     TextEditingController(text: todayTextFormat());
 
@@ -348,12 +387,13 @@ class GeneralProvider extends ChangeNotifier {
   final TextEditingController chequeNo = TextEditingController();
   final TextEditingController bankDate = TextEditingController();
   final TextEditingController bankName = TextEditingController();
-  TextEditingController initialDate =
+  TextEditingController expiryDate =
       TextEditingController(text: todayTextFormat());
-  final lifeFormKey = GlobalKey<FormState>();
+  final vehicleFormKey = GlobalKey<FormState>();
+  final motorFormKey = GlobalKey<FormState>();
 
   void clearFields() {
-    lifeNumber.text = "";
+    vCompanyName.text = "";
     sumAssured.text = "";
     premiumAmt.text = "";
     issuedDate.text = todayTextFormat();

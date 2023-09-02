@@ -88,10 +88,13 @@ export 'package:hive/hive.dart';
 export 'package:health_model/dialogs/dialog.dart';
 export 'package:health_model/hive/hive_model/commission_models/commission_hive_model.dart';
 
-export 'package:health_model/shared/header.dart';
+export 'package:health_model/shared/transaction_headers.dart';
 export 'package:health_model/shared/statements.dart';
 export 'package:health_model/add_company.dart';
 export 'package:health_model/pages/life_module/enter_life.dart';
 export 'package:health_model/providers/life_provider.dart';
 export 'package:hive_flutter/hive_flutter.dart';
 export 'package:health_model/widgets/stepper.dart';
+export 'package:health_model/login.dart';
+export '../shared/excel_functions.dart';
+// export '../../pages/life_module/life_detail.dart';
