@@ -221,7 +221,8 @@ Widget planTile(bool isChoosing, BuildContext context, PlanModel model) {
                     };
             } else {
               lifeProvider.setPlan(model.name, model.planID);
-              navigate(EnterLifeDetails(), context);
+              lifeProvider.clearFields();
+              navigate(EnterLifeDetails(model: null), context);
             }
           }
         : null,
@@ -792,6 +793,12 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
         model.beginsDate.toDate().add(Duration(days: model.terms * 365));
   }
   return GestureDetector(
+    // onDoubleTap: () {
+    //   FirebaseFirestore.instance
+    //       .collection("Transactions")
+    //       .doc(model.transactionId)
+    //       .delete();
+    // },
     onLongPress: () {
       AppUtils.showSnackMessage(model.transactionId, "This is transaction ID");
     },

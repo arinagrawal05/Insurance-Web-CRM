@@ -42,7 +42,7 @@ class _UsersPageState extends State<UsersPage> {
                             controller.searchController, "Search", context,
                             onChange: (value) {
                           controller.filterUsers(value);
-                        }),
+                        }, wid: 1000),
                         customButton("Add User", () async {
                           // userProvider.changeMemberCount(0);
                           var uuid = const Uuid();

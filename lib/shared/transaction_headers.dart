@@ -35,8 +35,8 @@ class TransactionHeaders {
       children: [
         heading("S. No", 18),
         heading("Life No", 18),
-        heading("Due Date", 18),
-        heading("Depo. Date", 18),
+        heading("Comm Date", 18),
+        heading("Next Due Date", 18),
         heading("Premium", 18),
         heading("paid Term", 18),
       ],

@@ -3,7 +3,7 @@ import 'package:health_model/shared/exports.dart';
 
 String healthRenewalDraftMsg(PolicyHiveModel model) {
   String draftedMessage =
-      "Hello ${model.name}, \nYour Policy No:${model.policyNo}\nSum Assured: ${model.sumAssured} Rs \nYour Policy of plan ${model.planName} in ${model.companyName} is ${model.policyStatus}\n Your next Renewal Date is ${dateTimetoText(model.renewalDate)}\n B K Agrawal\n9425473737\nThank you ";
+      "Hello ${model.name}, \nYour Policy No:${model.policyNo}\nSum Assured: ${model.sumAssured} Rs \nYour Policy of plan ${model.planName} in ${model.companyName} is ${model.policyStatus}\n Your next Renewal Date is ${dateTimetoText(model.renewalDate)}\n ${AppConsts.adminName}\n${AppConsts.adminPhone}\nThank you ";
 
   return draftedMessage;
 }

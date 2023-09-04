@@ -175,7 +175,7 @@ void showRenewLifeDialog(LifeHiveModel model) {
       // "fd_status": FDStatus.inHand.name,
       // "folio_no": folioController.text,
     }).then((value) {
-      PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+      PolicyHiveHelper.fetchLifePoliciesFromFirebase();
       Navigator.pop(Get.context!);
       Navigator.pop(Get.context!);
     });

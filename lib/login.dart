@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         password = value["password"];
         username = value["username"];
+        print("Got all value");
       });
     });
   }

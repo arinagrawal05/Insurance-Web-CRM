@@ -418,13 +418,13 @@ Duration getLifeDuration(
 
 int getLifeTerm(LifePayterm term) {
   if (term == LifePayterm.monthly) {
-    return 1;
+    return 30;
   } else if (term == LifePayterm.quarterly) {
-    return 3;
+    return 91;
   } else if (term == LifePayterm.halfYearly) {
-    return 6;
+    return 182;
   } else {
-    return 12;
+    return 365;
   }
 }
 

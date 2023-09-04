@@ -2,8 +2,8 @@ import '../../../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class EnterLifeDetails extends StatefulWidget {
-  // String inceptionDate;
-  // EnterLifeDetails({required this.inceptionDate});
+  LifeHiveModel? model;
+  EnterLifeDetails({required this.model});
   @override
   // ignore: library_private_types_in_public_api
   _EnterLifeDetailsState createState() => _EnterLifeDetailsState();
@@ -15,6 +15,9 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
   @override
   void initState() {
     super.initState();
+    if (widget.model != null) {
+      withGST = addLifeWithGST(widget.model!.premuimAmt, isFirst: true);
+    }
     // inceptionDate.text = widget.inceptionDate;
   }
 
@@ -60,7 +63,7 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: formTextField(
-                        controller.issuedDate,
+                        controller.initialDate,
                         "Commencement Date:DD/MM/YYYY",
                         "Enter Commencement Date",
                         FieldRegex.dateRegExp,
@@ -196,7 +199,7 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                                 controller.selectMaturedterm(value);
                               }, context),
                               buttonText(
-                                  "Maturity Date: ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.maturedTermSelected)) * 365)))}",
+                                  "Maturity Date: ${dateTimetoText(textToDateTime(controller.initialDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.maturedTermSelected)) * 365)))}",
                                   14,
                                   color: Colors.redAccent),
                             ],
@@ -222,7 +225,7 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                               controller.selectPaidTerm(value);
                             }, context),
                             buttonText(
-                                "Last Renewal Date: ${dateTimetoText(textToDateTime(controller.issuedDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.paidTermSelected)) * 365)))}",
+                                "Last Renewal Date: ${dateTimetoText(textToDateTime(controller.initialDate.text).add(Duration(days: int.parse(AppUtils.getFirstWord(controller.paidTermSelected)) * 365)))}",
                                 14,
                                 color: Colors.greenAccent),
                           ],
@@ -272,11 +275,13 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                     ),
                   ],
                 ),
-                streamNominees(
-                    controller.client_uid, context, controller.nomineeName,
-                    isSingle: false,
-                    nomineeDate: controller.nomineeDob,
-                    nomineeRelation: controller.nomineeRelation),
+                widget.model != null
+                    ? Container()
+                    : streamNominees(
+                        controller.client_uid, context, controller.nomineeName,
+                        isSingle: false,
+                        nomineeDate: controller.nomineeDob,
+                        nomineeRelation: controller.nomineeRelation),
 
                 PaymodeSystem(
                     bankDate: controller.bankDate,
@@ -288,17 +293,25 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                     termSelected: controller.payModeSelected),
                 customButton("Add Life to Database", () async {
                   if (controller.lifeFormKey.currentState?.validate() == true) {
-                    var uuid = const Uuid();
-                    String docId = uuid.v4();
+                    if (widget.model != null) {
+                      controller.editLife(
+                        widget.model!.lifeID,
+                      );
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    } else {
+                      var uuid = const Uuid();
+                      String docId = uuid.v4();
 
-                    controller.performLifePolicyFunctions(
-                      docId,
-                    );
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+                      controller.performLifePolicyFunctions(
+                        docId,
+                      );
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
                   }
                 }, context),
               ],

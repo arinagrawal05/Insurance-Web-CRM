@@ -159,13 +159,17 @@ Widget companyShowcase(
         ],
       ),
       const Spacer(),
-      Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5),
-          padding: const EdgeInsets.all(7),
-          decoration: dashBoxDex(context).copyWith(color: Colors.black26),
-          child: simpleText(leadingText, 12)),
+      dashTag(context, leadingText),
     ],
   );
+}
+
+Widget dashTag(BuildContext context, String leadingText) {
+  return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.all(7),
+      decoration: dashBoxDex(context).copyWith(color: Colors.black26),
+      child: simpleText(leadingText, 12));
 }
 
 AppBar genericAppbar(
@@ -701,7 +705,8 @@ Widget userCardShow(String label, String value) {
   );
 }
 
-Widget userDetailShow(String label, String value, IconData icon) {
+Widget userDetailShow(String label, String value, IconData icon,
+    {double width = 200}) {
   return Container(
     padding: const EdgeInsets.all(12),
     child: Row(
@@ -718,7 +723,7 @@ Widget userDetailShow(String label, String value, IconData icon) {
           children: [
             heading1(label, 12),
             Container(
-                width: 200,
+                width: width,
                 child: productTileText(value, 16, overF: TextOverflow.clip))
           ],
         ),

@@ -189,7 +189,7 @@ class LifeProvider extends ChangeNotifier {
         client_member_name,
         lifeNumber.text,
         int.parse(premiumAmt.text),
-        textToDateTime(issuedDate.text),
+        textToDateTime(initialDate.text),
         AppUtils.getFirstWord(companyName),
         0,
         AppConsts.life);
@@ -199,16 +199,16 @@ class LifeProvider extends ChangeNotifier {
         docId,
         lifeNumber.text,
         companyName,
-        textToDateTime(issuedDate.text),
+        textToDateTime(initialDate.text),
         getLifeTerm(payterm),
         addLifeWithGST(int.parse(premiumAmt.text), isFirst: true),
         1,
-        textToDateTime(issuedDate.text)
-            .add(Duration(days: getLifeTerm(payterm) * 30)),
+        textToDateTime(initialDate.text)
+            .add(Duration(days: getLifeTerm(payterm))),
         AppConsts.life);
     print("take 6");
     // }
-    // clearFields();
+    clearFields();
     print("take 0");
     // clearPort();
   }
@@ -236,7 +236,7 @@ class LifeProvider extends ChangeNotifier {
       "premium_amt": int.parse(premiumAmt.text),
       "payterm": payterm.name,
       "type": AppConsts.life,
-
+      "advisor_name": advisorName.text,
       "commitment_date": textToDateTime(initialDate.text),
       "maturity_date": textToDateTime(initialDate.text).add(Duration(
           days: 365 * int.parse(AppUtils.getFirstWord(maturedTermSelected)))),
@@ -245,29 +245,17 @@ class LifeProvider extends ChangeNotifier {
       "renewal_date":
           textToDateTime(initialDate.text).add(getLifeDuration(payterm)),
       "last_renewed_date": textToDateTime(initialDate.text),
-
       "nominee_name": nomineeName.text,
       "nominee_relation": nomineeRelation.text,
       "nominee_dob": textToDateTime(nomineeDob.text),
       "sum_assured": int.parse(sumAssured.text),
-      // "fd_taken_date": Timestamp.now(),
-      // "fd_given_date": Timestamp.now(),
-      // "port_company_name": portCompanyNameController.text,
-      // "port_fd_no": portFdNo.text,
-      // "port_maturity_date": textToDateTime(portMaturityDate.text),
-      // "port_maturity_amt": portMaturityAmt.text,
       "payMode": payModeSelected,
       "times_paid": 1,
-
-      // "isCummulative":
-      //     isCummulative == Cummulative.isCummulative ? true : false,
-      // "cummulative_term": cTermSelected,
       "bank_details":
           "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
-      // "isFresh": isFresh,
     };
 
-    print('Sending ' + body.toString());
+    print('Sending $body');
     AppUtils.showSnackMessage("Life Successfully Added", "");
     await FirebaseFirestore.instance
         .collection("Policies")
@@ -277,6 +265,44 @@ class LifeProvider extends ChangeNotifier {
       AppUtils.showSnackMessage("Life added", "yes");
 
       PolicyHiveHelper.fetchLifePoliciesFromFirebase();
+    });
+  }
+
+  Future<void> editLife(String docId) async {
+    print("Editing life");
+    var body = {
+      "life_no": lifeNumber.text,
+
+      "premium_amt": int.parse(premiumAmt.text),
+      "payterm": payterm.name,
+      "advisor_name": advisorName.text,
+      "commitment_date": textToDateTime(initialDate.text),
+      "maturity_date": textToDateTime(initialDate.text).add(Duration(
+          days: 365 * int.parse(AppUtils.getFirstWord(maturedTermSelected)))),
+      "pay_till_date": textToDateTime(initialDate.text).add(Duration(
+          days: 365 * int.parse(AppUtils.getFirstWord(paidTermSelected)))),
+      // "renewal_date":
+      //     textToDateTime(initialDate.text).add(getLifeDuration(payterm)),
+      "nominee_name": nomineeName.text,
+      "nominee_relation": nomineeRelation.text,
+      "nominee_dob": textToDateTime(nomineeDob.text),
+      "sum_assured": int.parse(sumAssured.text),
+      "payMode": payModeSelected,
+      "bank_details":
+          "${chequeNo.text} || ${bankName.text} || ${bankDate.text}",
+    };
+
+    print('Sending $body');
+    AppUtils.showSnackMessage("Life Successfully Updated", "");
+    await FirebaseFirestore.instance
+        .collection("Policies")
+        .doc(docId)
+        .update(body)
+        .then((value) {
+      AppUtils.showSnackMessage("Life Editted", "yes");
+
+      PolicyHiveHelper.fetchLifePoliciesFromFirebase();
+      clearFields();
     });
   }
 
@@ -336,8 +362,7 @@ class LifeProvider extends ChangeNotifier {
   final TextEditingController lifeNumber = TextEditingController();
   final TextEditingController sumAssured = TextEditingController();
   final TextEditingController premiumAmt = TextEditingController();
-  final TextEditingController issuedDate =
-      TextEditingController(text: todayTextFormat());
+
   // final TextEditingController inceptionDate =
   //     TextEditingController(text: todayTextFormat());
 
@@ -356,7 +381,7 @@ class LifeProvider extends ChangeNotifier {
     lifeNumber.text = "";
     sumAssured.text = "";
     premiumAmt.text = "";
-    issuedDate.text = todayTextFormat();
+    initialDate.text = todayTextFormat();
     nomineeName.text = "";
     advisorName.text = "";
     chequeNo.text = "";
@@ -364,6 +389,32 @@ class LifeProvider extends ChangeNotifier {
     bankName.text = "";
     paidTermSelected = "1 Year";
     payModeSelected = "Credit/Debit";
+    ChangeNotifier();
+  }
+
+  void editTextFields(LifeHiveModel model) {
+    lifeNumber.text = model.lifeNo;
+    sumAssured.text = model.sumAssured.toString();
+    premiumAmt.text = model.premuimAmt.toString();
+    initialDate.text = dateTimetoText(model.commitmentDate);
+    nomineeName.text = model.nomineeName;
+    nomineeRelation.text = model.nomineeRelation;
+    nomineeDob.text = dateTimetoText(model.nomineeDob);
+
+    advisorName.text = model.advisorName;
+    chequeNo.text = model.bankDetails;
+    bankDate.text = "";
+    bankName.text = "";
+    payterm = EnumUtils.convertNameToPayterm(model.payterm);
+    paidTermSelected =
+        "${model.payingTillDate.year - model.commitmentDate.year} Year";
+    maturedTermSelected =
+        "${model.maturityDate.year - model.commitmentDate.year} Year";
+    payModeSelected = model.payMode;
+
+    chequeNo.text = bankDetailsConverter(model.bankDetails)[0];
+    bankName.text = bankDetailsConverter(model.bankDetails)[1];
+    bankDate.text = bankDetailsConverter(model.bankDetails)[2];
     ChangeNotifier();
   }
 }

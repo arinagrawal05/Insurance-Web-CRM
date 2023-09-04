@@ -1,5 +1,7 @@
 import 'package:health_model/shared/exports.dart';
 
+import '../health_module/edit_policy.dart';
+
 // ignore: must_be_immutable
 class LifeDetailPage extends StatelessWidget {
   LifeHiveModel model;
@@ -11,7 +13,7 @@ class LifeDetailPage extends StatelessWidget {
     //var uploadImage = Provider.of<UploadImage>(context);
     // final provider = Provider.of<StatsProvider>(context, listen: true);
     // PolicyModel model = model;
-    // final provider = Provider.of<PolicyProvider>(context, listen: false);
+    final lifeprovider = Provider.of<LifeProvider>(context, listen: false);
 
     return Scaffold(
       appBar: genericAppbar(actions: [
@@ -95,21 +97,23 @@ class LifeDetailPage extends StatelessWidget {
             //         //     RenewPolicyPage(model: model), context);
             //       }, context, isExpanded: false)
             //     : Container(),
-            // customButton(
-            //   "Edit FD",
-            //   () {
-            //     // navigate(EditDetailsPage(model: model),
-            //     // context);
-            //   },
-            //   context,
-            //   isExpanded: false,
-            // ),
+            ,
+            customButton(
+              "Edit Policy",
+              () {
+                lifeprovider.editTextFields(model);
+                navigate(EnterLifeDetails(model: model), context);
+                // context);
+              },
+              context,
+              isExpanded: false,
+            ),
             // customDeleteButton(Icons.edit, Colors.blue,
             //     () async {
             //   navigate(
             //       EditFdDetails(model: model), context);
             // }, context),
-            ,
+
             customDeleteButton(Ionicons.trash_outline, Colors.red.shade500,
                 () async {
               genericConfirmSheet(context, Statements.removeLife, "Life", () {
@@ -301,43 +305,47 @@ class LifeDetailPage extends StatelessWidget {
                                         ],
                                       ),
                                       productTileText(
-                                        "Premuim Amt: ${AppUtils.formatAmount(model.premuimAmt)}",
+                                        "Premuim : ${AppUtils.formatAmount(model.premuimAmt)}",
                                         22,
                                       ),
-                                      Container(
-                                          padding: const EdgeInsets.all(12),
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Ionicons
-                                                    .information_circle_outline,
-                                                size: 45,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Container(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    heading(
-                                                        "Mśode: ${model.payterm}",
-                                                        20),
-                                                    heading1(
-                                                        "${AppUtils.formatAmount(model.premuimAmt)} Rs per ${getLifeTerm(EnumUtils.convertNameToPayterm(model.payterm))} months",
-                                                        16)
-                                                    // heading(
-                                                    //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",
-                                                    //     20),
-                                                    // heading1(
-                                                    //     "Ported FD no is ${model.portFdNo}",
-                                                    //     16)
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ))
+                                      productTileText(
+                                        "Mode: ${model.payterm}",
+                                        22,
+                                      ),
+                                      // Container(
+                                      //     padding: const EdgeInsets.all(12),
+                                      //     child: Row(
+                                      //       children: [
+                                      //         const Icon(
+                                      //           Ionicons
+                                      //               .information_circle_outline,
+                                      //           size: 45,
+                                      //         ),
+                                      //         const SizedBox(
+                                      //           width: 10,
+                                      //         ),
+                                      //         Container(
+                                      //           child: Column(
+                                      //             crossAxisAlignment:
+                                      //                 CrossAxisAlignment.start,
+                                      //             children: [
+                                      //               heading(
+                                      //                   "Mode: ${model.payterm}",
+                                      //                   20),
+                                      //               heading1(
+                                      //                   "${AppUtils.formatAmount(model.premuimAmt)}",
+                                      //                   16)
+                                      //               // heading(
+                                      //               //     "This FD is Ported From ${model.portCompanyName} on ${dateTimetoText(model.portMaturityDate)}",
+                                      //               //     20),
+                                      //               // heading1(
+                                      //               //     "Ported FD no is ${model.portFdNo}",
+                                      //               //     16)
+                                      //             ],
+                                      //           ),
+                                      //         )
+                                      //       ],
+                                      //     ))
                                     ],
                                   ),
                                 ),
@@ -366,14 +374,40 @@ class LifeDetailPage extends StatelessWidget {
                                       "Renewal Date",
                                       dateTimetoText(model.renewalDate),
                                       Ionicons.calendar_number),
-                                  userDetailShow(
-                                      "payable Date",
-                                      dateTimetoText(model.payingTillDate),
-                                      Ionicons.calendar_clear),
-                                  userDetailShow(
-                                      "Maturity Date",
-                                      dateTimetoText(model.maturityDate),
-                                      Ionicons.calendar_outline),
+                                  Row(
+                                    children: [
+                                      userDetailShow(
+                                          "payable Date",
+                                          dateTimetoText(model.payingTillDate),
+                                          Ionicons.calendar_clear,
+                                          width: 100),
+                                      Spacer(),
+                                      dashTag(
+                                          context,
+                                          (model.payingTillDate.year -
+                                                      model.commitmentDate.year)
+                                                  .toString() +
+                                              " Years")
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      userDetailShow(
+                                          "Maturity Date",
+                                          dateTimetoText(model.maturityDate),
+                                          Ionicons.calendar_outline,
+                                          width: 100),
+                                      Spacer(),
+                                      dashTag(
+                                          context,
+                                          (model.maturityDate.year -
+                                                      model.commitmentDate.year)
+                                                  .toString() +
+                                              " Years")
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
@@ -426,31 +460,4 @@ class LifeDetailPage extends StatelessWidget {
       ),
     );
   }
-}
-
-int getTimelineStep(FDStatus status) {
-  switch (status) {
-    case FDStatus.applied:
-      return 0;
-    case FDStatus.inHand:
-      return 1;
-
-    case FDStatus.handover:
-      return 2;
-    case FDStatus.redeemed:
-      return 3;
-    default:
-      return 0;
-  }
-}
-
-Widget inceptionWidget(DateTime inceptionDate, BuildContext context) {
-  return Container(
-    alignment: Alignment.center,
-    // color: Theme.of(context).scaffoldBackgroundColor,
-    padding: const EdgeInsets.all(8),
-    margin: const EdgeInsets.symmetric(vertical: 3),
-    child: simpleText("Inception Date: ${dateTimetoText(inceptionDate)}", 16),
-    // child: Text()
-  );
 }

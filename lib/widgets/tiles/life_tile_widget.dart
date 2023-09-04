@@ -63,7 +63,7 @@ class LifeTile extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    heading("P/Mode", 16),
+                    heading("Mode", 16),
                     productTileText(model.payterm.toString(), 14),
                   ],
                 ),
