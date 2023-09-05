@@ -97,4 +97,5 @@ export 'package:hive_flutter/hive_flutter.dart';
 export 'package:health_model/widgets/stepper.dart';
 export 'package:health_model/login.dart';
 export '../shared/excel_functions.dart';
-// export '../../pages/life_module/life_detail.dart';
+// export 'package:firebase_storage/firebase_storage.dart' as firabase_storage;
+

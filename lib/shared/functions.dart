@@ -1,4 +1,6 @@
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firabase_storage;
+
 import 'package:health_model/shared/exports.dart';
 
 class AppUtils {
@@ -448,4 +450,29 @@ setLoginPref(bool isLogged) async {
 setThemePref(ThemeMode mode) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("ThemeSettings", mode.name);
+}
+
+Future<String?>? uploadFileToFirebase(
+    {required Uint8List imageFile, required String fileName}) async {
+  String imageUrl = '';
+  try {
+    firabase_storage.UploadTask uploadTask;
+
+    firabase_storage.Reference ref = firabase_storage.FirebaseStorage.instance
+        .ref()
+        .child('Companies')
+        .child('/' + fileName);
+
+    final metadata =
+        firabase_storage.SettableMetadata(contentType: 'image/jpeg');
+
+    //uploadTask = ref.putFile(File(file.path));
+    uploadTask = ref.putData(imageFile, metadata);
+
+    await uploadTask.whenComplete(() => null);
+    imageUrl = await ref.getDownloadURL();
+  } catch (e) {
+    print(e);
+  }
+  return imageUrl;
 }

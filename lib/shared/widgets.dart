@@ -1,3 +1,5 @@
+import 'package:dotted_border/dotted_border.dart';
+
 import '../../shared/exports.dart';
 
 Widget cachedImage(String companyImg) {
@@ -729,6 +731,42 @@ Widget userDetailShow(String label, String value, IconData icon,
         ),
       ],
     ),
+  );
+}
+
+Widget dottedBorder({
+  required Color color,
+}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: DottedBorder(
+        dashPattern: const [6.7],
+        borderType: BorderType.RRect,
+        color: color,
+        radius: const Radius.circular(12),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.image_outlined,
+                color: color,
+                size: 50,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextButton(
+                  onPressed: (() {}),
+                  child: productTileText(
+                    'Choose Company Logo',
+                    22,
+                    color: Colors.blue,
+                  ))
+            ],
+          ),
+        )),
   );
 }
 

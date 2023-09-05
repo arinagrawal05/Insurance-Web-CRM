@@ -39,7 +39,8 @@ class CompanyModel {
       planCount: map['plans_count'],
       companyID: map['company_id'],
       timestamp: map['timestamp'],
-      companyImg: map['logo'],
+      companyImg: map['logo'] ??
+          "https://imgv2-1-f.scribdassets.com/img/document/473344411/original/ead1f8a603/1688887694?v=1",
       companyType: map['company_type'],
 
       // address: map['address'],

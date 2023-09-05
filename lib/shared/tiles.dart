@@ -405,7 +405,8 @@ Widget companyTile(bool isChoosing, String dashName, BuildContext context,
                               FirebaseFirestore.instance
                                   .collection("Companies")
                                   .doc(model.companyID)
-                                  .delete();
+                                  .delete()
+                                  .then((value) => Navigator.pop(context));
                             });
                             // addMemberSheet(context, widget.userid, docId);
                           },

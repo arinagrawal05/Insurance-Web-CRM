@@ -22,6 +22,7 @@ void main() async {
       appId: "1:222425562656:web:4b924f69b89becaac64645",
       messagingSenderId: "222425562656",
       projectId: "health-model-e0171",
+      storageBucket: "health-model-e0171.appspot.com",
     ),
   );
   HiveHelper.init();

@@ -73,7 +73,7 @@ dependencies:
   get:  
   easy_stepper: ^0.7.2
   shared_preferences: 
-     
+  dotted_border:    
 dev_dependencies:
   flutter_test:
     sdk: flutter
