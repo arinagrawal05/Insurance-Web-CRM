@@ -1,4 +1,3 @@
-import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
 import 'package:health_model/shared/exports.dart';
 
 class ItemLabeling {
@@ -35,6 +34,25 @@ class GeneralStatsProvider extends GetxController {
   onInit() {
     super.onInit();
     print("object GeneralStatsProvider $type init called");
+    getStatsData();
+    getCompaniesChartData(EnumUtils.convertTypeToKey(type));
+    boxDivision();
+  }
+
+  void boxDivision() {
+    if (type == ProductType.health) {
+      policyBox = PolicyHiveHelper.policyBox;
+    } else if (type == ProductType.life) {
+      policyBox = PolicyHiveHelper.lifeBox;
+    } else if (type == ProductType.motor) {
+      policyBox = PolicyHiveHelper.motorBox;
+    } else {
+      policyBox = PolicyHiveHelper.fDBox;
+    }
+  }
+
+  GeneralStatsProvider({required this.type});
+  void getStatsData() {
     if (type == ProductType.health) {
       labels = ItemLabeling(
           label1: 'Active', label2: 'Ported', label3: 'lapsed', label4: '_');
@@ -61,20 +79,8 @@ class GeneralStatsProvider extends GetxController {
         calculatePolicyStatsFromHive();
       },
     );
-    getCompaniesChartData(EnumUtils.convertTypeToKey(type));
-
-    if (type == ProductType.health) {
-      policyBox = PolicyHiveHelper.policyBox;
-    } else if (type == ProductType.life) {
-      policyBox = PolicyHiveHelper.lifeBox;
-    } else if (type == ProductType.motor) {
-      policyBox = PolicyHiveHelper.motorBox;
-    } else {
-      policyBox = PolicyHiveHelper.fDBox;
-    }
   }
 
-  GeneralStatsProvider({required this.type});
   void getCompaniesChartData(companyType) {
     chartCompanyData = [];
     Map<String, int> companyBusiness = {};

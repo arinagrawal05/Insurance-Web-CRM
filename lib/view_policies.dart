@@ -1,5 +1,3 @@
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
-import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
 import 'package:health_model/widgets/tiles/health_tile_widget.dart';
 import 'package:health_model/widgets/tiles/motor_tile_widget.dart';
 
@@ -76,6 +74,7 @@ class _PoliciesPageState extends State<PoliciesPage> {
                       },
                       context,
                     ),
+                    filterTooltip(searchController, context),
                     customButton("Add ${dashProvider.currentDashBoard.name}",
                         () async {
                       policyProvider.clearPort();

@@ -58,16 +58,16 @@ class UserHiveModel extends HiveObject {
     dynamic map = doc.data();
 
     return UserHiveModel(
-        name: map['name'],
-        phone: map['phone'],
-        email: map['email'],
-        address: map['address'],
-        userid: map['userid'],
-        isMale: map['isMale'],
-        dob: map['dob'].toDate(),
-        membersCount: map['members_count']
-        // relation: map['relation'],
-        // headUserid: map['head_userid'],
-        );
+      name: map['name'] ?? "NA",
+      phone: map['phone'] ?? "NA",
+      email: map['email'] ?? "NA",
+      address: map['address'] ?? "NA",
+      userid: map['userid'] ?? "NA",
+      isMale: map['isMale'] ?? true,
+      dob: map['dob'].toDate() ?? DateTime.now(),
+      membersCount: map['members_count'] ?? 1,
+      // relation: map['relation'],
+      // headUserid: map['head_userid'],
+    );
   }
 }

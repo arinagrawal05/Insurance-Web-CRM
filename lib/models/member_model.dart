@@ -42,15 +42,15 @@ class MemberModel {
     dynamic map = doc.data();
 
     return MemberModel(
-      name: map['name'],
+      name: map['name'] ?? "NA",
       // phone: map['phone'],
       // email: map['email'],
       // address: map['address'],
-      userid: map['userid'],
-      isMale: map['isMale'],
-      dob: map['dob'],
-      relation: map['relation'],
-      headUserid: map['head_userid'],
+      userid: map['userid'] ?? "NA",
+      isMale: map['isMale'] ?? true,
+      dob: map['dob'] ?? DateTime.now(),
+      relation: map['relation'] ?? "NA",
+      headUserid: map['head_userid'] ?? "NA",
     );
   }
 

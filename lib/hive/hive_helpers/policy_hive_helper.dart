@@ -331,8 +331,8 @@ class PolicyHiveHelper {
       }
       if (fd.data is FdHiveModel) {
         FdHiveModel data = fd.data as FdHiveModel;
-        if (data.maturityDate.isBefore(DateTime.now()) &&
-            data.maturityDate
+        if (data.renewalDate.isBefore(DateTime.now()) &&
+            data.renewalDate
                 .isAfter(DateTime.now().subtract(const Duration(days: 30)))) {
           return true;
         }
@@ -353,8 +353,8 @@ class PolicyHiveHelper {
       }
       if (fd.data is FdHiveModel) {
         FdHiveModel data = fd.data as FdHiveModel;
-        if (data.maturityDate.isAfter(DateTime.now()) &&
-            data.maturityDate
+        if (data.renewalDate.isAfter(DateTime.now()) &&
+            data.renewalDate
                 .isBefore(DateTime.now().add(const Duration(days: 30)))) {
           return true;
         }

@@ -1,53 +1,26 @@
 import 'package:health_model/shared/exports.dart';
 
-void adminDialog(
-  BuildContext context,
-  String companyId,
-  String planId,
-  //  int count
-) {
-  final statsProvider = Get.find<DashProvider>();
+// void adminDialog(
+//   BuildContext context,
 
-  TextEditingController advisorListField =
-      TextEditingController(text: statsProvider.advisorList.join(","));
-
-  TextEditingController pinField =
-      TextEditingController(text: statsProvider.adminPin);
-  showDialog(
-      useSafeArea: true,
-      context: context,
-      builder: (context) => Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)), //this right here
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  heading("Add Advisors", 20),
-                  customTextfield(advisorListField, "Add advisors", context,
-                      isExpanded: true),
-                  customTextfield(pinField, "Admins Pin", context,
-                      isExpanded: true),
-                  const Spacer(),
-                  customButton("Save Panel Settings", () {
-                    // List list = advisorListField.text.split(",");
-                    FirebaseFirestore.instance
-                        .collection("Statistics")
-                        .doc("KdMlwAoBwwkdREqX3hIe")
-                        .update({
-                      "advisor_list": advisorListField.text.split(","),
-                      "admin_pin": pinField.text,
-                    }).then((value) {
-                      Navigator.pop(context);
-                    });
-                  }, context)
-                ],
-              ),
-            ),
-          ));
-}
+//   //  int count
+// ) {
+//   showDialog(
+//       useSafeArea: true,
+//       context: context,
+//       builder: (context) => Dialog(
+//             shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(20.0)), //this right here
+//             child: Padding(
+//               padding: const EdgeInsets.all(20.0),
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [],
+//               ),
+//             ),
+//           ));
+// }
 
 void showCertificateDialog(FdHiveModel model) {
   // final statsProvider = Get.find<DashProvider>();
@@ -58,7 +31,7 @@ void showCertificateDialog(FdHiveModel model) {
   TextEditingController maturityAmt = TextEditingController();
 
   TextEditingController maturityDate =
-      TextEditingController(text: dateTimetoText(model.maturityDate));
+      TextEditingController(text: dateTimetoText(model.renewalDate));
   void getCertificate() {
     FirebaseFirestore.instance.collection("Policies").doc(model.fdId).update({
       "maturity_date": textToDateTime(maturityDate.text),
@@ -124,7 +97,7 @@ void showCertificateDialog(FdHiveModel model) {
                       print("Take 1");
                       addCommision(
                           model.name,
-                          model.fdNo,
+                          fdNoController.text,
                           model.investedAmt,
                           DateTime.now(),
                           model.companyName,

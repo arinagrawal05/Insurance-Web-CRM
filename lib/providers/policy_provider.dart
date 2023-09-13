@@ -228,7 +228,6 @@ class PolicyProvider extends ChangeNotifier {
 
   void clearFields() {
     print("Hello");
-    policyNumber.text = "";
     sumAssured.text = "";
     premiumAmt.text = "";
     issuedDate.text = todayTextFormat();
@@ -242,6 +241,8 @@ class PolicyProvider extends ChangeNotifier {
     portPolicyNoController.text = "";
     termSelected = "1 Year";
     payModeSelected = "Credit/Debit";
+    policyNumber.text = "";
+
     ChangeNotifier();
   }
 }

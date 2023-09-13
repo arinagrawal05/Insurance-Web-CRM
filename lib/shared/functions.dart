@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firabase_storage;
 
-import 'package:health_model/shared/exports.dart';
+import 'exports.dart';
 
 class AppUtils {
   static String getFirstWord(String fullName) {
@@ -254,7 +254,7 @@ void checkGraced() {
 updateStats(String key, num value) {
   FirebaseFirestore.instance
       .collection("Statistics")
-      .doc("KdMlwAoBwwkdREqX3hIe")
+      .doc(AppConsts.statsCode)
       .update({key: value});
 }
 
@@ -325,6 +325,9 @@ void claimCommission(
     "commission_date": commisionDate,
     "isPending": false,
   }).then((value) {
+    print("Collected");
+    CommissionHiveHelper.fetchCommissionsFromFirebase();
+
     // CommissionHiveHelper.updateSpecifiCommission(
     //     documentID: commissionId, type: AppConsts.life);
     // print("Refetched Commissions ${AppConsts.life}");
@@ -475,4 +478,20 @@ Future<String?>? uploadFileToFirebase(
     print(e);
   }
   return imageUrl;
+}
+
+feedDefaultStatistics() {
+  FirebaseFirestore.instance
+      .collection("Statistics")
+      .doc(AppConsts.statsCode)
+      .set({
+    "advisor_list": [],
+    "admin_pin": "1234",
+    "username": AppConsts.adminName,
+    "password": AppConsts.adminPhone,
+    "validity_date": DateTime.now().add(Duration(days: 356)),
+    "health_commission_percent": 15,
+  }).then((value) {
+    print("All Good");
+  });
 }

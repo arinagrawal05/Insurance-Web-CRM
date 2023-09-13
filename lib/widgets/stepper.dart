@@ -1,6 +1,3 @@
-import 'package:easy_stepper/easy_stepper.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:health_model/shared/exports.dart';
 
 class StepperWidget extends StatelessWidget {
@@ -87,7 +84,7 @@ class StepperWidget extends StatelessWidget {
               // title: 'Redeemed',
               enabled: false,
               customTitle:
-                  customTitle("Redeemed", model.maturityDate, currentStep, 3),
+                  customTitle("Redeemed", model.renewalDate, currentStep, 3),
             ),
           ],
           // onStepReached: (index) => setState(() {

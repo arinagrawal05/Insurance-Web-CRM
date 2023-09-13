@@ -35,13 +35,13 @@ class CompanyModel {
     dynamic map = doc.data();
 
     return CompanyModel(
-      name: map['name'],
-      planCount: map['plans_count'],
-      companyID: map['company_id'],
-      timestamp: map['timestamp'],
+      name: map['name'] ?? "NA",
+      planCount: map['plans_count'] ?? 4,
+      companyID: map['company_id'] ?? "NA",
+      timestamp: map['timestamp'] ?? DateTime.now(),
       companyImg: map['logo'] ??
           "https://imgv2-1-f.scribdassets.com/img/document/473344411/original/ead1f8a603/1688887694?v=1",
-      companyType: map['company_type'],
+      companyType: map['company_type'] ?? "NA",
 
       // address: map['address'],
     );

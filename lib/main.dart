@@ -17,13 +17,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyA9-12boKtCNRHz1nHEqgawSto9o-RK6-M",
-      appId: "1:222425562656:web:4b924f69b89becaac64645",
-      messagingSenderId: "222425562656",
-      projectId: "health-model-e0171",
-      storageBucket: "health-model-e0171.appspot.com",
-    ),
+    options: AppConsts.firebaseConfigs,
+    // const firebaseConfig = {
+
+// };
   );
   HiveHelper.init();
   runApp(const MyApp());

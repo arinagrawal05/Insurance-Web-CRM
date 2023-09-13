@@ -1,8 +1,7 @@
-import 'package:health_model/pages/fd_module/fd_detail.dart';
-import 'package:health_model/providers/life_provider.dart';
+// import 'package:health_model/pages/fd_module/fd_detail.dart';
 
+import '../../pages/fd_module/fd_detail.dart';
 import '../../shared/exports.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 // ignore: must_be_immutable
 class FDTile extends StatelessWidget {
@@ -79,7 +78,7 @@ class FDTile extends StatelessWidget {
                 Column(
                   children: [
                     heading("Maturity Date", 16),
-                    productTileText(dateTimetoText(model.maturityDate), 14),
+                    productTileText(dateTimetoText(model.renewalDate), 14),
                   ],
                 ),
                 Column(

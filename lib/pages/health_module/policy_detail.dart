@@ -1,23 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_model.dart';
-import 'package:health_model/shared/drafted_msgs.dart';
-import 'package:health_model/shared/functions.dart';
-import 'package:health_model/policy_flow/choose_user.dart';
 import 'package:health_model/pages/health_module/edit_policy.dart';
-import 'package:health_model/pages/health_module/renew_policy.dart';
-import 'package:health_model/providers/policy_provider.dart';
-import 'package:health_model/shared/transaction_headers.dart';
-import 'package:health_model/shared/statements.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/style.dart';
-import 'package:health_model/shared/widgets.dart';
-import 'package:health_model/sheets/confirm_sheet.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import '/shared/exports.dart';
 
 // ignore: must_be_immutable
 class PolicyDetailPage extends StatelessWidget {
@@ -48,6 +30,21 @@ class PolicyDetailPage extends StatelessWidget {
                         model.policyID,
                         model.issuedDate);
                     navigate(const ChooseUser(), context);
+                  }, context, isExpanded: false),
+                  customButton("Edit", () {
+                    provider.selectpayMode(model.payMode);
+                    provider.chequeNo.text =
+                        bankDetailsConverter(model.bankDetails)[0];
+
+                    provider.bankName.text =
+                        bankDetailsConverter(model.bankDetails)[1];
+                    provider.bankDate.text =
+                        bankDetailsConverter(model.bankDetails)[2];
+
+                    // if (condition) {
+
+                    // }
+                    navigate(EditDetailsPage(model: model), context);
                   }, context, isExpanded: false),
                   customDeleteButton(
                       Ionicons.trash_outline, Colors.red.shade500, () async {

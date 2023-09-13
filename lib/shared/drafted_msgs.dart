@@ -10,7 +10,7 @@ String healthRenewalDraftMsg(PolicyHiveModel model) {
 
 String fDRenewalDraftMsg(FdHiveModel model) {
   String draftedMessage =
-      "Hello ${model.name}, \nYour Policy No:${model.fdNo}\nSum Assured: ${model.investedAmt} Rs \nYour FD in ${model.companyName} is ${model.fdStatus}\n Your next Renewal Date is ${dateTimetoText(model.maturityDate)}\n ${AppConsts.adminName}\n${AppConsts.adminPhone}\nThank you ";
+      "Hello ${model.name}, \nYour Policy No:${model.fdNo}\nSum Assured: ${model.investedAmt} Rs \nYour FD in ${model.companyName} is ${model.fdStatus}\n Your next Renewal Date is ${dateTimetoText(model.renewalDate)}\n ${AppConsts.adminName}\n${AppConsts.adminPhone}\nThank you ";
 
   return draftedMessage;
 }

@@ -1,7 +1,4 @@
-import 'package:health_model/pages/motor_module/enter_motor.dart';
 import 'package:health_model/shared/exports.dart';
-
-import '../../hive/hive_model/policy_models/motor_model.dart';
 
 // ignore: must_be_immutable
 class MotorDetailPage extends StatelessWidget {

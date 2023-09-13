@@ -31,13 +31,14 @@ class GenericInvestmentHiveDataAdapter
       companyLogo: fields[9] as String,
       bankDetails: fields[11] as String,
       payMode: fields[12] as String,
+      renewalDate: fields[13] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, GenericInvestmentHiveData obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.type)
       ..writeByte(1)
@@ -63,7 +64,9 @@ class GenericInvestmentHiveDataAdapter
       ..writeByte(11)
       ..write(obj.bankDetails)
       ..writeByte(12)
-      ..write(obj.payMode);
+      ..write(obj.payMode)
+      ..writeByte(13)
+      ..write(obj.renewalDate);
   }
 
   @override

@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/const.dart';
 import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/functions.dart';
+
+final oneYearMote = DateTime.now().add(const Duration(days: 365));
 
 final oneMonthMore = DateTime.now().add(const Duration(days: 30));
 
@@ -12,19 +10,18 @@ final oneMonthAgo = DateTime.now().subtract(const Duration(days: 30));
 final threeMonthsAgo = DateTime.now().subtract(const Duration(days: 90));
 final sixMonthsAgo = DateTime.now().subtract(const Duration(days: 180));
 final oneYearAgo = DateTime.now().subtract(const Duration(days: 365));
-final foreverAgo = DateTime.now().subtract(const Duration(days: 30 * 365));
-final foreverMore = DateTime.now().add(const Duration(days: 30 * 365));
+final foreverAgo = DateTime.now().subtract(const Duration(days: 50 * 365));
+final foreverMore = DateTime.now().add(const Duration(days: 50 * 365));
 
 class FilterProvider extends GetxController {
   DateTime toDate = foreverMore;
   DateTime fromDate = foreverAgo;
-  // num commissionSuma = 0;
-  String companyFilter = "All Companies";
-  String statusFilter = "active";
-
   String filterName = "by Date";
 
-  int tooltime = 0;
+  // num commissionSuma = 0;
+  // String companyFilter = "All Companies";
+  String statusFilter = "active";
+
   // List<String> policyStatusList = [
   //   "all status",
   //   "active",
@@ -57,21 +54,15 @@ class FilterProvider extends GetxController {
   //   update();
   // }
 
-  void changeCompany(String newOne) {
-    companyFilter = newOne;
-    update();
-  }
+  // void changeCompany(String newOne) {
+  //   companyFilter = newOne;
+  //   update();
+  // }
 
   // void changeStatus(String newOne) {
   //   statusFilter = newOne;
   //   update();
   // }
-
-  void closeToolTip() {
-    tooltime = 1;
-
-    update();
-  }
 
   // void clearSum() {
   //   commissionSuma = 0;
@@ -131,22 +122,22 @@ class FilterProvider extends GetxController {
     update();
   }
 
-  void getCompanies(String type) {
-    companyList = [
-      "all companies",
-    ];
-    FirebaseFirestore.instance
-        .collection("Companies")
-        .where("company_type", isEqualTo: type)
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        for (var i = 0; i < value.docs.length; i++) {
-          companyList.add(AppUtils.getFirstWord(value.docs[i]["name"]));
-          print("Added " + AppUtils.getFirstWord(value.docs[i]["name"]));
-        }
-      }
-    });
-    update();
-  }
+  // void getCompanies(String type) {
+  //   companyList = [
+  //     "all companies",
+  //   ];
+  //   FirebaseFirestore.instance
+  //       .collection("Companies")
+  //       .where("company_type", isEqualTo: type)
+  //       .get()
+  //       .then((value) {
+  //     if (value.docs.isNotEmpty) {
+  //       for (var i = 0; i < value.docs.length; i++) {
+  //         companyList.add(AppUtils.getFirstWord(value.docs[i]["name"]));
+  //         print("Added " + AppUtils.getFirstWord(value.docs[i]["name"]));
+  //       }
+  //     }
+  //   });
+  //   update();
+  // }
 }

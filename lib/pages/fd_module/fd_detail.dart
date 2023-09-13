@@ -19,7 +19,7 @@ class FdDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: genericAppbar(
         actions: [
-          model.maturityDate.isAfter(DateTime.now())
+          model.renewalDate.isAfter(DateTime.now())
               ? model.fdStatus == "applied"
                   ? customButton("Recieve Certificate", () {
                       showCertificateDialog(model);
@@ -267,7 +267,7 @@ class FdDetailPage extends StatelessWidget {
                               22,
                             ),
                             productTileText(
-                              "Expected Maturity Date: ${dateTimetoText(model.maturityDate)}",
+                              "Expected Maturity Date: ${dateTimetoText(model.renewalDate)}",
                               22,
                             ),
                             (model.isCummulative)

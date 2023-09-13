@@ -25,6 +25,7 @@ class MotorHiveModelAdapter extends TypeAdapter<MotorHiveModel> {
       userid: fields[7] as String,
       isMale: fields[5] as bool,
       dob: fields[6] as DateTime,
+      renewalDate: fields[13] as DateTime,
       companyName: fields[8] as String,
       companyID: fields[10] as String,
       companyLogo: fields[9] as String,
@@ -32,7 +33,6 @@ class MotorHiveModelAdapter extends TypeAdapter<MotorHiveModel> {
       payMode: fields[12] as String,
       motorStatus: fields[16] as String,
       initialDate: fields[19] as DateTime,
-      renewalDate: fields[20] as DateTime,
       nomineeName: fields[21] as String,
       nomineeDOB: fields[22] as DateTime,
       sumAssured: fields[23] as int,
@@ -47,7 +47,7 @@ class MotorHiveModelAdapter extends TypeAdapter<MotorHiveModel> {
       vModel: fields[32] as String,
       premiumAmt: fields[17] as int,
       motorID: fields[14] as String,
-      motorNo: fields[13] as String,
+      motorNo: fields[20] as String,
     );
   }
 
@@ -55,7 +55,7 @@ class MotorHiveModelAdapter extends TypeAdapter<MotorHiveModel> {
   void write(BinaryWriter writer, MotorHiveModel obj) {
     writer
       ..writeByte(31)
-      ..writeByte(13)
+      ..writeByte(20)
       ..write(obj.motorNo)
       ..writeByte(14)
       ..write(obj.motorID)
@@ -65,8 +65,6 @@ class MotorHiveModelAdapter extends TypeAdapter<MotorHiveModel> {
       ..write(obj.premiumAmt)
       ..writeByte(19)
       ..write(obj.initialDate)
-      ..writeByte(20)
-      ..write(obj.renewalDate)
       ..writeByte(21)
       ..write(obj.nomineeName)
       ..writeByte(22)
@@ -116,7 +114,9 @@ class MotorHiveModelAdapter extends TypeAdapter<MotorHiveModel> {
       ..writeByte(11)
       ..write(obj.bankDetails)
       ..writeByte(12)
-      ..write(obj.payMode);
+      ..write(obj.payMode)
+      ..writeByte(13)
+      ..write(obj.renewalDate);
   }
 
   @override

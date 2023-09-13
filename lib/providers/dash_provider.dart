@@ -44,17 +44,22 @@ class DashProvider extends GetxController {
   DateTime? validityDate = DateTime.now().add(Duration(days: 730));
   List<dynamic> advisorList = [];
   String adminPin = "1234";
+  String username = "";
+  String password = "";
 
   void getStats() {
     FirebaseFirestore.instance
         .collection("Statistics")
-        .doc("KdMlwAoBwwkdREqX3hIe")
+        .doc(AppConsts.statsCode)
         .get()
         .then((value) {
-      adminPin = value["admin_pin"];
-      advisorList = value["advisor_list"];
-      healthPercent = value["health_commission_percent"];
-      // validityDate = value["validity_date"].toDate();
+      username = value["username"] ?? "1234";
+      password = value["password"] ?? "1234";
+      adminPin = value["admin_pin"] ?? "1234";
+      advisorList = value["advisor_list"] ?? ["Advisor here"];
+      healthPercent = value["health_commission_percent"] ?? 15;
+      validityDate = value["validity_date"].toDate();
+
       print(value["validity_date"].toDate().toString());
       update();
     });

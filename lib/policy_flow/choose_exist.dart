@@ -1,5 +1,3 @@
-import 'package:health_model/shared/regex.dart';
-
 import '../../../shared/exports.dart';
 
 class ChooseExisting extends StatelessWidget {

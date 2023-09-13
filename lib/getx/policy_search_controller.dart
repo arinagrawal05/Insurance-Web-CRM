@@ -1,7 +1,6 @@
-import 'package:health_model/shared/exports.dart';
+import '../shared/exports.dart';
 
 import '../hive/hive_model/policy_models/generic_investment_data.dart';
-import '../hive/hive_model/policy_models/motor_model.dart';
 
 class PolicySearchController extends GetxController {
   List<PolicyDataHiveModel> policies = <PolicyDataHiveModel>[];
@@ -11,6 +10,12 @@ class PolicySearchController extends GetxController {
 
   PolicySearchController({required this.type});
   String companyFilter = 'All Companies';
+  DateTime toDate = foreverMore;
+  DateTime fromDate = foreverAgo;
+  String filterName = "by Date";
+
+  int tooltime = 0;
+
   HealthStatus healthStatusFilter = HealthStatus.active;
   LifeStatus lifeStatusFilter = LifeStatus.allStatus;
   FDStatus fDStatusFilter = FDStatus.allStatus;
@@ -96,6 +101,10 @@ class PolicySearchController extends GetxController {
           companyFilter == AppUtils.getFirstWord(policy.data!.companyName))) {
         return false;
       }
+      if (!(fromDate.isBefore(policy.data!.renewalDate) &&
+          toDate.isAfter(policy.data!.renewalDate))) {
+        return false;
+      }
       // print(' case 5 ${policy.data!.name}');
 
       if (!checkStatusFilter(policy.data!)) {
@@ -107,6 +116,21 @@ class PolicySearchController extends GetxController {
       return true;
     }).toList();
     update();
+  }
+
+  void closeToolTip() {
+    tooltime = 1;
+
+    update();
+  }
+
+  void filterByManual(DateTime fDate, DateTime tDate) {
+    fromDate = fDate;
+    toDate = tDate;
+    filterName = "By Manual";
+
+    // update();
+    filterpolicies();
   }
 
   bool checkStatusFilter(GenericInvestmentHiveData data) {

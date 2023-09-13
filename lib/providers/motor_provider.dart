@@ -1,7 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:health_model/pages/fd_module/renew_fd.dart';
 import 'package:health_model/shared/exports.dart';
+
+import '../pages/fd_module/renew_fd.dart';
 
 class MotorProvider extends ChangeNotifier {
   String client_head_name = "";

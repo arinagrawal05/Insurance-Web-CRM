@@ -5,7 +5,7 @@ part 'life_model.g.dart';
 
 @HiveType(typeId: 6)
 class LifeHiveModel extends GenericInvestmentHiveData {
-  @HiveField(13)
+  @HiveField(22)
   String lifeID;
 
   @HiveField(14)
@@ -29,8 +29,8 @@ class LifeHiveModel extends GenericInvestmentHiveData {
   @HiveField(21)
   DateTime maturityDate;
 
-  @HiveField(22)
-  DateTime renewalDate;
+  // @HiveField(22)
+  // DateTime renewalDate;
 
   @HiveField(23)
   String planName;
@@ -67,6 +67,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
     required String userid,
     required bool isMale,
     required DateTime dob,
+    required DateTime renewalDate,
     required String companyName,
     required String companyID,
     required String companyLogo,
@@ -79,7 +80,7 @@ class LifeHiveModel extends GenericInvestmentHiveData {
     required this.payingTillDate,
     required this.sumAssured,
     required this.commitmentDate,
-    required this.renewalDate,
+    // required this.renewalDate,
     required this.planID,
     required this.planName,
     required this.advisorName,
@@ -92,20 +93,20 @@ class LifeHiveModel extends GenericInvestmentHiveData {
     required this.payterm,
     required this.timesPaid,
   }) : super(
-          type: type,
-          address: address,
-          dob: dob,
-          email: email,
-          isMale: isMale,
-          name: name,
-          phone: phone,
-          userid: userid,
-          companyName: companyName,
-          companyID: companyID,
-          companyLogo: companyLogo,
-          bankDetails: bankDetails,
-          payMode: payMode,
-        );
+            type: type,
+            address: address,
+            dob: dob,
+            email: email,
+            isMale: isMale,
+            name: name,
+            phone: phone,
+            userid: userid,
+            companyName: companyName,
+            companyID: companyID,
+            companyLogo: companyLogo,
+            bankDetails: bankDetails,
+            payMode: payMode,
+            renewalDate: renewalDate);
   Map<String, dynamic> toMap() {
     return {
       "company_name": companyName,

@@ -23,7 +23,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
     super.dispose();
   }
 
-  bool isUnlocked = true;
+  bool isUnlocked = false;
 
   TextEditingController pinController = TextEditingController();
 
@@ -32,7 +32,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
     // final provider = Get.find<FilterProvider>();
     // final provider = Get.find<HealthStatsProvider>();
 
-    // final dashProvider = Get.find<DashProvider>();
+    final dashProvider = Get.find<DashProvider>();
 
     // TextEditingController controller = TextEditingController();
     return GetBuilder<CommissionSearchController>(
@@ -133,7 +133,8 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                           kType: TextInputType.number),
                                     ),
                                     customButton("Unlock", () {
-                                      if (pinController.text == "1234") {
+                                      if (pinController.text ==
+                                          dashProvider.adminPin) {
                                         // _focusNode.nextFocus();
                                         setState(() {
                                           isUnlocked = true;

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/shared/streams.dart';
-import 'package:health_model/shared/widgets.dart';
+import '../../shared/exports.dart';
 
 // ignore: must_be_immutable
 class ChoosePlan extends StatelessWidget {

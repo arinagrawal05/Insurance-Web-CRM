@@ -1,6 +1,5 @@
-import 'package:health_model/shared/exports.dart';
-
 import '../hive/hive_model/policy_models/generic_investment_data.dart';
+import 'exports.dart';
 
 class AppConsts {
   static String careEmail1 = "arinagrawal07128@gmail.com";
@@ -17,6 +16,18 @@ class AppConsts {
   static String motor = "Motor";
 
   static bool isProductionMode = true;
+
+  static String statsCode = "KdMlwAoBwwkdREqX3hIe";
+
+  static FirebaseOptions firebaseConfigs = const FirebaseOptions(
+            apiKey: "AIzaSyA9-12boKtCNRHz1nHEqgawSto9o-RK6-M",
+      authDomain: "health-model-e0171.firebaseapp.com",
+      projectId: "health-model-e0171",
+      storageBucket: "health-model-e0171.appspot.com",
+      messagingSenderId: "222425562656",
+      appId: "1:222425562656:web:4b924f69b89becaac64645",
+      measurementId: "G-XQKBC6HW5Y"
+      );
   static UserHiveModel userModel = UserHiveModel(
     name: "Arin Agrawal",
     address: "Choubey Colony",
@@ -99,21 +110,21 @@ class AppConsts {
       timesPaid: 1,
       payterm: "Quarterly");
   static GenericInvestmentHiveData generalData = GenericInvestmentHiveData(
-    name: "Arin Agrawal",
-    address: "Choubey Colony",
-    phone: "7898291900",
-    email: "arinagrawal07128@gmailcom",
-    userid: "06885b49-8870-40df-a27a-46326b409a10",
-    isMale: true,
-    dob: DateTime.now(),
-    bankDetails: "",
-    companyID: "",
-    companyLogo:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEvO1qCs7nfgPEIMYArSjk_RElJTF5QDvJJA&usqp=CAU",
-    companyName: "Niva Health Insurance",
-    type: "FD",
-    payMode: "",
-  );
+      name: "Arin Agrawal",
+      address: "Choubey Colony",
+      phone: "7898291900",
+      email: "arinagrawal07128@gmailcom",
+      userid: "06885b49-8870-40df-a27a-46326b409a10",
+      isMale: true,
+      dob: DateTime.now(),
+      bankDetails: "",
+      companyID: "",
+      companyLogo:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEvO1qCs7nfgPEIMYArSjk_RElJTF5QDvJJA&usqp=CAU",
+      companyName: "Niva Health Insurance",
+      type: "FD",
+      payMode: "",
+      renewalDate: oneYearMote);
 
   static List<String> healthPolicyStatusList = [
     "all status",
@@ -146,6 +157,7 @@ class AppConsts {
     "Credit/Debit",
     "UPI",
   ];
+
   static List<String> getStatusList(ProductType type) {
     if (type == ProductType.health) {
       return healthPolicyStatusList;

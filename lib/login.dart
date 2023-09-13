@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:health_model/homepage.dart';
+import '/shared/const.dart';
 import 'package:health_model/shared/regex.dart';
 import 'package:health_model/shared/functions.dart';
 import 'package:health_model/shared/widgets.dart';
@@ -26,12 +27,12 @@ class _LoginPageState extends State<LoginPage> {
   check() {
     FirebaseFirestore.instance
         .collection("Statistics")
-        .doc("KdMlwAoBwwkdREqX3hIe")
+        .doc(AppConsts.statsCode)
         .get()
         .then((value) {
       setState(() {
-        password = value["password"];
-        username = value["username"];
+        password = value["password"] ?? "";
+        username = value["username"] ?? "";
         print("Got all value");
       });
     });
@@ -63,7 +64,9 @@ class _LoginPageState extends State<LoginPage> {
                   FieldRegex.phoneRegExp,
                   kType: TextInputType.visiblePassword),
               customButton("Login", () async {
-                if (_loginKey.currentState?.validate() == true) {
+                if (
+                    // _loginKey.currentState?.validate() ==
+                    true) {
                   print("object");
                   print(username);
                   print(password);

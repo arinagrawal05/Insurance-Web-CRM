@@ -5,7 +5,7 @@ part 'policy_model.g.dart';
 
 @HiveType(typeId: 4)
 class PolicyHiveModel extends GenericInvestmentHiveData {
-  @HiveField(13)
+  @HiveField(22)
   String policyID;
 
   @HiveField(14)
@@ -32,8 +32,8 @@ class PolicyHiveModel extends GenericInvestmentHiveData {
   @HiveField(21)
   DateTime inceptionDate;
 
-  @HiveField(22)
-  DateTime renewalDate;
+  // @HiveField(22)
+  // DateTime renewalDate;
 
   @HiveField(23)
   String planName;
@@ -74,6 +74,7 @@ class PolicyHiveModel extends GenericInvestmentHiveData {
     required String userid,
     required bool isMale,
     required DateTime dob,
+    required DateTime renewalDate,
     required String companyName,
     required String companyID,
     required String companyLogo,
@@ -87,7 +88,7 @@ class PolicyHiveModel extends GenericInvestmentHiveData {
     required this.premiumTerm,
     required this.sumAssured,
     required this.issuedDate,
-    required this.renewalDate,
+    // required this.renewalDate,
     required this.planID,
     required this.planName,
     required this.advisorName,
@@ -100,20 +101,20 @@ class PolicyHiveModel extends GenericInvestmentHiveData {
     required this.statusDate,
     required this.inceptionDate,
   }) : super(
-          type: type,
-          address: address,
-          dob: dob,
-          email: email,
-          isMale: isMale,
-          name: name,
-          phone: phone,
-          userid: userid,
-          companyName: companyName,
-          companyID: companyID,
-          companyLogo: companyLogo,
-          bankDetails: bankDetails,
-          payMode: payMode,
-        );
+            type: type,
+            address: address,
+            dob: dob,
+            email: email,
+            isMale: isMale,
+            name: name,
+            phone: phone,
+            userid: userid,
+            companyName: companyName,
+            companyID: companyID,
+            companyLogo: companyLogo,
+            bankDetails: bankDetails,
+            payMode: payMode,
+            renewalDate: renewalDate);
   Map<String, dynamic> toMap() {
     return {
       "company_name": companyName,
@@ -152,7 +153,7 @@ class PolicyHiveModel extends GenericInvestmentHiveData {
 
   factory PolicyHiveModel.fromMap(Map map) {
     return PolicyHiveModel(
-      name: map['name'] ?? map['policy_id'],
+      name: map['name'] ?? map['policy_id'] ?? "NA",
       phone: map['phone'] ?? 'NA',
       email: map['email'] ?? 'NA',
       address: map['address'] ?? 'NA',

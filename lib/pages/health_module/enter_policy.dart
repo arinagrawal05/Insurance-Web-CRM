@@ -124,7 +124,10 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                   FieldRegex.defaultRegExp,
                 ),
                 renderAdvisor(
-                    statsProvider.advisorList, context, controller.advisorName),
+                  statsProvider.advisorList,
+                  context,
+                  controller.advisorName,
+                ),
                 genericPicker(
                     radius: 10,
                     prefixIcon: Ionicons.hourglass_outline,

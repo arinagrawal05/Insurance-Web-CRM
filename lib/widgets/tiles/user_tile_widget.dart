@@ -1,6 +1,4 @@
-import 'package:health_model/providers/motor_provider.dart';
-import 'package:health_model/providers/life_provider.dart';
-
+import '/providers/motor_provider.dart';
 import '../../shared/exports.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

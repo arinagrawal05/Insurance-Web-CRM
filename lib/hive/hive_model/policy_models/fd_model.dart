@@ -5,14 +5,14 @@ part 'fd_model.g.dart';
 
 @HiveType(typeId: 5)
 class FdHiveModel extends GenericInvestmentHiveData {
-  @HiveField(13)
+  @HiveField(15)
   String fdId;
 
   @HiveField(14)
   String fdStatus;
 
-  @HiveField(15)
-  DateTime maturityDate;
+  // @HiveField(15)
+  // DateTime maturityDate;
 
   @HiveField(16)
   DateTime initialDate;
@@ -84,11 +84,12 @@ class FdHiveModel extends GenericInvestmentHiveData {
     required String companyID,
     required bool isMale,
     required DateTime dob,
+    required DateTime maturityDate,
     required String bankDetails,
     required String payMode,
     required this.fdId,
     required this.fdStatus,
-    required this.maturityDate,
+    // required this.maturityDate,
     required this.maturityAmt,
     required this.fdNomineeName,
     required this.initialDate,
@@ -123,6 +124,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
           companyLogo: companyLogo,
           bankDetails: bankDetails,
           payMode: payMode,
+          renewalDate: maturityDate,
         );
   Map<String, dynamic> toMap() {
     return {
@@ -136,7 +138,7 @@ class FdHiveModel extends GenericInvestmentHiveData {
       "email": email,
       "fd_id": fdId,
       "fd_status": fdStatus,
-      "maturity_date": maturityDate,
+      "maturity_date": renewalDate,
       "maturity_amt": maturityAmt,
       "initial_date": initialDate,
       "invested_amt": investedAmt,

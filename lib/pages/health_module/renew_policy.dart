@@ -1,8 +1,4 @@
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/widgets/pay_system.dart';
-import 'package:health_model/shared/regex.dart';
-
-import '../../../../shared/exports.dart';
+import '/shared/exports.dart';
 
 // ignore: must_be_immutable
 class RenewPolicyPage extends StatefulWidget {

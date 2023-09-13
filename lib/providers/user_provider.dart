@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_model/policy_models/policy_data_model.dart';
 import 'package:health_model/shared/exports.dart';
 
 class UserProvider extends ChangeNotifier {

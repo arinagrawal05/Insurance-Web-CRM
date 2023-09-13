@@ -43,6 +43,8 @@ class GenericInvestmentHiveData extends HiveObject {
   @HiveField(12)
   String payMode;
 
+  @HiveField(13)
+  DateTime renewalDate;
   GenericInvestmentHiveData({
     required this.name,
     required this.address,
@@ -57,5 +59,6 @@ class GenericInvestmentHiveData extends HiveObject {
     required this.companyLogo,
     required this.bankDetails,
     required this.payMode,
+    required this.renewalDate,
   });
 }

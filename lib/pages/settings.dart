@@ -1,7 +1,10 @@
+import 'package:health_model/pages/panel.dart';
 import 'package:health_model/shared/exports.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
+  final statsProvider = Get.find<DashProvider>();
+
   Widget build(BuildContext context) {
     //var uploadImage = Provider.of<UploadImage>(context);
 
@@ -56,15 +59,15 @@ class SettingsPage extends StatelessWidget {
               }, context, isExpanded: false)
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              heading("Backup Generals", 20),
-              customButton("Download Excel", () {
-                ExcelFunctions.downloadMotorExcel();
-              }, context, isExpanded: false)
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     heading("Backup Generals", 20),
+          //     customButton("Download Excel", () {
+          //       ExcelFunctions.downloadMotorExcel();
+          //     }, context, isExpanded: false)
+          //   ],
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -81,7 +84,11 @@ class SettingsPage extends StatelessWidget {
             children: [
               heading("Admin Settings", 20),
               customButton("Open Settings", () {
-                adminDialog(context, "companyId", "planId");
+                navigate(
+                    PanelPage(
+                      statsProvider: statsProvider,
+                    ),
+                    context);
               }, context, isExpanded: false)
             ],
           ),

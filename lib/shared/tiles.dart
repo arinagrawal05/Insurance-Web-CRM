@@ -1,9 +1,9 @@
-import 'package:health_model/pages/motor_module/enter_motor.dart';
 import 'package:health_model/pages/motor_module/enter_vehicle.dart';
 import 'package:health_model/providers/motor_provider.dart';
+import 'package:health_model/pages/fd_module/renew_fd.dart';
+
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
 
 Widget bDayuserTile(BuildContext context, UserHiveModel model) {
   // final provider = Provider.of<PolicyProvider>(context, listen: false);
@@ -720,7 +720,7 @@ Widget fDRenewalTile(
               Column(
                 children: [
                   heading("Maturity Date", 16),
-                  productTileText(dateTimetoText(thisModel.maturityDate), 14),
+                  productTileText(dateTimetoText(thisModel.renewalDate), 14),
                 ],
               ),
               Column(
@@ -734,7 +734,7 @@ Widget fDRenewalTile(
                       children: [
                         heading("Maturity", 16),
                         productTileText(
-                            "${30 - (DateTime.now().difference(thisModel.maturityDate).inDays)} days",
+                            "${30 - (DateTime.now().difference(thisModel.renewalDate).inDays)} days",
                             14),
                       ],
                     )
@@ -742,11 +742,11 @@ Widget fDRenewalTile(
                       children: [
                         heading("Days to go", 16),
                         productTileText(
-                            "${thisModel.maturityDate.difference(DateTime.now()).inDays} days",
+                            "${thisModel.renewalDate.difference(DateTime.now()).inDays} days",
                             14),
                       ],
                     ),
-              isGraced(thisModel.maturityDate)
+              isGraced(thisModel.renewalDate)
                   ? customButton("Renew", () async {
                       navigate(
                         RenewFdPage(model: thisModel),
@@ -776,12 +776,17 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
   // Duration diff = model.data!.renewalDate .difference(DateTime.now());
   // Timestamp time = model["d;
   DateTime addedDate;
+
   int premiumAmt = model.premuimAmt;
-  String type = "Health";
-  if (model.terms >= 6) {
-    type = "FD";
-  } else if (model.membersCount == index && model.terms >= 1) {
-    type = "Life";
+  String type = model.type;
+  if (type == "NA") {
+    if (model.terms >= 6) {
+      type = "FD";
+    } else if (model.membersCount == index && model.terms >= 1) {
+      type = "Life";
+    } else {
+      type = "Health";
+    }
   }
 
   if (type == "FD") {
@@ -794,14 +799,17 @@ Widget transactionTile(BuildContext context, TansactionModel model, int index) {
         model.beginsDate.toDate().add(Duration(days: model.terms * 365));
   }
   return GestureDetector(
-    // onDoubleTap: () {
-    //   FirebaseFirestore.instance
-    //       .collection("Transactions")
-    //       .doc(model.transactionId)
-    //       .delete();
-    // },
+    // onLongPressStart: ,
+    onDoubleTap: () {
+      // print(type);
+      // FirebaseFirestore.instance
+      //     .collection("Transactions")
+      //     .doc(model.transactionId)
+      //     .delete();
+    },
     onLongPress: () {
-      AppUtils.showSnackMessage(model.transactionId, "This is transaction ID");
+      AppUtils.showSnackMessage(
+          model.transactionId, "This is transaction ID + $type");
     },
     child: Container(
       color: Theme.of(context).scaffoldBackgroundColor,

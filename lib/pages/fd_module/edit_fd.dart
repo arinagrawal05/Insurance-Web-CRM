@@ -52,7 +52,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
     // if (widget.model.fdStatus == "inHand") {
     fdNo.text = widget.model.fdNo;
     maturityAmt.text = widget.model.maturityAmt.toString();
-    maturityDate.text = dateTimetoText(widget.model.maturityDate);
+    maturityDate.text = dateTimetoText(widget.model.renewalDate);
     folioNo.text = widget.model.folioNo;
     // }
 

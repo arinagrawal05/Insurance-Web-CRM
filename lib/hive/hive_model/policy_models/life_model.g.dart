@@ -25,19 +25,19 @@ class LifeHiveModelAdapter extends TypeAdapter<LifeHiveModel> {
       userid: fields[7] as String,
       isMale: fields[5] as bool,
       dob: fields[6] as DateTime,
+      renewalDate: fields[13] as DateTime,
       companyName: fields[8] as String,
       companyID: fields[10] as String,
       companyLogo: fields[9] as String,
       bankDetails: fields[11] as String,
       payMode: fields[12] as String,
-      lifeID: fields[13] as String,
+      lifeID: fields[22] as String,
       lifeNo: fields[15] as String,
       lifeStatus: fields[14] as String,
       premuimAmt: fields[17] as int,
       payingTillDate: fields[19] as DateTime,
       sumAssured: fields[18] as int,
       commitmentDate: fields[20] as DateTime,
-      renewalDate: fields[22] as DateTime,
       planID: fields[24] as String,
       planName: fields[23] as String,
       advisorName: fields[25] as String,
@@ -56,7 +56,7 @@ class LifeHiveModelAdapter extends TypeAdapter<LifeHiveModel> {
   void write(BinaryWriter writer, LifeHiveModel obj) {
     writer
       ..writeByte(32)
-      ..writeByte(13)
+      ..writeByte(22)
       ..write(obj.lifeID)
       ..writeByte(14)
       ..write(obj.lifeStatus)
@@ -72,8 +72,6 @@ class LifeHiveModelAdapter extends TypeAdapter<LifeHiveModel> {
       ..write(obj.commitmentDate)
       ..writeByte(21)
       ..write(obj.maturityDate)
-      ..writeByte(22)
-      ..write(obj.renewalDate)
       ..writeByte(23)
       ..write(obj.planName)
       ..writeByte(24)
@@ -119,7 +117,9 @@ class LifeHiveModelAdapter extends TypeAdapter<LifeHiveModel> {
       ..writeByte(11)
       ..write(obj.bankDetails)
       ..writeByte(12)
-      ..write(obj.payMode);
+      ..write(obj.payMode)
+      ..writeByte(13)
+      ..write(obj.renewalDate);
   }
 
   @override

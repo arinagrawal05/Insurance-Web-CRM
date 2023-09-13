@@ -25,20 +25,20 @@ class PolicyHiveModelAdapter extends TypeAdapter<PolicyHiveModel> {
       userid: fields[7] as String,
       isMale: fields[5] as bool,
       dob: fields[6] as DateTime,
+      renewalDate: fields[13] as DateTime,
       companyName: fields[8] as String,
       companyID: fields[10] as String,
       companyLogo: fields[9] as String,
       bankDetails: fields[11] as String,
       payMode: fields[12] as String,
       membersCount: fields[16] as int,
-      policyID: fields[13] as String,
+      policyID: fields[22] as String,
       policyNo: fields[15] as String,
       policyStatus: fields[14] as String,
       premuimAmt: fields[17] as int,
       premiumTerm: fields[19] as int,
       sumAssured: fields[18] as int,
       issuedDate: fields[20] as DateTime,
-      renewalDate: fields[22] as DateTime,
       planID: fields[24] as String,
       planName: fields[23] as String,
       advisorName: fields[25] as String,
@@ -57,7 +57,7 @@ class PolicyHiveModelAdapter extends TypeAdapter<PolicyHiveModel> {
   void write(BinaryWriter writer, PolicyHiveModel obj) {
     writer
       ..writeByte(33)
-      ..writeByte(13)
+      ..writeByte(22)
       ..write(obj.policyID)
       ..writeByte(14)
       ..write(obj.policyStatus)
@@ -75,8 +75,6 @@ class PolicyHiveModelAdapter extends TypeAdapter<PolicyHiveModel> {
       ..write(obj.issuedDate)
       ..writeByte(21)
       ..write(obj.inceptionDate)
-      ..writeByte(22)
-      ..write(obj.renewalDate)
       ..writeByte(23)
       ..write(obj.planName)
       ..writeByte(24)
@@ -122,7 +120,9 @@ class PolicyHiveModelAdapter extends TypeAdapter<PolicyHiveModel> {
       ..writeByte(11)
       ..write(obj.bankDetails)
       ..writeByte(12)
-      ..write(obj.payMode);
+      ..write(obj.payMode)
+      ..writeByte(13)
+      ..write(obj.renewalDate);
   }
 
   @override

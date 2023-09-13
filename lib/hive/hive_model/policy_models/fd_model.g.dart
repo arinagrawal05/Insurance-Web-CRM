@@ -17,6 +17,7 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FdHiveModel(
+      maturityDate: fields[13] as DateTime,
       type: fields[0] as String,
       name: fields[1] as String,
       address: fields[2] as String,
@@ -30,9 +31,9 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       dob: fields[6] as DateTime,
       bankDetails: fields[11] as String,
       payMode: fields[12] as String,
-      fdId: fields[13] as String,
+      fdId: fields[15] as String,
       fdStatus: fields[14] as String,
-      maturityDate: fields[15] as DateTime,
+      // maturityDate =,
       maturityAmt: fields[34] as int,
       fdNomineeName: fields[21] as String,
       initialDate: fields[16] as DateTime,
@@ -60,12 +61,10 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
   void write(BinaryWriter writer, FdHiveModel obj) {
     writer
       ..writeByte(36)
-      ..writeByte(13)
+      ..writeByte(15)
       ..write(obj.fdId)
       ..writeByte(14)
       ..write(obj.fdStatus)
-      ..writeByte(15)
-      ..write(obj.maturityDate)
       ..writeByte(16)
       ..write(obj.initialDate)
       ..writeByte(17)
@@ -131,7 +130,9 @@ class FdHiveModelAdapter extends TypeAdapter<FdHiveModel> {
       ..writeByte(11)
       ..write(obj.bankDetails)
       ..writeByte(12)
-      ..write(obj.payMode);
+      ..write(obj.payMode)
+      ..writeByte(13)
+      ..write(obj.renewalDate);
   }
 
   @override

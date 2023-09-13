@@ -163,6 +163,36 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                               "logo": imageUrll,
                               // "phone": dob.text,
                             });
+
+                            FirebaseFirestore.instance
+                                .collection("Policies")
+                                .where("type",
+                                    isEqualTo: EnumUtils.convertTypeToKey(
+                                        dashProvider.currentDashBoard))
+                                .where("company_id",
+                                    isEqualTo: widget.companyid)
+                                .get()
+                                .then((value) {
+                              print(value.docs.isNotEmpty);
+
+                              if (value.docs.isNotEmpty) {
+                                print(value.docs.isNotEmpty);
+                                var id = EnumUtils.convertTypeToKey(
+                                        dashProvider.currentDashBoard) +
+                                    "_id";
+                                for (var i = 0; i < value.docs.length; i++) {
+                                  // print(value.docs[i]["fd_id"]);
+                                  // sum += value.docs[i]["invested_amt"];
+                                  FirebaseFirestore.instance
+                                      .collection("Policies")
+                                      .doc(value.docs[i]["policy_id"])
+                                      .update({"company_logo": imageUrll});
+
+                                  print("Successfully Temp Updated " +
+                                      value.docs[i]["policy_id"]);
+                                }
+                              }
+                            });
                           } else {
                             FirebaseFirestore.instance
                                 .collection("Companies")
@@ -178,26 +208,6 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                               "total_bussiness": 0,
                               "logo": imageUrll,
                               // "phone": dob.text,
-                            });
-
-                            FirebaseFirestore.instance
-                                .collection("Policies")
-                                .where("type", isEqualTo: "Life")
-                                .where("company_id",
-                                    isEqualTo: widget.companyid)
-                                .get()
-                                .then((value) {
-                              if (value.docs.isNotEmpty) {
-                                for (var i = 0; i < value.docs.length; i++) {
-                                  // print(value.docs[i]["fd_id"]);
-                                  // sum += value.docs[i]["invested_amt"];
-                                  FirebaseFirestore.instance
-                                      .collection("Policies")
-                                      .doc(value.docs[i]["life_id"])
-                                      .update({"company_logo": imageUrll});
-                                }
-                                // print("Successfully Temp Updated " + sum.toString());
-                              }
                             });
                           }
 

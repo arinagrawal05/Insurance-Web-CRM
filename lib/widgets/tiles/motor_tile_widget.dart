@@ -1,11 +1,6 @@
-import 'package:health_model/hive/hive_model/policy_models/life_model.dart';
 import 'package:health_model/pages/motor_module/motor_detail.dart';
-import 'package:health_model/providers/life_provider.dart';
-
-import '../../hive/hive_model/policy_models/motor_model.dart';
-import '../../pages/life_module/life_detail.dart';
 import '../../shared/exports.dart';
-import 'package:timeago/timeago.dart' as timeago;
+// import 'package:timeago/timeago.dart' as timeago;
 
 // ignore: must_be_immutable
 class MotorTile extends StatelessWidget {

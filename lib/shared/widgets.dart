@@ -215,7 +215,6 @@ AppBar customAppbar(String title, BuildContext context) {
           ),
         ),
       ),
-      filterTooltip(provider, context),
       // InkWell(
       //   onTap: () {
       //     filterSheet(context, provider);
@@ -309,7 +308,7 @@ Widget homepageAppbar(BuildContext context) {
   );
 }
 
-Widget filterTooltip(FilterProvider provider, BuildContext context) {
+Widget filterTooltip(PolicySearchController provider, BuildContext context) {
   final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
 
   TextEditingController fromDate =
@@ -355,7 +354,7 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
         ),
       ),
       content: Container(
-          height: 360,
+          height: 380,
           width: 300,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,7 +375,7 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
                           Expanded(
                             flex: 1,
                             child: customButton("By Month", () {
-                              provider.filterByMonth();
+                              provider.filterByManual(oneMonthAgo, now);
                               // provider.clearSum();
                               provider.closeToolTip();
                             }, context, isExpanded: false),
@@ -384,15 +383,16 @@ Widget filterTooltip(FilterProvider provider, BuildContext context) {
                           Expanded(
                             flex: 1,
                             child: customButton("By Year", () {
-                              provider.filterByYear();
-                              // provider.clearSum();
+                              provider.filterByManual(oneYearAgo, now);
+                              provider.closeToolTip();
                             }, context, isExpanded: false),
                           ),
                         ],
                       ),
                       customButton("Till Now", () {
-                        provider.filterByTillNow();
+                        provider.filterByManual(foreverAgo, foreverMore);
                         // provider.clearSum();
+                        provider.closeToolTip();
                       }, context, isExpanded: true),
                     ],
                   ),
@@ -741,7 +741,7 @@ Widget dottedBorder({
     padding: const EdgeInsets.all(8.0),
     child: DottedBorder(
         dashPattern: const [6.7],
-        borderType: BorderType.RRect,
+        // borderType: BorderType.RRect,
         color: color,
         radius: const Radius.circular(12),
         child: Center(

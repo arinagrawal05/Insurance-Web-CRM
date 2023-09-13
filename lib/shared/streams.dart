@@ -471,8 +471,8 @@ Widget streamNominees(
   );
 }
 
-Widget renderAdvisor(
-    List advisorList, BuildContext context, TextEditingController advisorName) {
+Widget renderAdvisor(List advisorList, BuildContext context,
+    TextEditingController? advisorName) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
     width: MediaQuery.of(context).size.width,
