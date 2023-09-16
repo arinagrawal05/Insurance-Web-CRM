@@ -1,4 +1,4 @@
-import 'package:health_model/sheets/plan_sheet.dart';
+import '/sheets/plan_sheet.dart';
 
 import '../../shared/exports.dart';
 

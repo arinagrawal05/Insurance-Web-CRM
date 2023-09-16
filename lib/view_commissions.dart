@@ -1,4 +1,4 @@
-import 'package:health_model/shared/regex.dart';
+import '/shared/regex.dart';
 
 import '../../shared/exports.dart';
 
@@ -40,6 +40,8 @@ class _CommissionsPageState extends State<CommissionsPage> {
         tag: '${widget.type}ForPendingCommission',
         builder: (controller) {
           return Scaffold(
+            // drawer: toShowInMobile(child: customDrawer(), show: true),
+
             // backgroundColor: scaffoldColor,
             appBar: customAppbar("Pending Commission", context),
             body: RawKeyboardListener(
@@ -129,7 +131,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                           pinController,
                                           "Enter Pin",
                                           "Wrong Pin",
-                                          FieldRegex.integerRegExp,
+                                          FieldRegex.defaultRegExp,
                                           kType: TextInputType.number),
                                     ),
                                     customButton("Unlock", () {

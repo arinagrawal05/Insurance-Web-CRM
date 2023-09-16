@@ -1,7 +1,7 @@
 // import 'dart:convert';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:health_model/shared/const.dart';
+// import '/shared/const.dart';
 
 // class GenericInvestmentData {
 //   final String type;

@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 import '../pages/fd_module/renew_fd.dart';
 

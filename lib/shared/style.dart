@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'exports.dart';
 
 Widget heading(
   String text,
   double fontSize,
 ) {
+  double size = getmobile ? fontSize / 2 : fontSize;
   return Text(
     text,
-    style: fontStyle(fontSize),
+    style: fontStyle(size),
   );
 }
 
@@ -33,23 +33,35 @@ Widget productTileText(String text, double fontSize,
     {TextOverflow overF = TextOverflow.ellipsis,
     bool center = false,
     Color? color}) {
+  // final responsiveFontSize =
+  //     (SizeConfig.screenWidth! + SizeConfig.screenHeight!) * 0.025;
+
+  // // Calculate the final font size by considering the text scale factor
+  // final size = fontSize * SizeConfig.textScaleFactor! * responsiveFontSize;
+
+  // double size = (SizeConfig.screenHeight! + SizeConfig.screenHeight!) * 0.025;
+
+  double size = getmobile ? fontSize / 1.4 : fontSize;
+
   return Text(
     text,
     softWrap: true,
     overflow: overF,
     textAlign: center ? TextAlign.center : TextAlign.justify,
     style: GoogleFonts.nunito(
-        fontSize: fontSize, fontWeight: FontWeight.w500, color: color),
+        fontSize: size, fontWeight: FontWeight.w500, color: color),
   );
 }
 
 Widget simpleText(String text, double fontSize,
     {TextAlign align = TextAlign.left}) {
+  double size = getmobile ? fontSize / 2 : fontSize;
+
   return Text(
     text,
     textAlign: align,
     style: GoogleFonts.nunito(
-      fontSize: fontSize,
+      fontSize: size,
     ),
   );
 }

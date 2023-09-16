@@ -1,4 +1,6 @@
-import 'package:health_model/widgets/pay_system.dart';
+import 'package:firebase_core_web/firebase_core_web_interop.dart';
+
+import '/widgets/pay_system.dart';
 
 import '../../../../shared/exports.dart';
 
@@ -37,7 +39,7 @@ class EnterFdDetails extends StatelessWidget {
                     elevation: 12,
                     child: Container(
                       // margin: EdgeInsets.symmetric(horizontal: 30),
-                      height: 600,
+                      height: 630,
                       width: 300,
                       color: Theme.of(context).canvasColor,
                       child: Column(
@@ -85,7 +87,7 @@ class EnterFdDetails extends StatelessWidget {
                       color: Theme.of(context).canvasColor,
                       child: Container(
                         // color: Colors.red,
-                        height: 600,
+                        height: 630,
                         width: 900,
                         padding: const EdgeInsets.all(16.0),
                         child: Form(
@@ -115,7 +117,7 @@ class EnterFdDetails extends StatelessWidget {
                                   controller.initialDate,
                                   "Invested Date",
                                   "Enter Invested Date",
-                                  FieldRegex.integerRegExp,
+                                  FieldRegex.dateRegExp,
                                 ),
                               ),
                               Container(
@@ -128,43 +130,6 @@ class EnterFdDetails extends StatelessWidget {
                                   FieldRegex.integerRegExp,
                                 ),
                               ),
-                              // Container(
-                              //   // width: MediaQuery.of(context).size.width * 0.3,
-                              //   child: fdFormTextField(
-                              //       inceptionDate,
-                              //       "Inception Date:DD/MM/YYYY",
-                              //       "Enter Inception Date",
-                              //       Ionicons.infinite),
-                              // ),
-                              // formTextField(controller.investedAmt,
-                              //     "premium Amount", "Enter premium Amount",
-                              //     isCompulsory: true, onChange: (val) {}),
-                              // formTextField(
-                              //     advisorName, "advisor Name", "Enter Nominee Name          "  ,      FieldRegex.alphabetRegExp,),
-                              // // renderAdvisor(statsProvider.advisorList, context, advisorName),
-                              // fdropdown(
-                              //     "Select Term Period", defaultTerm, genderdropDownData,
-                              //     (value) {
-                              //   print("selected Value $value");
-                              //   setState(() {
-                              //     defaultTerm = value!;
-                              //   });
-                              // }),
-                              // Padding(
-                              //   padding: const EdgeInsets.symmetric(horizontal: 5),
-                              //   child: buttonText(
-                              //       "Your policy will be issued from " +
-                              //           issuedDate.text +
-                              //           " to " +
-                              //           dateTimetoText(textToDateTime(issuedDate.text).add(
-                              //               Duration(
-                              //                   days: (defaultTerm == ""
-                              //                           ? 1
-                              //                           : int.parse(defaultTerm)) *
-                              //                       365))),
-                              //       14,
-                              //       color: Colors.greenAccent),
-                              // ),
                               genericPicker(
                                   radius: 10,
                                   prefixIcon: Ionicons.hourglass_outline,
@@ -275,7 +240,6 @@ class EnterFdDetails extends StatelessWidget {
                                   isSingle: false,
                                   nomineeDate: controller.nomineeDob,
                                   nomineeRelation: controller.nomineeRelation),
-                              // streamNominees(provider.client_uid, context, nomineeName),
 
                               PaymodeSystem(
                                   bankDate: controller.bankDate,
@@ -293,15 +257,10 @@ class EnterFdDetails extends StatelessWidget {
                                 if (controller.fdFormKey.currentState
                                         ?.validate() ==
                                     true) {
+                                  // AppUtils.showSnackMessage(
+                                  //     "Qualified", "subtitle");
                                   // print("Take 1");
-                                  //     updateStats(
-                                  //         "sum_premium_amt",
-                                  //         statsProvider.premiumAmtSum +
-                                  //             int.parse(premiumAmt.text));
-                                  //     updateCompanybussiness(int.parse(premiumAmt.text),
-                                  //         provider.companyID);
-                                  //     updateCompanyPlans(
-                                  //         provider.companyID, "policy_count");
+
                                   controller.addFd(docId).then((value) {
                                     Navigator.pop(context);
                                     Navigator.pop(context);

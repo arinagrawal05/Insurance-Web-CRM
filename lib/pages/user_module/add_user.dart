@@ -1,4 +1,4 @@
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 // ignore: must_be_immutable
 class AddUserPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _AddUserPageState extends State<AddUserPage> {
   final address = TextEditingController();
   final dob = TextEditingController();
 
-  final _addBrandKey = GlobalKey<FormState>();
+  final _addUserKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _AddUserPageState extends State<AddUserPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _addBrandKey,
+            key: _addUserKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -154,7 +154,7 @@ class _AddUserPageState extends State<AddUserPage> {
                 // if (widget.model == null)
                 customButton("Add to Database", () async {
                   int memberCount;
-                  if (_addBrandKey.currentState?.validate() == true) {
+                  if (_addUserKey.currentState?.validate() == true) {
                     // AppUtils.showSnackMessage("Qualified", "subtitle");
                     if (widget.model == null) {
                       memberCount = provider.memberCount + 1;

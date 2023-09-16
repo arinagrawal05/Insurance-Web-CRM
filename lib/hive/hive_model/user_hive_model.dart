@@ -1,4 +1,4 @@
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 part 'user_hive_model.g.dart';
 

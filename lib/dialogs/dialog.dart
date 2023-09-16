@@ -1,4 +1,8 @@
-import 'package:health_model/shared/exports.dart';
+import 'dart:async';
+
+import 'package:get/get_connect/http/src/utils/utils.dart';
+
+import '/shared/exports.dart';
 
 // void adminDialog(
 //   BuildContext context,
@@ -70,7 +74,7 @@ void showCertificateDialog(FdHiveModel model) {
                     fdNoController,
                     "FD number",
                     "Enter FD number",
-                    FieldRegex.integerRegExp,
+                    FieldRegex.defaultRegExp,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -294,4 +298,86 @@ void showRenewLifeDialog(LifeHiveModel model) {
               ),
             ),
           ));
+}
+
+// bool? isUnlocked;
+// TextEditingController titleController = TextEditingController();
+// await showDialog(
+//   context: context,
+//   builder: (context) => AlertDialog(
+//     title: const Text(
+//       'Add New Event',
+//       textAlign: TextAlign.center,
+//     ),
+//     content: TextField(
+//       controller: titleController,
+//       textCapitalization: TextCapitalization.words,
+//       decoration: const InputDecoration(
+//         labelText: 'Title',
+//       ),
+//     ),
+//     actions: [
+//       TextButton(
+//         onPressed: () {
+//           Navigator.pop(context);
+//           isUnlocked = false;
+//         },
+//         child: const Text('Cancel'),
+//       ),
+//       TextButton(
+//         child: const Text('Unlock Add Event'),
+//         onPressed: () {
+//           if (titleController.text.isNotEmpty &&
+//               titleController.text == pin) {
+//             isUnlocked = true;
+//             return;
+//           }
+//         },
+//       )
+//     ],
+//   ),
+// );
+// if (isUnlocked != null) {
+//   return isUnlocked!;
+// } else {
+//   return false;
+// }
+Future<bool?> showTextFieldDialog(BuildContext context, String pin) async {
+  TextEditingController textFieldController = TextEditingController();
+  Completer<bool?> completer = Completer<bool?>();
+
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Enter Pin'),
+        content: TextField(
+          controller: textFieldController,
+          decoration: InputDecoration(
+            hintText: 'Enter Pin',
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop(null);
+            },
+          ),
+          TextButton(
+            child: Text('Unlock'),
+            onPressed: () {
+              String text = textFieldController.text;
+              bool isValid = text == pin; // Add your validation logic here
+              Navigator.of(context).pop(isValid);
+            },
+          ),
+        ],
+      );
+    },
+  ).then((value) {
+    completer.complete(value);
+  });
+
+  return completer.future;
 }

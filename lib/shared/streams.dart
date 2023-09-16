@@ -388,7 +388,6 @@ Widget streamRenewals(bool isPast, List<PolicyDataHiveModel> data) {
           );
         }
       });
-  ;
 }
 
 Widget streamTransactions(String filterKey, String filterValue) {

@@ -1,13 +1,4 @@
-import 'package:health_model/add_user.dart';
-import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
-import 'package:health_model/shared/exports.dart';
-import 'package:health_model/shared/statements.dart';
-import 'package:health_model/widgets/tiles/health_tile_widget.dart';
-import 'package:health_model/widgets/tiles/life_tile_widget.dart';
-import 'package:health_model/widgets/tiles/motor_tile_widget.dart';
-
-import 'hive/hive_model/policy_models/life_model.dart';
-import 'widgets/tiles/fd_tile_widget.dart';
+import '/shared/exports.dart';
 
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {
@@ -163,47 +154,52 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                 EnumUtils.convertTypeToKey(
                                     dashProvider.currentDashBoard) ||
                             dashProvider.currentDashBoard == ProductType.cms) {
-                          if (userProvider
+                          return renderTile(
+                              userProvider
                                   .getPoliciesByUser(widget.model.userid)[index]
-                                  .data!
-                                  .type ==
-                              EnumUtils.convertTypeToKey(ProductType.health)) {
-                            return HealthTile(
-                                context: context,
-                                model: userProvider
-                                    .getPoliciesByUser(
-                                        widget.model.userid)[index]
-                                    .data as PolicyHiveModel);
-                          } else if (userProvider
-                                  .getPoliciesByUser(widget.model.userid)[index]
-                                  .data!
-                                  .type ==
-                              EnumUtils.convertTypeToKey(ProductType.life)) {
-                            return LifeTile(
-                                context: context,
-                                model: userProvider
-                                    .getPoliciesByUser(
-                                        widget.model.userid)[index]
-                                    .data as LifeHiveModel);
-                          } else if (userProvider
-                                  .getPoliciesByUser(widget.model.userid)[index]
-                                  .data!
-                                  .type ==
-                              EnumUtils.convertTypeToKey(ProductType.motor)) {
-                            return MotorTile(
-                                context: context,
-                                model: userProvider
-                                    .getPoliciesByUser(
-                                        widget.model.userid)[index]
-                                    .data as MotorHiveModel);
-                          } else {
-                            return FDTile(
-                                context: context,
-                                model: userProvider
-                                    .getPoliciesByUser(
-                                        widget.model.userid)[index]
-                                    .data as FdHiveModel);
-                          }
+                                  .data,
+                              context);
+                          // if (userProvider
+                          //         .getPoliciesByUser(widget.model.userid)[index]
+                          //         .data!
+                          //         .type ==
+                          //     EnumUtils.convertTypeToKey(ProductType.health)) {
+                          //   return HealthTile(
+                          //       context: context,
+                          //       model: userProvider
+                          //           .getPoliciesByUser(
+                          //               widget.model.userid)[index]
+                          //           .data as PolicyHiveModel);
+                          // } else if (userProvider
+                          //         .getPoliciesByUser(widget.model.userid)[index]
+                          //         .data!
+                          //         .type ==
+                          //     EnumUtils.convertTypeToKey(ProductType.life)) {
+                          //   return LifeTile(
+                          //       context: context,
+                          //       model: userProvider
+                          //           .getPoliciesByUser(
+                          //               widget.model.userid)[index]
+                          //           .data as LifeHiveModel);
+                          // } else if (userProvider
+                          //         .getPoliciesByUser(widget.model.userid)[index]
+                          //         .data!
+                          //         .type ==
+                          //     EnumUtils.convertTypeToKey(ProductType.motor)) {
+                          //   return MotorTile(
+                          //       context: context,
+                          //       model: userProvider
+                          //           .getPoliciesByUser(
+                          //               widget.model.userid)[index]
+                          //           .data as MotorHiveModel);
+                          // } else {
+                          //   return FDTile(
+                          //       context: context,
+                          //       model: userProvider
+                          //           .getPoliciesByUser(
+                          //               widget.model.userid)[index]
+                          //           .data as FdHiveModel);
+                          // }
                         }
                       },
                     ),

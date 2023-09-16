@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 
 import '../../shared/exports.dart';
+import 'sizing_config.dart';
 
 Widget cachedImage(String companyImg) {
   return CachedNetworkImage(
@@ -128,11 +129,12 @@ Widget formTextField(TextEditingController controller, String labelText,
               if (value!.isEmpty) {
                 return errorText;
               }
+
+              if (!alphabetRegExp.hasMatch(value!)) {
+                return '$labelText does not match the criteria';
+              }
               return null;
             }
-            // if (!alphabetRegExp.hasMatch(value!)) {
-            //   return labelText + ' does not match the criteria';
-            // }
           },
         ),
       ),
@@ -174,6 +176,22 @@ Widget dashTag(BuildContext context, String leadingText) {
       child: simpleText(leadingText, 12));
 }
 
+Widget toShowInMobile({required Widget child, bool show = false}) {
+  if (show) {
+    if (getmobile) {
+      return child;
+    } else {
+      return Container();
+    }
+  } else {
+    if (!getmobile) {
+      return child;
+    } else {
+      return Container();
+    }
+  }
+}
+
 AppBar genericAppbar(
     {List<Widget>? actions, String? title, bool? centerTitle}) {
   return AppBar(
@@ -184,10 +202,72 @@ AppBar genericAppbar(
   );
 }
 
+Drawer customDrawer() {
+  final dashProvider = Get.find<DashProvider>();
+
+  return Drawer(
+    child: Container(
+      height: SizeConfig.screenHeight,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          // AspectRatio(
+          //     aspectRatio: 1,
+          //     child: Container(
+          //       child: Icon(
+          //         Ionicons.receipt_outline,
+          //         size: 20,
+          //       ),
+          //     )),
+          // // SizedBox(
+          // //   height: 50,
+          // // ),
+          sideBarTile("DashBoard", const Icon(Ionicons.diamond), () {
+            // provider.getStats(ProductType.health);
+            // provider.getCompaniesChartData(ProductType.health);
+            checkGraced();
+            // screenHeight;
+            // updateTemp();
+
+            dashProvider.changePage(CurrentPage.dashboard);
+          }, CurrentPage.dashboard, dashProvider.pageState),
+          sideBarTile("Clients", const Icon(Ionicons.person_outline), () {
+            // dashProvider.resetUserList();
+            dashProvider.changePage(CurrentPage.clients);
+          }, CurrentPage.clients, dashProvider.pageState),
+          sideBarTile("Companies", const Icon(Ionicons.build_outline), () {
+            dashProvider.changePage(CurrentPage.company);
+          }, CurrentPage.company, dashProvider.pageState),
+          sideBarTile(EnumUtils.convertTypeToKey(dashProvider.currentDashBoard),
+              const Icon(Ionicons.reader_outline), () {
+            // dashProvider.resetPolicyList();
+
+            dashProvider.changePage(CurrentPage.policy);
+          }, CurrentPage.policy, dashProvider.pageState),
+          sideBarTile("Commission", const Icon(Ionicons.cash_outline), () {
+            // dashProvider.resetCommissionList();
+
+            dashProvider.changePage(CurrentPage.commision);
+          }, CurrentPage.commision, dashProvider.pageState),
+          Spacer(),
+          sideBarTile("Homepage", const Icon(Ionicons.home_outline), () {
+            // dashProvider.resetCommissionList();
+            Navigator.pop(Get.context!);
+            Navigator.pop(Get.context!);
+            // dashProvider.changePage(CurrentPage.commision);
+          }, CurrentPage.commision, dashProvider.pageState),
+          // Image.network(
+          //     "https://static.vecteezy.com/system/resources/previews/019/051/660/original/men-working-illustration-png.png")
+        ],
+      ),
+    ),
+  );
+}
+
 AppBar customAppbar(String title, BuildContext context) {
   // final statsProvider = Get.find<HealthStatsProvider>();
   ;
-  final provider = Get.find<FilterProvider>();
+  // final provider = Get.find<FilterProvider>();
 
   return AppBar(
     title: Text(title),
@@ -195,26 +275,26 @@ AppBar customAppbar(String title, BuildContext context) {
     elevation: 0.0,
 
     actions: [
-      InkWell(
-        onTap: () {
-          // statsProvider.getStats("Health");
-          // statsProvider.getCompaniesChartData(ProductType.health);
-          checkGraced();
-          // updateTemp();
-        },
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            padding: const EdgeInsets.all(8),
-            decoration: dashBoxDex(context),
-            child: const Icon(
-              Ionicons.refresh_outline,
-              size: 15,
-            ),
-          ),
-        ),
-      ),
+      // InkWell(
+      //   onTap: () {
+      //     // statsProvider.getStats("Health");
+      //     // statsProvider.getCompaniesChartData(ProductType.health);
+      //     checkGraced();
+      //     // updateTemp();
+      //   },
+      //   child: AspectRatio(
+      //     aspectRatio: 1,
+      //     child: Container(
+      //       margin: const EdgeInsets.all(8),
+      //       padding: const EdgeInsets.all(8),
+      //       decoration: dashBoxDex(context),
+      //       child: const Icon(
+      //         Ionicons.refresh_outline,
+      //         size: 15,
+      //       ),
+      //     ),
+      //   ),
+      // ),
       // InkWell(
       //   onTap: () {
       //     filterSheet(context, provider);
@@ -271,9 +351,8 @@ Widget homepageAppbar(BuildContext context) {
   // final provider = Provider.of<FilterProvider>(context, listen: true);
 
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisAlignment: MainAxisAlignment.end,
     children: [
-      Container(),
       InkWell(
         onTap: () {
           navigate(SettingsPage(), context);
@@ -637,54 +716,6 @@ Widget customCircularLoader(String term) {
   );
 }
 
-Widget statsBox(String count, IconData icon, BuildContext context) {
-  return AspectRatio(
-    aspectRatio: 1,
-    child: Container(
-      margin: const EdgeInsets.only(right: 5, bottom: 5, top: 10),
-      padding: const EdgeInsets.all(20),
-      decoration: dashBoxDex(context),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Card(
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Icon(
-                icon,
-                size: 22,
-              ),
-            ),
-          ),
-          heading1(count, 20)
-        ],
-      ),
-    ),
-  );
-}
-
-Widget birthdayWidget(BuildContext context) {
-  return Container(
-      decoration: dashBoxDex(context),
-      padding: const EdgeInsets.all(8),
-      // width: 400,
-      // height: 335,
-      alignment: Alignment.topCenter,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: heading("Today's Birthday", 22),
-            ),
-            // streamUsers(false, isBirthday: true),
-          ],
-        ),
-      ));
-}
-
 isGraced(DateTime renewalDate) {
   final now = DateTime.now();
   final oneMonthAgo = now.add(const Duration(days: 30));
@@ -692,6 +723,41 @@ isGraced(DateTime renewalDate) {
     return true;
   }
   return false;
+}
+
+Widget renderTile(
+    GenericInvestmentHiveData? currentModel, BuildContext context) {
+  if (currentModel == null) {
+    return Container();
+  }
+
+  if (currentModel is PolicyHiveModel) {
+    PolicyHiveModel policyModel = currentModel;
+    return HealthTile(context: context, model: policyModel);
+  } else {
+    if (currentModel is FdHiveModel) {
+      FdHiveModel fdModel = currentModel;
+
+      return FDTile(
+        context: context,
+        model: fdModel,
+      );
+    } else {
+      if (currentModel is LifeHiveModel) {
+        LifeHiveModel lifeModel = currentModel;
+
+        return LifeTile(context: context, model: lifeModel);
+      } else {
+        if (currentModel is MotorHiveModel) {
+          MotorHiveModel motorModel = currentModel;
+
+          return MotorTile(context: context, model: motorModel);
+        } else {
+          return Container();
+        }
+      }
+    }
+  }
 }
 
 Widget userCardShow(String label, String value) {

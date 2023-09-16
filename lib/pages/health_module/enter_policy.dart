@@ -105,6 +105,9 @@ class _EnterPolicyDetailsState extends State<EnterPolicyDetails> {
                     if (value!.isEmpty) {
                       return "Enter premium Amount";
                     }
+                    if (!FieldRegex.integerRegExp.hasMatch(value!)) {
+                      return 'premium Amount does not match the criteria';
+                    }
                     return null;
                     // }
                   },

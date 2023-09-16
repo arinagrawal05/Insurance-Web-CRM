@@ -50,6 +50,7 @@ dependencies:
   # smart_select:
   syncfusion_flutter_charts:
   url_launcher:
+  table_calendar: 
   # random_string: ^2.3.1
   # file_picker: ^3.0.4
   # image_picker_for_web: ^2.1.2

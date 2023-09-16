@@ -20,6 +20,7 @@ class _UsersPageState extends State<UsersPage> {
     // final dashProvider = Provider.of<DashProvider>(context, listen: false);
 
     return Scaffold(
+      // drawer: toShowInMobile(child: customDrawer(), show: true),
       appBar: customAppbar("Clients list", context),
       body: RawKeyboardListener(
         autofocus: true,

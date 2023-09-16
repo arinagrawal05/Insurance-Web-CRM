@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:health_model/providers/theme_provider.dart';
-import 'package:provider/provider.dart';
 
-import 'functions.dart';
+import '/shared/exports.dart';
 
 class ChangeThemeButtonWidget extends StatelessWidget {
   const ChangeThemeButtonWidget({super.key});

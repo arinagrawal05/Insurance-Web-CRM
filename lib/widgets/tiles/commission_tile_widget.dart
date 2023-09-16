@@ -1,4 +1,4 @@
-import 'package:health_model/hive/hive_model/commission_models/commission_hive_model.dart';
+import '/hive/hive_model/commission_models/commission_hive_model.dart';
 
 import '../../shared/exports.dart';
 // import 'package:timeago/timeago.dart' as timeago;
@@ -18,16 +18,16 @@ class CommissionTile extends StatelessWidget {
       onLongPress: () {
         AppUtils.showSnackMessage(model.commissionId + " is presented", "");
       },
-      onDoubleTap: () {
-        // AppUtils.showSnackMessage(model.commissionId + " is deleted", "");
-        FirebaseFirestore.instance
-            .collection("Commission")
-            .doc(model.commissionId)
-            .delete()
-            .then((value) {
-          AppUtils.showSnackMessage(model.commissionId + " is deleted", "");
-        });
-      },
+      // onDoubleTap: () {
+      //   // AppUtils.showSnackMessage(model.commissionId + " is deleted", "");
+      //   FirebaseFirestore.instance
+      //       .collection("Commission")
+      //       .doc(model.commissionId)
+      //       .delete()
+      //       .then((value) {
+      //     AppUtils.showSnackMessage(model.commissionId + " is deleted", "");
+      //   });
+      // },
       child: Container(
         // height: 120,
         // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),

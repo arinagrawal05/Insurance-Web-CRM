@@ -1,6 +1,6 @@
-import 'package:health_model/pages/motor_module/enter_vehicle.dart';
-import 'package:health_model/providers/motor_provider.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
+import '/pages/motor_module/enter_vehicle.dart';
+import '/providers/motor_provider.dart';
+import '/pages/fd_module/renew_fd.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 import '../../shared/exports.dart';
@@ -448,16 +448,7 @@ Widget lifeRenewalTile(
                 width: 270,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: model.data!.isMale
-                          ? Colors.blueAccent
-                          : Colors.pinkAccent,
-                      child: Center(
-                        child: Icon(model.data!.isMale
-                            ? Ionicons.male
-                            : Ionicons.female),
-                      ),
-                    ),
+                    companyLogo(model.data!.companyLogo),
                     const SizedBox(
                       width: 20,
                     ),
@@ -465,7 +456,7 @@ Widget lifeRenewalTile(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         heading(model.data!.name, 16),
-                        productTileText(model.data!.email, 14),
+                        productTileText(thisModel.lifeNo, 14),
                       ],
                     ),
                   ],
@@ -563,16 +554,7 @@ Widget policyRenewalTile(
                 width: 270,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: model.data!.isMale
-                          ? Colors.blueAccent
-                          : Colors.pinkAccent,
-                      child: Center(
-                        child: Icon(model.data!.isMale
-                            ? Ionicons.male
-                            : Ionicons.female),
-                      ),
-                    ),
+                    companyLogo(model.data!.companyLogo),
                     const SizedBox(
                       width: 20,
                     ),
@@ -580,7 +562,7 @@ Widget policyRenewalTile(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         heading(model.data!.name, 16),
-                        productTileText(model.data!.email, 14),
+                        productTileText(thisModel.policyNo, 14),
                       ],
                     ),
                   ],
@@ -680,16 +662,7 @@ Widget fDRenewalTile(
                 width: 270,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: model.data!.isMale
-                          ? Colors.blueAccent
-                          : Colors.pinkAccent,
-                      child: Center(
-                        child: Icon(model.data!.isMale
-                            ? Ionicons.male
-                            : Ionicons.female),
-                      ),
-                    ),
+                    companyLogo(model.data!.companyLogo),
                     const SizedBox(
                       width: 20,
                     ),
@@ -697,7 +670,7 @@ Widget fDRenewalTile(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         heading(model.data!.name, 16),
-                        productTileText(model.data!.email, 14),
+                        productTileText(thisModel.fdNo, 14),
                       ],
                     ),
                   ],

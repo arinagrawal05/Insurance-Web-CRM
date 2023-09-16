@@ -1,4 +1,4 @@
-import 'package:health_model/providers/life_provider.dart';
+import '/providers/life_provider.dart';
 
 import '../../../../shared/exports.dart';
 import '../../providers/motor_provider.dart';

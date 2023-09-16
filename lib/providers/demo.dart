@@ -6,7 +6,7 @@
 // import 'package:grocery_admin_panel/controllers/MenuController.dart';
 // import 'package:grocery_admin_panel/screens/loading_manager.dart';
 // import 'package:grocery_admin_panel/services/utils.dart';
-// import 'package:grocery_admin_panel/widgets/buttons.dart';
+// import 'grocery_admin_panel/widgets/buttons.dart';
 // import 'package:grocery_admin_panel/widgets/header.dart';
 // import 'package:grocery_admin_panel/widgets/side_menu.dart';
 // import 'package:grocery_admin_panel/widgets/text_widget.dart';

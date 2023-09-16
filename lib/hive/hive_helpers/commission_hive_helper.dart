@@ -1,4 +1,4 @@
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 class CommissionHiveHelper {
   static const String _healthCommissionBoxName = 'healthCommissionBox';

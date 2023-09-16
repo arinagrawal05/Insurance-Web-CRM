@@ -1,4 +1,4 @@
-import 'package:health_model/hive/hive_model/commission_models/commission_hive_model.dart';
+import '/hive/hive_model/commission_models/commission_hive_model.dart';
 import '../../shared/exports.dart';
 
 void confirmCommission(

@@ -1,4 +1,4 @@
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 class ItemLabeling {
   int value1 = 0;
@@ -25,7 +25,7 @@ class GeneralStatsProvider extends GetxController {
   int plans_count = 0;
   int companies_count = 0;
   Box<PolicyDataHiveModel>? policyBox;
-
+  Map<DateTime, List<GenericInvestmentHiveData>> mySelectedEvents = {};
   List<CompanyChartData> chartCompanyData = [];
   List<PolicyStatusChartData> policyStatusChartData = [];
   List<PolicyDistributionChartData> policyDistributionChartData = [];
@@ -85,6 +85,8 @@ class GeneralStatsProvider extends GetxController {
     chartCompanyData = [];
     Map<String, int> companyBusiness = {};
     Map<String, int> companyPolicies = {};
+    // Map<DateTime, List> mySelectedEvents = {};
+
     FirebaseFirestore.instance
         .collection("Companies")
         .where("company_type", isEqualTo: companyType)
@@ -118,26 +120,62 @@ class GeneralStatsProvider extends GetxController {
         policyBox!.values.forEach((element) {
           int amount = 0;
           int policyCount = 0;
-
           // print(type + element.data)
           if (type == ProductType.health && element.data is PolicyHiveModel) {
             var s = element.data as PolicyHiveModel;
             amount = s.premuimAmt;
+
             policyCount += 1;
+            if (mySelectedEvents[s.renewalDate] != null) {
+              mySelectedEvents[s.renewalDate]?.add(
+                element.data!,
+              );
+            } else {
+              mySelectedEvents[s.renewalDate] = [
+                element.data!,
+                // "policyNo": s.policyNo,
+              ];
+            }
+
+            // mySelectedEvents[s.renewalDate]?.add({
+            //  "model": s.name,
+            //   "policyNo": s.policyNo,
+            // });
           } else if (type == ProductType.fd && element.data is FdHiveModel) {
             var s = element.data as FdHiveModel;
             amount = s.investedAmt;
             policyCount += 1;
+            if (mySelectedEvents[s.renewalDate] != null) {
+              mySelectedEvents[s.renewalDate]?.add(
+                element.data!,
+              );
+            } else {
+              mySelectedEvents[s.renewalDate] = [
+                element.data!,
+                // "policyNo": s.policyNo,
+              ];
+            }
           } else if (type == ProductType.life &&
               element.data is LifeHiveModel) {
             var s = element.data as LifeHiveModel;
             amount = s.premuimAmt;
             policyCount += 1;
+            mySelectedEvents[s.renewalDate]?.add(element.data!);
           } else if (type == ProductType.motor &&
               element.data is MotorHiveModel) {
             var s = element.data as MotorHiveModel;
             amount = s.premiumAmt;
             policyCount += 1;
+            if (mySelectedEvents[s.renewalDate] != null) {
+              mySelectedEvents[s.renewalDate]?.add(
+                element.data!,
+              );
+            } else {
+              mySelectedEvents[s.renewalDate] = [
+                element.data!,
+                // "policyNo": s.policyNo,
+              ];
+            }
           }
           if (companyBusiness.containsKey(element.data!.companyName)) {
             companyBusiness[element.data!.companyName] =

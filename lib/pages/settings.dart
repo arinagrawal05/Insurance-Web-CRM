@@ -1,5 +1,5 @@
-import 'package:health_model/pages/panel.dart';
-import 'package:health_model/shared/exports.dart';
+import '/pages/panel.dart';
+import '/shared/exports.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -83,12 +83,22 @@ class SettingsPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               heading("Admin Settings", 20),
-              customButton("Open Settings", () {
-                navigate(
-                    PanelPage(
-                      statsProvider: statsProvider,
-                    ),
-                    context);
+              customButton("Open Panel", () async {
+                bool? isValid =
+                    await showTextFieldDialog(context, statsProvider.adminPin);
+                if (isValid == null) {
+                  return;
+                } else if (isValid) {
+                  navigate(
+                      PanelPage(
+                        statsProvider: statsProvider,
+                      ),
+                      context);
+                  // Handle the case where the user entered valid input
+                } else {
+                  AppUtils.showSnackMessage("Something Went Wrong",
+                      "Contact Admin if Problem occurs multiple times");
+                }
               }, context, isExpanded: false)
             ],
           ),

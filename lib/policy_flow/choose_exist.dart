@@ -39,7 +39,7 @@ class ChooseExisting extends StatelessWidget {
                         provider.portFdNo,
                         "FD No",
                         "Enter FD No",
-                        FieldRegex.integerRegExp,
+                        FieldRegex.defaultRegExp,
                       ),
                     ),
                     SizedBox(

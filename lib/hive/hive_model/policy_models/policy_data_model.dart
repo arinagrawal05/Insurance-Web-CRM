@@ -1,7 +1,7 @@
-import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
+import '/hive/hive_model/policy_models/motor_model.dart';
 
 import 'generic_investment_data.dart';
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 part 'policy_data_model.g.dart';
 

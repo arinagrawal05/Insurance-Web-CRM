@@ -1,5 +1,3 @@
-import 'package:health_model/pages/privacy_policy.dart';
-
 import '../../../shared/exports.dart';
 
 Widget footerWidget(DashProvider provider, BuildContext context) {
@@ -113,8 +111,8 @@ Widget contactSection() {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                heading1(AppConsts.carePhone1, 14),
-                heading1(AppConsts.carePhone2, 14),
+                heading1("+91 ${AppConsts.carePhone1}", 14),
+                heading1("+91 ${AppConsts.carePhone2}", 14),
               ],
             ),
           ],
@@ -151,8 +149,14 @@ Widget contactSection() {
             const SizedBox(
               width: 20,
             ),
-            socialIcon(Ionicons.logo_whatsapp, Colors.green, () {}),
-            socialIcon(Ionicons.mail, Colors.grey, () {}),
+            socialIcon(Ionicons.logo_whatsapp, Colors.green, () {
+              launchURL(
+                  "https://wa.me/${AppConsts.carePhone1}?text=Hi, I am ${AppConsts.adminName}, and i am having some issue with Wealth Pro");
+            }),
+            socialIcon(Ionicons.mail, Colors.grey, () {
+              launchURL(
+                  "mailto:${AppConsts.careEmail1}?subject=Hi, I am ${AppConsts.adminName}, and i am having some issue with Wealth Pro");
+            }),
             socialIcon(Ionicons.logo_twitter, Colors.cyanAccent, () {}),
           ],
         )
@@ -216,6 +220,7 @@ Widget perkWidget(DateTime? validityDate) {
         perkTile("Auto Generated Commission Files"),
         perkTile("All Investments under one Portal"),
         perkTile("Consolidated Client profile"),
+        perkTile("Sync Renewal Calender"),
         perkTile("Download Clients and policies Data"),
         perkTile("Supports Dark theme"),
         perkTile("Pin secured Admin Panel"),
@@ -359,7 +364,7 @@ Widget stepUnitWidget(String title, String subtext, IconData icon) {
 
 Widget productBoxWidget(String title, String imageUrl, Color backgroundColor,
     IconData icon, void Function()? ontap) {
-  double size = 150;
+  double size = getmobile ? SizeConfig.screenWidth! / 3 : 150;
   return InkWell(
       onTap: ontap,
       child: Column(
@@ -437,8 +442,10 @@ Row dashWidgetHeader() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Column(
-        children: [bar(), bar(), bar()],
+      toShowInMobile(
+        child: Column(
+          children: [bar(), bar(), bar()],
+        ),
       ),
       ClipRRect(
         borderRadius: BorderRadius.circular(5),
@@ -461,8 +468,10 @@ Row dashWidgetHeader() {
               ),
             )),
       ),
-      Column(
-        children: [bar(), bar(), bar()],
+      toShowInMobile(
+        child: Column(
+          children: [bar(), bar(), bar()],
+        ),
       ),
     ],
   );

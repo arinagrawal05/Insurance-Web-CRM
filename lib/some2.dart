@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:health_model/hive/hive_helpers/policy_hive_helper.dart';
-import 'package:health_model/hive/hive_helpers/user_hive_helper.dart';
+import '/hive/hive_helpers/policy_hive_helper.dart';
+import '/hive/hive_helpers/user_hive_helper.dart';
 
 class SamplePage extends StatelessWidget {
   @override

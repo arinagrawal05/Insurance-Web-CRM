@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:health_model/shared/regex.dart';
+import '/shared/regex.dart';
 
 import '../../../shared/exports.dart';
 
@@ -130,7 +130,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                   investedDate,
                                   "Invested Date",
                                   "Enter Invested Date",
-                                  FieldRegex.integerRegExp,
+                                  FieldRegex.dateRegExp,
                                 ),
                               ),
                               if (
@@ -141,7 +141,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                     fdNo,
                                     "FD no",
                                     "Enter FD no",
-                                    FieldRegex.integerRegExp,
+                                    FieldRegex.defaultRegExp,
                                   ),
                                 ),
                                 Container(
@@ -149,7 +149,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                     folioNo,
                                     "Folio no",
                                     "Enter Folio no",
-                                    FieldRegex.integerRegExp,
+                                    FieldRegex.defaultRegExp,
                                   ),
                                 ),
                                 Container(
@@ -165,7 +165,7 @@ class _EditFdDetailsState extends State<EditFdDetails> {
                                     maturityDate,
                                     "Maturity Date",
                                     "Enter Maturity Date",
-                                    FieldRegex.integerRegExp,
+                                    FieldRegex.dateRegExp,
                                   ),
                                 ),
                               ],

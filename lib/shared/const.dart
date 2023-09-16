@@ -4,10 +4,11 @@ import 'exports.dart';
 class AppConsts {
   static String careEmail1 = "arinagrawal07128@gmail.com";
   static String careEmail2 = "ayushagr2000@gmail.com";
-  static String carePhone1 = "+91 7898291900";
-  static String carePhone2 = "+91 8319385853";
-  static String adminName = "Bk Agrawal";
+  static String carePhone1 = "7898291900";
+  static String carePhone2 = "8319385853";
+  static String adminName = "BK Agrawal";
   static String adminPhone = "9425473737";
+  static String adminEmail = "demo@gmail.com";
   // static String health = "Health";
 
   static String health = "Health";
@@ -20,29 +21,28 @@ class AppConsts {
   static String statsCode = "KdMlwAoBwwkdREqX3hIe";
 
   static FirebaseOptions firebaseConfigs = const FirebaseOptions(
-            apiKey: "AIzaSyA9-12boKtCNRHz1nHEqgawSto9o-RK6-M",
+      apiKey: "AIzaSyA9-12boKtCNRHz1nHEqgawSto9o-RK6-M",
       authDomain: "health-model-e0171.firebaseapp.com",
       projectId: "health-model-e0171",
       storageBucket: "health-model-e0171.appspot.com",
       messagingSenderId: "222425562656",
       appId: "1:222425562656:web:4b924f69b89becaac64645",
-      measurementId: "G-XQKBC6HW5Y"
-      );
+      measurementId: "G-XQKBC6HW5Y");
   static UserHiveModel userModel = UserHiveModel(
-    name: "Arin Agrawal",
-    address: "Choubey Colony",
-    phone: "7898291900",
-    email: "arinagrawal07128@gmailcom",
+    name: "John Doe",
+    address: "London Street 4",
+    phone: "1234567890",
+    email: "johndoe@gmailcom",
     userid: "06885b49-8870-40df-a27a-46326b409a10",
     isMale: true,
     dob: DateTime.now(),
     membersCount: 3,
   );
   static FdHiveModel fdModel = FdHiveModel(
-      name: "Arin Agrawal",
-      address: "Choubey Colony",
-      phone: "7898291900",
-      email: "arinagrawal07128@gmailcom",
+      name: "John Doe",
+      address: "London Street 4",
+      phone: "1234567890",
+      email: "johndoe@gmailcom",
       userid: "06885b49-8870-40df-a27a-46326b409a10",
       isMale: true,
       dob: DateTime.now(),
@@ -76,10 +76,10 @@ class AppConsts {
       portFdNo: "",
       fdStatus: "active");
   static LifeHiveModel lifeModel = LifeHiveModel(
-      name: "Arin Agrawal",
-      address: "Choubey Colony",
-      phone: "7898291900",
-      email: "arinagrawal07128@gmailcom",
+      name: "John Doe",
+      address: "London Street 4",
+      phone: "1234567890",
+      email: "johndoe@gmailcom",
       userid: "06885b49-8870-40df-a27a-46326b409a10",
       isMale: true,
       dob: DateTime.now(),
@@ -110,10 +110,10 @@ class AppConsts {
       timesPaid: 1,
       payterm: "Quarterly");
   static GenericInvestmentHiveData generalData = GenericInvestmentHiveData(
-      name: "Arin Agrawal",
-      address: "Choubey Colony",
-      phone: "7898291900",
-      email: "arinagrawal07128@gmailcom",
+      name: "John Doe",
+      address: "London Street 4",
+      phone: "1234567890",
+      email: "johndoe@gmailcom",
       userid: "06885b49-8870-40df-a27a-46326b409a10",
       isMale: true,
       dob: DateTime.now(),
@@ -124,7 +124,7 @@ class AppConsts {
       companyName: "Niva Health Insurance",
       type: "FD",
       payMode: "",
-      renewalDate: oneYearMote);
+      renewalDate: DateTime.now().add(Duration(days: 365)));
 
   static List<String> healthPolicyStatusList = [
     "all status",
@@ -170,3 +170,16 @@ class AppConsts {
     }
   }
 }
+
+final oneYearMore = DateTime.now().add(const Duration(days: 365));
+
+final oneMonthMore = DateTime.now().add(const Duration(days: 30));
+
+final now = DateTime.now();
+final oneWeekAgo = DateTime.now().subtract(const Duration(days: 7));
+final oneMonthAgo = DateTime.now().subtract(const Duration(days: 30));
+final threeMonthsAgo = DateTime.now().subtract(const Duration(days: 90));
+final sixMonthsAgo = DateTime.now().subtract(const Duration(days: 180));
+final oneYearAgo = DateTime.now().subtract(const Duration(days: 365));
+final foreverAgo = DateTime.now().subtract(const Duration(days: 50 * 365));
+final foreverMore = DateTime.now().add(const Duration(days: 50 * 365));

@@ -1,4 +1,4 @@
-import 'package:health_model/pages/motor_module/motor_detail.dart';
+import '/pages/motor_module/motor_detail.dart';
 import '../../shared/exports.dart';
 // import 'package:timeago/timeago.dart' as timeago;
 

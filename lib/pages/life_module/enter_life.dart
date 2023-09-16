@@ -113,6 +113,9 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                           if (value!.isEmpty) {
                             return "Enter premium Amount";
                           }
+                          if (!FieldRegex.integerRegExp.hasMatch(value!)) {
+                            return 'premium Amount does not match the criteria';
+                          }
                           return null;
                           // }
                         },
@@ -293,6 +296,7 @@ class _EnterLifeDetailsState extends State<EnterLifeDetails> {
                     termSelected: controller.payModeSelected),
                 customButton("Add Life to Database", () async {
                   if (controller.lifeFormKey.currentState?.validate() == true) {
+                    // AppUtils.showSnackMessage("Qualified", "subtitle");
                     if (widget.model != null) {
                       controller.editLife(
                         widget.model!.lifeID,

@@ -1,4 +1,4 @@
-// import 'package:health_model/pages/fd_module/fd_detail.dart';
+// import '/pages/fd_module/fd_detail.dart';
 
 import '../../pages/fd_module/fd_detail.dart';
 import '../../shared/exports.dart';

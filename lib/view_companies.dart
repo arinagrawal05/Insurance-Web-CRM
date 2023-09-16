@@ -1,5 +1,4 @@
-import 'package:health_model/add_company.dart';
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 class CompaniesPage extends StatefulWidget {
   final ProductType type;
@@ -15,6 +14,8 @@ class _CompaniesPageState extends State<CompaniesPage> {
   Widget build(BuildContext context) {
     // TextEditingController controller = TextEditingController();
     return Scaffold(
+      // drawer: toShowInMobile(child: customDrawer(), show: true),
+
       // backgroundColor: scaffoldColor,
       appBar: customAppbar("Companies list", context),
       body: SingleChildScrollView(

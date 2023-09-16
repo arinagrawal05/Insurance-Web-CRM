@@ -54,7 +54,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                         policyNumber,
                         "New Policy Number",
                         "Enter New Policy Number",
-                        FieldRegex.integerRegExp,
+                        FieldRegex.defaultRegExp,
                       ),
                     ),
                     SizedBox(

@@ -1,4 +1,4 @@
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 // ignore: must_be_immutable
 class EditDetailsPage extends StatefulWidget {
@@ -51,7 +51,6 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
     final statsProvider = Get.find<DashProvider>();
 
     return Scaffold(
-      appBar: genericAppbar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

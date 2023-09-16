@@ -1,11 +1,4 @@
-import 'package:health_model/widgets/tiles/health_tile_widget.dart';
-import 'package:health_model/widgets/tiles/motor_tile_widget.dart';
-
-import 'hive/hive_model/policy_models/generic_investment_data.dart';
-
 import '../../shared/exports.dart';
-import 'widgets/tiles/fd_tile_widget.dart';
-import 'widgets/tiles/life_tile_widget.dart';
 
 class PoliciesPage extends StatefulWidget {
   final ProductType type;
@@ -34,6 +27,8 @@ class _PoliciesPageState extends State<PoliciesPage> {
     final searchController = Get.put(PolicySearchController(type: widget.type),
         tag: widget.type.name);
     return Scaffold(
+        // drawer: toShowInMobile(child: customDrawer(), show: true),
+
         // backgroundColor: scaffoldColor,
         appBar: customAppbar("Clients Data", context),
         body: RawKeyboardListener(
@@ -111,42 +106,7 @@ class _PoliciesPageState extends State<PoliciesPage> {
                           itemBuilder: (context, index) {
                             GenericInvestmentHiveData? currentModel =
                                 controller.policies[index].data;
-
-                            if (currentModel == null) {
-                              return Container();
-                            }
-
-                            if (currentModel is PolicyHiveModel) {
-                              PolicyHiveModel policyModel = currentModel;
-
-                              return HealthTile(
-                                  context: context, model: policyModel);
-                            } else {
-                              if (currentModel is FdHiveModel) {
-                                FdHiveModel fdModel = currentModel;
-
-                                return FDTile(
-                                  context: context,
-                                  model: fdModel,
-                                );
-                              } else {
-                                if (currentModel is LifeHiveModel) {
-                                  LifeHiveModel lifeModel = currentModel;
-
-                                  return LifeTile(
-                                      context: context, model: lifeModel);
-                                } else {
-                                  if (currentModel is MotorHiveModel) {
-                                    MotorHiveModel motorModel = currentModel;
-
-                                    return MotorTile(
-                                        context: context, model: motorModel);
-                                  } else {
-                                    return Container();
-                                  }
-                                }
-                              }
-                            }
+                            return renderTile(currentModel, context);
                           });
                     }),
               )

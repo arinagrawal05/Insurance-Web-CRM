@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:health_model/shared/regex.dart';
-import 'package:health_model/shared/exports.dart';
-import 'package:health_model/sheets/plan_sheet.dart';
+// import '
+import '/shared/exports.dart';
+import '/sheets/plan_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
@@ -100,7 +100,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                   name,
                   "Company Name",
                   "Enter Company Name",
-                  FieldRegex.nameRegExp,
+                  FieldRegex.defaultRegExp,
                 ),
 
                 dashProvider.currentDashBoard != ProductType.fd
@@ -173,23 +173,33 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                                     isEqualTo: widget.companyid)
                                 .get()
                                 .then((value) {
-                              print(value.docs.isNotEmpty);
-
                               if (value.docs.isNotEmpty) {
-                                print(value.docs.isNotEmpty);
-                                var id = EnumUtils.convertTypeToKey(
-                                        dashProvider.currentDashBoard) +
-                                    "_id";
+                                String id =
+                                    "${EnumUtils.convertTypeToKey(dashProvider.currentDashBoard).toLowerCase()}_id";
+                                if (id == "health_id") {
+                                  id = "policy_id";
+                                }
+                                print(id);
+                                if (name.text != widget.model!.name) {}
                                 for (var i = 0; i < value.docs.length; i++) {
-                                  // print(value.docs[i]["fd_id"]);
-                                  // sum += value.docs[i]["invested_amt"];
-                                  FirebaseFirestore.instance
-                                      .collection("Policies")
-                                      .doc(value.docs[i]["policy_id"])
-                                      .update({"company_logo": imageUrll});
-
-                                  print("Successfully Temp Updated " +
-                                      value.docs[i]["policy_id"]);
+                                  if (name.text != widget.model!.name) {
+                                    FirebaseFirestore.instance
+                                        .collection("Policies")
+                                        .doc(value.docs[i][id])
+                                        .update({
+                                      "company_name": name.text,
+                                    });
+                                  }
+                                  if (imageUrll != widget.model!.companyImg) {
+                                    FirebaseFirestore.instance
+                                        .collection("Policies")
+                                        .doc(value.docs[i][id])
+                                        .update({
+                                      "company_logo": imageUrll,
+                                    });
+                                  }
+                                  updateSpecificProductData(
+                                      dashProvider.currentDashBoard);
                                 }
                               }
                             });

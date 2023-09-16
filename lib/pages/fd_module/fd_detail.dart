@@ -1,7 +1,7 @@
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
-import 'package:health_model/pages/fd_module/edit_fd.dart';
-import 'package:health_model/pages/fd_module/renew_fd.dart';
+import '/pages/fd_module/edit_fd.dart';
+import '/pages/fd_module/renew_fd.dart';
 
 // ignore: must_be_immutable
 class FdDetailPage extends StatelessWidget {
@@ -19,51 +19,49 @@ class FdDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: genericAppbar(
         actions: [
-          model.renewalDate.isAfter(DateTime.now())
-              ? model.fdStatus == "applied"
-                  ? customButton("Recieve Certificate", () {
-                      showCertificateDialog(model);
-                      // Get.snackbar(
-                      //   "hello",
-                      //   "this is message",
-                      //   snackPosition: SnackPosition.BOTTOM,
-                      // );
-                      // print("object");
-                      // navigate(RenewPolicyPage(model: model),
-                      // context);
+          model.fdStatus == "applied"
+              ? customButton("Recieve Certificate", () {
+                  showCertificateDialog(model);
+                  // Get.snackbar(
+                  //   "hello",
+                  //   "this is message",
+                  //   snackPosition: SnackPosition.BOTTOM,
+                  // );
+                  // print("object");
+                  // navigate(RenewPolicyPage(model: model),
+                  // context);
+                }, context, isExpanded: false)
+              : model.fdStatus == "inHand"
+                  ? customButton("handover to customer", () {
+                      print("object");
+                      genericConfirmSheet(
+                          context, Statements.handoverFD, "handover", () {
+                        FirebaseFirestore.instance
+                            .collection("Policies")
+                            .doc(model.fdId)
+                            .update({
+                          "fd_given_date": DateTime.now(),
+                          "fd_status": "handover"
+                        }).then((value) {
+                          PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                      });
+                      // navigate(
+                      //     RenewPolicyPage(model: model), context);
                     }, context, isExpanded: false)
-                  : model.fdStatus == "inHand"
-                      ? customButton("handover to customer", () {
-                          print("object");
-                          genericConfirmSheet(
-                              context, Statements.handoverFD, "handover", () {
-                            FirebaseFirestore.instance
-                                .collection("Policies")
-                                .doc(model.fdId)
-                                .update({
-                              "fd_given_date": DateTime.now(),
-                              "fd_status": "handover"
-                            }).then((value) {
-                              PolicyHiveHelper.fetchFDPoliciesFromFirebase();
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            });
-                          });
-                          // navigate(
-                          //     RenewPolicyPage(model: model), context);
+                  : Row(
+                      children: [
+                        customButton("Renew", () {
+                          // AppUtils.showSnackMessage(
+                          // "FD Redeemed Successfuly",
+                          // "This amount is given to client");
+                          // print("object");
+                          navigate(RenewFdPage(model: model), context);
                         }, context, isExpanded: false)
-                      : Container()
-              : Row(
-                  children: [
-                    customButton("Renew", () {
-                      // AppUtils.showSnackMessage(
-                      // "FD Redeemed Successfuly",
-                      // "This amount is given to client");
-                      // print("object");
-                      navigate(RenewFdPage(model: model), context);
-                    }, context, isExpanded: false)
-                  ],
-                ),
+                      ],
+                    ),
           model.fdStatus == "handover"
               ? customButton("Redeem", () {
                   print("object");

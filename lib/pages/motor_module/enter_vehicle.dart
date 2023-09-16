@@ -1,5 +1,5 @@
-import 'package:health_model/pages/motor_module/enter_motor.dart';
-import 'package:health_model/providers/life_provider.dart';
+import '/pages/motor_module/enter_motor.dart';
+import '/providers/life_provider.dart';
 
 import '../../../../shared/exports.dart';
 import '../../providers/motor_provider.dart';

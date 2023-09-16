@@ -1,5 +1,5 @@
-import 'package:health_model/providers/motor_provider.dart';
-import 'package:health_model/splash.dart';
+import '/providers/motor_provider.dart';
+import 'pages/boarding/splash.dart';
 
 import '../../shared/exports.dart';
 
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
             final themeProvider = Provider.of<ThemeProvider>(context);
             return GetMaterialApp(
               // initialBinding: AppBinding(),
-              title: 'Health App',
+              title: 'Wealth Pro',
               themeMode: themeProvider.themeMode,
               theme: MyThemes.lightTheme,
               darkTheme: MyThemes.darkTheme,

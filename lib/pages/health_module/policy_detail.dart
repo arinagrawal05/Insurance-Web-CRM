@@ -1,4 +1,4 @@
-import 'package:health_model/pages/health_module/edit_policy.dart';
+import '/pages/health_module/edit_policy.dart';
 import '/shared/exports.dart';
 
 // ignore: must_be_immutable

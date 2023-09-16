@@ -31,6 +31,18 @@ class AppUtils {
   }
 }
 
+void updateSpecificProductData(ProductType type) {
+  if (type == ProductType.health) {
+    PolicyHiveHelper.fetchHealthPoliciesFromFirebase();
+  } else if (type == ProductType.fd) {
+    PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+  } else if (type == ProductType.motor) {
+    PolicyHiveHelper.fetchMotorPoliciesFromFirebase();
+  } else if (type == ProductType.life) {
+    PolicyHiveHelper.fetchLifePoliciesFromFirebase();
+  }
+}
+
 List bankDetailsConverter(String term) {
   List aa = term.split(" || ");
   return aa;
@@ -88,12 +100,20 @@ int addHealthWithGST(int number) {
 }
 
 String dateTimetoText(DateTime date) {
-  return "${date.day}/${date.month}/${date.year}";
+  int month = date.month;
+  //  < 10
+  //     ? int.parse(date.month.toString().padLeft(2, "0"))
+  //     : date.month;
+  return "${date.day}/$month/${date.year}";
 }
 
 String todayTextFormat() {
   DateTime date = DateTime.now();
-  return "${date.day}/${date.month}/${date.year}";
+  int month = date.month;
+  // < 10
+  //     ? int.parse(date.month.toString().padLeft(2, "0"))
+  //     : date.month;
+  return "${date.day}/$month/${date.year}";
 }
 
 DateTime textToDateTime(String text) {

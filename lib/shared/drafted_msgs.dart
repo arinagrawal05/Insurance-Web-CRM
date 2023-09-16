@@ -1,5 +1,5 @@
-import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
-import 'package:health_model/shared/exports.dart';
+import '/hive/hive_model/policy_models/motor_model.dart';
+import '/shared/exports.dart';
 
 String healthRenewalDraftMsg(PolicyHiveModel model) {
   String draftedMessage =

@@ -1,5 +1,5 @@
 import 'generic_investment_data.dart';
-import 'package:health_model/shared/exports.dart';
+import '/shared/exports.dart';
 
 part 'motor_model.g.dart';
 

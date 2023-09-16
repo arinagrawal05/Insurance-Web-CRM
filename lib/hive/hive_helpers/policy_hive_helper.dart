@@ -1,6 +1,6 @@
-import 'package:health_model/hive/hive_model/policy_models/generic_investment_data.dart';
-import 'package:health_model/hive/hive_model/policy_models/motor_model.dart';
-import 'package:health_model/shared/exports.dart';
+import '/hive/hive_model/policy_models/generic_investment_data.dart';
+import '/hive/hive_model/policy_models/motor_model.dart';
+import '/shared/exports.dart';
 
 class PolicyHiveHelper {
   static const String _policyBoxName = 'policyBox';
@@ -437,6 +437,14 @@ class PolicyHiveHelper {
   static void deleteSpecificPolicy({required String documentID}) {
     policyBox.delete(documentID);
     updatePolicyInSearchController();
+
+    // print('Adding ${policy.data!.name}');
+  }
+
+  static PolicyDataHiveModel? getSpecificPolicy({required String documentID}) {
+    // print(policyBox.get(documentID));
+    return policyBox.get(documentID);
+    // updatePolicyInSearchController();
 
     // print('Adding ${policy.data!.name}');
   }

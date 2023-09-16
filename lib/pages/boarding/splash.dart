@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:health_model/login.dart';
-import 'package:health_model/shared/exports.dart';
+
+import '/shared/exports.dart';
 
 class Splashscreen extends StatefulWidget {
   @override
@@ -26,6 +26,7 @@ class _SplashscreenState extends State<Splashscreen>
     navigateToDestiny();
   }
 
+// SizeConfig().init
   navigateToDestiny() {
     Timer(
         Duration(seconds: 2),
@@ -54,6 +55,8 @@ class _SplashscreenState extends State<Splashscreen>
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
