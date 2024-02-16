@@ -483,7 +483,7 @@ Future<String?>? uploadFileToFirebase(
 
     firabase_storage.Reference ref = firabase_storage.FirebaseStorage.instance
         .ref()
-        .child('Companies')
+        .child('Documents')
         .child('/' + fileName);
 
     final metadata =

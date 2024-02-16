@@ -1,3 +1,5 @@
+import 'package:health_model/models/document_model.dart';
+
 import '/pages/motor_module/enter_vehicle.dart';
 import '/providers/motor_provider.dart';
 import '/pages/fd_module/renew_fd.dart';
@@ -192,6 +194,67 @@ Widget memberMiniTile(BuildContext context, MemberModel model) {
           ],
         ),
       ],
+    ),
+  );
+}
+
+Widget documentTile(BuildContext context, DocumentModel model) {
+  // Timestamp time = model["d;
+  return InkWell(
+    onTap: null,
+    child: Container(
+      decoration: dashBoxDex(context),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                // color: Colors.amber,
+                width: 270,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.blueGrey,
+                      child: Image.network(model.docUrl),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heading(model.name, 16),
+                        productTileText(
+                            "Created ${timeago.format(model.timestamp, allowFromNow: true, locale: 'en_short')} ago",
+                            14),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              customDeleteButton(
+                Ionicons.trash_outline,
+                Colors.red.shade500,
+                () async {
+                  genericConfirmSheet(
+                      context, Statements.removePlan, "Document", () {
+                    FirebaseFirestore.instance
+                        .collection("Companies")
+                        .doc(model.docID)
+                        .delete(); // addMemberSheet(context, widget.userid, docId);
+                    Navigator.pop(context);
+                  });
+                },
+                context,
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

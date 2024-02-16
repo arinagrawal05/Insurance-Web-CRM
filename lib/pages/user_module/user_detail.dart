@@ -1,4 +1,13 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:health_model/add_documents.dart';
 import '/shared/exports.dart';
+import 'dart:typed_data';
+import 'dart:html' as html;
+import 'dart:io';
+
+// import 'package:firebase/firebase.dart' as fb;
+// import 'dart:html' as html;
 
 // ignore: must_be_immutable
 class UserDetailPage extends StatefulWidget {
@@ -224,6 +233,39 @@ class _UserDetailPageState extends State<UserDetailPage> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 20),
+                                child: heading("Documents", 20),
+                              ),
+                              const Divider(
+                                indent: 20,
+                                endIndent: 20,
+                              ),
+                              customButton("pick Pdf", () {
+                                navigate(
+                                    AddDocumentPage(
+                                        userid: widget.model.userid,
+                                        userModel: widget.model),
+                                    context);
+                              }, context)
+                              // streamMembers(
+                              //   model.userid,
+                              // ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          decoration: dashBoxDex(context),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: heading("Members", 20),
                               ),
                               const Divider(
@@ -283,5 +325,84 @@ class _UserDetailPageState extends State<UserDetailPage> {
         ),
       ),
     );
+  }
+
+  // Future pickPDF() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     allowMultiple: false,
+  //     type: FileType.custom,
+  //     allowedExtensions: ['pdf'],
+  //   );
+
+  //   if (result != null) {
+  //     Uint8List? bytes = result.files.single.bytes;
+  //     if (bytes != null) {
+  //       // Create a file object with custom bytes for web
+  //       File pdfFile = File.fromRawPath(bytes);
+  //       uploadPDF(pdfFile);
+  //     } else {
+  //       // Handle the case where bytes are not available
+  //       print('Error: File bytes could not be retrieved.');
+  //     }
+  //   }
+  // }
+  Future pickPDF() async {
+    print("abcd");
+    if (Platform.isAndroid ||
+        Platform.isIOS ||
+        Platform.isLinux ||
+        Platform.isMacOS ||
+        Platform.isWindows) {
+      print("abcd mobile form");
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null) {
+        Uint8List? bytes = result.files.single.bytes;
+        if (bytes != null) {
+          File pdfFile = File.fromRawPath(bytes);
+          uploadPDF(pdfFile);
+        } else {
+          print('Error: File bytes could not be retrieved.');
+        }
+      } else {
+        print('User canceled the file picking.');
+      }
+    } else {
+      print("abcd web form");
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null) {
+        Uint8List? bytes = result.files.single.bytes;
+        if (bytes != null) {
+          File pdfFile = File.fromRawPath(bytes);
+          uploadPDF(pdfFile);
+        } else {
+          print('Error: File bytes could not be retrieved.');
+        }
+      } else {
+        print('User canceled the file picking.');
+      }
+    }
+  }
+
+  Future uploadPDF(File pdfFile) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+
+    Reference ref = storage.ref().child('pdfs/helo');
+    UploadTask uploadTask = ref.putFile(pdfFile);
+
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadURL = await snapshot.ref.getDownloadURL();
+
+    // Use the downloadURL to display or store it as needed
+    print('Download URL: $downloadURL');
   }
 }
