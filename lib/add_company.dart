@@ -258,7 +258,10 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           isLoading = true;
           webImage = f;
           _pickedImage = File('a');
-          uploadFileToFirebase(fileName: companyName, imageFile: webImage)!
+          uploadFileToFirebase(
+                  fileName: companyName,
+                  imageFile: webImage,
+                  folderName: "Companies")!
               .then((value) {
             setState(() {
               isLoading = false;

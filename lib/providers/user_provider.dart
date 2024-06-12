@@ -1,3 +1,5 @@
+import 'package:health_model/hive/hive_model/doc_hive_model.dart';
+
 import '/shared/exports.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -11,6 +13,10 @@ class UserProvider extends ChangeNotifier {
 
   List<PolicyDataHiveModel> getPoliciesByUser(String uid) {
     return PolicyHiveHelper.getPolicyByUser(userId: uid);
+  }
+
+  List<UserHiveModel> getBirthdayByUser() {
+    return UserHiveHelper.getUserByBirthday();
   }
 
   List<String> relationList = [

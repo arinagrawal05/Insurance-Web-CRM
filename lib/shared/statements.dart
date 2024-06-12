@@ -6,6 +6,7 @@ class Statements {
   static String removeMotor =
       "Do You Really Want to Remove this General Policy";
   static String removePlan = "Do You Really Want to Remove this Plan";
+  static String removeDocument = "Do You Really Want to Remove this Document";
   static String removeCompany = "Do You Really Want to Remove this Company";
   static String removeMember = "Do You Really Want to Remove this Member";
 

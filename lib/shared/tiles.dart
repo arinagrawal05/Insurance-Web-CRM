@@ -1,4 +1,6 @@
+import 'package:health_model/hive/hive_model/doc_hive_model.dart';
 import 'package:health_model/models/document_model.dart';
+import 'package:health_model/test.dart';
 
 import '/pages/motor_module/enter_vehicle.dart';
 import '/providers/motor_provider.dart';
@@ -15,7 +17,9 @@ Widget bDayuserTile(BuildContext context, UserHiveModel model) {
     // height: 120,
     // width: 250,    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
 
-    decoration: dashBoxDex(context, isContrast: true),
+    decoration: dashBoxDex(
+      context,
+    ),
     padding: const EdgeInsets.all(8),
     margin: const EdgeInsets.symmetric(vertical: 3),
     child: Column(
@@ -134,7 +138,7 @@ Widget memberTile(isChoosing, BuildContext context, MemberModel model) {
                       children: [
                         customDeleteButton(
                           Ionicons.expand_outline,
-                          Colors.blue.shade500,
+                          primaryColor,
                           () async {
                             provider.selectRelation(model.relation);
 
@@ -198,10 +202,13 @@ Widget memberMiniTile(BuildContext context, MemberModel model) {
   );
 }
 
-Widget documentTile(BuildContext context, DocumentModel model) {
+Widget documentMiniTile(BuildContext context, DocHiveModel model) {
   // Timestamp time = model["d;
   return InkWell(
-    onTap: null,
+    onTap: () {
+      // navigate(MyHomePage(), context);
+      launchURL(model.docUrl);
+    },
     child: Container(
       decoration: dashBoxDex(context),
       padding: const EdgeInsets.all(8),
@@ -219,7 +226,9 @@ Widget documentTile(BuildContext context, DocumentModel model) {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.blueGrey,
-                      child: Image.network(model.docUrl),
+                      child: Icon(model.docFormat == "application/pdf"
+                          ? Ionicons.document
+                          : Ionicons.image_outline),
                     ),
                     const SizedBox(
                       width: 20,
@@ -227,10 +236,8 @@ Widget documentTile(BuildContext context, DocumentModel model) {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        heading(model.name, 16),
-                        productTileText(
-                            "Created ${timeago.format(model.timestamp, allowFromNow: true, locale: 'en_short')} ago",
-                            14),
+                        heading(model.docName, 16),
+                        productTileText(model.docType, 14),
                       ],
                     ),
                   ],
@@ -241,12 +248,16 @@ Widget documentTile(BuildContext context, DocumentModel model) {
                 Colors.red.shade500,
                 () async {
                   genericConfirmSheet(
-                      context, Statements.removePlan, "Document", () {
+                      context, Statements.removeDocument, "Document", () {
                     FirebaseFirestore.instance
-                        .collection("Companies")
-                        .doc(model.docID)
-                        .delete(); // addMemberSheet(context, widget.userid, docId);
-                    Navigator.pop(context);
+                        .collection("Documents")
+                        .doc(model.docId)
+                        .delete()
+                        .then((value) {
+                      UserHiveHelper.fetchDocFromFirebase();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
                   });
                 },
                 context,

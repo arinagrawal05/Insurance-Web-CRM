@@ -1,3 +1,7 @@
+import 'dart:html';
+
+import 'package:health_model/providers/doc_provider.dart';
+
 import '/providers/motor_provider.dart';
 import 'pages/boarding/splash.dart';
 
@@ -44,6 +48,9 @@ class MyApp extends StatelessWidget {
             // ),
             ChangeNotifierProvider(
               create: (context) => UserProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => DocumentProvider(),
             ),
             // ChangeNotifierProvider(
             //   create: (context) => FilterProvider(),

@@ -33,17 +33,16 @@ class PolicyDetailPage extends StatelessWidget {
                   }, context, isExpanded: false),
                   customButton("Edit", () {
                     provider.selectpayMode(model.payMode);
-                    provider.chequeNo.text =
-                        bankDetailsConverter(model.bankDetails)[0];
 
-                    provider.bankName.text =
-                        bankDetailsConverter(model.bankDetails)[1];
-                    provider.bankDate.text =
-                        bankDetailsConverter(model.bankDetails)[2];
+                    if (model.payMode == "Cheque") {
+                      provider.chequeNo.text =
+                          bankDetailsConverter(model.bankDetails)[0];
 
-                    // if (condition) {
-
-                    // }
+                      provider.bankName.text =
+                          bankDetailsConverter(model.bankDetails)[1];
+                      provider.bankDate.text =
+                          bankDetailsConverter(model.bankDetails)[2];
+                    }
                     navigate(EditDetailsPage(model: model), context);
                   }, context, isExpanded: false),
                   customDeleteButton(
@@ -91,7 +90,12 @@ class PolicyDetailPage extends StatelessWidget {
                       FirebaseFirestore.instance
                           .collection("Policies")
                           .doc(model.policyID)
-                          .delete();
+                          .delete()
+                          .then((value) {
+                        PolicyHiveHelper.fetchPoliciesFromFirebase();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      });
                     });
                   }, context),
                 ],

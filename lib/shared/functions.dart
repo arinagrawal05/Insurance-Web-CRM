@@ -100,20 +100,20 @@ int addHealthWithGST(int number) {
 }
 
 String dateTimetoText(DateTime date) {
-  int month = date.month;
+  String month = date.month.toString().padLeft(2, "0");
   //  < 10
   //     ? int.parse(date.month.toString().padLeft(2, "0"))
   //     : date.month;
-  return "${date.day}/$month/${date.year}";
+  return "${date.day.toString().padLeft(2, "0")}/$month/${date.year.toString().padLeft(2, "0")}";
 }
 
 String todayTextFormat() {
   DateTime date = DateTime.now();
-  int month = date.month;
+  String month = date.month.toString().padLeft(2, "0");
   // < 10
   //     ? int.parse(date.month.toString().padLeft(2, "0"))
   //     : date.month;
-  return "${date.day}/$month/${date.year}";
+  return "${date.day.toString().padLeft(2, "0")}/$month/${date.year.toString().padLeft(2, "0")}";
 }
 
 DateTime textToDateTime(String text) {
@@ -476,14 +476,16 @@ setThemePref(ThemeMode mode) async {
 }
 
 Future<String?>? uploadFileToFirebase(
-    {required Uint8List imageFile, required String fileName}) async {
+    {required Uint8List imageFile,
+    required String fileName,
+    required String folderName}) async {
   String imageUrl = '';
   try {
     firabase_storage.UploadTask uploadTask;
 
     firabase_storage.Reference ref = firabase_storage.FirebaseStorage.instance
         .ref()
-        .child('Documents')
+        .child(folderName)
         .child('/' + fileName);
 
     final metadata =

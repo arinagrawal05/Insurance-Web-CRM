@@ -36,6 +36,7 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
       startingDate = textToDateTime(issuedDate.text);
     }
     return Scaffold(
+      appBar: genericAppbar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -44,7 +45,6 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                chooseHeader("Renew Fill Details", 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:health_model/add_documents.dart';
+import 'package:health_model/providers/doc_provider.dart';
 import '/shared/exports.dart';
 import 'dart:typed_data';
 import 'dart:html' as html;
@@ -34,6 +35,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
   Widget build(BuildContext context) {
     //var uploadImage = Provider.of<UploadImage>(context);
     final userProvider = Provider.of<UserProvider>(context, listen: true);
+    final docProvider = Provider.of<DocumentProvider>(context, listen: true);
 
     UserHiveModel model = widget.model;
     // final provider = Provider.of<PolicyProvider>(context, listen: false);
@@ -163,11 +165,17 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                 EnumUtils.convertTypeToKey(
                                     dashProvider.currentDashBoard) ||
                             dashProvider.currentDashBoard == ProductType.cms) {
-                          return renderTile(
-                              userProvider
-                                  .getPoliciesByUser(widget.model.userid)[index]
-                                  .data,
-                              context);
+                          return Column(
+                            children: [
+                              renderTile(
+                                  userProvider
+                                      .getPoliciesByUser(
+                                          widget.model.userid)[index]
+                                      .data,
+                                  context),
+                            ],
+                          );
+
                           // if (userProvider
                           //         .getPoliciesByUser(widget.model.userid)[index]
                           //         .data!
@@ -210,6 +218,12 @@ class _UserDetailPageState extends State<UserDetailPage> {
                           //           .data as FdHiveModel);
                           // }
                         }
+                        // return Container(
+                        //   child: Text(userProvider
+                        //       .getPoliciesByUser(widget.model.userid)[index]
+                        //       .data!
+                        //       .type),
+                        // );
                       },
                     ),
                   ],
@@ -233,19 +247,65 @@ class _UserDetailPageState extends State<UserDetailPage> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 20),
-                                child: heading("Documents", 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    heading("Documents", 20),
+                                    docProvider
+                                            .getDocumentsByUser(
+                                                widget.model.userid)
+                                            .isEmpty
+                                        ? customButton("Add", () {
+                                            navigate(
+                                                AddDocumentPage(
+                                                    userid: widget.model.userid,
+                                                    userModel: widget.model),
+                                                context);
+                                          }, context, isExpanded: false)
+                                        : Container()
+                                  ],
+                                ),
                               ),
-                              const Divider(
-                                indent: 20,
-                                endIndent: 20,
+
+                              docProvider
+                                      .getDocumentsByUser(widget.model.userid)
+                                      .isNotEmpty
+                                  ? const Divider(
+                                      indent: 20,
+                                      endIndent: 20,
+                                    )
+                                  : const SizedBox(
+                                      height: 10,
+                                    ),
+                              ListView.builder(
+                                itemCount: docProvider
+                                    .getDocumentsByUser(widget.model.userid)
+                                    .length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return documentMiniTile(
+                                      context,
+                                      docProvider.getDocumentsByUser(
+                                          widget.model.userid)[index]);
+                                },
                               ),
-                              customButton("pick Pdf", () {
-                                navigate(
-                                    AddDocumentPage(
-                                        userid: widget.model.userid,
-                                        userModel: widget.model),
-                                    context);
-                              }, context)
+
+                              docProvider
+                                      .getDocumentsByUser(widget.model.userid)
+                                      .isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: customButton("Add Document", () {
+                                        navigate(
+                                            AddDocumentPage(
+                                                userid: widget.model.userid,
+                                                userModel: widget.model),
+                                            context);
+                                      }, context),
+                                    )
+                                  : Container(),
                               // streamMembers(
                               //   model.userid,
                               // ),

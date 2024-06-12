@@ -1,12 +1,20 @@
+import 'package:health_model/dash.dart';
+import 'package:health_model/quote.dart';
+import 'package:health_model/view_documents.dart';
+import 'package:health_model/view_user.dart';
+
 import '/shared/exports.dart';
 
 enum CurrentPage { dashboard, clients, company, policy, commision }
 
 class DashProvider extends GetxController {
+  Future<Map<String, String>>? quoteData;
+
   @override
   onInit() {
     super.onInit();
     getStats();
+    quoteData = fetchQuote();
   }
 
   CurrentPage pageState = CurrentPage.dashboard;
@@ -20,10 +28,12 @@ class DashProvider extends GetxController {
 
     // final filterProvider = Get.find<FilterProvider>();
     currentDashBoard = type;
-    if (type != ProductType.cms) {
-      navigate(Dash(), context);
-    } else {
+    if (type == ProductType.cms) {
       navigate(UsersPage(), context);
+    } else if (type == ProductType.documents) {
+      navigate(DocumentsPage(), context);
+    } else {
+      navigate(Dash(), context);
     }
     print("Entered Again");
     // provider.getStats(EnumUtils.convertTypeToKey(ProductType.health));
@@ -41,7 +51,7 @@ class DashProvider extends GetxController {
   }
 
   int healthPercent = 15;
-  DateTime? validityDate = DateTime.now().add(Duration(days: 730));
+  DateTime? validityDate = DateTime.now().add(const Duration(days: 730));
   List<dynamic> advisorList = [];
   String adminPin = "1234";
   String username = "";

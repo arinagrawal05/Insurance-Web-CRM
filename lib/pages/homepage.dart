@@ -246,6 +246,22 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      dashProvider.navigateToProduct(
+                          ProductType.documents, context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      // width: double.infinity,
+                      decoration: dashBoxDex(context)
+                          .copyWith(color: Colors.indigoAccent.shade100),
+                      child: Center(child: heading("View User Docs", 30)),
+                    ),
+                  ),
+                ),
               ],
             ),
           );

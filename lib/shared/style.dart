@@ -90,5 +90,5 @@ BoxDecoration dashBoxDex(BuildContext context, {bool isContrast = false}) {
       borderRadius: BorderRadius.circular(10),
       color: isContrast
           ? Colors.blueGrey
-          : Theme.of(context).dialogBackgroundColor);
+          : Theme.of(context).dialogBackgroundColor.withOpacity(0.2));
 }

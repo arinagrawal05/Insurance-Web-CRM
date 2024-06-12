@@ -1,3 +1,5 @@
+import 'package:health_model/quote.dart';
+
 import '/shared/exports.dart';
 
 class ItemLabeling {
@@ -29,6 +31,7 @@ class GeneralStatsProvider extends GetxController {
   List<CompanyChartData> chartCompanyData = [];
   List<PolicyStatusChartData> policyStatusChartData = [];
   List<PolicyDistributionChartData> policyDistributionChartData = [];
+  Future<Map<String, String>>? quoteData;
 
   @override
   onInit() {
@@ -37,6 +40,12 @@ class GeneralStatsProvider extends GetxController {
     getStatsData();
     getCompaniesChartData(EnumUtils.convertTypeToKey(type));
     boxDivision();
+    fetchRandomQuote();
+  }
+
+  void fetchRandomQuote() {
+    quoteData = fetchQuote();
+    update();
   }
 
   void boxDivision() {

@@ -217,7 +217,10 @@ void showRenewLifeDialog(LifeHiveModel model) {
                         child: Column(
                           children: [
                             const Icon(Ionicons.cash_outline),
-                            buttonText(model.payterm, 15, color: Colors.black45)
+                            buttonText(
+                              model.payterm,
+                              15,
+                            )
                           ],
                         ),
                       ),

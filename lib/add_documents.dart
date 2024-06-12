@@ -1,8 +1,19 @@
+import 'dart:async';
 import 'dart:io';
 
 // import '
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:health_model/models/document_model.dart';
-
+import 'package:file_picker/file_picker.dart';
+import 'package:health_model/providers/doc_provider.dart';
+import 'package:health_model/test.dart';
+import 'package:universal_html/html.dart';
+import 'dart:html' as html; // For web specific handling
+import 'dart:typed_data'; // For handling file bytes
 import '/shared/exports.dart';
 import '/sheets/plan_sheet.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,7 +29,11 @@ class AddDocumentPage extends StatefulWidget {
 }
 
 class _AddDocumentPageState extends State<AddDocumentPage> {
-  final name = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController dateCreated = TextEditingController();
+  TextEditingController fileType = TextEditingController();
+  // TextEditingController name = TextEditingController();
+  // TextEditingController name = TextEditingController();
   // late final imageUrl = TextEditingController();
 
   // final phone = TextEditingController();
@@ -29,17 +44,20 @@ class _AddDocumentPageState extends State<AddDocumentPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.userModel != null) {
-      name.text = widget.userModel!.name;
-      // imageUrll = widget.userModel!.companyImg;
-      // imageUrl.text = widget.model!.companyImg;
-    }
+    // if (widget.userModel != null) {
+    // name.text = widget.userModel!.name;
+    // imageUrll = widget.userModel!.companyImg;
+    // imageUrl.text = widget.model!.companyImg;
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    final docProvider = Provider.of<DocumentProvider>(context, listen: true);
+
     //var uploadImage = Provider.of<UploadImage>(context);
-    final dashProvider = Get.find<DashProvider>();
+    // final dashProvider = Get.find<DashProvider>();
     // String? modelImage =
     //     widget.userModel == null ? null : widget.userModel!.companyImg;
     return Scaffold(
@@ -48,160 +66,261 @@ class _AddDocumentPageState extends State<AddDocumentPage> {
         centerTitle: true,
       ),
       body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _companyFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      height: 250,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: _pickedImage == null && widget.userModel == null
-                          ? GestureDetector(
-                              onTap: () {
-                                _pickImage(name.text);
-                              },
-                              child: dottedBorder(color: primaryColor),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                _pickImage(name.text);
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child:
-                                    //widget.userModel == null
-                                    //     ? kIsWeb
-                                    //         ? Image.memory(webImage,
-                                    //             fit: BoxFit.fill)
-                                    //         : Image.file(_pickedImage!,
-                                    //             fit: BoxFit.fill)
-                                    //     : _pickedImage == null
-                                    // ?
-                                    // Image.network(imageUrll!)
-                                    // :
-                                    kIsWeb
-                                        ? Image.memory(webImage,
-                                            fit: BoxFit.fill)
-                                        : Image.file(_pickedImage!,
-                                            fit: BoxFit.fill),
-                              ),
-                            )),
-                ),
-
-                formTextField(
-                  name,
-                  "Company Name",
-                  "Enter Company Name",
-                  FieldRegex.defaultRegExp,
-                ),
-
                 Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("Documents")
-                        .where("userid", isEqualTo: widget.userid)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return customCircularLoader("Documents");
-                      } else {
-                        return ListView.builder(
-                            // shrinkWrap: true,
-                            // physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              // return Text("erfdfv");
-                              return documentTile(
-                                context,
-                                DocumentModel.fromFirestore(
-                                    snapshot.data!.docs[index]),
-                              );
-                            });
-                      }
-                    },
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        height: 230,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: _pickedFile == null
+                            ? GestureDetector(
+                                onTap: () {
+                                  print("object");
+                                  pickFile();
+                                  // _pickImage(name.text);
+                                },
+                                child: dottedBorder(color: primaryColor),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  pickFile();
+
+                                  // _pickImage(name.text);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).canvasColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  // child: dottedBorder(color: primaryColor),
+                                  child: Icon(
+                                      _pickedFile!.type == "application/pdf"
+                                          ? Ionicons.document
+                                          : Ionicons.image_outline,
+                                      size: 60,
+                                      color: primaryColor),
+                                  //widget.userModel == null
+                                  //     ? kIsWeb
+                                  //         ? Image.memory(webImage,
+                                  //             fit: BoxFit.fill)
+                                  //         : Image.file(_pickedImage!,
+                                  //             fit: BoxFit.fill)
+                                  //     : _pickedImage == null
+                                  // ?
+                                  // Image.network(imageUrll!)
+                                  // :
+                                  // kIsWeb
+                                  //     ? Image.memory(webImage,
+                                  //         fit: BoxFit.fill)
+                                  //     : Image.file(_pickedImage!,
+                                  //         fit: BoxFit.fill),
+                                ),
+                              )),
                   ),
                 ),
+                Expanded(
+                  flex: 5,
+                  child: Form(
+                    key: _companyFormKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        formTextField(name, "Document Name",
+                            "Enter Document Name", FieldRegex.defaultRegExp,
+                            isCompulsory: false),
+                        formTextField(
+                          dateCreated,
+                          "Date Created",
+                          "Enter Date Created",
+                          FieldRegex.dateRegExp,
+                        ),
+                        formTextField(fileType, "fileType",
+                            "Enter Company Name", FieldRegex.defaultRegExp,
+                            isAbsorbed: true, isCompulsory: false),
+                        genericPicker(
+                            radius: 10,
+                            prefixIcon: Ionicons.document,
+                            height: 70,
+                            width: double.infinity,
+                            docProvider.documentList,
+                            docProvider.documentSelected,
+                            "Document", (value) {
+                          docProvider.selectDocument(value);
+                          // print(getGender(provider.relationSelected).toString());
+                          // provider.genderSelected = value;
+                          print(value);
+                        }, context),
+                        // Expanded(
+                        //   child: StreamBuilder<QuerySnapshot>(
+                        //     stream: FirebaseFirestore.instance
+                        //         .collection("Documents")
+                        //         .where("userid", isEqualTo: widget.userid)
+                        //         .snapshots(),
+                        //     builder: (context, snapshot) {
+                        //       if (snapshot.connectionState == ConnectionState.waiting) {
+                        //         return customCircularLoader("Documents");
+                        //       } else {
+                        //         return ListView.builder(
+                        //             // shrinkWrap: true,
+                        //             // physics: const NeverScrollableScrollPhysics(),
+                        //             itemCount: snapshot.data!.docs.length,
+                        //             itemBuilder: (context, index) {
+                        //               // return Text("erfdfv");
+                        //               return documentTile(
+                        //                 context,
+                        //                 DocumentModel.fromFirestore(
+                        //                     snapshot.data!.docs[index]),
+                        //               );
+                        //             });
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
 
-                // const Spacer(),
-                isLoading == true
-                    ? const CircularProgressIndicator()
-                    : customButton("Done", () async {
-                        if (_companyFormKey.currentState?.validate() == true) {
-                          var v1 = const Uuid().v4();
-                          FirebaseFirestore.instance
-                              .collection("Documents")
-                              .doc(v1)
-                              .set({
-                            "doc_id": v1,
-                            "userid": widget.userid,
-                            "name": widget.userModel.name,
-                            "doc_type": "aadhar",
-                            "doc_name": name.text,
-                            "doc_url": imageUrll,
-                            "timestamp": DateTime.now(),
-                          }).then((value) {
-                            print("success");
-                          });
+                        // const Spacer(),
 
-                          Navigator.pop(context);
-                        }
-                      }, context),
-
-                // addMemberSheet(context, widget.userid, docId);
+                        // addMemberSheet(context, widget.userid, docId);
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
+            Spacer(),
+            _isUploading == true
+                ? const CircularProgressIndicator()
+                : Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: customButton("Submit Document", () async {
+                      if (_companyFormKey.currentState?.validate() == true) {
+                        var v1 = const Uuid().v4();
+                        FirebaseFirestore.instance
+                            .collection("Documents")
+                            .doc(v1)
+                            .set({
+                          "doc_id": v1,
+                          "userid": widget.userid,
+                          "doc_created": textToDateTime(dateCreated.text),
+                          "name": widget.userModel.name,
+                          "doc_format": fileType.text,
+                          "doc_type": docProvider.documentSelected,
+                          "doc_name": name.text,
+                          "doc_url": imageUrll,
+                          "timestamp": DateTime.now(),
+                        }).then((value) {
+                          print("success");
+
+                          UserHiveHelper.fetchDocFromFirebase();
+
+                          Navigator.pop(context);
+                        });
+                      }
+                    }, context),
+                  ),
+          ],
         ),
       ),
     );
   }
 
-  bool isLoading = false;
-  File? _pickedImage;
-  Uint8List webImage = Uint8List(8);
-  Future<void> _pickImage(String companyName) async {
-    if (!kIsWeb) {
-      final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        var selected = File(image.path);
-        setState(() {
-          _pickedImage = selected;
-        });
-      } else {
-        print('No image has been picked');
-      }
-    } else if (kIsWeb) {
-      final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        var f = await image.readAsBytes();
-        setState(() {
-          isLoading = true;
-          webImage = f;
-          _pickedImage = File('a');
-          uploadFileToFirebase(fileName: companyName, imageFile: webImage)!
-              .then((value) {
-            setState(() {
-              isLoading = false;
-              imageUrll = value;
-            });
-            // print(value);
+  Uint8List? _pickedFileBytes;
+  html.File? _pickedFile;
+  bool _isUploading = false;
+  Future<void> pickFile() async {
+    print("object");
+    try {
+      final html.FileUploadInputElement uploadInput =
+          html.FileUploadInputElement();
+      uploadInput.accept = 'application/pdf,image/*';
+      uploadInput.click();
+
+      uploadInput.onChange.listen((event) {
+        final html.File file = uploadInput.files!.first;
+        final reader = html.FileReader();
+
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            _pickedFileBytes = reader.result as Uint8List?;
+            _pickedFile = file;
           });
+          name.text = file.name;
+          dateCreated.text = dateTimetoText(file.lastModifiedDate);
+          fileType.text = file.type;
         });
-      } else {
-        print('No image has been picked');
-      }
-    } else {
-      print('Something went wrong');
+
+        reader.readAsArrayBuffer(file);
+        setState(() {
+          _isUploading = true;
+        });
+        Timer(Duration(seconds: 1), () {
+          uploadDocument();
+          // uploadFileToFirebase(
+          //         imageFile: _pickedFileBytes!,
+          //         fileName: name.text,
+          //         folderName: "Documents")!
+          //     .then((downloadURL) {
+          //   print('Upload successful. Download URL: $downloadURL');
+
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     SnackBar(
+          //         content:
+          //             Text('Upload successful! Download URL: $downloadURL')),
+          //   );
+          //   setState(() {
+          //     _isUploading = false;
+          //   });
+          // });
+        });
+      });
+    } catch (e) {
+      print('Error picking file: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking file: $e')),
+      );
+    }
+  }
+
+  Future<void> uploadDocument() async {
+    if (_pickedFileBytes == null || _pickedFile == null) return;
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      String fileName =
+          'Documents/${DateTime.now().millisecondsSinceEpoch}-${_pickedFile!.name}';
+      final storageRef = FirebaseStorage.instance.ref().child(fileName);
+      final uploadTask = storageRef.putData(_pickedFileBytes!);
+
+      final snapshot = await uploadTask;
+      final downloadURL = await snapshot.ref.getDownloadURL();
+      print('Upload successful. Download URL: $downloadURL');
+      setState(() {
+        imageUrll = downloadURL;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Upload successful! Download URL: $downloadURL')),
+      );
+    } catch (e) {
+      print('Upload failed: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Upload failed: $e')),
+      );
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
     }
   }
 }

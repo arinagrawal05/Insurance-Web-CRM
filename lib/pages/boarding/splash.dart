@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:health_model/add_documents.dart';
+import 'package:health_model/test.dart';
+
 import '/shared/exports.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -30,9 +33,17 @@ class _SplashscreenState extends State<Splashscreen>
   navigateToDestiny() {
     Timer(
         Duration(seconds: 2),
-        () => islogged == true
-            ? navigate(HomePage(), context)
-            : navigate(LoginPage(), context));
+        () =>
+            // islogged ==
+            true
+                ? navigate(
+                    HomePage(),
+                    // AddDocumentPage(
+                    //   userModel: AppConsts.userModel,
+                    //   userid: AppConsts.userModel.userid,
+                    // ),
+                    context)
+                : navigate(LoginPage(), context));
   }
 
   getprefab() async {

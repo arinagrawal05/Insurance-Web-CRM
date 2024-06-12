@@ -75,7 +75,8 @@ Widget webDashboardBody(
                                     child: Column(
                                       children: [
                                         Expanded(
-                                            flex: 3, child: greetBox(context)),
+                                            flex: 3,
+                                            child: greetBox(statsProvider)),
                                         Expanded(
                                           flex: 9,
                                           child: policyCountCircularChart(
@@ -247,7 +248,7 @@ Widget mobileDashboardBody(
             // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: greetBox(context),
+              child: greetBox(statsProvider),
             ),
             Container(
                 padding: EdgeInsets.all(10),
@@ -275,29 +276,55 @@ Widget mobileDashboardBody(
   );
 }
 
-Widget greetBox(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(15),
-    decoration: dashBoxDex(context),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        heading("Good Morning", 20),
-        simpleText("“Always remember that you are absolutely unique.”", 15),
-        // const SizedBox(
-        //   height: 10,
-        // ),
-        // Row(
-        //   children: [
-        //     Expanded(
-        //         child:
-        //             simpleText("~Mahatma Gandhi", 13, align: TextAlign.right)),
-        //   ],
-        // )
-      ],
-    ),
+Widget greetBox(GeneralStatsProvider provider) {
+  return FutureBuilder<Map<String, String>>(
+    future: provider.quoteData,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        final quoteMap = snapshot.data!;
+        return GestureDetector(
+          onTap: () {
+            provider.fetchRandomQuote();
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(15),
+            decoration: dashBoxDex(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                simpleText("“${quoteMap['quote']!}”", 15),
+                Spacer(),
+                Row(
+                  children: [
+                    Spacer(),
+                    simpleText('- ${quoteMap['author']!}', 12),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
+      // Display a loading indicator while fetching data
+      return CircularProgressIndicator();
+    },
   );
+  //  Container(
+  //   width: double.infinity,
+  //   padding: const EdgeInsets.all(15),
+  //   decoration: dashBoxDex(context),
+  //   child: Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       heading("Good Morning", 20),
+  //       simpleText("“Always remember that you are absolutely unique.”", 15),
+
+  //     ],
+  //   ),
+  // );
 }
 
 Widget statsBox(String count, IconData icon, BuildContext context) {
@@ -329,6 +356,8 @@ Widget statsBox(String count, IconData icon, BuildContext context) {
 }
 
 Widget birthdayWidget(BuildContext context) {
+  var provider = Provider.of<UserProvider>(context);
+
   return Container(
       decoration: dashBoxDex(context),
       padding: const EdgeInsets.all(8),
@@ -343,7 +372,15 @@ Widget birthdayWidget(BuildContext context) {
               padding: const EdgeInsets.all(8.0),
               child: heading("Today's Birthday", 22),
             ),
-            // streamUsers(false, isBirthday: true),
+            ListView.builder(
+              itemCount: provider.getBirthdayByUser().length,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return bDayuserTile(
+                    context, provider.getBirthdayByUser()[index]);
+              },
+            ),
           ],
         ),
       ));

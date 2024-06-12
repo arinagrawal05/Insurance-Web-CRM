@@ -377,7 +377,8 @@ Widget homepageAppbar(BuildContext context) {
         decoration: dashBoxDex(context),
         child: Row(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
+              backgroundColor: primaryColor.withBlue(244),
               child: Icon(Ionicons.person),
             ),
             heading(AppConsts.adminName, 15)
@@ -729,7 +730,9 @@ isGraced(DateTime renewalDate) {
 Widget renderTile(
     GenericInvestmentHiveData? currentModel, BuildContext context) {
   if (currentModel == null) {
-    return Container();
+    return Container(
+      child: Text("something wrong"),
+    );
   }
 
   if (currentModel is PolicyHiveModel) {
