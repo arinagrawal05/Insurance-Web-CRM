@@ -32,12 +32,12 @@ class DocumentProvider extends ChangeNotifier {
   ];
   List<String> documentList = [
     "All",
+    "Policy copy",
+    "Claim related",
+    "Cheque copy",
     "General",
     "Adhaar",
     "Pan",
-    "Mother",
-    "Spouse",
-    "Other"
   ];
   // void selectRelation(String relation) {
   //   relationSelected = relation;

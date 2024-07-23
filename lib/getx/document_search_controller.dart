@@ -46,6 +46,9 @@ class DocumentSearchController extends GetxController {
       if (!(user.docName.toLowerCase().contains(query.toLowerCase()))) {
         return false;
       }
+      //  if (!(policy.data!.name.toLowerCase().contains(query.toLowerCase()))) {
+      //   return false;
+      // }
       if (!(user.name.toLowerCase().contains(query.toLowerCase()))) {
         return false;
       }

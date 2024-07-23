@@ -68,11 +68,15 @@ Widget quickLinksSection(DashProvider provider, BuildContext context) {
         link("Life", () {
           provider.navigateToProduct(ProductType.life, context);
         }),
+        link("CRM", () {
+          provider.navigateToProduct(ProductType.cms, context);
+        }),
+        link("Digilocker", () {
+          provider.navigateToProduct(ProductType.documents, context);
+        }),
         link("Privacy Policy", () {
           navigate(PrivacyPolicyPage(), context);
         }),
-        link("Refer a Friend", () {}),
-        link("Rate Us", () {}),
         link("Contact", () {}),
       ],
     ),

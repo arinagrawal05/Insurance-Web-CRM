@@ -7,7 +7,7 @@ import 'package:health_model/hive/hive_model/doc_hive_model.dart';
 import 'package:health_model/providers/doc_provider.dart';
 import 'package:health_model/widgets/tiles/document_tile_widget.dart';
 
-import '../../shared/exports.dart';
+import '../../../../shared/exports.dart';
 
 class DocumentsPage extends StatefulWidget {
   @override

@@ -265,7 +265,7 @@ class FdDetailPage extends StatelessWidget {
                               22,
                             ),
                             productTileText(
-                              "Expected Maturity Date: ${dateTimetoText(model.renewalDate)}",
+                              "Maturity Date: ${dateTimetoText(model.renewalDate)}",
                               22,
                             ),
                             (model.isCummulative)

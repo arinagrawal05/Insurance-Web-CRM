@@ -53,10 +53,10 @@ Widget webDashboardBody(
                                       context),
                                 ),
                                 statsBox(
-                                    "${statsProvider.companies_count} Companies",
+                                    "${statsProvider.companiesCount} Companies",
                                     Ionicons.build_outline,
                                     context),
-                                statsBox("${statsProvider.plans_count} Plans",
+                                statsBox("${statsProvider.plansCount} Plans",
                                     Ionicons.reader_outline, context),
                                 statsBox(
                                     "${statsProvider.getPolicyCount} ${EnumUtils.convertTypeToKey(type)}",
@@ -309,7 +309,7 @@ Widget greetBox(GeneralStatsProvider provider) {
         return Text('Error: ${snapshot.error}');
       }
       // Display a loading indicator while fetching data
-      return CircularProgressIndicator();
+      return customCircularLoader(term: "Fetching quote");
     },
   );
   //  Container(

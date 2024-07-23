@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 import '../../shared/exports.dart';
-import 'sizing_config.dart';
 
 Widget cachedImage(String companyImg) {
   return CachedNetworkImage(
@@ -16,7 +14,7 @@ Widget cachedImage(String companyImg) {
         ),
       ),
     ),
-    placeholder: (context, url) => const CircularProgressIndicator(),
+    placeholder: (context, url) => customCircularLoader(),
     errorWidget: (context, url, error) => const Icon(Icons.error),
   );
 }
@@ -336,7 +334,8 @@ AppBar customAppbar(String title, BuildContext context) {
         decoration: dashBoxDex(context),
         child: Row(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
+              backgroundColor: primaryColor.withBlue(244),
               child: Icon(Ionicons.person),
             ),
             heading(AppConsts.adminName, 15)
@@ -702,18 +701,25 @@ Widget genericPicker(
   );
 }
 
-Widget customCircularLoader(String term) {
+Widget customCircularLoader({String? term}) {
   return Column(
     children: [
       CircularProgressIndicator(
-        strokeWidth: 1,
-        backgroundColor: Colors.grey,
-        color: Colors.grey.withOpacity(0.5),
+        strokeWidth: 3.5,
+        strokeCap: StrokeCap.round,
+        // backgroundColor: Colors.grey,
+        color: primaryColor,
       ),
-      const SizedBox(
-        height: 10,
-      ),
-      simpleText("Loading $term", 15)
+      term == null
+          ? Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(),
+              ],
+            )
+          : simpleText(term, 15)
     ],
   );
 }
@@ -806,6 +812,7 @@ Widget userDetailShow(String label, String value, IconData icon,
 
 Widget dottedBorder({
   required Color color,
+  required String text,
 }) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
@@ -830,7 +837,7 @@ Widget dottedBorder({
               TextButton(
                   onPressed: (() {}),
                   child: productTileText(
-                    'Choose Company Logo',
+                    text,
                     22,
                     color: Colors.blue,
                   ))

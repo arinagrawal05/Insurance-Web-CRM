@@ -65,7 +65,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                               onTap: () {
                                 _pickImage(name.text);
                               },
-                              child: dottedBorder(color: primaryColor),
+                              child: dottedBorder(color: primaryColor, text : 'Choose Company Logo'),
                             )
                           : GestureDetector(
                               onTap: () {
@@ -126,7 +126,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return customCircularLoader("Plans");
+                        return customCircularLoader(term: "Fetching Plans");
                       } else {
                         return ListView.builder(
                             // shrinkWrap: true,
@@ -148,7 +148,10 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
 
                 // const Spacer(),
                 isLoading == true
-                    ? CircularProgressIndicator()
+                    ? customCircularLoader(
+                        term: widget.model == null
+                            ? "Adding Company"
+                            : "Updating Company")
                     : customButton(
                         widget.model == null
                             ? "Add Company to Database"

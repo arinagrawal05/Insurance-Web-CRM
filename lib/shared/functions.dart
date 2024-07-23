@@ -159,17 +159,20 @@ void updateTemp() async {
   num sum = 0;
   FirebaseFirestore.instance
       .collection("Policies")
-      .where("invested_amt", isEqualTo: "426381")
+      .where("company_id", isEqualTo: "723010c9-8da5-4a48-a48d-d42282ef99ae")
       .get()
       .then((value) {
     if (value.docs.isNotEmpty) {
       for (var i = 0; i < value.docs.length; i++) {
-        print(value.docs[i]["fd_id"]);
+        // print(value.docs[i]["fd_id"]);
         // sum += value.docs[i]["invested_amt"];
-        //   FirebaseFirestore.instance
-        //       .collection("Commission")
-        //       .doc(value.docs[i]["commission_id"])
-        //       .update({"commission_type": AppConsts.health});
+        FirebaseFirestore.instance
+            .collection("Policies")
+            .doc(value.docs[i]["policy_id"])
+            .update({
+          "company_logo":
+              "https://cdn6.aptoide.com/imgs/f/2/5/f255e21902afb6abfe0c61c650d43abe_icon.png"
+        });
         // }
         print("Successfully Temp Updated " + sum.toString());
       }

@@ -77,7 +77,7 @@ class StepperWidget extends StatelessWidget {
               // title: 'Given',
               enabled: false,
               customTitle: customTitle(
-                  "Given", model.certificateGivenDate, currentStep, 2),
+                  "Hand over", model.certificateGivenDate, currentStep, 2),
             ),
             EasyStep(
               icon: const Icon(Ionicons.checkmark),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:flutter_flip_card/flipcard/flip_card.dart';
 import 'package:flutter_flip_card/modal/flip_side.dart';
+import 'package:health_model/shared/chart_utils.dart';
 import 'exports.dart';
 
 Widget policyCountCircularChart(
@@ -24,15 +25,27 @@ Widget policyCountCircularChart(
                 isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
             tooltipBehavior: tooltipBehavior,
             series: <CircularSeries>[
-              PieSeries<PolicyDistributionChartData, String>(
+              PieSeries<ChartData, String>(
                 dataSource: statsProvider.policyDistributionChartData,
-                xValueMapper: (PolicyDistributionChartData data, _) => data.x,
-                yValueMapper: (PolicyDistributionChartData data, _) => data.y,
+                xValueMapper: (ChartData data, _) => data.x,
+                yValueMapper: (ChartData data, _) => data.y,
                 // innerRadius: "50",
                 dataLabelSettings: const DataLabelSettings(isVisible: true),
                 enableTooltip: true,
-                // maximumValue: 40000
-              )
+
+                //  pointColorMapper: (PolicyDistributionChartData data, _) {
+                //    final List<Color> blueShades = [
+                //     Colors.blue[300]!,
+                //     Colors.blue[400]!,
+                //     Colors.blue[500]!,
+                //     Colors.blue[600]!,
+                //     Colors.blue[700]!,
+                //   ];
+                //    int index =
+                //       statsProvider.policyDistributionChartData.indexOf(data);
+                //    return blueShades[index % blueShades.length];
+                // },
+              ),
             ],
           ),
         );
@@ -57,10 +70,10 @@ Widget policyCircularChart(
           Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
       tooltipBehavior: tooltipBehavior,
       series: <CircularSeries>[
-        DoughnutSeries<PolicyStatusChartData, String>(
+        DoughnutSeries<ChartData, String>(
           dataSource: statsProvider.policyStatusChartData,
-          xValueMapper: (PolicyStatusChartData data, _) => data.x,
-          yValueMapper: (PolicyStatusChartData data, _) => data.y,
+          xValueMapper: (ChartData data, _) => data.x,
+          yValueMapper: (ChartData data, _) => data.y,
           innerRadius: "50",
           dataLabelSettings: const DataLabelSettings(isVisible: true),
           enableTooltip: true,
@@ -69,20 +82,6 @@ Widget policyCircularChart(
       ],
     ),
   );
-}
-
-class PolicyStatusChartData {
-  PolicyStatusChartData(this.x, this.y);
-
-  final String x;
-  final int y;
-}
-
-class PolicyDistributionChartData {
-  PolicyDistributionChartData(this.x, this.y);
-
-  final String x;
-  final int y;
 }
 
 Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
@@ -124,11 +123,11 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
               minimum: 0,
             ),
             tooltipBehavior: tooltip,
-            series: <ChartSeries<CompanyChartData, String>>[
-              ColumnSeries<CompanyChartData, String>(
+            series: <CartesianSeries<ChartData, String>>[
+              ColumnSeries<ChartData, String>(
                   dataSource: statsProvider.chartCompanyData,
-                  xValueMapper: (CompanyChartData data, _) => data.x,
-                  yValueMapper: (CompanyChartData data, _) => data.y,
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y,
                   name: 'Bussiness',
                   color: primaryColor)
             ]),
@@ -163,9 +162,53 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
       ));
 }
 
-class CompanyChartData {
-  CompanyChartData(this.x, this.y);
+Widget membersCircularChart(DashProvider statsProvider, BuildContext context,
+    TooltipBehavior? tooltipBehavior) {
+  return Container(
+    // decoration: dashBoxDex(context),
+    width: 600,
+    height: 600,
+    // margin: const EdgeInsets.symmetric(vertical: 5),
+    child: SfCircularChart(
+      // title: ChartTitle(text: 'Members', textStyle: GoogleFonts.nunito()),
+      // legend:
+      //     Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+      tooltipBehavior: tooltipBehavior,
+      series: <CircularSeries>[
+        PieSeries<ChartData, String>(
+          dataSource: statsProvider.memberChartData,
+          xValueMapper: (ChartData data, _) => data.x,
+          yValueMapper: (ChartData data, _) => data.y,
+          dataLabelSettings: const DataLabelSettings(isVisible: true),
+          enableTooltip: true,
+          // maximumValue: 40000
+        )
+      ],
+    ),
+  );
+}
 
-  final String x;
-  final int y;
+Widget documentsCircularChart(DashProvider statsProvider, BuildContext context,
+    TooltipBehavior? tooltipBehavior) {
+  return Container(
+    // decoration: dashBoxDex(context),
+    // width: 400,
+    // height: 250,
+    // margin: const EdgeInsets.symmetric(vertical: 5),
+    child: SfCircularChart(
+      // title: ChartTitle(text: 'Documents', textStyle: GoogleFonts.nunito()),
+      // legend:
+      //     Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+      tooltipBehavior: tooltipBehavior,
+      series: <CircularSeries>[
+        PieSeries<ChartData, String>(
+          dataSource: statsProvider.docChartData,
+          xValueMapper: (ChartData data, _) => data.x,
+          yValueMapper: (ChartData data, _) => data.y,
+          dataLabelSettings: const DataLabelSettings(isVisible: true),
+          enableTooltip: true,
+        )
+      ],
+    ),
+  );
 }

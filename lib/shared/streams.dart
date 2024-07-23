@@ -59,7 +59,7 @@ Widget streamMembers(headID, {bool isMini = false, bool isChoosing = false}) {
         .snapshots(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Members");
+        return customCircularLoader(term: "Fetching members");
       } else {
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
@@ -99,7 +99,7 @@ Widget streamCompanies(bool isChoosing, String type) {
         .snapshots(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Companies");
+        return customCircularLoader(term: "Fetching companies");
       } else {
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
@@ -133,7 +133,7 @@ streamPlans(bool isChoosing, String companyUserid) {
         .snapshots(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Plans");
+        return customCircularLoader(term: "Fetching Plans");
       } else {
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
@@ -167,7 +167,7 @@ Widget streamPolicies(bool isChoosing, String companyFilter,
         .snapshots(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Policies");
+        return customCircularLoader(term: "Fetching Policies");
       } else {
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
@@ -263,7 +263,7 @@ Widget streamUserPolicies(bool isChoosing, String companyFilter,
     stream: FirebaseFirestore.instance.collection("Policies").snapshots(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Policies");
+        return customCircularLoader(term: "Fetching policies");
       } else {
         if (snapshot.data!.docs.isEmpty) {
           return noDataWidget();
@@ -400,7 +400,7 @@ Widget streamTransactions(String filterKey, String filterValue) {
         .snapshots(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return customCircularLoader("Transactions");
+        return customCircularLoader(term: "Fetching Transactions");
       } else {
         return ListView.builder(
             shrinkWrap: true,

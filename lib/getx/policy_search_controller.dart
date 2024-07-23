@@ -90,9 +90,6 @@ class PolicySearchController extends GetxController {
       // }
       // print(' case 3 ${policy.data!.name}');
 
-      if (!(policy.data!.name.toLowerCase().contains(query.toLowerCase()))) {
-        return false;
-      }
       // print(' case 4 ${policy.data!.name}');
       // print(' case 4a ${companyFilter}');
       // print(' case 4b ${policy.data!.companyName}');

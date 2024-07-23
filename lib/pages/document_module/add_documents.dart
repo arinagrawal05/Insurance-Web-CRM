@@ -1,22 +1,7 @@
-import 'dart:async';
-import 'dart:io';
+// ignore_for_file: avoid_web_libraries_in_flutter
 
-// import '
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:health_model/models/document_model.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:health_model/providers/doc_provider.dart';
-import 'package:health_model/test.dart';
-import 'package:universal_html/html.dart';
-import 'dart:html' as html; // For web specific handling
-import 'dart:typed_data'; // For handling file bytes
+import 'dart:html' as html;
 import '/shared/exports.dart';
-import '/sheets/plan_sheet.dart';
-import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class AddDocumentPage extends StatefulWidget {
@@ -53,7 +38,7 @@ class _AddDocumentPageState extends State<AddDocumentPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    // final userProvider = Provider.of<UserProvider>(context, listen: true);
     final docProvider = Provider.of<DocumentProvider>(context, listen: true);
 
     //var uploadImage = Provider.of<UploadImage>(context);
@@ -88,7 +73,9 @@ class _AddDocumentPageState extends State<AddDocumentPage> {
                                   pickFile();
                                   // _pickImage(name.text);
                                 },
-                                child: dottedBorder(color: primaryColor),
+                                child: dottedBorder(
+                                    color: primaryColor,
+                                    text: "Upload Document"),
                               )
                             : GestureDetector(
                                 onTap: () {
@@ -197,7 +184,7 @@ class _AddDocumentPageState extends State<AddDocumentPage> {
             ),
             Spacer(),
             _isUploading == true
-                ? const CircularProgressIndicator()
+                ? customCircularLoader(term: "Uploading document")
                 : Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: customButton("Submit Document", () async {
@@ -308,10 +295,10 @@ class _AddDocumentPageState extends State<AddDocumentPage> {
       setState(() {
         imageUrll = downloadURL;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Upload successful! Download URL: $downloadURL')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text('Upload successful! Download URL: $downloadURL')),
+      // );
     } catch (e) {
       print('Upload failed: $e');
       ScaffoldMessenger.of(context).showSnackBar(

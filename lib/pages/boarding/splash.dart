@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:health_model/add_documents.dart';
+import 'package:health_model/pages/document_module/add_documents.dart';
 import 'package:health_model/test.dart';
 
 import '/shared/exports.dart';
@@ -36,13 +36,7 @@ class _SplashscreenState extends State<Splashscreen>
         () =>
             // islogged ==
             true
-                ? navigate(
-                    HomePage(),
-                    // AddDocumentPage(
-                    //   userModel: AppConsts.userModel,
-                    //   userid: AppConsts.userModel.userid,
-                    // ),
-                    context)
+                ? navigate(HomePage(), context)
                 : navigate(LoginPage(), context));
   }
 

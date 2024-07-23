@@ -26,7 +26,6 @@ export 'package:google_fonts/google_fonts.dart';
 export '../dash.dart';
 export '../hive/hive_helpers/commission_hive_helper.dart';
 export '../hive/hive_helpers/user_hive_helper.dart';
-export '../some2.dart';
 export 'package:syncfusion_flutter_charts/charts.dart';
 export '../shared/streams.dart';
 export 'package:uuid/uuid.dart';
@@ -110,7 +109,12 @@ export '/hive/hive_model/policy_models/generic_investment_data.dart';
 export 'package:table_calendar/table_calendar.dart';
 export '/widgets/calender.dart';
 
+export 'dart:async';
+export 'package:firebase_storage/firebase_storage.dart';
+export 'package:health_model/providers/doc_provider.dart';
 // export '/widgets/tiles/motor_tile_widget.dart';
+export 'package:cached_network_image/cached_network_image.dart';
+ 
 
  // export '../hive/hive_model/policy_models/motor_model.dart';
 

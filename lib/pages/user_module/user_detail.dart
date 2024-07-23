@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:health_model/add_documents.dart';
+import 'package:health_model/pages/document_module/add_documents.dart';
 import 'package:health_model/providers/doc_provider.dart';
 import '/shared/exports.dart';
 import 'dart:typed_data';
@@ -92,7 +92,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                             child: Container(
                               width: double.infinity,
                               margin: const EdgeInsets.only(bottom: 40),
-                              height: 300,
+                              height: 200,
                               // decoration: BoxDecoration(
                               //     image: DecorationImage(
                               //   image: NetworkImage(

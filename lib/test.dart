@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                   'Picked Time: ${dateTimetoText(_pickedFile!.lastModifiedDate)}'),
             if (_pickedFile != null) Text('Picked Size: ${_pickedFile!.size}'),
-            if (_isUploading) CircularProgressIndicator(),
+            if (_isUploading) customCircularLoader(term: "uploading doc"),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _pickFile,

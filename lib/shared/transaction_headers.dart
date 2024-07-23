@@ -21,10 +21,10 @@ class TransactionHeaders {
       children: [
         heading("S. No", 18),
         heading("Fd No", 18),
-        heading("Invested Date", 18),
+        heading("Investment Date", 18),
         heading("Maturity Date", 18),
         heading("Investment", 18),
-        heading("Maturated Amt", 18),
+        heading("Maturity Amt", 18),
       ],
     );
   }

@@ -129,7 +129,7 @@ class _AddUserPageState extends State<AddUserPage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return customCircularLoader("Members");
+                      return customCircularLoader(term: "Fetching Members");
                     } else {
                       return ListView.builder(
                           shrinkWrap: true,

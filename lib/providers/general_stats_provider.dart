@@ -1,36 +1,19 @@
-import 'package:health_model/quote.dart';
+import 'package:health_model/shared/quote.dart';
+import 'package:health_model/shared/chart_utils.dart';
 
 import '/shared/exports.dart';
 
-class ItemLabeling {
-  int value1 = 0;
-  int value2 = 0;
-
-  int value3 = 0;
-
-  int value4 = 0;
-
-  final String? label1;
-  final String? label2;
-  final String? label3;
-  final String? label4;
-
-  ItemLabeling({this.label1, this.label2, this.label3, this.label4});
-}
-
 class GeneralStatsProvider extends GetxController {
   final ProductType type;
-  // int users_count = 0;
-  // int policies_count = 0;
   ItemLabeling? labels;
 
-  int plans_count = 0;
-  int companies_count = 0;
+  int plansCount = 0;
+  int companiesCount = 0;
   Box<PolicyDataHiveModel>? policyBox;
   Map<DateTime, List<GenericInvestmentHiveData>> mySelectedEvents = {};
-  List<CompanyChartData> chartCompanyData = [];
-  List<PolicyStatusChartData> policyStatusChartData = [];
-  List<PolicyDistributionChartData> policyDistributionChartData = [];
+  List<ChartData> chartCompanyData = [];
+  List<ChartData> policyStatusChartData = [];
+  List<ChartData> policyDistributionChartData = [];
   Future<Map<String, String>>? quoteData;
 
   @override
@@ -102,7 +85,7 @@ class GeneralStatsProvider extends GetxController {
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
-        companies_count = value.docs.length;
+        companiesCount = value.docs.length;
 
         for (var i = 0; i < value.docs.length; i++) {
           if (type != ProductType.fd) {
@@ -112,7 +95,7 @@ class GeneralStatsProvider extends GetxController {
                 .collection("Plans")
                 .get()
                 .then((value) {
-              plans_count += value.docs.length;
+              plansCount += value.docs.length;
             });
           }
 
@@ -197,13 +180,11 @@ class GeneralStatsProvider extends GetxController {
         });
 
         companyBusiness.forEach((key, value) {
-          chartCompanyData
-              .add(CompanyChartData(AppUtils.getFirstWord(key), value));
+          chartCompanyData.add(ChartData(AppUtils.getFirstWord(key), value));
         });
 
         companyPolicies.forEach((key, value) {
-          policyDistributionChartData
-              .add(PolicyDistributionChartData(key, value));
+          policyDistributionChartData.add(ChartData(key, value));
         });
       }
       update();
@@ -311,21 +292,21 @@ class GeneralStatsProvider extends GetxController {
       // print('${labels!.label4} ${labels!.value4}');
       policyStatusChartData.clear();
       if (labels!.label1 != '_') {
-        policyStatusChartData.add(
-            PolicyStatusChartData(labels!.label1.toString(), labels!.value1));
+        policyStatusChartData
+            .add(ChartData(labels!.label1.toString(), labels!.value1));
       }
 
       if (labels!.label2 != '_') {
-        policyStatusChartData.add(
-            PolicyStatusChartData(labels!.label2.toString(), labels!.value2));
+        policyStatusChartData
+            .add(ChartData(labels!.label2.toString(), labels!.value2));
       }
       if (labels!.label3 != '_') {
-        policyStatusChartData.add(
-            PolicyStatusChartData(labels!.label3.toString(), labels!.value3));
+        policyStatusChartData
+            .add(ChartData(labels!.label3.toString(), labels!.value3));
       }
       if (labels!.label4 != '_') {
-        policyStatusChartData.add(
-            PolicyStatusChartData(labels!.label4.toString(), labels!.value4));
+        policyStatusChartData
+            .add(ChartData(labels!.label4.toString(), labels!.value4));
       }
       update();
       return false;

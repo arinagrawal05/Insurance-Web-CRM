@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 import '../../../shared/exports.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +12,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    late TooltipBehavior tooltip = TooltipBehavior();
+
     //var uploadImage = Provider.of<UploadImage>(context);
     // final provider = Get.put(GeneralStatsProvider(type: ProductType.health));
 
@@ -36,6 +40,7 @@ class _HomePageState extends State<HomePage> {
                   //   'twenty',
                   //   'Hello',
                   // ),
+                  // customCircularLoader(term: "Documents"),
                   dashWidget(dashProvider, context),
                   const SizedBox(
                     height: 20,
@@ -48,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 50,
                   ),
+                  //
                   footerWidget(dashProvider, context)
                 ],
               ),
@@ -112,6 +118,7 @@ class _HomePageState extends State<HomePage> {
                                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPeR2HyZL1lk9Fw8DeKYNGddtxh7g2C9p1M0EjNJVn6wxtDFJjAyiuHrjdCl87Z9LBQnw&usqp=CAU",
                                   Colors.redAccent.shade100,
                                   Ionicons.heart, () {
+                                // updateTemp();
                                 dashProvider.navigateToProduct(
                                     ProductType.health, context);
 
@@ -227,10 +234,11 @@ class _HomePageState extends State<HomePage> {
                           // Lotia(),
                         ],
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 // const Spacer(),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: GestureDetector(
@@ -238,11 +246,31 @@ class _HomePageState extends State<HomePage> {
                       dashProvider.navigateToProduct(ProductType.cms, context);
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(20),
-                      // width: double.infinity,
-                      decoration: dashBoxDex(context)
-                          .copyWith(color: Colors.indigoAccent.shade100),
-                      child: Center(child: heading("View User CMS", 30)),
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: dashBoxDex(Get.context!).copyWith(
+                          boxShadow: [
+                            const BoxShadow(
+                                spreadRadius: 2,
+                                offset: Offset(0.2, 0.2),
+                                blurRadius: 1.0,
+                                color: Colors.blueGrey),
+                          ],
+                          border: Border.all(
+                              width: 1.5,
+                              color: Colors.black45,
+                              style: BorderStyle.solid),
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                "https://as1.ftcdn.net/v2/jpg/01/32/81/48/1000_F_132814832_9D6Oj1QcCXi6JbttjrfdPCm0Fu6hnHdm.jpg",
+                              ),
+                              fit: BoxFit.cover),
+                        ),
+                        child: Container(
+                            padding: const EdgeInsets.all(20),
+                            color: Colors.black.withOpacity(0.45),
+                            child: Center(child: heading("View CMS", 30))),
+                      ),
                     ),
                   ),
                 ),
@@ -254,16 +282,58 @@ class _HomePageState extends State<HomePage> {
                           ProductType.documents, context);
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(20),
-                      // width: double.infinity,
-                      decoration: dashBoxDex(context)
-                          .copyWith(color: Colors.indigoAccent.shade100),
-                      child: Center(child: heading("View User Docs", 30)),
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: dashBoxDex(Get.context!).copyWith(
+                          boxShadow: [
+                            const BoxShadow(
+                                spreadRadius: 2,
+                                offset: Offset(0.2, 0.2),
+                                blurRadius: 1.0,
+                                color: Colors.blueGrey),
+                          ],
+                          border: Border.all(
+                              width: 1.5,
+                              color: Colors.black45,
+                              style: BorderStyle.solid),
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                "https://t4.ftcdn.net/jpg/02/28/40/27/360_F_228402780_Ufs7CyMTqNYbhvGFuccII2pWx5HBqqLA.jpg",
+                              ),
+                              fit: BoxFit.cover),
+                        ),
+                        child: Container(
+                            padding: const EdgeInsets.all(20),
+                            color: Colors.black.withOpacity(0.45),
+                            child:
+                                Center(child: heading("View Digilocker", 30))),
+                      ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           );
   }
 }
+// Container(
+//   padding: EdgeInsets.all(20),
+//   width: double.infinity,
+//   child: Row(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//     children: [
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           children: [
+//             heading("Main your Own Digilocker", 45),
+//           ],
+//         ),
+//       ),
+//       Spacer(),
+//       membersCircularChart(dashProvider, context, tooltip),
+//     ],
+//   ),
+// ),
+// documentsCircularChart(dashProvider, context, tooltip),
