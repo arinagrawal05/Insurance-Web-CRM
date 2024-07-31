@@ -142,7 +142,7 @@ Widget companyChart(TooltipBehavior tooaltip, BuildContext context,
         child: ListView.builder(
             // physics: NeverScrollableScrollPhysics(),
             // shrinkWrap: true,
-            itemCount: 4,
+            itemCount: statsProvider.chartCompanyData.length,
             itemBuilder: (context, index) {
               // return Text("data");
               return Padding(
