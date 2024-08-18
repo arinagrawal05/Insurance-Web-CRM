@@ -100,7 +100,9 @@ class CommissionHiveHelper {
       // print("LLLLL Firebase data policy ${snapshot.docs.length}");
       await healthCommissionBox
           .clear(); // Clear existing data before adding new users
-      print('Commission Hive cleared' + snapshot.docs.length.toString());
+      if (kDebugMode) {
+        print('Commission Hive cleared' + snapshot.docs.length.toString());
+      }
       for (var doc in snapshot.docs) {
         // print('Adding before');
         // print(doc.id);

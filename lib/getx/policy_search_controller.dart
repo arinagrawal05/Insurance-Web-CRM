@@ -94,6 +94,9 @@ class PolicySearchController extends GetxController {
       // print(' case 4a ${companyFilter}');
       // print(' case 4b ${policy.data!.companyName}');
 
+      if (!(policy.data!.name.toLowerCase().contains(query.toLowerCase()))) {
+        return false;
+      }
       if (!(companyFilter == 'All Companies' ||
           companyFilter == AppUtils.getFirstWord(policy.data!.companyName))) {
         return false;
