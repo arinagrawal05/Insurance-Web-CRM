@@ -23,14 +23,18 @@ void genericConfirmSheet(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               heading(statement, 25),
-              Spacer(),
+              const Spacer(),
               Column(
                 children: [
                   customButton("Back", () {
                     Navigator.pop(context);
                   }, context, isExpanded: true, color: tabColor),
                   customButton(
-                      type != "handover" ? "Remove" : "Handover to Customer",
+                      type == "redeem"
+                          ? "Redeem"
+                          : type != "handover"
+                              ? "Remove"
+                              : "Handover to Customer",
                       ontap,
                       context,
                       isExpanded: true,

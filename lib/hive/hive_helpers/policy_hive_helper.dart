@@ -333,7 +333,8 @@ class PolicyHiveHelper {
         FdHiveModel data = fd.data as FdHiveModel;
         if (data.renewalDate.isBefore(DateTime.now()) &&
             data.renewalDate
-                .isAfter(DateTime.now().subtract(const Duration(days: 30)))) {
+                .isAfter(DateTime.now().subtract(const Duration(days: 30))) &&
+            data.fdStatus != "redeemed") {
           return true;
         }
       }
