@@ -135,10 +135,8 @@ class _RenewPolicyPageState extends State<RenewPolicyPage> {
                   // var uuid = Uuid();
                   // String docId = uuid.v4();
                   if (_policyFormKey.currentState?.validate() == true) {
-                    makeARenewal(
-                      startingDate.add(Duration(days: term * 365)),
-                      model.policyID,
-                    );
+                    makeARenewal(startingDate.add(Duration(days: term * 365)),
+                        model.policyID, int.parse(premiumAmt.text));
                     if (AppConsts.isProductionMode) {
                       addCommision(
                           model.name,

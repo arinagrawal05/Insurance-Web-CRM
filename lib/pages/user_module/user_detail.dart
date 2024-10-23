@@ -4,7 +4,7 @@ import 'package:health_model/pages/document_module/add_documents.dart';
 import 'package:health_model/providers/doc_provider.dart';
 import '/shared/exports.dart';
 import 'dart:typed_data';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 import 'dart:io';
 
 // import 'package:firebase/firebase.dart' as fb;

@@ -6,7 +6,7 @@ import '/pages/fd_module/renew_fd.dart';
 // ignore: must_be_immutable
 class FdDetailPage extends StatelessWidget {
   FdHiveModel model;
-  FdDetailPage({required this.model});
+  FdDetailPage({super.key, required this.model});
   late TooltipBehavior tooltip = TooltipBehavior();
 
   @override
@@ -65,7 +65,7 @@ class FdDetailPage extends StatelessWidget {
           model.fdStatus == "handover"
               ? customButton("Redeem", () {
                   print("object");
-                  genericConfirmSheet(context, Statements.redeemFD, "Redeem",
+                  genericConfirmSheet(context, Statements.redeemFD, "redeem",
                       () {
                     FirebaseFirestore.instance
                         .collection("Policies")
@@ -226,11 +226,9 @@ class FdDetailPage extends StatelessWidget {
                                     GestureDetector(
                                         onTap: () {
                                           AppUtils.showSnackMessage(
-                                              "This is paid by " +
-                                                  model.payMode,
+                                              "This is paid by ${model.payMode}",
                                               model.payMode == "Cheque"
-                                                  ? "bank Details: " +
-                                                      model.bankDetails
+                                                  ? "bank Details: ${model.bankDetails}"
                                                   : "");
                                         },
                                         child: const Icon(

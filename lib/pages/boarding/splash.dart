@@ -6,6 +6,8 @@ import 'package:health_model/test.dart';
 import '/shared/exports.dart';
 
 class Splashscreen extends StatefulWidget {
+  const Splashscreen({super.key});
+
   @override
   _SplashscreenState createState() => _SplashscreenState();
 }
@@ -32,12 +34,10 @@ class _SplashscreenState extends State<Splashscreen>
 // SizeConfig().init
   navigateToDestiny() {
     Timer(
-        Duration(seconds: 2),
-        () =>
-            // islogged ==
-            true
-                ? navigate(HomePage(), context)
-                : navigate(LoginPage(), context));
+        const Duration(seconds: 2),
+        () => islogged == true
+            ? navigate(HomePage(), context)
+            : navigate(LoginPage(), context));
   }
 
   getprefab() async {

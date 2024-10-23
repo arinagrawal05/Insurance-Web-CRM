@@ -743,7 +743,7 @@ Widget fDRenewalTile(
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        heading(model.data!.name, 16),
+                        heading(model.data!.name, 15.5),
                         productTileText(thisModel.fdNo, 14),
                       ],
                     ),
@@ -794,13 +794,35 @@ Widget fDRenewalTile(
                       ],
                     ),
               isGraced(thisModel.renewalDate)
-                  ? customButton("Renew", () async {
-                      navigate(
-                        RenewFdPage(model: thisModel),
-                        context,
-                      );
-                      // addMemberSheet(context, widget.userid, docId);
-                    }, context, isExpanded: false)
+                  ? Row(
+                      children: [
+                        customButton("Redeem", () async {
+                          genericConfirmSheet(
+                              context, Statements.redeemFD, "redeem", () {
+                            FirebaseFirestore.instance
+                                .collection("Policies")
+                                .doc(thisModel.fdId)
+                                .update({
+                              "status_date": DateTime.now(),
+                              "fd_status": "redeemed"
+                            }).then((value) {
+                              AppUtils.showSnackMessage(
+                                  "This FD is Successfully Redeemed", "");
+                              PolicyHiveHelper.fetchFDPoliciesFromFirebase();
+                              Navigator.pop(context);
+                            });
+                          });
+                        }, context,
+                            isExpanded: false, color: Colors.red.shade500),
+                        customButton("Renew", () async {
+                          navigate(
+                            RenewFdPage(model: thisModel),
+                            context,
+                          );
+                          // addMemberSheet(context, widget.userid, docId);
+                        }, context, isExpanded: false),
+                      ],
+                    )
                   : customButton("Laps", () async {
                       navigate(
                         ChooseMember(

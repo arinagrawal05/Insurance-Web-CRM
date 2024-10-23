@@ -357,10 +357,11 @@ void claimCommission(
   });
 }
 
-void makeARenewal(DateTime nextRenewal, String policyID) {
-  FirebaseFirestore.instance.collection("Policies").doc(policyID).update({
-    "renewal_date": nextRenewal,
-  });
+void makeARenewal(DateTime nextRenewal, String policyID, int amount) {
+  FirebaseFirestore.instance
+      .collection("Policies")
+      .doc(policyID)
+      .update({"renewal_date": nextRenewal, "premium_amt": amount});
 }
 
 void makeATransaction(
